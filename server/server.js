@@ -1,6 +1,12 @@
 import loopback from 'loopback';
 import boot from 'loopback-boot';
 
+//Globally set max listeners higher than 11
+//Otherwise, loopback-connector-postgresql will cause a mem-leak warning
+//because the default maximum is 10
+require('events').EventEmitter.prototype._maxListeners = 20;
+
+
 class StartServer {
 
   constructor(isMainModule) {
@@ -25,6 +31,22 @@ class StartServer {
       // Put this on the app so it's accessible.
       app.server = server;
 
+      //Generate postgres schema if necessary
+
+      //TODO: populate appModels automatically from model-config.json
+      var appModels = ['User', 'AccessToken', 'ACL', 'RoleMapping', 'Role', 'Note']; 
+      var dataSource = app.datasources.psql;
+      dataSource.isActual(appModels, function(err, actual) {
+        //DataSource.isActual() is false if database structure is outdated WRT model files (model-config.json)
+        if (!actual) {
+          console.log('Database structure update is necessary... commencing autoupdate.')
+          dataSource.autoupdate(appModels, function(err, result) {
+            if (err) throw err;
+            else console.log('Database structure update complete');
+
+          });
+        }
+      }); 
     });
 
   }
