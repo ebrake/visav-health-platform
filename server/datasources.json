@@ -10,5 +10,12 @@
     "password": "dillinger",
     "name": "psql",
     "connector": "postgresql"
+  },
+  "push": {
+    "name": "push",
+    "connector": "loopback-component-push",
+    "installation": "installation",
+    "notification": "notification",
+    "application": "application"
   }
 }

@@ -35,5 +35,21 @@
   },
   "Note": {
     "dataSource": "psql"
+  },
+  "application": {
+    "public": true,
+    "dataSource": "psql"
+  },
+  "installation": {
+    "public": true,
+    "dataSource": "psql"
+  },
+  "notification": {
+    "public": true,
+    "dataSource": "psql"
+  },
+  "push": {
+    "public": true,
+    "dataSource": "push"
   }
 }

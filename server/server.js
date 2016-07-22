@@ -34,7 +34,7 @@ class StartServer {
       //Generate postgres schema if necessary
 
       //TODO: populate appModels automatically from model-config.json
-      var appModels = ['User', 'AccessToken', 'ACL', 'RoleMapping', 'Role', 'Note']; 
+      var appModels = ['User', 'AccessToken', 'ACL', 'RoleMapping', 'Role', 'Note', 'application', 'installation', 'notification']; 
       var dataSource = app.datasources.psql;
       dataSource.isActual(appModels, function(err, actual) {
         //DataSource.isActual() is false if database structure is outdated WRT model files (model-config.json)
