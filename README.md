@@ -5,7 +5,7 @@
     /_______  /__|____/____/__|___|  /\___  / \___  >__|   
             \/                     \//_____/      \/       
 
-> Proud of legitimate and unbelievably clean project Dillinder, as it should be, and as it will be.
+> Proud of legitimate and unbelievably clean project Dillinger, as it should be, and as it will be.
 
 HOW TO INSTALL
 ------------
