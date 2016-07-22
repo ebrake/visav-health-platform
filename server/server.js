@@ -1,5 +1,6 @@
 require('babel-register')({
-        "presets": ["node6","react"]
+  "presets": ["node6","react"],
+  "plugins": ["add-module-exports"]
 });
 var loopback = require('loopback'),
     boot = require('loopback-boot');
