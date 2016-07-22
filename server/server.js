@@ -3,15 +3,14 @@ import boot from 'loopback-boot';
 
 class StartServer {
 
-  constructor() {
+  constructor(isMainModule) {
 
     const app = loopback();
 
     boot(app, __dirname, error => {
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
+      if (!isMainModule) return;
 
       const server = app.listen(() => {
         app.emit('started');
@@ -30,5 +29,7 @@ class StartServer {
 
   }
 }
-let startServer = new StartServer();
-export default startServer;
+export function startServer(isMainModule) {
+  new StartServer(isMainModule);
+}
+export { startServer };

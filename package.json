@@ -1,11 +1,11 @@
 {
   "name": "dillinger",
   "version": "1.0.0",
-  "main": "server/server.dev-init",
+  "main": "server/server.init-dev",
   "scripts": {
-    "start": "node ./server/server.dev-init",
-    "build-prod": "npm run clean && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
-    "start-prod": "node ./server-dist/server",
+    "start": "node ./server/server.init-dev",
+    "build-prod": "npm run clean-prod && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
+    "start-prod": "node ./server-dist/server.init-prod",
     "clean-prod": "rm -rf server-dist || true",
     "pretest": "eslint .",
     "posttest": "nsp check"
