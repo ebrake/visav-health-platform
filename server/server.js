@@ -3,11 +3,15 @@ require('babel-register')({
   "plugins": ["add-module-exports"]
 });
 var loopback = require('loopback'),
-    boot = require('loopback-boot');
+  boot = require('loopback-boot'),
+  setupPassport = require('./component-passport');
 
 var app = module.exports = loopback();
 
 app.start = function() {
+
+  setupPassport(app);
+
   // start the web server
   return app.listen(function() {
     app.emit('started');
