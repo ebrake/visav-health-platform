@@ -10,7 +10,7 @@
 HOW TO INSTALL
 ------------
 
-###Postgres
+### Postgres
  1. Install Postgres.app from [https://postgresapp.com/](https://postgresapp.com/)
 >Optional: Install the latest version pgAdmin gui for postgres from
  [https://www.pgadmin.org/download/macosx.php](https://www.pgadmin.org/download/macosx.php)
@@ -24,13 +24,13 @@ HOW TO INSTALL
  `GRANT ALL PRIVILEGES ON DATABASE dillinger to dillinger;` 
 > run `\q` to quit postgres
 
-###Node 
+### Node 
  1. Install Node.js v6.3.0 from [https://nodejs.org/](https://nodejs.org/)
  
     > Why? Node 6.3.0 comes with V8 v5.x which brings ~93% native ES6/ES2015 coverage.* The remaining coverage is supported by babel-preset-node6. 
  2. Run: `npm install`
 
-###Loopback
+### Loopback
  
  1. Install Loopback with command: `npm install -g strongloop`
 
