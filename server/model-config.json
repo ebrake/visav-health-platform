@@ -14,26 +14,26 @@
     ]
   },
   "User": {
-    "dataSource": "db",
+    "dataSource": "psql",
     "public": true
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "psql",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "psql",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "psql",
     "public": false
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "psql",
     "public": false
   },
   "Note": {
-    "dataSource": "db"
+    "dataSource": "psql"
   }
 }

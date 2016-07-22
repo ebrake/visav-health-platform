@@ -26,6 +26,22 @@ class StartServer {
       // Put this on the app so it's accessible.
       app.server = server;
 
+
+      //GENERATE POSTGRES SCHEME IF NECESSARY
+      //DataSource.isActual() is false if database structure is outdated WRT model files (model-config.json)
+      //TODO: populate appModels automatically from model-config.json
+      var appModels = ['User', 'AccessToken', 'ACL', 'RoleMapping', 'Role', 'Note'];
+      var dataSource = app.datasources.psql;
+      dataSource.isActual(appModels, function(err, actual) {
+        if (!actual) {
+          console.log('Database structure update is necessary... commencing autoupdate.')
+          dataSource.autoupdate(appModels, function(err, result) {
+            if (err) throw err;
+            else console.log('Database structure update complete');
+
+          });
+        }
+      }); 
     });
 
   }
