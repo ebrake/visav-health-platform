@@ -1,11 +1,11 @@
 import loopback from 'loopback';
 import boot from 'loopback-boot';
+import { EventEmitter } from 'events';
 
 //Globally set max listeners higher than 11
 //Otherwise, loopback-connector-postgresql will cause a mem-leak warning
 //because the default maximum is 10
-require('events').EventEmitter.prototype._maxListeners = 20;
-
+EventEmitter.prototype._maxListeners = 20;
 
 class StartServer {
 
