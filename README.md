@@ -40,4 +40,5 @@ HOW TO RUN
 ------------
 
  1. Ensure Postgres.app is running (Elephant icon in menubar)
+ 2. Ensure Node packages are up-to-date with command: `node install`
  2. Start server with command: `node .`
