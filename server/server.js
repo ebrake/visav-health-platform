@@ -1,5 +1,9 @@
-var loopback = require('loopback');
-var boot = require('loopback-boot');
+require("babel-core").transform("code", {
+  presets: ["node6","react"]
+});
+require('babel-register');
+var loopback = require('loopback'),
+    boot = require('loopback-boot');
 
 var app = module.exports = loopback();
 
