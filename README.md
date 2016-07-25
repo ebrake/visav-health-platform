@@ -57,5 +57,5 @@ HOW TO RUN
  2. Run the following command: `npm install`
  3. Start the back-end server with the following command: `node .` 
  3. Navigate to client directory `cd <insert dillinger root>/client`
- 4. Ensure Node packages are up-to-date with command: `node install`
+ 4. Ensure Node packages are up-to-date with command: `npm install`
  5. Start server with command: `npm start`
