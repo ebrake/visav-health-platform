@@ -1,7 +1,7 @@
 import loopback from 'loopback';
 import boot from 'loopback-boot';
 import { EventEmitter } from 'events';
-
+import fs from 'fs';
 //Globally set max listeners higher than 11
 //Otherwise, loopback-connector-postgresql will cause a mem-leak warning
 //because the default maximum is 10
@@ -31,14 +31,21 @@ class StartServer {
       // Put this on the app so it's accessible.
       app.server = server;
 
+      //Determine which app models require postgres
+      var modelConfigObj = JSON.parse(fs.readFileSync('./server/model-config.json', 'utf8'));
+      var appModels = [];
+      for(var key in modelConfigObj){
+        var value = modelConfigObj[key];
+        if (key != "_meta" && value.dataSource == "psql") {
+          appModels.push(key);
+        }
+      }
       //Generate postgres schema if necessary
-
-      //TODO: populate appModels automatically from model-config.json
-      var appModels = ['User', 'AccessToken', 'ACL', 'RoleMapping', 'Role', 'Note', 'application', 'installation', 'notification']; 
       var dataSource = app.datasources.psql;
       dataSource.isActual(appModels, function(err, actual) {
         //DataSource.isActual() is false if database structure is outdated WRT model files (model-config.json)
         if (!actual) {
+          console.log('Postgres models used by app:\n' + JSON.stringify(appModels) );
           console.log('Database structure update is necessary... commencing autoupdate.')
           dataSource.autoupdate(appModels, function(err, result) {
             if (err) throw err;
