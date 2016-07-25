@@ -31,7 +31,7 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.jsx'],
   },
   resolveLoader: {
     root: nodeModulesPath,
@@ -52,6 +52,14 @@ module.exports = {
         loader: 'babel',
         query: require('./babel.prod')
       },
+      {
+            test: /\.jsx?$/,
+            loader: 'babel',
+            exclude: /node_modules/,
+            query: {
+                presets: ['es2015', 'react']
+            }
+        },
       {
         test: /\.css$/,
         include: srcPath,
