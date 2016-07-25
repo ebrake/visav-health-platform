@@ -36,9 +36,26 @@ HOW TO INSTALL
 
     > (More info... [http://loopback.io/getting-started/](http://loopback.io/getting-started/))
     
+### Front End
+1. Navigate to client directory `cd <insert dillinger root>/client`
+2. Run the following command: `npm install`
+3. Run the following command: `npm run build`
+    
 HOW TO RUN
-------------
+----------
+### Backend Server
 
  1. Ensure Postgres.app is running (Elephant icon in menubar)
  2. Ensure Node packages are up-to-date with command: `node install`
- 3. Start server with command: `node .`
+ 3. Ensure front end app is up-to-date (See HOW TO INSTALL - Front End)
+ 4. Start server with command: `node .`
+
+> Backend server will send the browser the static react app we generated in "HOW TO INSTALL - Front End". See below if you'd like to view the app via the Front End Development Server.
+
+### Front End Development Server
+ 1. Navigate to project root
+ 2. Run the following command: `npm install`
+ 3. Start the back-end server with the following command: `node .` 
+ 3. Navigate to client directory `cd <insert dillinger root>/client`
+ 4. Ensure Node packages are up-to-date with command: `node install`
+ 5. Start server with command: `npm start`
