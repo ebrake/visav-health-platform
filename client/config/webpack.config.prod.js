@@ -53,13 +53,13 @@ module.exports = {
         query: require('./babel.prod')
       },
       {
-            test: /\.jsx?$/,
-            loader: 'babel',
-            exclude: /node_modules/,
-            query: {
-                presets: ['es2015', 'react']
-            }
-        },
+        test: /\.jsx?$/,
+        loader: 'babel',
+        exclude: /node_modules/,
+        query: {
+          presets: ['es2016', 'react']
+        }
+      },
       {
         test: /\.css$/,
         include: srcPath,

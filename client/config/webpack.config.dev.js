@@ -57,6 +57,14 @@ module.exports = {
         query: require('./babel.dev')
       },
       {
+        test: /\.jsx?$/,
+        loader: 'babel',
+        exclude: /node_modules/,
+        query: {
+          presets: ['es2016', 'react']
+        }
+      },
+      {
         test: /\.css$/,
         include: srcPath,
         loader: 'style!css!postcss'
