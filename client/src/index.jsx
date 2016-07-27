@@ -13,6 +13,7 @@ config.set('access_token', 'I_AM_AN_ACCESS_TOKEN');
 //ours
 import App from './components/App';
 import './css/index.css';
+import './css/App.css';
 
 ReactDOM.render(
   <App />,
