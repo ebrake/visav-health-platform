@@ -57,6 +57,8 @@ HOW TO RUN
  2. Ensure Node packages are up-to-date with command: `node install`
  3. Ensure front end app is up-to-date (See HOW TO INSTALL - Front End)
  4. Start server with command: `heroku local`
+ 
+    > Want to use different environment variables? It's as easy as `heroku local -e .env.test`
 
 > Backend server will send the browser the static react app we generated in "HOW TO INSTALL - Front End". See below if you'd like to view the app via the Front End Development Server.
 
