@@ -40,6 +40,7 @@
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-loopback": "0.4.0",
+    "react-router": "^2.6.0",
     "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
