@@ -54,7 +54,7 @@ HOW TO RUN (DEVELOPMENT)
 ### Backend Server
 
  1. Ensure Postgres.app is running (Elephant icon in menubar)
- 2. Ensure Node packages are up-to-date with command: `node install`
+ 2. Ensure Node packages are up-to-date with command: `npm install`
  3. Ensure front end app is up-to-date (See HOW TO INSTALL - Front End)
  4. Start server with command: `heroku local -f Procfile.dev`
  
@@ -65,9 +65,8 @@ HOW TO RUN (DEVELOPMENT)
  2. Run the following command: `npm install`
  3. Start the back-end server with the following command: `heroku local -f Procfile.dev` 
  3. Navigate to client directory `cd <insert dillinger root>/client`
- 4. Ensure Node packages are up-to-date with command: `npm install`
+ 4. Ensure Node packages are up-to-date, and build the client, with command: `npm install`
  5. Start server with command: `npm start`
-
 
 HOW TO PUBLISH (PRODUCTION)
 ----------
