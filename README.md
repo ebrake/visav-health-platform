@@ -49,7 +49,7 @@ HOW TO INSTALL
 2. Run the following command: `npm install`
 3. Run the following command: `npm run build`
 
-HOW TO RUN
+HOW TO RUN (DEVELOPMENT)
 ----------
 ### Backend Server
 
@@ -67,3 +67,10 @@ HOW TO RUN
  3. Navigate to client directory `cd <insert dillinger root>/client`
  4. Ensure Node packages are up-to-date with command: `npm install`
  5. Start server with command: `npm start`
+
+
+HOW TO PUBLISH (PRODUCTION)
+----------
+
+1. Everything will automatically build on Heroku. Just run `git push heroku master`
+
