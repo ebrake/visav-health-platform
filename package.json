@@ -5,7 +5,9 @@
     "build-prod": "npm run clean-prod && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
     "start-prod": "node ./server-dist/server.init-prod",
     "clean-prod": "rm -rf server-dist || true",
-    "postinstall": "npm run clean-prod && npm run build-prod",
+    "build-client": "npm run clean-client && cp -rf client client-dist && ./node_modules/.bin/babel --optional runtime --ignore ./client/node_modules -d client-dist ./client",
+    "clean-client": "rm -rf client-dist || true",
+    "postinstall": "npm run build-prod && npm run build-client",
     "pretest": "eslint .",
     "posttest": "nsp check"
   },
@@ -17,6 +19,7 @@
     "compression": "^1.0.3",
     "consolidate": "^0.14.1",
     "cors": "^2.5.2",
+    "es6-module-loader": "^0.17.11",
     "fs": "0.0.2",
     "handlebars": "^4.0.5",
     "helmet": "^1.3.0",

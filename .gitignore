@@ -11,7 +11,7 @@
 *.tgz
 *.xml
 .DS_Store
-.env*
+.env
 .idea
 .project
 .strong-pm
@@ -19,4 +19,5 @@ coverage
 node_modules
 npm-debug.log
 server-dist
+client-dist
 /client/build/*

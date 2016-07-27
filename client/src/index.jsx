@@ -11,7 +11,7 @@ config.set('baseUrl', 'http://localhost:4000/api/');
 config.set('access_token', 'I_AM_AN_ACCESS_TOKEN');
 
 //ours
-import App from './components/App';
+import App from './components/App.jsx';
 import './css/index.css';
 import './css/App.css';
 
