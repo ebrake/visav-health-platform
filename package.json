@@ -32,6 +32,9 @@
     "eslint": "^2.5.3",
     "nsp": "^2.1.0"
   },
+  "engines": {
+    "node": "6.3.0"
+  },
   "repository": {
     "type": "",
     "url": ""
