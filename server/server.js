@@ -12,13 +12,14 @@ class StartServer {
   constructor(isMainModule) {
 
     const app = loopback();
-
+    const port = process.env.PORT;
+    
     boot(app, __dirname, error => {
 
       if (error) throw error;
       if (!isMainModule) return;
 
-      const server = app.listen(() => {
+      const server = app.listen(port, () => {
         app.emit('started');
         var baseUrl = app.get('url').replace(/\/$/, '');
         console.log('Web server listening at: %s', baseUrl);

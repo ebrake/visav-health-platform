@@ -1,16 +1,19 @@
 {
   "name": "dillinger",
   "version": "1.0.0",
-  "main": "server/server.init-dev",
   "scripts": {
-    "start": "node ./server/server.init-dev",
     "build-prod": "npm run clean-prod && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
     "start-prod": "node ./server-dist/server.init-prod",
     "clean-prod": "rm -rf server-dist || true",
+    "postinstall": "npm run clean-prod && npm run build-prod",
     "pretest": "eslint .",
     "posttest": "nsp check"
   },
   "dependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-node6": "^11.0.0",
+    "babel-preset-react": "^6.11.1",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "fs": "0.0.2",
@@ -24,11 +27,7 @@
     "strong-error-handler": "^1.0.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.11.4",
     "babel-core": "^6.11.4",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-node6": "^11.0.0",
-    "babel-preset-react": "^6.11.1",
     "eslint": "^2.5.3",
     "nsp": "^2.1.0"
   },

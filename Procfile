@@ -1,1 +1,1 @@
-web: node .
+web: node ./server-dist/server.init-prod
