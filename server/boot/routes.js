@@ -12,8 +12,8 @@ module.exports = function routes(app) {
   app.use(loopback.static("client/build"));
 
   app.get("/", function (req, res) {
-    let AppFactory = React.createFactory(Home);
-    const html = ReactDOMServer.renderToString(AppFactory({}));
+    let HomeFactory = React.createFactory(Home);
+    const html = ReactDOMServer.renderToString(HomeFactory({}));
     console.log('HTML:\n\n\n\n ' + html);
     res.render("index", {
       markup: html,
