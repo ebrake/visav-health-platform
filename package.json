@@ -20,6 +20,9 @@
     "loopback-component-explorer": "^2.4.0",
     "loopback-component-push": "^1.5.4",
     "loopback-connector-postgresql": "^2.6.3",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-router": "^2.6.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^1.0.1"
   },
