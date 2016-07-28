@@ -7,6 +7,6 @@
 module.exports = {
   "psql": {
     "connector": "postgresql",
-    "url": process.env.DATABASE_URL + '?ssl=false'
+    "url": process.env.DATABASE_URL + '?ssl=true'
   }
 }
