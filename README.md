@@ -73,9 +73,9 @@
 
 ### Front End Development Server
 
-1. Ensure Backend and Front End are built (see Build Project)
+1. Ensure Backend Server is running
 
-2. Ensure Backend Server is running
+2. Ensure Front End is built (see Build Project)
 
 3. Start server with command: `npm run client`
 
