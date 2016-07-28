@@ -17,7 +17,7 @@
 	
 1. Install Postgres.app from [https://postgresapp.com/](https://postgresapp.com/)
 
- >Recommendation: Install the latest version pgAdmin gui for postgres from [https://www.pgadmin.org/download/macosx.php](https://www.pgadmin.org/download/macosx.php)
+  > Recommendation: Install the latest version pgAdmin gui for postgres from [https://www.pgadmin.org/download/macosx.php](https://www.pgadmin.org/download/macosx.php)
 
 2. Add the following line to ~/.bash_profile: `export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin`
 
@@ -33,7 +33,7 @@
 	
 1. Install Node.js v6.3.0 from [https://nodejs.org/](https://nodejs.org/)
 	
- > Node 6.3.0 comes with V8 v5.x which brings ~93% native ES6/ES2015 coverage.* The remaining coverage is supported by babel-preset-node6
+  > Node 6.3.0 comes with V8 v5.x which brings ~93% native ES6/ES2015 coverage.* The remaining coverage is supported by babel-preset-node6
 	
 ##### Loopback
  
@@ -75,7 +75,9 @@
 
 1. Ensure Backend and Front End are built (see Build Project)
 
-2. Start server with command: `npm run client`
+2. Ensure Backend Server is running
+
+3. Start server with command: `npm run client`
 
 ## How to Publish
 
