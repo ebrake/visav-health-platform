@@ -1,4 +1,3 @@
-# Dillinger
     ________  .__.__  .__  .__                             
     \______ \ |__|  | |  | |__| ____    ____   ___________ 
     |    |  \|  |  | |  | |  |/    \  / ___\_/ __ \_  __ \
@@ -8,6 +7,25 @@
 
 > Proud of legitimate and unbelievably clean project Dillinger, as it should be, and as it will be.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [How to Install](#how-to-install)
+  - [Install dependencies](#install-dependencies)
+      - [Postgres](#postgres)
+      - [Node](#node)
+      - [Loopback](#loopback)
+      - [Heroku Toolbelt](#heroku-toolbelt)
+  - [Build Project](#build-project)
+      - [Back End](#back-end)
+      - [Front End](#front-end)
+- [How to Run](#how-to-run)
+  - [Backend Server](#backend-server)
+  - [Front End Development Server](#front-end-development-server)
+- [How to Publish](#how-to-publish)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## How to Install
 
