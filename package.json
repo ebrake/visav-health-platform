@@ -2,12 +2,19 @@
   "name": "dillinger",
   "version": "1.0.0",
   "scripts": {
-    "build-prod": "npm run clean-prod && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
+
+    "install": "npm install --ignore-scripts",
+    "backend": "heroku local -f Procfile.dev",
+    "client": "cd client && npm run start",
+    "build-client": "cd client && npm install",
     "start-prod": "node ./server-dist/server.init-prod",
-    "clean-prod": "rm -rf server-dist || true",
-    "build-client": "npm run clean-client && cp -rf client client-dist && ./node_modules/.bin/babel --optional runtime --ignore ./client/node_modules -d client-dist ./client",
-    "clean-client": "rm -rf client-dist || true",
-    "postinstall": "npm run build-prod && npm run build-client",
+    "start-dev": "node ./server/server.init-dev",
+    "clean-prod-package": "rm -rf server-dist || true",
+    "clean-client-package": "rm -rf client-dist || true",
+    "package-client": "npm run clean-client-package && cp -rf client client-dist && ./node_modules/.bin/babel --optional runtime --ignore ./client/node_modules -d client-dist ./client",
+    "package-prod": "npm run clean-prod-package && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
+    "postinstall": "npm run package-prod && npm run package-client",
+
     "pretest": "eslint .",
     "posttest": "nsp check"
   },

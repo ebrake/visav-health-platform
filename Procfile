@@ -1,1 +1,1 @@
-web: node ./server-dist/server.init-prod
+web: npm run start-prod
