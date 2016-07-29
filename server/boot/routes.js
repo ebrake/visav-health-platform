@@ -27,6 +27,7 @@ module.exports = function routes(app) {
     const html = ReactDOMServer.renderToString(HomeFactory({}));
     res.render("index", {
       markup: html,
+      clientDir: clientDir
     });
   });
 }
