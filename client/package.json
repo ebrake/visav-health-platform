@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.0.1",
   "private": true,
-  "devDependencies": {
+  "dependencies": {
     "autoprefixer": "6.3.7",
     "babel-core": "6.10.4",
     "babel-eslint": "6.1.2",
@@ -32,9 +32,7 @@
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "1.13.1",
-    "webpack-dev-server": "1.14.1"
-  },
-  "dependencies": {
+    "webpack-dev-server": "1.14.1",
     "alt": "^0.18.5",
     "es6-promise": "^3.2.1",
     "react": "^15.2.1",

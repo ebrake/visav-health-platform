@@ -13,7 +13,7 @@
     "clean-client-package": "rm -rf client-dist || true",
     "package-client": "npm run clean-client-package && cp -rf client client-dist && ./node_modules/.bin/babel --optional runtime --ignore ./client/node_modules -d client-dist ./client",
     "package-prod": "npm run clean-prod-package && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
-    "postinstall": "npm run package-prod && npm run package-client",
+    "postinstall": "npm run build-client && npm run package-prod && npm run package-client",
 
     "pretest": "eslint .",
     "posttest": "nsp check"
