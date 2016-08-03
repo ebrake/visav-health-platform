@@ -12,6 +12,9 @@
   height: 150px;
   padding: 20px;
   color: white;
+  &.header-class{
+    background-color: #666;
+  }
 }
 
 .App-intro {
