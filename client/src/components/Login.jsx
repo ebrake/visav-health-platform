@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 
-var Home = React.createClass({
+var Login = React.createClass({
   mixins: null,
   cursors: {
     list: ['list']
@@ -12,13 +11,13 @@ var Home = React.createClass({
         <div className="App-header">
           <h2>Welcome to React</h2>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div className="App-body">
+          
+        </div>
       </div>
     );
   }
 });
 
-export default Home;
+export default Login;
 
