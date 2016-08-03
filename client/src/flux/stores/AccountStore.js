@@ -6,7 +6,7 @@ class AccountStore {
     this.user = {};
 
     this.bindListeners({
-      createAccount: LocationActions.CREATE_ACCOUNT
+      createAccount: AccountActions.CREATE_ACCOUNT
     });
   }
 
@@ -15,4 +15,4 @@ class AccountStore {
   }
 }
 
-module.exports = alt.createStore(LocationStore, 'LocationStore');
+module.exports = alt.createStore(AccountStore, 'AccountStore');

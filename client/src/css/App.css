@@ -18,6 +18,14 @@
   font-size: large;
 }
 
+.fb-login-button {
+  height: 40px;
+  width: 200px;
+  background: #4c69ba;
+  border: none;
+  color: white;
+}
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
