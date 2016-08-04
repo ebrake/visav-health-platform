@@ -2,8 +2,9 @@ var path = require('path');
 var autoprefixer = require('autoprefixer');
 var precss = require('precss');
 var postcssEasyImport = require('postcss-easy-import');
-
 var postcssInlineComment = require('postcss-inline-comment');
+var StyleLintPlugin = require('stylelint-webpack-plugin');//css linter
+
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -109,6 +110,12 @@ module.exports = {
       inject: true,
       template: indexHtmlPath,
       favicon: faviconPath,
+    }),
+    new StyleLintPlugin({
+      configFile: '.stylelintrc',
+      context: 'src/css/',
+      files: '**/*.css',
+      failOnError: false,
     }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"development"' }),
     // Note: only CSS is currently hot reloaded

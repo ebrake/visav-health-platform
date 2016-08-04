@@ -1,35 +1,41 @@
 @import 'colors.css';
 
 $border: 1px solid #222;
+
 .segmented-control {
   margin: 0 auto;
   display: inline-block;
-  .label{
+
+  .label {
     display: flex;
     flex-grow: 1;
-    float:left;
+    float: left;
     border-radius: 50%;
     border: 1px solid #222;
     border-top: $border;
     border-bottom: $border;
     border-right: $border;
-    &:first-child{
-      border-radius: 10px 0px 0px 10px;
+
+    &:first-child {
+      border-radius: 10px 0 0 10px;
       border-left: $border;
       border-right: none;
     }
-    &:nth-last-child(2){
-      border-radius: 0px 10px 10px 0px;
+
+    &:nth-last-child(2) {
+      border-radius: 0 10px 10px 0;
     }
-    &.selected{
+
+    &.selected {
       background-color: $selectedColor;
     }
-    input{
+
+    input {
       display: none;
     }
-    label{
+
+    label {
       padding: 10px 20px;
     }
   }
-  
 }
