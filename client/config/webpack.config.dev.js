@@ -2,7 +2,7 @@ var path = require('path');
 var autoprefixer = require('autoprefixer');
 var precss = require('precss');
 var postcssEasyImport = require('postcss-easy-import');
-var postcssInlineComment = require('postcss-inline-comment');
+var postcssStripInlineComment = require('postcss-strip-inline-comments');
 var StyleLintPlugin = require('stylelint-webpack-plugin');//css linter
 
 var webpack = require('webpack');
@@ -100,7 +100,7 @@ module.exports = {
   postcss: function(webpack) {
     return [
             postcssEasyImport,
-            postcssInlineComment,
+            postcssStripInlineComment,
             autoprefixer, 
             precss
             ];
