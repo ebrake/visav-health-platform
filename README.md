@@ -55,6 +55,17 @@
 
 3. Add the Heroku remote in the root folder: `heroku git:remote -a healthplatform`
 
+##### Environment Variables
+
+It is essential that you have a .env file in the project, to load secure/environment constants.
+
+```
+PORT			= 4000
+NODE_ENV 		= development
+OPENTOK_API_KEY = (Use command: heroku config for value)
+OPENTOK_SECRET 	= (Use command: heroku config for value)
+```
+
 ### Build Project
 
 ##### Back End
