@@ -1,7 +1,7 @@
 var path = require('path');
 var autoprefixer = require('autoprefixer');
 var precss = require('precss');
-var postcssEasyImport = require('postcss-easy-import')
+var postcssEasyImport = require('postcss-easy-import');
 
 var postcssInlineComment = require('postcss-inline-comment');
 var webpack = require('webpack');
