@@ -16,10 +16,16 @@ var Login = React.createClass({
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: this.state.email, password: this.state.password }) 
       }
-    )
-    .then(function(response){
+    ).then(function(response){
+      return response.json();
+    })
+    .then(function(data){
       console.log('ok');
-      console.log(response);
+      console.dir(data);
+    })
+    .catch(function(err){
+      console.log('Error:');
+      console.dir(err);
     })
   },
   getInitialState: function() {

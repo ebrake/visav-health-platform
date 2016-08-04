@@ -18,7 +18,7 @@ module.exports = function(app) {
     }, function(err, createdUser){
       if (err) return console.log(err);
 
-      console.log(createdUser)
+      res.send({user: createdUser});
     })
   })
 
@@ -31,7 +31,7 @@ module.exports = function(app) {
     }, 'user', function(err, token){
       if (err) return console.log(err);
 
-      console.log(token);
+      res.send({token: token});
     })
   })
 
