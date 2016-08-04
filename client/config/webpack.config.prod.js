@@ -1,5 +1,7 @@
 var path = require('path');
 var autoprefixer = require('autoprefixer');
+var precss = require('precss');
+var postcssImport = require('postcss-import')
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -69,6 +71,11 @@ module.exports = {
         loader: ExtractTextPlugin.extract('style', 'css?-autoprefixer!postcss')
       },
       {
+        test:   /\.style.js$/,
+        include: srcPath,
+        loader: "style-loader!css-loader!postcss-loader?parser=postcss-js!babel"
+      },
+      {
         test: /\.json$/,
         loader: 'json'
       },
@@ -88,8 +95,12 @@ module.exports = {
     configFile: path.join(__dirname, 'eslint.js'),
     useEslintrc: false
   },
-  postcss: function() {
-    return [autoprefixer];
+  postcss: function(webpack) {
+    return [autoprefixer, 
+            precss, 
+            postcssImport({
+                addDependencyTo: webpack
+            })];
   },
   plugins: [
     new HtmlWebpackPlugin({

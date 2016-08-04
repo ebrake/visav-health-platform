@@ -6,9 +6,10 @@ var Home = React.createClass({
     list: ['list']
   },
   render: function () {
+
     return (
       <div className="App">
-        <div className="App-header">
+        <div className="App-header header-class">
           <h2>Welcome to React</h2>
         </div>
         <p className="App-intro">
