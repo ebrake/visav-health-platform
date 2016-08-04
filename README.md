@@ -66,6 +66,8 @@ OPENTOK_API_KEY = (Use command: heroku config for value)
 OPENTOK_SECRET 	= (Use command: heroku config for value)
 ```
 
+> You can also use a command line tool [https://github.com/xavdid/heroku-config](https://github.com/xavdid/heroku-config) to copy in Heroku environment variables to a .env file. Just remember to set `PORT=4000` and `NODE_ENV=development`, on your local project!
+
 ### Build Project
 
 ##### Back End
