@@ -1,4 +1,9 @@
 {
   "name": "installation",
-  "base": "Installation"
+  "base": "Installation",
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
 }

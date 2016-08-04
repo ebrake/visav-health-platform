@@ -37,19 +37,23 @@
     "dataSource": "psql"
   },
   "application": {
-    "public": true,
-    "dataSource": "psql"
+    "dataSource": "psql",
+    "public": true
   },
   "installation": {
-    "public": true,
-    "dataSource": "psql"
+    "dataSource": "psql",
+    "public": true
   },
   "notification": {
-    "public": true,
-    "dataSource": "psql"
+    "dataSource": "psql",
+    "public": true
   },
   "push": {
-    "public": true,
-    "dataSource": "push"
+    "dataSource": "push",
+    "public": true
+  },
+  "Person": {
+    "dataSource": "psql",
+    "public": true
   }
 }
