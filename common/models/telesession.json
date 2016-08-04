@@ -1,6 +1,11 @@
 {
   "name": "Telesession",
-  "properties": {},
+  "properties": {
+    "sessionId": {
+      "type": "string",
+      "required": true
+    }
+  },
   "validations": [],
   "relations": {},
   "acls": [],

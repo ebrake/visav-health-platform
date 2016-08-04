@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const createSession = (arg) => {
   fetch(
-    'http://localhost:4000/api/telesessions/createSession', 
+    'http://localhost:4000/api/Telesessions/createSession', 
     {
       method: 'POST', 
       headers: {

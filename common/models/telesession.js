@@ -17,12 +17,17 @@ module.exports = function(Telesession) {
     var opentok = new OpenTok(apiKey, apiSecret);
 
     opentok.createSession(function(err, session) {
-
+      // var Telesession = app.models.Person;
     	// TODO: Get telesession
     	var response = session;
-      cb(err, response);
-      console.log(response);
-
+      if (!err) {
+       Telesession.create({
+        sessionId: session.sessionId
+       }, function(err, createdSession){
+        cb(err, response);
+        console.log(response);
+       });
+      }
     });
   }
   
