@@ -1,13 +1,12 @@
 var alt = require('../alt');
 
 class AccountActions {
-  createAccount(data) {
-    console.log('Hello!');
-    console.dir(data);
-    console.log(fetch);
-    return {
-      email: 'test@123.com'
-    }
+  loginUser(data){
+    return data;
+  }
+
+  logoutUser(){
+    
   }
 }
 

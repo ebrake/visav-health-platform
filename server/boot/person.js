@@ -7,16 +7,14 @@ module.exports = function(app) {
   app.post('/user/create', function(req, res, next){
     var Person = app.models.Person;
 
-    var email = req.body.email;
-    if (!email) return console.log('No email!');
-    var password = req.body.password;
-    if (!password) return console.log('No password!');
+    if (!req.body.email) return res.send({ error: new Error('No email!'), type: 'email', status: 'error' });
+    if (!req.body.password) return res.send({ error: new Error('No password!'), type: 'password', status: 'error' });
 
     Person.create({
-      email: email,
-      password: password
+      email: req.body.email,
+      password: req.body.password
     }, function(err, createdUser){
-      if (err) return console.log(err);
+      if (err) return res.send({ error: error, type: 'signup', status: 'error' })
 
       res.send({user: createdUser});
     })
@@ -25,11 +23,14 @@ module.exports = function(app) {
   app.post('/user/login', function(req, res, next){
     var Person = app.models.Person; 
 
+    if (!req.body.email) return res.send({ error: new Error('No email!'), type: 'email', status: 'error' });
+    if (!req.body.password) return res.send({ error: new Error('No password!'), type: 'password', status: 'error' });
+
     Person.login({
       email: req.body.email,
       password: req.body.password
     }, 'user', function(err, token){
-      if (err) return console.log(err);
+      if (err) return res.send({ error: error, type: 'login', status: 'error' });
 
       res.send({token: token});
     })

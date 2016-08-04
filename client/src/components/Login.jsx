@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
+import AccountActions from '../flux/actions/AccountActions';
 
 const responseFacebook = (response) => {
   console.log('Hello this is facebook!');
@@ -24,7 +25,9 @@ var Login = React.createClass({
     })
     .then(function(data){
       console.log('ok');
-      console.dir(data);
+      console.log(data);
+      localStorage.setItem('accessToken', data.token.id);
+      AccountActions.loginUser(data.token);
     })
     .catch(function(err){
       console.log('Error:');
