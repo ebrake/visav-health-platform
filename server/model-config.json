@@ -40,7 +40,7 @@
     "public": true,
     "dataSource": "psql"
   },
-  "telesession": {
+  "Telesession": {
     "public": true,
     "dataSource": "psql"
   },

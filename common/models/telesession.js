@@ -5,7 +5,7 @@ var apiKey = process.env.OPENTOK_API_KEY,
 
 // Verify that the API Key and API Secret are defined
 if (!apiKey || !apiSecret) {
-  console.log('You must specify TOKBOX_APIKEY and TOKBOX_SECRET environment variables');
+  console.log('You must specify OPENTOK_API_KEY and OPENTOK_SECRET environment variables');
   process.exit(1);
 }
 
@@ -25,5 +25,13 @@ module.exports = function(Telesession) {
 
     });
   }
+  
+  Telesession.remoteMethod(
+    'createSession',
+    {
+      http: {path: '/createSession', verb: 'post'},
+      returns: {arg: 'createSession', type: 'string'}
+    }
+  );
 
 };
