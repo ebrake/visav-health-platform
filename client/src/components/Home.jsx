@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import SegmentedControl from 'react-segmented-control'
-var language = "en";//default to english
 let strings = new LocalizedStrings({
   en:{
    welcome:"Welcome to Dillinger!",
@@ -21,10 +20,14 @@ var Home = React.createClass({
   },
   updateLanguage: function(language) {
     strings.setLanguage(language);
-    this.setState({});
+    this.setState({language: language});
+  },
+  getInitialState() {
+    return {
+      language: 'fr'
+    };
   },
   render: function () {
-    
     return (
       <div className="App">
         <div className="App-header header-class">
@@ -32,7 +35,7 @@ var Home = React.createClass({
         </div>
         <SegmentedControl 
           onChange={this.updateLanguage} 
-          value={this.language}
+          value={this.state.language}
           name="language">
           <span value="en">{strings.english}</span>
           <span value="fr">{strings.french}</span>
@@ -41,6 +44,7 @@ var Home = React.createClass({
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
       </div>
+
     );
   }
 });

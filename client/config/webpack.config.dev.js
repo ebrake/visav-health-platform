@@ -2,7 +2,7 @@ var path = require('path');
 var autoprefixer = require('autoprefixer');
 var precss = require('precss');
 var postcssImport = require('postcss-import')
-
+var postcssInlineComment = require('postcss-inline-comment');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -96,11 +96,12 @@ module.exports = {
     useEslintrc: false
   },
   postcss: function(webpack) {
-    return [autoprefixer, 
-            precss,
-            postcssImport({
-                addDependencyTo: webpack
-            })];
+    return [
+            postcssInlineComment,
+            postcssImport,
+            autoprefixer, 
+            precss
+            ];
   },
   plugins: [
     new HtmlWebpackPlugin({
