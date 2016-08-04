@@ -97,8 +97,10 @@ module.exports = {
   },
   postcss: function(webpack) {
     return [
+            postcssImport({
+                addDependencyTo: webpack
+            }),
             postcssInlineComment,
-            postcssImport,
             autoprefixer, 
             precss
             ];

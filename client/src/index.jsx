@@ -14,7 +14,7 @@ config.set('access_token', 'I_AM_AN_ACCESS_TOKEN');
 import App from './components/App.jsx';
 import './css/index.css';
 import './css/App.css';
-
+import './css/SegmentedControl.css'
 ReactDOM.render(
   <App />,
   document.getElementById('root')

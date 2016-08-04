@@ -96,11 +96,14 @@ module.exports = {
     useEslintrc: false
   },
   postcss: function(webpack) {
-    return [autoprefixer, 
-            precss, 
+    return [
             postcssImport({
                 addDependencyTo: webpack
-            })];
+            }),
+            postcssInlineComment,
+            autoprefixer, 
+            precss
+            ];
   },
   plugins: [
     new HtmlWebpackPlugin({
