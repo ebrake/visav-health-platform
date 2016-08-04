@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-import FacebookLogin from 'react-facebook-login';
 
-const responseFacebook = (response) => {
-  console.log('Hello this is facebook!');
-  console.dir(response);
-}
-
-const postLogin = (arg) => {
+const createUser = (arg) => {
   fetch(
-    'http://localhost:4000/user/login', 
+    'http://localhost:4000/user/create', 
     {
       method: 'POST', 
       headers: {
@@ -36,8 +30,7 @@ var Login = React.createClass({
           <h2>Welcome to React</h2>
         </div>
         <div className="App-body">
-          <FacebookLogin cssClass="fb-login-button" appId="1641537292841144" autoLoad={false} fields="name,email,picture" callback={responseFacebook} version="2.7" />
-          <button className="fb-login-button" onClick={postLogin}><span>Test login route</span></button>
+          <button className="fb-login-button" onClick={createUser}><span>Create User</span></button>
         </div>
       </div>
     );
