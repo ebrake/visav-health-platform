@@ -1,6 +1,5 @@
 @import 'colors.css';
 
-$selectColor: #F00;
 $border: 1px solid #222;
 .segmented-control {
   margin: 0 auto;
