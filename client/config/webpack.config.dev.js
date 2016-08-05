@@ -1,7 +1,9 @@
 var path = require('path');
 var autoprefixer = require('autoprefixer');
 var precss = require('precss');
-var postcssImport = require('postcss-import')
+var postcssEasyImport = require('postcss-easy-import');
+var postcssStripInlineComment = require('postcss-strip-inline-comments');
+var StyleLintPlugin = require('stylelint-webpack-plugin');//css linter
 
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -96,17 +98,24 @@ module.exports = {
     useEslintrc: false
   },
   postcss: function(webpack) {
-    return [autoprefixer, 
-            precss,
-            postcssImport({
-                addDependencyTo: webpack
-            })];
+    return [
+            postcssEasyImport,
+            postcssStripInlineComment,
+            autoprefixer, 
+            precss
+            ];
   },
   plugins: [
     new HtmlWebpackPlugin({
       inject: true,
       template: indexHtmlPath,
       favicon: faviconPath,
+    }),
+    new StyleLintPlugin({
+      configFile: '.stylelintrc',
+      context: 'src/css/',
+      files: '**/*.css',
+      failOnError: false,
     }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"development"' }),
     // Note: only CSS is currently hot reloaded
