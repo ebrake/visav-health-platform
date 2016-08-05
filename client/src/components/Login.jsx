@@ -13,6 +13,7 @@ var Login = React.createClass({
     list: ['list']
   },
   login: function() {
+    console.log("Fired login...");
     fetch(
       'http://localhost:4000/user/login', 
       {
@@ -24,12 +25,10 @@ var Login = React.createClass({
       return response.json();
     })
     .then(function(data){
-      console.log('ok');
-      console.log(data);
       localStorage.setItem('accessToken', data.token.id);
-      AccountActions.loginUser(data.token);
     })
     .catch(function(err){
+      //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
       console.log('Error:');
       console.dir(err);
     })

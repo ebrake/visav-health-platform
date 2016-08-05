@@ -20,7 +20,6 @@ var Login = React.createClass({
       return response.json();
     })
     .then(function(data){
-      console.log('ok');
       console.dir(data);
     })
     .catch(function(err){
