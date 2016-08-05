@@ -12,10 +12,13 @@ const createSession = (arg) => {
       body: JSON.stringify({}) 
     }
   )
-  .then(function(response){
-    console.log('ok');
-    console.log(response);
+  .then(responseObject => responseObject.json())
+  .then(response => {
+    console.log(response.telesession);
   })
+  .catch((err) => {
+    console.error(err);
+  });
 }
 
 var Telesession = React.createClass({

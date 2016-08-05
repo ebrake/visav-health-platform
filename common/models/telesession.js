@@ -14,20 +14,30 @@ module.exports = function(Telesession) {
   Telesession.createSession = function(cb) {
 
     // Initialize OpenTok
-    var opentok = new OpenTok(apiKey, apiSecret);
+    const opentok = new OpenTok(apiKey, apiSecret);
 
     opentok.createSession(function(err, session) {
       // var Telesession = app.models.Person;
     	// TODO: Get telesession
-    	var response = session;
-      if (!err) {
-       Telesession.create({
+      if (err) return cb(err, session);
+
+      Telesession.create({
         sessionId: session.sessionId
-       }, function(err, createdSession){
+      }, function(err, createdSession){
+
+        if (err) return cb(err, session);
+      
+        var token = opentok.generateToken(session.sessionId);
+
+        var response = {
+          session: session,
+          token: token
+        }
+
         cb(err, response);
-        console.log(response);
-       });
-      }
+
+      });
+
     });
   }
   
@@ -35,7 +45,7 @@ module.exports = function(Telesession) {
     'createSession',
     {
       http: {path: '/createSession', verb: 'post'},
-      returns: {arg: 'createSession', type: 'string'}
+      returns: {arg: 'telesession', type: 'string'}
     }
   );
 
