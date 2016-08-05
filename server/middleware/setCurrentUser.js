@@ -1,6 +1,7 @@
 module.exports = function(app) {
   return function setCurrentUser(req, res, next) {
     console.log("Trying to set current user...");
+    console.log(req.accessToken);
     if (!req.accessToken) {
       return next();
     }

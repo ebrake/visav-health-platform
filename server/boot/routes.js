@@ -23,29 +23,6 @@ module.exports = function routes(app) {
   app.set("views", "public/views");
   app.use(loopback.static(clientDir+"/build"));
 
-  //add 'user' to loopback.context()
-  app.use(loopback.context());
-  app.use(loopback.token());
-  app.use(function setCurrentUser(req, res, next) {
-    if (!req.accessToken) {
-      console.log("This is dumb")
-      return next();
-    }
-    app.models.Person.findById(req.accessToken.userId, function(err, user) {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        return next(new Error('No user with this access token was found.'));
-      }
-      var loopbackContext = loopback.getCurrentContext();
-      if (loopbackContext) {
-        loopbackContext.set('user', user);
-      }
-      next();
-    });
-  }); 
-
   app.get("/", function (req, res) {
     let HomeFactory = React.createFactory(Home);
     const html = ReactDOMServer.renderToString(HomeFactory({}));
