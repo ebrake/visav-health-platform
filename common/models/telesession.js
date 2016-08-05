@@ -45,7 +45,7 @@ module.exports = function(Telesession) {
     'createSession',
     {
       http: {path: '/createSession', verb: 'post'},
-      returns: {arg: 'telesession', type: 'string'}
+      returns: {arg: 'telesession', root: true}
     }
   );
 

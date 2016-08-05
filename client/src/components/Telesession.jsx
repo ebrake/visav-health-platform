@@ -1,17 +1,37 @@
 import React, { Component } from 'react';
+import scriptLoader from 'react-async-script-loader'
+import { config } from 'react-loopback';
 
-var Telesession = React.createClass({
+@scriptLoader(
+  'https://static.opentok.com/v2/js/opentok.min.js'
+)
 
-  getInitialState: function() {
-    return {
+class Telesession extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
       createSessionResponse: '',
-    }
-  },
+      opentokScriptLoaded: 'OPENTOK SCRIPT LOADING...'
+    };
+  }
 
-  createSession: function() {
+  componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
+    if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
+      if (isScriptLoadSucceed) {
+        this.setState({opentokScriptLoaded: 'OPENTOK SCRIPT LOADED!'})
+      }
+      else {
+        this.setState({opentokScriptLoaded: 'OPENTOK SCRIPT NOT LOADED!'})
+        this.props.onError()
+      }
+    }
+  }
+
+  createSession() {
 
     fetch(
-      'http://localhost:4000/api/Telesessions/createSession', 
+      config.get('baseUrl').concat('Telesessions/createSession'), 
       {
         method: 'POST', 
         headers: {
@@ -23,26 +43,48 @@ var Telesession = React.createClass({
     ).then(responseObject => responseObject.json())
     .then(response => {
       this.setState({
-        createSessionResponse: JSON.stringify(response)
+        createSessionResponse: response
       });
-      console.log(response.telesession);
+      this.connectToSession();
+      console.log(response);
     })
     .catch((err) => {
       this.setState({
-        createSessionResponse: JSON.stringify(err)
+        createSessionResponse: err
       });
       console.error(err);
     });
-  },
+  }
 
-  render: function () {
+  connectToSession() {
+
+    const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.createSessionResponse.session.sessionId);
+
+    const publisher = OT.initPublisher(this.refs.tokboxContainer, {
+      insertMode: 'replace',
+      width: '640px',
+      height: '480px'
+    })
+
+    session.connect(this.state.createSessionResponse.token, function (error) {
+      if (!error) {
+        session.publish(publisher);
+      }
+    });
+
+  }
+
+  render() {
     return (
-      <p>
-        <button onClick={this.createSession}><h1>Create Session</h1></button>
-        <p>{this.state.createSessionResponse}</p>
-      </p>
+      <div>
+        <button onClick={this.createSession.bind(this)}><h1>Create Session</h1></button>
+        <p>{JSON.stringify(this.state.createSessionResponse)}</p>
+        <p>{this.state.opentokScriptLoaded}</p>
+        <section ref="tokboxContainer">
+        </section>
+      </div>
     );
   }
-});
+}
 
 export default Telesession;

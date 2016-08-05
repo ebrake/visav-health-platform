@@ -9,6 +9,7 @@ import 'whatwg-fetch';
 import { config } from 'react-loopback';
 config.set('baseUrl', 'http://localhost:4000/api/');
 config.set('access_token', 'I_AM_AN_ACCESS_TOKEN');
+config.set('OPENTOK_API_KEY', '45631802');
 
 //ours
 import App from './components/App.jsx';
