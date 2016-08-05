@@ -40,6 +40,10 @@
     "public": true,
     "dataSource": "psql"
   },
+  "Telesession": {
+    "public": true,
+    "dataSource": "psql"
+  },
   "installation": {
     "public": true,
     "dataSource": "psql"
