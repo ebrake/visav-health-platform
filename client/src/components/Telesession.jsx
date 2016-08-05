@@ -12,19 +12,13 @@ class Telesession extends React.Component {
     super(props);
     this.state = {
       createSessionResponse: '',
-      opentokScriptLoaded: 'OPENTOK SCRIPT LOADING...'
+      opentokScriptLoaded: null
     };
   }
 
   componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
     if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
-      if (isScriptLoadSucceed) {
-        this.setState({opentokScriptLoaded: 'OPENTOK SCRIPT LOADED!'})
-      }
-      else {
-        this.setState({opentokScriptLoaded: 'OPENTOK SCRIPT NOT LOADED!'})
-        this.props.onError()
-      }
+      this.setState({opentokScriptLoaded: isScriptLoadSucceed});
     }
   }
 
@@ -62,8 +56,8 @@ class Telesession extends React.Component {
 
     const publisher = OT.initPublisher(this.refs.tokboxContainer, {
       insertMode: 'replace',
-      width: '640px',
-      height: '480px'
+      width: '100%',
+      height: '100%'
     })
 
     session.connect(this.state.createSessionResponse.token, function (error) {
@@ -75,13 +69,18 @@ class Telesession extends React.Component {
   }
 
   render() {
+
+    var jsLoaded;
+    if (this.state.opentokScriptLoaded==null || this.state.opentokScriptLoaded==true) jsLoaded = null;
+    else jsLoaded = <p><font color="red">Warning: Video can't load due to a JavaScript error.</font></p>;
+
     return (
       <div>
         <button onClick={this.createSession.bind(this)}><h1>Create Session</h1></button>
-        <p>{JSON.stringify(this.state.createSessionResponse)}</p>
-        <p>{this.state.opentokScriptLoaded}</p>
-        <section ref="tokboxContainer">
-        </section>
+        {jsLoaded}
+        <div className="videoContainer">
+          <section ref="tokboxContainer" />
+        </div>
       </div>
     );
   }

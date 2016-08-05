@@ -15,6 +15,7 @@ config.set('OPENTOK_API_KEY', '45631802');
 import App from './components/App.jsx';
 import './css/index.css';
 import './css/App.css';
+import './css/Telesession.css';
 
 ReactDOM.render(
   <App />,
