@@ -26,6 +26,7 @@ class StartServer {
         if (app.get('loopback-component-explorer')) {
           var explorerPath = app.get('loopback-component-explorer').mountPath;
           console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
+          console.log('Visualize your Data Models at %s%s', baseUrl, '/diagrammer');
         }
       });
 

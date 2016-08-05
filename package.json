@@ -2,7 +2,6 @@
   "name": "dillinger",
   "version": "1.0.0",
   "scripts": {
-
     "install": "npm install --ignore-scripts",
     "backend": "heroku local -f Procfile.dev",
     "client": "cd client && npm run start",
@@ -14,7 +13,6 @@
     "package-client": "npm run clean-client-package && cp -rf client client-dist && ./node_modules/.bin/babel --optional runtime --ignore ./client/node_modules -d client-dist ./client",
     "package-prod": "npm run clean-prod-package && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
     "postinstall": "npm run build-client && npm run package-prod && npm run package-client",
-
     "pretest": "eslint .",
     "posttest": "nsp check"
   },
@@ -33,6 +31,7 @@
     "loopback": "^3.0.0-alpha.1",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^2.4.0",
+    "loopback-component-model-diagram": "^0.2.0",
     "loopback-component-push": "^1.5.4",
     "loopback-connector-postgresql": "^2.6.3",
     "react": "^15.2.1",
