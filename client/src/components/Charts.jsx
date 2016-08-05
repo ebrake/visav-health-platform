@@ -3,18 +3,6 @@ import LocalizedStrings from 'react-localization';
 import { Chart } from 'react-d3-core';
 import { LineChart } from 'react-d3-basic';
 
-let strings = new LocalizedStrings({
-  en:{
-   Title:"Welcome to Dillinger!",
-   english:"English",
-   french:"French"
-  },
-  fr: {
-   welcome:"Bienvenue à Dillinger!",
-   english:"Anglais",
-   french:"Français"
-  }
-});
 let chartData = [
   {
     name: "Lavon Hilll I",
@@ -76,15 +64,6 @@ var Charts = React.createClass({
   mixins: null,
   cursors: {
     list: ['list']
-  },
-  updateLanguage: function(language) {
-    strings.setLanguage(language);
-    this.setState({language: language});
-  },
-  getInitialState() {
-    return {
-      language: 'fr'
-    };
   },
   render: function () {
     return (
