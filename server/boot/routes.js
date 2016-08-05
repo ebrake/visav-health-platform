@@ -9,6 +9,11 @@ const clientDir = (process.env.NODE_ENV=="production" ? "client-dist" : "client"
 System.import('../../'+clientDir+'/src/components/Home.jsx').then(function(m) {
 
 });
+
+System.import('../../'+clientDir+'/src/components/Charts.jsx').then(function(m) {
+
+});
+
 System.import('../../'+clientDir+'/src/routes').then(function(m) {
 
 });
@@ -25,6 +30,15 @@ module.exports = function routes(app) {
   app.get("/", function (req, res) {
     let HomeFactory = React.createFactory(Home);
     const html = ReactDOMServer.renderToString(HomeFactory({}));
+    res.render("index", {
+      markup: html,
+      clientDir: clientDir
+    });
+  });
+
+  app.get("/charts", function (req, res) {
+    let ChartFactory = React.createFactory(Charts);
+    const html = ReactDOMServer.renderToString(ChartFactory({}));
     res.render("index", {
       markup: html,
       clientDir: clientDir
