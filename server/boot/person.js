@@ -33,14 +33,15 @@ module.exports = function(app) {
     Person.login({
       email: req.body.email.toLowerCase(),
       password: req.body.password
-    }, function(err, token){
+    }, 'user', function(err, token){
       if (err) {
         return res.send({ error: err, type: 'login', status: 'error' });
       }
 
+      delete token.user.password;
       console.log("Logged in user "+req.body.email);
 
-      return res.send({ token: token, user: req.user });
+      return res.send({ token: token });
     })
   })
 

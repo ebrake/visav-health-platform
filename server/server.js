@@ -5,7 +5,7 @@ import fs from 'fs';
 //Globally set max listeners higher than 11
 //Otherwise, loopback-connector-postgresql will cause a mem-leak warning
 //because the default maximum is 10
-EventEmitter.prototype._maxListeners = 20;
+EventEmitter.prototype._maxListeners = 100;
 
 class StartServer {
 
