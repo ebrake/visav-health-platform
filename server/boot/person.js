@@ -40,7 +40,7 @@ module.exports = function(app) {
 
       console.log("Logged in user "+req.body.email);
 
-      return res.send({token: token});
+      return res.send({ token: token, user: req.user });
     })
   })
 

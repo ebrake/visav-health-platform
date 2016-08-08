@@ -18,7 +18,7 @@ var Login = React.createClass({
     })
     .then(function(data){
       localStorage.setItem('accessToken', data.token.id);
-      AccountActions.loginUser(data.token);
+      AccountActions.loginUser(data.user);
     })
     .catch(function(err){
       //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)

@@ -12,6 +12,9 @@ module.exports = function() {
       if (!user) {
         return next(new Error('No user with this access token was found.'));
       }
+
+      delete user.password;
+
       var loopbackContext = loopback.getCurrentContext();
       if (loopbackContext) {
         loopbackContext.set('user', user);

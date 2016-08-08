@@ -3,7 +3,7 @@ var AccountActions = require('../actions/AccountActions');
 
 class AccountStore {
   constructor() {
-    this.accessToken = undefined;
+    this.user = undefined;
 
     this.bindListeners({
       handleLogin: AccountActions.LOGIN_USER,
@@ -11,12 +11,12 @@ class AccountStore {
     });
   }
 
-  handleLogin(token) {
-    this.accessToken = token.id;
+  handleLogin(user) {
+    this.user = user;
   }
 
   handleLogout() {
-    this.accessToken = undefined;
+    this.user = undefined;
   }
 }
 
