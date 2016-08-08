@@ -1,31 +1,43 @@
 @import 'colors.css';
 
-.nav{
-  display:flex;
-  &.horizontal-nav{
+.nav {
+  background-color: red;
+
+  &.horizontal-nav {
+    align-items: center;
+    display: flex;
     flex-direction: row;
   }
-  &.vertical-nav{
+
+  &.vertical-nav {
+    justify-content: center;
+    display: flex;
     flex-direction: column;
   }
 }
-.NavItem{
+
+.NavItem {
   display: inline-block;
-  flex-grow: 1;
+  flex: 1 0 auto;
   cursor: pointer;
   background-color: $color-NavItem;
-  span{
+
+  span {
     color: $color-NavItemText;
   }
-  &.selected{
+
+  &.selected {
     background-color: $color-NavItem-Selected;
-    span{
+
+    span {
       color: $color-NavItemText-Selected;
     }
   }
-  &:hover{
+
+  &:hover {
     background-color: $color-NavItem-Hover;
-    span{
+
+    span {
       color: $color-NavItemText-Hover;
     }
   }

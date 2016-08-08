@@ -24,6 +24,7 @@ var PatientAccountHeader = React.createClass({
             <NavItem title="Overview" imgSrc="/src/img/logo.svg" />
             <NavItem title="Charts" />
             <NavItem title="Telesession" />
+            <NavItem title="Logout" />
           </ul>
         </div>
       </div>
