@@ -33,6 +33,7 @@ var Home = React.createClass({
         <div className="App-header header-class">
           <h2>{strings.welcome}</h2>
         </div>
+        <img src="/src/img/logo.svg"/>
         <SegmentedControl 
           onChange={this.updateLanguage} 
           value={this.state.language}
