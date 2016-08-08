@@ -62,8 +62,8 @@ It is essential that you have a .env file in the project, to load secure/environ
 ```
 PORT			= 4000
 NODE_ENV 		= development
-OPENTOK_API_KEY = (Use command: heroku config for value)
-OPENTOK_SECRET 	= (Use command: heroku config for value)
+OPENTOK_API_KEY = (Obtain from command: heroku config -a healthplatform)
+OPENTOK_SECRET 	= (Obtain from command: heroku config -a healthplatform)
 ```
 
 > You can also use a command line tool [https://github.com/xavdid/heroku-config](https://github.com/xavdid/heroku-config) to copy in Heroku environment variables to a .env file. Just remember to set `PORT=4000` and `NODE_ENV=development`, on your local project!
