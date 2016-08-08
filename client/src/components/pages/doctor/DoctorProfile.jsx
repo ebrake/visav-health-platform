@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
-import DoctorAccountHeader from '../../headers/DoctorAccountHeader'
+import MainHeader from '../../headers/MainHeader'
 let strings = new LocalizedStrings({
   en:{
    welcome:"Welcome to Visav!",
@@ -32,8 +32,8 @@ var DoctorProfile = React.createClass({
   },
   render: function () {
     return (
-      <div className="DoctorProfile profile">
-        <DoctorAccountHeader />
+      <div className="DoctorProfile profile page">
+        <MainHeader />
 
         <div id="welcome">
           <h2>{strings.welcome}, {user.name}</h2>

@@ -1,1 +1,9 @@
 $selectedColor: #0ff;
+
+//Nav
+$color-NavItem: #0f0;
+$color-NavItemText: #0ff;
+$color-NavItem-Selected: #f00;
+$color-NavItemText-Selected: #f0f;
+$color-NavItem-Hover: #0ff;
+$color-NavItemText-Hover: #0f0;

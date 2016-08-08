@@ -29,7 +29,7 @@ var Home = React.createClass({
   },
   render: function () {
     return (
-      <div className="App">
+      <div className="App page">
         <div className="App-header header-class">
           <h2>{strings.welcome}</h2>
         </div>

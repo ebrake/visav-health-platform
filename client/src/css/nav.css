@@ -1,0 +1,32 @@
+@import 'colors.css';
+
+.nav{
+  display:flex;
+  &.horizontal-nav{
+    flex-direction: row;
+  }
+  &.vertical-nav{
+    flex-direction: column;
+  }
+}
+.NavItem{
+  display: inline-block;
+  flex-grow: 1;
+  cursor: pointer;
+  background-color: $color-NavItem;
+  span{
+    color: $color-NavItemText;
+  }
+  &.selected{
+    background-color: $color-NavItem-Selected;
+    span{
+      color: $color-NavItemText-Selected;
+    }
+  }
+  &:hover{
+    background-color: $color-NavItem-Hover;
+    span{
+      color: $color-NavItemText-Hover;
+    }
+  }
+}

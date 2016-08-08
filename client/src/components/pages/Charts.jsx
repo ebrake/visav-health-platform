@@ -67,7 +67,7 @@ var Charts = React.createClass({
   },
   render: function () {
     return (
-      <div className="Charts">
+      <div className="Charts page">
         <div className="title-container">
           <h2 className="title">Charts</h2>
         </div>

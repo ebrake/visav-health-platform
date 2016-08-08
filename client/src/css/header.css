@@ -1,0 +1,26 @@
+.header {
+  position: relative;
+  width:100%;
+  display:inline-block;
+  clear:both;
+  display:flex;
+  flex-direction: column;
+
+  .header-row{
+    flex: 1 0 auto;
+    display: inline-block;
+    width:100%;
+    .title{
+      float: left;
+      width:20%;
+    }
+    .horizontal-nav{
+      float: right;
+      width:40%;
+    }
+  }
+  .title{
+    display: inline-block;
+    margin: 0 auto;
+  }
+}
