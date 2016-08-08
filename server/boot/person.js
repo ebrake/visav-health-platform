@@ -26,19 +26,16 @@ module.exports = function(app) {
     if (!req.body.email) return res.send({ error: new Error('No email!'), type: 'email', status: 'error' });
     if (!req.body.password) return res.send({ error: new Error('No password!'), type: 'password', status: 'error' });
 
-    var ctx = loopback.getCurrentContext();
-    console.log(ctx);
-
     Person.login({
       email: req.body.email,
       password: req.body.password
-    }, 'user', function(err, token){
+    }, function(err, token){
       if (err) {
         console.log(err);
         return res.send({ error: err, type: 'login', status: 'error' });
       }
-
-      res.send({token: token});
+      console.log("Logged in user "+req.body.email);
+      return res.send({token: token});
     })
   })
 

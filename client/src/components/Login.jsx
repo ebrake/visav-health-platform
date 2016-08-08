@@ -13,15 +13,12 @@ var Login = React.createClass({
     list: ['list']
   },
   login: function() {
-    console.log("Fired login...");
-    fetch(
-      'http://localhost:4000/user/login', 
-      {
-        method: 'POST', 
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: this.state.email, password: this.state.password }) 
-      }
-    ).then(function(response){
+    console.log("Fired login with accessToken "+localStorage.getItem('accessToken')+"...");
+    fetch('http://localhost:4000/user/login', {
+      method: 'POST', 
+      headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ email: this.state.email, password: this.state.password })
+    }).then(function(response){
       return response.json();
     })
     .then(function(data){
@@ -55,11 +52,16 @@ var Login = React.createClass({
         <div className="App-body">
           <input  className="account-text-field" placeholder="Email" value={this.state.email} 
                   onChange={this.handleChange('email')} />
+
           <input  className="account-text-field" placeholder="Password" value={this.state.password} 
                   onChange={this.handleChange('password')} />
-          <button   className="fb-login-button" onClick={this.login}><span>Login</span></button>
-          <FacebookLogin  cssClass="fb-login-button" appId="1641537292841144" autoLoad={false} fields="name,email,picture"  
-                          callback={responseFacebook} version="2.7" />
+
+          <button   className="fb-login-button" onClick={this.login}>
+            <span>Login</span>
+          </button>
+
+          {/*<FacebookLogin  cssClass="fb-login-button" appId="1641537292841144" autoLoad={false} fields="name,email,picture"  
+                          callback={responseFacebook} version="2.7" />*/}
         </div>
       </div>
     );

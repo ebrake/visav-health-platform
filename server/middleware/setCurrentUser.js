@@ -1,11 +1,11 @@
-module.exports = function(app) {
+var loopback = require('loopback');
+
+module.exports = function() {
   return function setCurrentUser(req, res, next) {
-    console.log("Trying to set current user...");
-    console.log(req.accessToken);
     if (!req.accessToken) {
       return next();
     }
-    app.models.Person.findById(req.accessToken.userId, function(err, user) {
+    req.app.models.Person.findById(req.accessToken.userId, function(err, user) {
       if (err) {
         return next(err);
       }
@@ -16,6 +16,9 @@ module.exports = function(app) {
       if (loopbackContext) {
         loopbackContext.set('user', user);
       }
+
+      req.user = user;
+
       next();
     });
   }
