@@ -2,12 +2,12 @@
 
 .nav {
   display: flex;
-  padding: 10px;
-  
+  padding: 0px;
+  margin: 0px;
 
   &.horizontal-nav {
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
 
     .NavItem {
@@ -19,7 +19,7 @@
 
   &.vertical-nav {
     align-items: center;
-    justify-content: center;
+    justify-content: stretch;
     flex-direction: column;
 
     .NavItem {
