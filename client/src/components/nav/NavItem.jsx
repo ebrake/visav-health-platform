@@ -17,7 +17,7 @@ var NavItem = React.createClass({
   render: function () {
     return (
       <div className="NavItem">
-        <img src={this.props.imgSrc} />
+        { this.props.imgSrc ? <img src={this.props.imgSrc} /> : null }
         <span>{this.props.title}</span>
       </div>
     );
