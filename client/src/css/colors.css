@@ -5,7 +5,7 @@ $color-header-bg: #aaa;
 
 /* NAVIGATION */
 
-$color-NavItem-bg: clear;
+$color-NavItem-bg: transparent;
 $color-NavItem-text: #0ff;
 $color-NavItem-bg-selected: #f00;
 $color-NavItem-text-selected: #f0f;

@@ -3,27 +3,21 @@
 .header {
   display: flex;
   flex-direction: column;
-  width: 100%;
   background-color: $color-header-bg;
 
   .header-row {
     flex: 1 0 auto;
-    display: inline-block;
-    width: 100%;
-
-    .title {
-      float: left;
-      width: 20%;
-    }
+    display: flex;
+    justify-content: space-between;
 
     .horizontal-nav {
-      float: right;
-      width: 40%;
+      flex: 0 0 auto;
     }
   }
-
   .title {
-    display: inline-block;
-    margin: 0 auto;
+    flex: 0 0 auto;
+    justify-content: center;
+    align-items: center;
+    display: flex;
   }
 }

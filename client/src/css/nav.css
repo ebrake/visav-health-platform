@@ -3,10 +3,12 @@
 .nav {
   display: flex;
   padding: 10px;
+  
 
   &.horizontal-nav {
-    align-items: stretch;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
     .NavItem {
       img {
@@ -16,6 +18,7 @@
   }
 
   &.vertical-nav {
+    align-items: center;
     justify-content: center;
     flex-direction: column;
 
@@ -30,23 +33,30 @@
 .NavItem {
   display: flex;
   flex-direction: row;
-  flex: 1 0 auto;
+  flex: 1 0 1px;
   cursor: pointer;
   background-color: $color-NavItem-bg;
+  padding: 10px;
   align-items: center;
   justify-content: center;
-  padding: 10px;
 
   span {
-    text-align: center;
-    flex: 0 0 auto;
     color: $color-NavItem-text;
   }
-
-  img {
-    display: inline-block;
+  .img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
     margin-right: 10px;
+
+    img{
+      height: 100%;
+      width: 100%;
+    }
   }
+
 
   &.selected {
     background-color: $color-NavItem-bg-selected;
