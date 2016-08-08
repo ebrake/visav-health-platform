@@ -5,16 +5,7 @@
   "options": {
     "validateUpsert": true
   },
-  "properties": {
-    "firstName": {
-      "type": "String", 
-      "required": "false"
-    },
-    "lastName": {
-      "type": "String", 
-      "required": "false"
-    }
-  },
+  "properties": {},
   "validations": [],
   "relations": {},
   "acls": [],

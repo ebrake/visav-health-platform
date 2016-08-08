@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
-import AccountActions from '../flux/actions/AccountActions';
-
-const responseFacebook = (response) => {
-  console.log('Hello this is facebook!');
-  console.dir(response);
-}
+import AccountActions from '../alt/actions/AccountActions';
+import AccountStore from '../alt/stores/AccountStore';
 
 var Login = React.createClass({
   mixins: null,
@@ -22,6 +18,7 @@ var Login = React.createClass({
     })
     .then(function(data){
       localStorage.setItem('accessToken', data.token.id);
+      AccountActions.loginUser(data.token);
     })
     .catch(function(err){
       //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
@@ -31,12 +28,7 @@ var Login = React.createClass({
   },
   logout: function() {
     localStorage.removeItem('accessToken');
-  },
-  getInitialState: function() {
-    return {
-      email: '',
-      password: ''
-    }
+    AccountActions.logoutUser();
   },
   handleChange: function(key) {
     return function(event) {
@@ -44,6 +36,22 @@ var Login = React.createClass({
       state[key] = event.target.value;
       this.setState(state);
     }.bind(this);
+  },
+  accountChanged: function(state) {
+    console.log("Account changed:");
+    console.dir(state);
+  },
+  getInitialState: function() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  componentDidMount: function(){
+    AccountStore.listen(this.accountChanged);
+  },
+  componentWillUnmount: function(){
+    AccountStore.unlisten(this.accountChanged);
   },
   render: function () {
     return (
@@ -67,7 +75,7 @@ var Login = React.createClass({
           </button>
 
           {/*<FacebookLogin  cssClass="fb-login-button" appId="1641537292841144" autoLoad={false} fields="name,email,picture"  
-                          callback={responseFacebook} version="2.7" />*/}
+                          callback={console.log} version="2.7" />*/}
         </div>
       </div>
     );

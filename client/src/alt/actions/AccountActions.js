@@ -6,7 +6,8 @@ class AccountActions {
   }
 
   logoutUser(){
-    
+    //suppress pointless warning
+    return true;
   }
 }
 
