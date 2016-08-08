@@ -33,7 +33,7 @@ var PatientProfile = React.createClass({
   },
   render: function () {
     return (
-      <div className="PatientProfile profile">
+      <div className="PatientProfile profile page">
         <MainHeader />
         <div id="welcome">
           <h2>{strings.welcome}, {user.name}</h2>

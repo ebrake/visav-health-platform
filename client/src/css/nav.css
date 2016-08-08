@@ -1,44 +1,65 @@
 @import 'colors.css';
 
 .nav {
-  background-color: red;
+  display: flex;
+  padding: 10px;
 
   &.horizontal-nav {
-    align-items: center;
-    display: flex;
+    align-items: stretch;
     flex-direction: row;
+
+    .NavItem {
+      img {
+        max-height: 30px;
+      }
+    }
   }
 
   &.vertical-nav {
     justify-content: center;
-    display: flex;
     flex-direction: column;
+
+    .NavItem {
+      img {
+        max-width: 30px;
+      }
+    }
   }
 }
 
 .NavItem {
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
   flex: 1 0 auto;
   cursor: pointer;
-  background-color: $color-NavItem;
+  background-color: $color-NavItem-bg;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
 
   span {
-    color: $color-NavItemText;
+    text-align: center;
+    flex: 0 0 auto;
+    color: $color-NavItem-text;
+  }
+
+  img {
+    display: inline-block;
   }
 
   &.selected {
-    background-color: $color-NavItem-Selected;
+    background-color: $color-NavItem-bg-selected;
 
     span {
-      color: $color-NavItemText-Selected;
+      color: $color-NavItem-text-selected;
     }
   }
 
   &:hover {
-    background-color: $color-NavItem-Hover;
+    background-color: $color-NavItem-bg-hover;
 
     span {
-      color: $color-NavItemText-Hover;
+      color: $color-NavItem-text-hover;
     }
   }
 }

@@ -1,9 +1,9 @@
 $selectedColor: #0ff;
 
 /* NAVIGATION */
-$color-NavItem: #0f0;
-$color-NavItemText: #0ff;
-$color-NavItem-selected: #f00;
-$color-NavItemText-selected: #f0f;
-$color-NavItem-hover: #0ff;
-$color-NavItemText-hover: #0f0;
+$color-NavItem-bg: #0f0;
+$color-NavItem-text: #0ff;
+$color-NavItem-bg-selected: #f00;
+$color-NavItem-text-selected: #f0f;
+$color-NavItem-bg-hover: #0ff;
+$color-NavItem-text-hover: #0f0;

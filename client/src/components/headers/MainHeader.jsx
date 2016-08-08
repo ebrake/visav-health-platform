@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import SegmentedControl from 'react-segmented-control'
 import NavItem from '../nav/NavItem'
-var PatientAccountHeader = React.createClass({
-  propTypes: {
-    user: React.PropTypes.object.isRequired
-  },
+var MainHeader = React.createClass({
   mixins: null,
   cursors: {
     list: ['list']
@@ -32,5 +29,4 @@ var PatientAccountHeader = React.createClass({
   }
 });
 
-export default PatientAccountHeader;
-
+export default MainHeader;
