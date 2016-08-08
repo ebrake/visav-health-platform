@@ -13,7 +13,6 @@ var Login = React.createClass({
     list: ['list']
   },
   login: function() {
-    console.log("Fired login with accessToken "+localStorage.getItem('accessToken')+"...");
     fetch('http://localhost:4000/user/login', {
       method: 'POST', 
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
@@ -29,6 +28,9 @@ var Login = React.createClass({
       console.log('Error:');
       console.dir(err);
     })
+  },
+  logout: function() {
+    localStorage.removeItem('accessToken');
   },
   getInitialState: function() {
     return {
@@ -58,6 +60,10 @@ var Login = React.createClass({
 
           <button   className="fb-login-button" onClick={this.login}>
             <span>Login</span>
+          </button>
+
+          <button   className="fb-login-button" onClick={this.logout}>
+            <span>Logout</span>
           </button>
 
           {/*<FacebookLogin  cssClass="fb-login-button" appId="1641537292841144" autoLoad={false} fields="name,email,picture"  
