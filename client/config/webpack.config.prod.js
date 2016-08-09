@@ -1,7 +1,9 @@
 var path = require('path');
 var autoprefixer = require('autoprefixer');
 var precss = require('precss');
-var postcssImport = require('postcss-import')
+var postcssEasyImport = require('postcss-easy-import');
+var postcssStripInlineComment = require('postcss-strip-inline-comments');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -96,13 +98,17 @@ module.exports = {
     useEslintrc: false
   },
   postcss: function(webpack) {
-    return [autoprefixer, 
-            precss, 
-            postcssImport({
-                addDependencyTo: webpack
-            })];
+    return [
+            postcssEasyImport,
+            postcssStripInlineComment,
+            autoprefixer, 
+            precss
+            ];
   },
   plugins: [
+    new CopyWebpackPlugin([
+      { from: './src/img', to: './src/img' },//copy images
+    ]),
     new HtmlWebpackPlugin({
       inject: true,
       template: indexHtmlPath,
