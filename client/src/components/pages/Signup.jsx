@@ -42,8 +42,7 @@ var Login = React.createClass({
       return response.json();
     })
     .then(function(data){
-      localStorage.setItem('accessToken', data.token.id);
-      AccountActions.loginUser(data.token.user);
+      AccountActions.loginUser(data);
 
       //redirect
       console.log('Login successful! Redirecting...');
