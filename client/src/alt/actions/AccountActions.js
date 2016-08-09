@@ -1,11 +1,12 @@
 import alt from '../alt'
 class AccountActions {
   loginUser(data){
+    localStorage.setItem('accessToken', data.token.id);
     return data;
   }
 
   logoutUser(){
-    //suppress pointless warning
+    localStorage.removeItem('accessToken');
     return true;
   }
 }

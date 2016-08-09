@@ -17,8 +17,7 @@ var Login = React.createClass({
       return response.json();
     })
     .then(function(data){
-      localStorage.setItem('accessToken', data.token.id);
-      AccountActions.loginUser(data.token.user);
+      AccountActions.loginUser(data);
 
       //redirect
       console.log('Login successful! Redirecting...');
@@ -31,8 +30,7 @@ var Login = React.createClass({
     })
   },
   logout: function() {
-    localStorage.removeItem('accessToken');
-    AccountActions.logoutUser();
+    hashHistory.push('/logout');
   },
   handleChange: function(key) {
     return function(event) {

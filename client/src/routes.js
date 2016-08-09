@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Route, hashHistory } from 'react-router'
 import AccountStore from './alt/stores/AccountStore';
+import AccountActions from './alt/actions/AccountActions';
 
 import Home from './components/pages/Home.jsx'
 import Charts from './components/pages/Charts.jsx'
@@ -16,6 +17,11 @@ var authCheck = (nextState, replace) => {
     replace('/login');
   }
 };
+var logout = (nextState, replace) => {
+  AccountActions.logoutUser();
+  console.log('Logged out... redirecting...');
+  replace('/login');
+};
 var routes = (
   <Router history={hashHistory}>
     <Route path="/" component={Home} />
@@ -26,6 +32,7 @@ var routes = (
     <Route path="/patient" component={PatientProfile} onEnter={authCheck} />
     <Route path="/me" component={PatientProfile} onEnter={authCheck} />
     <Route path="/doctor" component={DoctorProfile} onEnter={authCheck} />
+    <Route path="/logout" onEnter={logout} />
   </Router>
 );
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import { Chart } from 'react-d3-core';
 import { LineChart } from 'react-d3-basic';
-
+import MainHeader from '../headers/MainHeader'
 let chartData = [
   {
     name: "Lavon Hilll I",
@@ -68,6 +68,7 @@ var Charts = React.createClass({
   render: function () {
     return (
       <div className="Charts page">
+        <MainHeader />
         <div className="title-container">
           <h2 className="title">Charts</h2>
         </div>

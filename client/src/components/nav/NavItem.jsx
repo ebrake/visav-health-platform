@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { hashHistory } from 'react-router';
 
 var NavItem = React.createClass({
   propTypes: {
     imgSrc: React.PropTypes.string,
+    path: React.PropTypes.string,
     title: React.PropTypes.string.isRequired,
   },
   mixins: null,
@@ -14,9 +16,17 @@ var NavItem = React.createClass({
 
     };
   },
+  handleClick(){
+    if (this.props.path) {
+      hashHistory.push(this.props.path);
+    }
+    else { 
+      hashHistory.push('/'+this.props.title);
+    }
+  },
   render: function () {
     return (
-      <div className="NavItem">
+      <div className="NavItem" onClick={this.handleClick}>
         { this.props.imgSrc ? 
           <div className="img-container">
             <img src={this.props.imgSrc} /> 
