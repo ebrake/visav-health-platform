@@ -1,10 +1,10 @@
 {
   "name": "push",
-  "base": "Model",
   "plural": "push",
+  "base": "Model",
   "properties": {},
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

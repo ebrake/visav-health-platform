@@ -4,7 +4,7 @@ import { EventEmitter } from 'events';
 //Globally set max listeners higher than 11
 //Otherwise, loopback-connector-postgresql will cause a mem-leak warning
 //because the default maximum is 10
-EventEmitter.prototype._maxListeners = 20;
+EventEmitter.prototype._maxListeners = 100;
 
 class StartServer {
 
@@ -31,9 +31,6 @@ class StartServer {
 
       // Put this on the app so it's accessible.
       app.server = server;
-
-
-
   }
 }
 export function startServer(isMainModule) {

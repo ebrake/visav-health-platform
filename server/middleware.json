@@ -15,7 +15,7 @@
     "helmet#frameguard": {
       "params": [
         "deny"
-       ]
+      ]
     },
     "helmet#hsts": {
       "params": {
@@ -28,17 +28,22 @@
     "helmet#noSniff": {},
     "helmet#noCache": {
       "enabled": false
-    }
+    },
+    "loopback#context": {},
+    "loopback#token": {},
+    "./middleware/setCurrentUser": {}
   },
-  "session": {
-  },
-  "auth": {
-  },
+  "session": {},
+  "auth": {},
   "parse": {
+    "body-parser#json": {},
+    "body-parser#urlencoded": {"params": { "extended": true }}
   },
   "routes": {
     "loopback#rest": {
-      "paths": ["${restApiRoot}"]
+      "paths": [
+        "${restApiRoot}"
+      ]
     }
   },
   "files": {

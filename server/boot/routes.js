@@ -20,6 +20,7 @@ System.import('../../'+clientDir+'/src/routes').then(function(m) {
 
 import cons from 'consolidate'
 import loopback from 'loopback'
+
 module.exports = function routes(app) {
   
   app.engine("html", cons.handlebars);

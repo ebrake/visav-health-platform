@@ -13,6 +13,7 @@ let strings = new LocalizedStrings({
    french:"Français"
   }
 });
+
 var Home = React.createClass({
   mixins: null,
   cursors: {
