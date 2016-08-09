@@ -1,5 +1,4 @@
-var alt = require('../alt');
-
+import alt from '../alt'
 class AccountActions {
   loginUser(data){
     return data;
@@ -10,5 +9,4 @@ class AccountActions {
     return true;
   }
 }
-
-module.exports = alt.createActions(AccountActions);
+export default alt.createActions(AccountActions);
