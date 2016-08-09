@@ -1,27 +1,13 @@
 import React from "react";
 import Router from "react-router";
 import ReactDOMServer from 'react-dom/server'
+import cons from 'consolidate'
+import loopback from 'loopback'
 import Charts from '../../client/src/components/pages/Charts.jsx'
 import Login from '../../client/src/components/pages/Login.jsx'
-var System = require('es6-module-loader').System;
 
 const clientDir = (process.env.NODE_ENV=="production" ? "client-dist" : "client")
 
-
-System.import('../../'+clientDir+'/src/components/Home.jsx').then(function(m) {
-
-});
-
-System.import('../../'+clientDir+'/src/components/Charts.jsx').then(function(m) {
-
-});
-
-System.import('../../'+clientDir+'/src/routes').then(function(m) {
-
-});
-
-import cons from 'consolidate'
-import loopback from 'loopback'
 
 module.exports = function routes(app) {
   app.engine("html", cons.handlebars);

@@ -9,9 +9,12 @@ import PatientProfile from './components/pages/doctor/DoctorProfile'
 import DoctorProfile from './components/pages/patient/PatientProfile'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
-var authCheck = (nextState, transition) => {
+var authCheck = (nextState, replace) => {
   let state = AccountStore.getState();
-  console.log('STATE: ' + state);
+  if (!state.user) {
+    console.log('Not logged in... redirecting...');
+    replace('/login');
+  }
 };
 var routes = (
   <Router history={hashHistory}>
