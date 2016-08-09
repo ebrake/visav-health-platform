@@ -31,6 +31,7 @@ class StartServer {
 
       // Put this on the app so it's accessible.
       app.server = server;
+    });
   }
 }
 export function startServer(isMainModule) {

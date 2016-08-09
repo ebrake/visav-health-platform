@@ -27,22 +27,4 @@ module.exports = function routes(app) {
   app.set("view engine", "html");
   app.set("views", "public/views");
   app.use(loopback.static(clientDir+"/build"));
-
-  app.get("/", function (req, res) {
-    let HomeFactory = React.createFactory(Home);
-    const html = ReactDOMServer.renderToString(HomeFactory({}));
-    res.render("index", {
-      markup: html,
-      clientDir: clientDir
-    });
-  });
-
-  app.get("/charts", function (req, res) {
-    let ChartFactory = React.createFactory(Charts);
-    const html = ReactDOMServer.renderToString(ChartFactory({}));
-    res.render("index", {
-      markup: html,
-      clientDir: clientDir
-    });
-  });
 }
