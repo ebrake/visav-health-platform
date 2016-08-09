@@ -2,7 +2,7 @@ import alt from '../alt'
 class AccountActions {
   loginUser(data){
     localStorage.setItem('accessToken', data.token.id);
-    return data;
+    return data.token.user;
   }
 
   logoutUser(){
