@@ -22,7 +22,7 @@ var Login = React.createClass({
 
       //redirect
       console.log('Login successful! Redirecting...');
-      hashHistory.push('/charts');
+      hashHistory.push('/me');
     })
     .catch(function(err){
       //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)

@@ -5,8 +5,8 @@ import AccountStore from './alt/stores/AccountStore';
 import Home from './components/pages/Home.jsx'
 import Charts from './components/pages/Charts.jsx'
 import Telesession from './components/pages/Telesession.jsx'
-import PatientProfile from './components/pages/doctor/DoctorProfile'
-import DoctorProfile from './components/pages/patient/PatientProfile'
+import PatientProfile from './components/pages/patient/PatientProfile'
+import DoctorProfile from './components/pages/doctor/DoctorProfile'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
 var authCheck = (nextState, replace) => {
