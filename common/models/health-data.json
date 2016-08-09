@@ -1,0 +1,46 @@
+{
+  "name": "HealthData",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "default": "exercise"
+    },
+    "data": {
+      "type": "JSON",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "default": ""
+    },
+    "createdDate": {
+      "type": "date",
+      "required": true,
+      "default": null
+    },
+    "startDate": {
+      "type": "date",
+      "required": true,
+      "default": null
+    },
+    "endDate": {
+      "type": "date",
+      "default": null
+    }
+  },
+  "validations": [],
+  "relations": {
+    "Person": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "personId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
