@@ -59,9 +59,9 @@
   "Person": {
     "dataSource": "psql",
     "public": true
-    },
+  },
   "HealthData": {
     "dataSource": "psql",
-    "public": false
+    "public": true
   }
 }

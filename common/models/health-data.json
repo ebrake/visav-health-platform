@@ -8,11 +8,13 @@
   "properties": {
     "type": {
       "type": "string",
+      "required": true,
       "default": "exercise"
     },
     "data": {
-      "type": "JSON",
-      "required": true
+      "type": "object",
+      "required": true,
+      "default": {}
     },
     "description": {
       "type": "string",
@@ -20,17 +22,14 @@
     },
     "createdDate": {
       "type": "date",
-      "required": true,
-      "default": null
+      "required": true
     },
     "startDate": {
       "type": "date",
-      "required": true,
-      "default": null
+      "required": true
     },
     "endDate": {
-      "type": "date",
-      "default": null
+      "type": "date"
     }
   },
   "validations": [],
@@ -38,7 +37,7 @@
     "Person": {
       "type": "belongsTo",
       "model": "Person",
-      "foreignKey": "personId"
+      "foreignKey": "person"
     }
   },
   "acls": [],
