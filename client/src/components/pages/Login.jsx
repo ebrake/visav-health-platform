@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
+import { hashHistory } from 'react-router';
 
 var Login = React.createClass({
   mixins: null,
@@ -16,8 +17,11 @@ var Login = React.createClass({
       return response.json();
     })
     .then(function(data){
-      localStorage.setItem('accessToken', data.token.id);
-      AccountActions.loginUser(data.token.user);
+      AccountActions.loginUser(data);
+
+      //redirect
+      console.log('Login successful! Redirecting...');
+      hashHistory.push('/me');
     })
     .catch(function(err){
       //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
@@ -26,8 +30,7 @@ var Login = React.createClass({
     })
   },
   logout: function() {
-    localStorage.removeItem('accessToken');
-    AccountActions.logoutUser();
+    hashHistory.push('/logout');
   },
   handleChange: function(key) {
     return function(event) {
@@ -37,7 +40,7 @@ var Login = React.createClass({
     }.bind(this);
   },
   accountChanged: function(state) {
-    console.log("Account changed:");
+    console.log("Account Store changed:");
     console.dir(state);
   },
   getInitialState: function() {

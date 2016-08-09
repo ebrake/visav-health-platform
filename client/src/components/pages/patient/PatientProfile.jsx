@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import PatientInfoPanel from '../../panels/PatientInfoPanel'
 import MainHeader from '../../headers/MainHeader'
+import AccountStore from '../../../alt/stores/AccountStore'
+
 let strings = new LocalizedStrings({
   en:{
-   welcome:"Welcome to Visav!",
+   welcome:"Welcome to Visav",
    english:"English",
    french:"French"
   },
   fr: {
-   welcome:"Bienvenue à Visav!",
+   welcome:"Bienvenue à Visav",
    english:"Anglais",
    french:"Français"
   }
 });
-let user = {
-  name: 'Gaius Maximus Testicles-Popadopalous'
-};
+
 var PatientProfile = React.createClass({
   mixins: null,
   cursors: {
@@ -27,8 +27,10 @@ var PatientProfile = React.createClass({
     this.setState({language: language});
   },
   getInitialState() {
+    let accountState = AccountStore.getState();
     return {
-      language: 'en'
+      language: 'en',
+      user: accountState.user
     };
   },
   render: function () {
@@ -36,9 +38,9 @@ var PatientProfile = React.createClass({
       <div className="PatientProfile profile page">
         <MainHeader />
         <div id="welcome">
-          <h2>{strings.welcome}, {user.name}</h2>
+          <h2>{strings.welcome}, {this.state.user.name}</h2>
         </div>
-        <PatientInfoPanel user={user} />
+        <PatientInfoPanel user={this.state.user} />
       </div>
     );
   }

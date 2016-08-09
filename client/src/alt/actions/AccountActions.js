@@ -1,14 +1,13 @@
-var alt = require('../alt');
-
+import alt from '../alt'
 class AccountActions {
   loginUser(data){
-    return data;
+    localStorage.setItem('accessToken', data.token.id);
+    return data.token.user;
   }
 
   logoutUser(){
-    //suppress pointless warning
+    localStorage.removeItem('accessToken');
     return true;
   }
 }
-
-module.exports = alt.createActions(AccountActions);
+export default alt.createActions(AccountActions);

@@ -9,7 +9,7 @@ module.exports = function(Healthdata) {
     "receiveData",
     {
       accepts: [
-        { arg: 'data', type: 'object', http: { source: 'req' } }
+        { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/create', verb: 'post' }
     }

@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { hashHistory } from 'react-router'
+import AccountActions from '../../alt/actions/AccountActions';
+import AccountStore from '../../alt/stores/AccountStore';
 
 var Login = React.createClass({
   mixins: null,
@@ -8,7 +11,7 @@ var Login = React.createClass({
   createUser: function() {
     if (!this.state.email) return console.log('No email!');
     if (!this.state.password) return console.log('No password!');
-
+    let self = this;
     fetch(
       'http://localhost:4000/user/create', 
       {
@@ -20,9 +23,33 @@ var Login = React.createClass({
       return response.json();
     })
     .then(function(data){
-      console.dir(data);
+      if (data.user) {
+        console.log('User creation successful! Logging in...');
+        self.login();
+      }
     })
     .catch(function(err){
+      console.log('Error:');
+      console.dir(err);
+    })
+  },
+  login: function() {
+    fetch('http://localhost:4000/user/login', {
+      method: 'POST', 
+      headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ email: this.state.email, password: this.state.password })
+    }).then(function(response){
+      return response.json();
+    })
+    .then(function(data){
+      AccountActions.loginUser(data);
+
+      //redirect
+      console.log('Login successful! Redirecting...');
+      hashHistory.push('/me');
+    })
+    .catch(function(err){
+      //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
       console.log('Error:');
       console.dir(err);
     })
