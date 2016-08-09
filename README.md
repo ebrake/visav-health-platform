@@ -62,6 +62,8 @@ It is essential that you have a .env file in the project, to load secure/environ
 ```
 PORT			= 4000
 NODE_ENV 		= development
+FACEBOOK_APP_ID=1641537292841144
+FACEBOOK_APP_SECRET=f12b6202ee70bf152f448d0ceaf08ad3
 OPENTOK_API_KEY = (Obtain from command: heroku config -a healthplatform)
 OPENTOK_SECRET 	= (Obtain from command: heroku config -a healthplatform)
 ```
