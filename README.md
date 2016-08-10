@@ -7,6 +7,8 @@
 
 > Proud of legitimate and unbelievably clean project Dillinger, as it should be, and as it will be.
 
+> In production: [https://secure.visav.io](https://secure.visav.io)
+
 * [How to Install](#how-to-install)
   - [Install dependencies](#install-dependencies)
   - [Build Project](#build-project)
@@ -53,7 +55,7 @@
 
 2. Log in with your Heroku account: `heroku login`
 
-3. Add the Heroku remote in the root folder: `heroku git:remote -a healthplatform`
+3. Add the Heroku remote in the root folder: `git remote set-url heroku https://git.heroku.com/visav.git`
 
 ##### Environment Variables
 
@@ -62,8 +64,8 @@ It is essential that you have a .env file in the project, to load secure/environ
 ```
 PORT			= 4000
 NODE_ENV 		= development
-OPENTOK_API_KEY = (Obtain from command: heroku config -a healthplatform)
-OPENTOK_SECRET 	= (Obtain from command: heroku config -a healthplatform)
+OPENTOK_API_KEY = (Obtain from command: heroku config -a visav)
+OPENTOK_SECRET 	= (Obtain from command: heroku config -a visav)
 ```
 
 > You can also use a command line tool [https://github.com/xavdid/heroku-config](https://github.com/xavdid/heroku-config) to copy in Heroku environment variables to a .env file. Just remember to set `PORT=4000` and `NODE_ENV=development`, on your local project!
