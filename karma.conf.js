@@ -1,3 +1,5 @@
+// Karma configuration.
+// Enables the running of source code (i.e. JavaScript) against real browsers via the CLI.
 var webpack = require('webpack');
 
 module.exports = function (config) {
@@ -10,6 +12,8 @@ module.exports = function (config) {
     frameworks: [ 'mocha' ],
 
     files: [
+      //single entry point for all test cases.
+      //webpack will compile all these test files into one test bundle.
       'tests.webpack.js'
     ],
 
@@ -20,6 +24,7 @@ module.exports = function (config) {
     reporters: [ 'dots' ],
 
     webpack: {
+      // webpack will generate sourcemaps.
       devtool: 'inline-source-map',
       module: {
         loaders: [

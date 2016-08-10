@@ -14,7 +14,8 @@
     "package-prod": "npm run clean-prod-package && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
     "postinstall": "npm run build-client && npm run package-prod && npm run package-client",
     "pretest": "eslint .",
-    "posttest": "nsp check"
+    "posttest": "nsp check",
+    "unittest": "./node_modules/karma/bin/karma start"
   },
   "dependencies": {
     "babel-cli": "^6.11.4",
