@@ -40,6 +40,17 @@
       "foreignKey": "person"
     }
   },
+  "indexes": {
+    "unique_person_and_date": {
+      "keys": {
+         "person": 1,
+         "startDate": -1
+       },
+       "options": {
+         "unique": true
+       }
+    }
+  },
   "acls": [],
   "methods": {}
 }
