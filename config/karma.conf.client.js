@@ -1,9 +1,9 @@
-// Karma configuration.
+// Karma configuration for testing client.
 // Enables the running of source code (i.e. JavaScript) against real browsers via the CLI.
 var webpack = require('webpack');
+var entry_cfg = 'karma.webpack.tests.client.js';
 
-module.exports = function (config) {
-  config.set({
+var settings = {
 
     browsers: [ process.env.CONTINUOUS_INTEGRATION ? 'Firefox' : 'Chrome' ],
 
@@ -14,12 +14,14 @@ module.exports = function (config) {
     files: [
       //single entry point for all test cases.
       //webpack will compile all these test files into one test bundle.
-      'tests.webpack.js'
+      //'karma.webpack.tests.client.js'
+      entry_cfg
     ],
 
-    preprocessors: {
-      'tests.webpack.js': [ 'webpack', 'sourcemap' ]
-    },
+    // preprocessors: {
+    //   //entry_cfg: 
+    //   'karma.webpack.tests.client.js': [ 'webpack', 'sourcemap' ]
+    // },
 
     reporters: [ 'dots' ],
 
@@ -36,6 +38,10 @@ module.exports = function (config) {
     webpackServer: {
       noInfo: true
     }
+  };
+  settings['preprocessors'] = {};
+  settings['preprocessors'][entry_cfg] = ['webpack', 'sourcemap'];
 
-  });
+module.exports = function (config) {
+  config.set(settings);
 };
