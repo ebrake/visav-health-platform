@@ -1,4 +1,6 @@
 module.exports = function(Healthdata) {
+
+  /* RECEIVE DATA */ 
   Healthdata.receiveData = function(req, data, startDate, endDate, description, cb) {
     if (!req.user) {
       return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
@@ -90,7 +92,42 @@ module.exports = function(Healthdata) {
         { arg: 'description', type: 'string' }
       ],
       http: { path: '/create', verb: 'post' },
-      returns: { arg: 'result', type: 'object' }
+      returns: { arg: 'result', type: 'object' },
+      description: "Creates a new instance of Healthdata, attaches it to the user who made the request, updates if it already exists, persists it to the data source, and returns the created object."
+    }
+  )
+
+  /* RETRIEVE DATA */
+
+  var retrieveLimit = 1000;
+
+  Healthdata.retrieveData = function(req, limit, cb) {
+    if (!req.user) {
+      return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
+    } 
+
+    var person = req.user;
+
+    Healthdata.find({
+      where: { person: person.id },
+      order: "startDate DESC",
+      limit: limit || retrieveLimit
+    }, function(err, data){ 
+      if (err) return cb(null, { status: 'failure', message: err.message });
+      return cb(null, { status: 'success', data: data });
+    });
+  }
+
+  Healthdata.remoteMethod(
+    "retrieveData",
+    { 
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'limit', type: 'number' }
+      ],
+      http: { path: '/get', verb: 'get' },
+      returns: { arg: 'data', type: 'array' },
+      description: "Retrieves HealthData for this user, up to the last <limit> or "+retrieveLimit+" instances."
     }
   )
 };
