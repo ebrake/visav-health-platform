@@ -32,7 +32,13 @@ var settings = {
       noInfo: true
     }
   };
+var getSettings = function(entry_cfg){
+  settings['files'] = [entry_cfg];
+  settings['preprocessors'] = {};
+  settings['preprocessors'][entry_cfg] = ['webpack', 'sourcemap'];
+  return settings;
+}
 
 module.exports = {
-  settings: settings
+  getSettings: getSettings
 };

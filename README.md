@@ -103,3 +103,6 @@ OPENTOK_SECRET 	= (Obtain from command: heroku config -a healthplatform)
 Everything will automatically build on Heroku. Just run `git push heroku master`
 
 ### Unit Test
+1. Client unit test:
+  1.1 Rebuild client distribution: `npm run package-client` 
+  1.2 Run unittest for client: `npm run testclient`
