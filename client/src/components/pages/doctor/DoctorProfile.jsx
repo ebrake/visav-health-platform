@@ -1,47 +1,46 @@
 import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import MainHeader from '../../headers/MainHeader'
+
+
+
 let strings = new LocalizedStrings({
   en:{
-   welcome:"Welcome to Visav!",
+   welcome:"Welcome to Visav",
    english:"English",
    french:"French"
   },
   fr: {
-   welcome:"Bienvenue à Visav!",
+   welcome:"Bienvenue à Visav",
    english:"Anglais",
    french:"Français"
   }
 });
-let user = {
-  name: 'Gaius Maximus Testicles-Popadopalous'
-};
-var DoctorProfile = React.createClass({
-  mixins: null,
-  cursors: {
-    list: ['list']
-  },
-  updateLanguage: function(language) {
+class DoctorProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    let accountState = AccountStore.getState();
+    this.state = {
+      language: 'en',
+      user: accountState.user
+    };
+    this.updateLanguage = this.updateLanguage.bind(this);
+  } 
+  updateLanguage(language) {
     strings.setLanguage(language);
     this.setState({language: language});
-  },
-  getInitialState() {
-    return {
-      language: 'en'
-    };
-  },
-  render: function () {
+  }
+  render() {
     return (
       <div className="DoctorProfile profile page">
         <MainHeader />
-
         <div id="welcome">
-          <h2>{strings.welcome}, {user.name}</h2>
+          <h2>{strings.welcome}, {this.state.user.name}</h2>
         </div>
       </div>
     );
   }
-});
+};
 
 export default DoctorProfile;
 

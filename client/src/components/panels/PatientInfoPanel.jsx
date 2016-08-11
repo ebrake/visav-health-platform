@@ -2,20 +2,15 @@ import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import SegmentedControl from 'react-segmented-control'
 
-var PatientInfoPanel = React.createClass({
-  propTypes: {
-    user: React.PropTypes.object.isRequired
-  },
-  mixins: null,
-  cursors: {
-    list: ['list']
-  },
-  getInitialState() {
-    return {
+class PatientInfoPanel extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
 
     };
-  },
-  render: function () {
+  }
+
+  render() {
     return (
       <div className="PatientInfoPanel panel">
         <h1 className="title">Patient Info</h1>
@@ -25,7 +20,10 @@ var PatientInfoPanel = React.createClass({
       </div>
     );
   }
-});
+};
 
+PatientInfoPanel.propTypes = {
+  user: React.PropTypes.object.isRequired
+};
 export default PatientInfoPanel;
 
