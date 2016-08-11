@@ -23,7 +23,7 @@ module.exports = function routes(app) {
     const html = ReactDOMServer.renderToString(factory({}));
     res.render("index", {
       markup: html,
-      clientDir: 'client',
+      clientDir: clientDir,
       bootstrap: JSON.stringify(bootstrap)
     });
   });
@@ -33,7 +33,7 @@ module.exports = function routes(app) {
     const html = ReactDOMServer.renderToString(factory({}));
     res.render("index", {
       markup: html,
-      clientDir: 'client',
+      clientDir: clientDir,
       bootstrap: JSON.stringify(bootstrap)
     });
   });
@@ -43,7 +43,7 @@ module.exports = function routes(app) {
     const html = ReactDOMServer.renderToString(factory({}));
     res.render("index", {
       markup: html,
-      clientDir: 'client',
+      clientDir: clientDir,
       bootstrap: JSON.stringify(bootstrap)
     });
   });
