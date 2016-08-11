@@ -16,6 +16,7 @@
   - [Backend Server](#backend-server)
   - [Front End Development Server](#front-end-development-server)
 * [How to Publish](#how-to-publish)
+* [How to Login](#how-to-login)
 
 ## How to Install
 
@@ -108,8 +109,6 @@ Everything will automatically build on Heroku. Just run `git push heroku master`
 
 ## How to Login
 
-The login page can be found at /#/login
-
 There is a predefined test user with following credentials:
 
 ```
@@ -117,4 +116,9 @@ Username: dev@test.user
 Password: testtest
 ```
 
-You may also create a user using the signup page found at /#/signup.
+(This assumes you are running the front-end client in development mode)
+
+1. (Optional) Load the Sign Up screen: [http://localhost:3000/#/signup/](http://localhost:3000/#/signup/) and create an account
+
+2. Sign In: [http://localhost:3000/#/login/](http://localhost:3000/#/login/)
+
