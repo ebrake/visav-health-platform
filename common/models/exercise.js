@@ -5,12 +5,7 @@ module.exports = function(Exercise) {
 
   var saveRep = function(rep, person, exercise, Rep) {
     return new Promise(function(resolve, reject){
-      var date = rep.date
-        , note = rep.note
-        , value = rep.value
-        , unit = rep.unit
-        , duration = rep.duration
-        , isDemo = rep.isDemo;
+      var date = rep.date;
 
       if (typeof date != 'date') {
         try { 
@@ -36,12 +31,12 @@ module.exports = function(Exercise) {
           person: person.id,
           exercise: exercise.id,
           date: date,
-          duration: duration,
+          duration: rep.duration || 0,
           createdDate: new Date(),
-          note: note,
-          isDemo: isDemo,
-          value: value,
-          unit: unit
+          note: rep.note || '',
+          isDemo: rep.isDemo || false,
+          value: rep.value,
+          unit: rep.unit
         };
 
         if (entries.length > 0) {
@@ -89,11 +84,7 @@ module.exports = function(Exercise) {
   var saveExerciseAndReps = function(exercise, person, Rep) {
     return new Promise(function(resolve, reject){
       var date = exercise.date
-      , duration = exercise.duration || undefined
-      , note = exercise.note || ''
-      , type = exercise.type || 'exercise'
-      , isDemo = exercise.isDemo || false
-      , reps = exercise.reps;
+        , reps = exercise.reps;
 
       if (typeof date != 'date') {
         try { 
@@ -118,11 +109,11 @@ module.exports = function(Exercise) {
         var ExerciseObj = {
           person: person.id,
           date: date,
-          duration: duration,
+          duration: exercise.duration || 0,
           createdDate: new Date(),
-          type: type,
-          note: note,
-          isDemo: isDemo
+          type: exercise.type,
+          note: exercise.note || '',
+          isDemo: exercise.isDemo || false
         };
 
         if (entries.length > 0) {
