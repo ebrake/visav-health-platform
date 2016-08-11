@@ -4,10 +4,15 @@
 
 var webpack = require('webpack');
 
+function isDebug(argument) {
+    return argument === '--debug';
+}
+
 var settings = {
 
     browsers: [ process.env.CONTINUOUS_INTEGRATION ? 'Firefox' : 'Chrome' ],
 
+    //turn it 'false' to enable debug, the browser will keep opened.
     singleRun: true,
 
     frameworks: [ 'mocha' ],
@@ -35,6 +40,11 @@ var settings = {
       noInfo: true
     }
   };
+
+if(process.argv.some(isDebug)){
+  settings.singleRun = false;
+}
+
 var getSettings = function(entry_cfg){
   settings['files'] = [entry_cfg];
   settings['preprocessors'] = {};

@@ -15,7 +15,8 @@
     "postinstall": "npm run build-client && npm run package-prod && npm run package-client",
     "pretest": "eslint .",
     "posttest": "nsp check",
-    "testclient": "./node_modules/karma/bin/karma start ./test/karma.conf.client.js"
+    "test-client": "./node_modules/karma/bin/karma start ./test/karma.conf.client.js",
+    "test-client-debug": "./node_modules/karma/bin/karma start ./test/karma.conf.client.js --debug"
   },
   "dependencies": {
     "babel-cli": "^6.11.4",
@@ -59,7 +60,8 @@
     "karma-webpack": "^1.7.0",
     "mocha": "^2.3.4",
     "react-addons-test-utils": "^15.1.0",
-    "webpack": "^1.12.9"
+    "webpack": "^1.12.9",
+    "lazy-ass": "^1.5.0"
   },
   "engines": {
     "node": "6.3.0"
