@@ -66,6 +66,8 @@ PORT			= 4000
 NODE_ENV 		= development
 OPENTOK_API_KEY = (Obtain from command: heroku config -a visav)
 OPENTOK_SECRET 	= (Obtain from command: heroku config -a visav)
+FACEBOOK_APP_SECRET  = (Obtain from command: heroku config -a visav)
+FACEBOOK_APP_ID  = (Obtain from command: heroku config -a visav)
 ```
 
 > You can also use a command line tool [https://github.com/xavdid/heroku-config](https://github.com/xavdid/heroku-config) to copy in Heroku environment variables to a .env file. Just remember to set `PORT=4000` and `NODE_ENV=development`, on your local project!
