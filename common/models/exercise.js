@@ -181,4 +181,36 @@ module.exports = function(Exercise) {
   );
 
   /* RETRIEVE DATA */
+
+  var retrieveLimit = 1000;
+
+  Exercise.retrieveData = function(req, limit, cb) {
+    if (!req.user) {
+      return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
+    } 
+
+    var person = req.user;
+
+    Exercise.find({
+      where: { person: person.id },
+      order: "date DESC",
+      limit: limit || retrieveLimit
+    }, function(err, data){ 
+      if (err) return cb(null, { status: 'failure', message: err.message });
+      return cb(null, { status: 'success', data: data });
+    });
+  }
+
+  Exercise.remoteMethod(
+    "retrieveData",
+    { 
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'limit', type: 'number' }
+      ],
+      http: { path: '/get', verb: 'get' },
+      returns: { arg: 'data', type: 'array' },
+      description: "Retrieves Exercises for this user, up to the last <limit> or "+retrieveLimit+" instances."
+    }
+  )
 };

@@ -60,10 +60,6 @@
     "dataSource": "psql",
     "public": true
   },
-  "HealthData": {
-    "dataSource": "psql",
-    "public": true
-  },
   "Exercise": {
     "dataSource": "psql",
     "public": true
