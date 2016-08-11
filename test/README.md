@@ -1,4 +1,8 @@
 # 
+Front End: Karma + Mocha + webpack
+Back End: Mocha
+
+#
 Front End Test Goals:
 Test user events
 Test the response to those events

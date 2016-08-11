@@ -106,4 +106,5 @@ Everything will automatically build on Heroku. Just run `git push heroku master`
 1. Client unit test:
   1.1 Rebuild client distribution: `npm run package-client` 
   1.2 Run unit test for client: `npm run test-client`
-2. Single file test:
+2. Server unit test:
+  Run command: 'npm run test-server'
