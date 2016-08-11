@@ -1,5 +1,5 @@
 # 
-Front End Test:
+Front End Test Goals:
 Test user events
 Test the response to those events
 Make sure the right things render at the right time

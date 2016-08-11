@@ -4,37 +4,47 @@ import expect from 'expect';
 
 import SegmentedControl from 'react-segmented-control';
 
+//var la = require('lazy-ass');
 //the module to test.
 var Home = require('../../../src/components/Home.js');
 
 describe('home', function () {
-  it('renders without problems', function () {
+  // constructor. 
+  before(function(){
     var home = TestUtils.renderIntoDocument(<Home/>);
+    this.home = home;
     var h2 = TestUtils.findRenderedDOMComponentWithTag(
        home, 'h2'
     );
-    // by default, it should have french welcom
-    expect(h2.textContent)
-        .toEqual("Bienvenue à Dillinger!");
-
+    this.h2 = h2;
     var seg_ctrl = TestUtils.findRenderedComponentWithType(
-    	home, SegmentedControl);
-    var seg_spans = TestUtils.scryRenderedDOMComponentsWithTag(
-    	seg_ctrl, 'span');
-    var span_en = null;
-    for(var i=0; i< seg_spans.length; i++){
-    	var seg_span = seg_spans[i];
-    	if(seg_span.value == 'en'){
-    		span_en = seg_span;
-    		console.log("Found ENNNNNNNNN!!!!!!");
-    		break;
-    	}
-    }
-    expect(seg_spans.length).toEqual(2);
-    expect(span_en).toEqual(null);
-    //expect(seg_ctrl.value).toEqual('en');
-    
-    // now let's switch to English....
+        home, SegmentedControl);
+    var seg_inputs = TestUtils.scryRenderedDOMComponentsWithTag(
+        seg_ctrl, 'input');
+    this.segCtrl = seg_ctrl;
+    this.segInputs = seg_inputs;
 
+    expect(seg_inputs.length).toEqual(2);
+    this.input_en = seg_inputs[0];
+    this.input_fr = seg_inputs[1];
   });
+
+  it('renders default in frech', function () {
+    // by default, it should have french welcom
+    expect(this.h2.textContent)
+        .toEqual("Bienvenue à Dillinger!");
+    });
+
+  it('switch to english', function(){
+    TestUtils.Simulate.change(this.input_en, {"target": {"checked": true}}); //ick(this.input_en);
+    expect(this.h2.textContent)
+        .toEqual("Welcome to Dillinger!");
+    
+  });
+  
+  it('switch to french', function(){
+    TestUtils.Simulate.change(this.input_fr, {"target": {"checked": true}}); //ick(this.input_en);
+    expect(this.h2.textContent).toEqual("Bienvenue à Dillinger!");
+  });
+
 });
