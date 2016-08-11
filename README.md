@@ -56,7 +56,7 @@
 
 2. Log in with your Heroku account: `heroku login`
 
-3. Add the Heroku remote in the root folder: `git remote set-url heroku https://git.heroku.com/visav.git`
+3. Add the Heroku remote in the root folder: `heroku git:remote -a visav`
 
 ##### Environment Variables
 
