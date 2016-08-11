@@ -106,3 +106,15 @@ FACEBOOK_APP_ID  = (Obtain from command: heroku config -a visav)
 
 Everything will automatically build on Heroku. Just run `git push heroku master`
 
+## How to Login
+
+The login page can be found at /#/login
+
+There is a predefined test user with following credentials:
+
+```
+Username: dev@test.user
+Password: testtest
+```
+
+You may also create a user using the signup page found at /#/signup.
