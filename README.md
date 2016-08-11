@@ -16,6 +16,7 @@
   - [Backend Server](#backend-server)
   - [Front End Development Server](#front-end-development-server)
 * [How to Publish](#how-to-publish)
+* [How to Login](#how-to-login)
 
 ## How to Install
 
@@ -105,4 +106,12 @@ FACEBOOK_APP_ID  = (Obtain from command: heroku config -a visav)
 ## How to Publish
 
 Everything will automatically build on Heroku. Just run `git push heroku master`
+
+## How to Login
+
+(This assumes you are running the front-end client in development mode)
+
+1. Load the Sign Up screen: [http://localhost:3000/#/signup/](http://localhost:3000/#/signup/) and create an account
+
+2. Sign In: [http://localhost:3000/#/login/](http://localhost:3000/#/login/)
 
