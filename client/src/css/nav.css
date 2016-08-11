@@ -2,8 +2,8 @@
 
 .nav {
   display: flex;
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
 
   &.horizontal-nav {
     flex-direction: row;
@@ -43,6 +43,7 @@
   span {
     color: $color-NavItem-text;
   }
+
   .img-container {
     display: flex;
     justify-content: center;
@@ -51,12 +52,11 @@
     width: 30px;
     margin-right: 10px;
 
-    img{
+    img {
       height: 100%;
       width: 100%;
     }
   }
-
 
   &.selected {
     background-color: $color-NavItem-bg-selected;

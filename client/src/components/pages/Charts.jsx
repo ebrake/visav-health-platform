@@ -60,12 +60,13 @@ let width = 700,
 var x = (d) => {
   return d.index;
 };
-var Charts = React.createClass({
-  mixins: null,
-  cursors: {
-    list: ['list']
-  },
-  render: function () {
+class Charts extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }  
+
+  render() {
     return (
       <div className="Charts page">
         <MainHeader />
@@ -85,7 +86,7 @@ var Charts = React.createClass({
 
     );
   }
-});
+};
 
 export default Charts;
 

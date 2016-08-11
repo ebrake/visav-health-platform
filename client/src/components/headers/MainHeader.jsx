@@ -2,17 +2,12 @@ import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import SegmentedControl from 'react-segmented-control'
 import NavItem from '../nav/NavItem'
-var MainHeader = React.createClass({
-  mixins: null,
-  cursors: {
-    list: ['list']
-  },
-  getInitialState() {
-    return {
-
-    };
-  },
-  render: function () {
+class MainHeader extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  render () {
     return (
       <div className="MainHeader header">
         <div className="header-row">
@@ -27,6 +22,7 @@ var MainHeader = React.createClass({
       </div>
     );
   }
-});
+};
+
 
 export default MainHeader;

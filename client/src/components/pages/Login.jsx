@@ -2,14 +2,22 @@ import React, { Component } from 'react';
 import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
 import { hashHistory } from 'react-router';
+class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    };
+    this.login = this.login.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentWillUnmount = this.componentWillUnmount.bind(this);
 
-var Login = React.createClass({
-  mixins: null,
-  cursors: {
-    list: ['list']
-  },
-  login: function() {
-    fetch('http://localhost:4000/user/login', {
+  }  
+
+  login() {
+    fetch(process.env.API_ROOT + 'user/login', {
       method: 'POST', 
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
@@ -28,34 +36,28 @@ var Login = React.createClass({
       console.log('Error:');
       console.dir(err);
     })
-  },
-  logout: function() {
+  }
+  logout() {
     hashHistory.push('/logout');
-  },
-  handleChange: function(key) {
+  }
+  handleChange(key) {
     return function(event) {
       var state = {};
       state[key] = event.target.value;
       this.setState(state);
     }.bind(this);
-  },
-  accountChanged: function(state) {
+  }
+  accountChanged(state) {
     console.log("Account Store changed:");
     console.dir(state);
-  },
-  getInitialState: function() {
-    return {
-      email: '',
-      password: ''
-    }
-  },
-  componentDidMount: function(){
+  }
+  componentDidMount(){
     AccountStore.listen(this.accountChanged);
-  },
-  componentWillUnmount: function(){
+  }
+  componentWillUnmount(){
     AccountStore.unlisten(this.accountChanged);
-  },
-  render: function () {
+  }
+  render() {
     return (
       <div className="App">
         <div className="App-header">
@@ -82,7 +84,7 @@ var Login = React.createClass({
       </div>
     );
   }
-});
+};
 
 export default Login;
 

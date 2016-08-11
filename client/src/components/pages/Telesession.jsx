@@ -26,7 +26,7 @@ class Telesession extends React.Component {
   createSession() {
 
     fetch(
-      config.get('baseUrl').concat('Telesessions/createSession'), 
+      process.env.API_ROOT + 'api/Telesessions/createSession', 
       {
         method: 'POST', 
         headers: {

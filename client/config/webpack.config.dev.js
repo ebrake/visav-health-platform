@@ -117,7 +117,13 @@ module.exports = {
       files: '**/*.css',
       failOnError: false,
     }),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"development"' }),
+    new webpack.DefinePlugin({
+      'process.env':{
+        'NODE_ENV': JSON.stringify('development'),
+        'API_ROOT': JSON.stringify('http://localhost:4000/')
+      }
+    }),
+
     // Note: only CSS is currently hot reloaded
     new webpack.HotModuleReplacementPlugin()
   ]

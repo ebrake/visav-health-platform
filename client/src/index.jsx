@@ -13,7 +13,7 @@ global.Header = function(args) {
 
 //Loopback config
 import { config } from 'react-loopback';
-config.set('baseUrl', 'http://localhost:4000/api/');
+config.set('baseUrl', process.env.API_ROOT + 'api/');
 config.set('access_token', 'I_AM_AN_ACCESS_TOKEN');
 config.set('OPENTOK_API_KEY', '45631802');
 

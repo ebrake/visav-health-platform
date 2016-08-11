@@ -16,24 +16,21 @@ let strings = new LocalizedStrings({
    french:"Français"
   }
 });
-
-var PatientProfile = React.createClass({
-  mixins: null,
-  cursors: {
-    list: ['list']
-  },
-  updateLanguage: function(language) {
-    strings.setLanguage(language);
-    this.setState({language: language});
-  },
-  getInitialState() {
+class PatientProfile extends React.Component {
+  constructor(props) {
+    super(props);
     let accountState = AccountStore.getState();
-    return {
+    this.state = {
       language: 'en',
       user: accountState.user
     };
-  },
-  render: function () {
+    this.updateLanguage = this.updateLanguage.bind(this);
+  } 
+  updateLanguage(language) {
+    strings.setLanguage(language);
+    this.setState({language: language});
+  }
+  render() {
     return (
       <div className="PatientProfile profile page">
         <MainHeader />
@@ -44,7 +41,7 @@ var PatientProfile = React.createClass({
       </div>
     );
   }
-});
+};
 
 export default PatientProfile;
 
