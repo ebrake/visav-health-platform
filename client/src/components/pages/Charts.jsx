@@ -61,6 +61,11 @@ var x = (d) => {
   return d.index;
 };
 class Charts extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }  
+
   render() {
     return (
       <div className="Charts page">
