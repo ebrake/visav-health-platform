@@ -63,5 +63,13 @@
   "HealthData": {
     "dataSource": "psql",
     "public": true
+  },
+  "Exercise": {
+    "dataSource": "psql",
+    "public": true
+  },
+  "Rep": {
+    "dataSource": "psql",
+    "public": true
   }
 }

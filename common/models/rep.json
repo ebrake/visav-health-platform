@@ -1,46 +1,43 @@
 {
-  "name": "HealthData",
+  "name": "Rep",
+  "plural": "Reps",
   "base": "PersistedModel",
   "idInjection": true,
-  "indexes": {
-    "unique_person_and_date": {
-      "keys": {
-        "person": 1,
-        "date": -1
-      },
-      "options": {
-        "unique": true
-      }
-    }
-  },
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "type": {
+    "value": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "unit": {
       "type": "string",
       "required": true,
-      "default": "exercise"
+      "default": "\"\""
     },
-    "data": {
-      "type": "object",
+    "date": {
+      "type": "date",
       "required": true,
-      "default": {}
+      "default": null
     },
-    "description": {
+    "duration": {
+      "type": "number",
+      "default": 0
+    },
+    "isDemo": {
+      "type": "boolean",
+      "default": false
+    },
+    "note": {
       "type": "string",
       "default": ""
     },
     "createdDate": {
       "type": "date",
-      "required": true
-    },
-    "date": {
-      "type": "date",
-      "required": true
-    },
-    "duration": {
-      "type": "number"
+      "required": true,
+      "default": "$now"
     }
   },
   "validations": [],

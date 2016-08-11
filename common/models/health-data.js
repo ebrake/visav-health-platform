@@ -6,24 +6,16 @@ module.exports = function(Healthdata) {
   //need to create and store a Healthdata instance from an object in the array sent to receiveData
   var persistHealthdataInstance = function(person, rawData, body) {
     return new Promise(function(resolve, reject){
-      var startDate = rawData.startDate
-      , endDate = rawData.endDate || undefined
+      var date = rawData.date
+      , duration = rawData.duration || undefined
       , description = rawData.description || ''
-      , data = rawData.data;
+      , type = rawData.type || 'exercise';
 
       if (typeof startDate != 'date') {
         try { 
           startDate = new Date(Number(startDate));
         } catch(e) { 
           return reject(e); 
-        }
-      }
-
-      if (endDate && typeof endDate != 'date') {
-        try {
-          endDate = new Date(Number(body.endDate));
-        } catch(e) { 
-          endDate = undefined;
         }
       }
         
@@ -47,11 +39,12 @@ module.exports = function(Healthdata) {
 
         var healthObj = {
           person: person.id,
-          startDate: startDate,
-          endDate: endDate,
+          date: date,
+          duration: duration,
           createdDate: new Date(),
-          data: data,
-          description: description
+          data: rawData,
+          description: description,
+          type: type
         };
 
         if (entries.length > 0) {
@@ -102,7 +95,6 @@ module.exports = function(Healthdata) {
       console.log(err);
       return cb(null, { status: 'failure', message: err.message });
     })
-
   }
 
   Healthdata.remoteMethod(
