@@ -17,8 +17,7 @@ module.exports = function(Telesession) {
     const opentok = new OpenTok(apiKey, apiSecret);
 
     opentok.createSession(function(err, session) {
-      // var Telesession = app.models.Person;
-    	// TODO: Get telesession
+
       if (err) return cb(err, session);
 
       Telesession.create({
@@ -27,7 +26,9 @@ module.exports = function(Telesession) {
 
         if (err) return cb(err, session);
       
-        var token = opentok.generateToken(session.sessionId);
+        var token = session.generateToken({
+          expireTime : (new Date().getTime() / 1000)+(7 * 24 * 60 * 60), // in one week
+        });
 
         var response = {
           session: session,
@@ -45,6 +46,33 @@ module.exports = function(Telesession) {
     'createSession',
     {
       http: {path: '/createSession', verb: 'post'},
+      returns: {arg: 'telesession', root: true}
+    }
+  );
+
+  Telesession.createToken = function(req, cb) {
+
+    // Initialize OpenTok
+    const opentok = new OpenTok(apiKey, apiSecret);
+
+    var token = opentok.generateToken(req.body.sessionId, {
+      expireTime : (new Date().getTime() / 1000)+(7 * 24 * 60 * 60), // in one week
+    });
+
+    var response = {
+      token: token
+    }
+    cb(nil, response);
+
+  }
+
+  Telesession.remoteMethod(
+    'createToken',
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } }
+      ],
+      http: {path: '/createToken', verb: 'post'},
       returns: {arg: 'telesession', root: true}
     }
   );

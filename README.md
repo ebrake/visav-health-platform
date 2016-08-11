@@ -16,6 +16,7 @@
   - [Backend Server](#backend-server)
   - [Front End Development Server](#front-end-development-server)
 * [How to Publish](#how-to-publish)
+* [How to Login](#how-to-login)
 
 ## How to Install
 
@@ -66,6 +67,8 @@ PORT			= 4000
 NODE_ENV 		= development
 OPENTOK_API_KEY = (Obtain from command: heroku config -a visav)
 OPENTOK_SECRET 	= (Obtain from command: heroku config -a visav)
+FACEBOOK_APP_SECRET  = (Obtain from command: heroku config -a visav)
+FACEBOOK_APP_ID  = (Obtain from command: heroku config -a visav)
 ```
 
 > You can also use a command line tool [https://github.com/xavdid/heroku-config](https://github.com/xavdid/heroku-config) to copy in Heroku environment variables to a .env file. Just remember to set `PORT=4000` and `NODE_ENV=development`, on your local project!
@@ -103,4 +106,19 @@ OPENTOK_SECRET 	= (Obtain from command: heroku config -a visav)
 ## How to Publish
 
 Everything will automatically build on Heroku. Just run `git push heroku master`
+
+## How to Login
+
+There is a predefined test user with following credentials:
+
+```
+Username: dev@test.user
+Password: testtest
+```
+
+(This assumes you are running the front-end client in development mode)
+
+1. (Optional) Load the Sign Up screen: [http://localhost:3000/#/signup/](http://localhost:3000/#/signup/) and create an account
+
+2. Sign In: [http://localhost:3000/#/login/](http://localhost:3000/#/login/)
 
