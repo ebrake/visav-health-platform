@@ -112,7 +112,7 @@ module.exports = function(Healthdata) {
         { arg: 'req', type: 'object', http: { source: 'req' } },
         { arg: 'data', type: 'object' }
       ],
-      http: { path: '/create', verb: 'post' },
+      http: { path: '/create', verb: 'put' },
       returns: { arg: 'result', type: 'object' },
       description: "Creates a new instance of Healthdata, attaches it to the user who made the request, updates if it already exists, persists it to the data source, and returns the created object."
     }
