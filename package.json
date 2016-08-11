@@ -15,7 +15,7 @@
     "postinstall": "npm run build-client && npm run package-prod && npm run package-client",
     "pretest": "eslint .",
     "posttest": "nsp check",
-    "testclient": "./node_modules/karma/bin/karma start ./config/karma.conf.client.js"
+    "testclient": "./node_modules/karma/bin/karma start ./test/karma.conf.client.js"
   },
   "dependencies": {
     "babel-cli": "^6.11.4",

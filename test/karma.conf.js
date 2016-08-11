@@ -1,5 +1,7 @@
 // Karma default configuration.
 // Enables the running of source code (i.e. JavaScript) against real browsers via the CLI.
+// Karma as a test runner, Mocha as a testing framework, and Webpack as a module loader.
+
 var webpack = require('webpack');
 
 var settings = {
@@ -29,6 +31,7 @@ var settings = {
     },
 
     webpackServer: {
+      // keep the output clear.
       noInfo: true
     }
   };
