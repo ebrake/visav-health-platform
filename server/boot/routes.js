@@ -1,17 +1,23 @@
 import React from "react";
 import Router from "react-router";
 import ReactDOMServer from 'react-dom/server'
-import cons from 'consolidate'
+import exphbs from 'express-handlebars'
 import loopback from 'loopback'
-import Charts from '../../client/src/components/pages/Charts.jsx'
-import Login from '../../client/src/components/pages/Login.jsx'
+import System from 'systemjs'
 
 const clientDir = (process.env.NODE_ENV=="production" ? "client-dist" : "client")
 
+// IMPORTANT: Do not delete. Needed for production
+SystemJS.import('../../'+clientDir+'/src/components/pages/Charts.jsx').then(function (_) {
+});
+SystemJS.import('../../'+clientDir+'/src/components/pages/Login.jsx').then(function (_) {
+});
 
 module.exports = function routes(app) {
-  app.engine("html", cons.handlebars);
-  app.set("view engine", "html");
+
+  app.engine('handlebars', exphbs({extname: '.html'}));
+  app.set('view engine', 'handlebars');
+
   app.set("views", "public/views");
   app.use(loopback.static(clientDir+"/build"));
 
@@ -21,7 +27,7 @@ module.exports = function routes(app) {
     const html = ReactDOMServer.renderToString(factory({}));
     res.render("index", {
       markup: html,
-      clientDir: 'client',
+      clientDir: clientDir,
       bootstrap: JSON.stringify(bootstrap)
     });
   });
@@ -31,7 +37,7 @@ module.exports = function routes(app) {
     const html = ReactDOMServer.renderToString(factory({}));
     res.render("index", {
       markup: html,
-      clientDir: 'client',
+      clientDir: clientDir,
       bootstrap: JSON.stringify(bootstrap)
     });
   });
@@ -41,7 +47,7 @@ module.exports = function routes(app) {
     const html = ReactDOMServer.renderToString(factory({}));
     res.render("index", {
       markup: html,
-      clientDir: 'client',
+      clientDir: clientDir,
       bootstrap: JSON.stringify(bootstrap)
     });
   });
