@@ -29,10 +29,10 @@ class Telesession extends React.Component {
       process.env.API_ROOT + 'api/Telesessions/createSession', 
       {
         method: 'POST', 
-        headers: {
+        headers: new Header({
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        },
+        }),
         body: JSON.stringify({}) 
       }
     ).then(responseObject => responseObject.json())

@@ -193,7 +193,7 @@ module.exports = function(Exercise) {
       limit: limit || retrieveLimit
     }, function(err, data){ 
       if (err) return cb(null, { status: 'failure', message: err.message });
-      return cb(null, { status: 'success', data: data });
+      return cb(null, { status: 'success', exercises: data });
     });
   }
 
