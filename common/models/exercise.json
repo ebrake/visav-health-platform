@@ -9,12 +9,25 @@
   "properties": {
     "date": {
       "type": "date",
+      "dataType": "decimal",
       "required": true,
       "default": "$now"
     },
     "duration": {
       "type": "number",
-      "default": 0
+      "default": 0,
+      "required": true,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "duration",
+        "dataType": "decimal",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      }
     },
     "isDemo": {
       "type": "boolean",

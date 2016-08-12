@@ -9,8 +9,9 @@ module.exports = function(Exercise) {
 
       if (typeof date != 'date') {
         try { 
-          date = new Date(Number(date));
-        } catch(e) { return reject(e); }
+          date = new Date(date);
+        } catch(e) { 
+          return reject(e); }
       }
 
       if (!date) {
@@ -83,9 +84,10 @@ module.exports = function(Exercise) {
         , reps = exercise.reps;
 
       if (typeof date != 'date') {
-        try { 
-          date = new Date(Number(date));
-        } catch(e) { return reject(e); }
+        try {
+          date = new Date(date);
+        } catch(e) { 
+          return reject(e); }
       }    
 
       if (!date) {

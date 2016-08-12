@@ -9,8 +9,19 @@
   "properties": {
     "value": {
       "type": "number",
+      "default": 0,
       "required": true,
-      "default": 0
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "value",
+        "dataType": "decimal",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      }
     },
     "unit": {
       "type": "string",
@@ -24,7 +35,19 @@
     },
     "duration": {
       "type": "number",
-      "default": 0
+      "default": 0,
+      "required": true,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "duration",
+        "dataType": "decimal",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      }
     },
     "isDemo": {
       "type": "boolean",
