@@ -41,8 +41,8 @@
     "public": true
   },
   "Telesession": {
-    "public": true,
-    "dataSource": "psql"
+    "dataSource": "psql",
+    "public": true
   },
   "installation": {
     "dataSource": "psql",
@@ -57,6 +57,14 @@
     "public": true
   },
   "Person": {
+    "dataSource": "psql",
+    "public": true
+  },
+  "Exercise": {
+    "dataSource": "psql",
+    "public": true
+  },
+  "Rep": {
     "dataSource": "psql",
     "public": true
   }
