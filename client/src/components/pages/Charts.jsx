@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import { Chart } from 'react-d3-core';
 import { LineChart } from 'react-d3-basic';
-
+import MainHeader from '../headers/MainHeader'
 let chartData = [
   {
     name: "Lavon Hilll I",
@@ -60,14 +60,16 @@ let width = 700,
 var x = (d) => {
   return d.index;
 };
-var Charts = React.createClass({
-  mixins: null,
-  cursors: {
-    list: ['list']
-  },
-  render: function () {
+class Charts extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }  
+
+  render() {
     return (
-      <div className="Charts">
+      <div className="Charts page">
+        <MainHeader />
         <div className="title-container">
           <h2 className="title">Charts</h2>
         </div>
@@ -84,7 +86,7 @@ var Charts = React.createClass({
 
     );
   }
-});
+};
 
 export default Charts;
 

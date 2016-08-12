@@ -1,1 +1,13 @@
 $selectedColor: #0ff;
+
+/* HEADER */
+$color-header-bg: #aaa;
+
+/* NAVIGATION */
+
+$color-NavItem-bg: transparent;
+$color-NavItem-text: #0ff;
+$color-NavItem-bg-selected: #f00;
+$color-NavItem-text-selected: #f0f;
+$color-NavItem-bg-hover: #0ff;
+$color-NavItem-text-hover: $color-header-bg;

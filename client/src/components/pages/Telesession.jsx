@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import scriptLoader from 'react-async-script-loader'
 import { config } from 'react-loopback';
+import MainHeader from '../headers/MainHeader';
 
 @scriptLoader(
   'https://static.opentok.com/v2/js/opentok.min.js'
@@ -25,7 +26,7 @@ class Telesession extends React.Component {
   createSession() {
 
     fetch(
-      config.get('baseUrl').concat('Telesessions/createSession'), 
+      process.env.API_ROOT + 'api/Telesessions/createSession', 
       {
         method: 'POST', 
         headers: {
@@ -75,7 +76,8 @@ class Telesession extends React.Component {
     else jsLoaded = <p><font color="red">Warning: Video can't load due to a JavaScript error.</font></p>;
 
     return (
-      <div>
+      <div className="Telesession">
+        <MainHeader />
         <button onClick={this.createSession.bind(this)}><h1>Create Session</h1></button>
         {jsLoaded}
         <div className="videoContainer">

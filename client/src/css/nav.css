@@ -1,0 +1,76 @@
+@import 'colors.css';
+
+.nav {
+  display: flex;
+  padding: 0;
+  margin: 0;
+
+  &.horizontal-nav {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+
+    .NavItem {
+      img {
+        max-height: 30px;
+      }
+    }
+  }
+
+  &.vertical-nav {
+    align-items: center;
+    justify-content: stretch;
+    flex-direction: column;
+
+    .NavItem {
+      img {
+        max-width: 30px;
+      }
+    }
+  }
+}
+
+.NavItem {
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 1px;
+  cursor: pointer;
+  background-color: $color-NavItem-bg;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    color: $color-NavItem-text;
+  }
+
+  .img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  &.selected {
+    background-color: $color-NavItem-bg-selected;
+
+    span {
+      color: $color-NavItem-text-selected;
+    }
+  }
+
+  &:hover {
+    background-color: $color-NavItem-bg-hover;
+
+    span {
+      color: $color-NavItem-text-hover;
+    }
+  }
+}

@@ -1,4 +1,9 @@
 {
   "name": "notification",
-  "base": "Notification"
+  "base": "Notification",
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
 }
