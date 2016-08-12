@@ -1,0 +1,53 @@
+{
+  "name": "Rep",
+  "plural": "Reps",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "value": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "unit": {
+      "type": "string",
+      "required": true,
+      "default": "\"\""
+    },
+    "date": {
+      "type": "date",
+      "required": true,
+      "default": null
+    },
+    "duration": {
+      "type": "number",
+      "default": 0
+    },
+    "isDemo": {
+      "type": "boolean",
+      "default": false
+    },
+    "note": {
+      "type": "string",
+      "default": ""
+    },
+    "createdDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "person": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "person"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

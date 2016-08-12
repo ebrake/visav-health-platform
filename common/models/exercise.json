@@ -1,0 +1,52 @@
+{
+  "name": "Exercise",
+  "plural": "Exercises",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "date": {
+      "type": "date",
+      "required": true,
+      "default": null
+    },
+    "duration": {
+      "type": "number",
+      "default": 0
+    },
+    "isDemo": {
+      "type": "boolean",
+      "default": false
+    },
+    "type": {
+      "type": "string",
+      "default": ""
+    },
+    "note": {
+      "type": "string",
+      "default": ""
+    },
+    "createdDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "has_many_reps": {
+      "type": "hasMany",
+      "model": "Rep",
+      "foreignKey": "exercise"
+    },
+    "person": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "person"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
