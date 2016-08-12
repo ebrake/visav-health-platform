@@ -41,24 +41,22 @@ module.exports = function(Exercise) {
           //upsert doesn't actually work as we can't make a composite key involving a foreign key in loopback, so just remove it and insert the updated one
           Rep.destroyById(entries[0].id, function(err2){
             if (err2) return reject(err2);
-            Rep.create(RepObj, function(err3, createdExercise) {
+            Rep.create(RepObj, function(err3, createdRep) {
               if (err3) return reject(err3);
               createdRep.save(function(err4){
                 if (err4) return reject(err4);
-                console.log("Upserted Rep:");
-                console.log(createdRep);
+                console.log("Upserted Rep: "+createdRep.id);
                 return resolve(createdRep);
               })
             });
           })
         } else {
           //insert
-          Rep.create(RepObj, function(err2, createdHealthdata) {
+          Rep.create(RepObj, function(err2, createdRep) {
             if (err2) return reject(err2);
             createdRep.save(function(err3){
               if (err3) return reject(err3);
-              console.log("Inserted Rep:");
-              console.log(createdRep);
+              console.log("Inserted Rep: "+createdRep.id);
               return resolve(createdRep);
             })
           });
@@ -68,7 +66,7 @@ module.exports = function(Exercise) {
   }
 
   var saveReps = function(reps, person, exercise, Rep) {
-    Promise.all(reps.map(function(rep){
+    return Promise.all(reps.map(function(rep){
       return saveRep(rep, person, exercise, Rep);
     }))
     .then(function(reps){
@@ -120,20 +118,18 @@ module.exports = function(Exercise) {
               if (err3) return reject(err3);
               createdExercise.save(function(err4){
                 if (err4) return reject(err4);
-                console.log("Upserted Exercise:");
-                console.log(createdExercise);
+                console.log("Upserted Exercise: "+createdExercise.id);
                 return resolve(saveReps(reps, person, createdExercise, Rep));
               })
             });
           })
         } else {
           //insert
-          Exercise.create(ExerciseObj, function(err2, createdHealthdata) {
+          Exercise.create(ExerciseObj, function(err2, createdExercise) {
             if (err2) return reject(err2);
             createdExercise.save(function(err3){
               if (err3) return reject(err3);
-              console.log("Inserted Exercise:");
-              console.log(createdExercise);
+              console.log("Inserted Exercise: "+createdExercise.id);
               return resolve(saveReps(reps, person, createdExercise, Rep));
             })
           });
@@ -151,13 +147,16 @@ module.exports = function(Exercise) {
       , Rep = req.app.models.Rep;
 
     Promise.all(data.map(function(exercise){
-      return saveExerciseAndReps(exercise, person);
+      //We don't actually have the Rep model anywhere except on the request, so we need to pass it down the chain
+      return saveExerciseAndReps(exercise, person, Rep);
     }))
     .then(function(results){
-      return cb(null, { status: 'success', data: results });
+      console.log("Results:");
+      console.log(results);
+      return cb(null, { status: 'success' });
     })
     .catch(function(err){
-      console.log("Issue creating healthdata:");
+      console.log("Issue creating exercise data:");
       console.log(err);
       return cb(null, { status: 'failure', message: err.message });
     }) 
@@ -167,7 +166,7 @@ module.exports = function(Exercise) {
     "receiveData",
     {
       accepts: [
-        { arg: 'req', type: 'object', http: { ssource: 'req' } },
+        { arg: 'req', type: 'object', http: { source: 'req' } },
         { arg: 'data', type: 'object' }
       ],
       http: { path: '/create', verb: 'put' },
@@ -189,11 +188,12 @@ module.exports = function(Exercise) {
 
     Exercise.find({
       where: { person: person.id },
+      include: 'reps',
       order: "date DESC",
       limit: limit || retrieveLimit
     }, function(err, data){ 
       if (err) return cb(null, { status: 'failure', message: err.message });
-      return cb(null, { status: 'success', data: data });
+      return cb(null, { status: 'success', exercises: data });
     });
   }
 

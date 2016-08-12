@@ -17,29 +17,32 @@ class Login extends React.Component {
   }  
 
   login() {
-    fetch(process.env.API_ROOT + 'user/login', {
-      method: 'POST', 
-      headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ email: this.state.email, password: this.state.password })
-    }).then(function(response){
-      return response.json();
-    })
-    .then(function(data){
+    fetch(
+      process.env.API_ROOT + 'user/login', 
+      {
+        method: 'POST', 
+        headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ email: this.state.email, password: this.state.password })
+      }
+    ).then(responseObject => responseObject.json())
+    .then(data => {
       AccountActions.loginUser(data);
 
       //redirect
       console.log('Login successful! Redirecting...');
       hashHistory.push('/me');
     })
-    .catch(function(err){
+    .catch((err) => {
       //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
       console.log('Error:');
       console.dir(err);
     })
   }
+
   logout() {
     hashHistory.push('/logout');
   }
+
   handleChange(key) {
     return function(event) {
       var state = {};
@@ -47,16 +50,20 @@ class Login extends React.Component {
       this.setState(state);
     }.bind(this);
   }
+
   accountChanged(state) {
     console.log("Account Store changed:");
     console.dir(state);
   }
+
   componentDidMount(){
     AccountStore.listen(this.accountChanged);
   }
+
   componentWillUnmount(){
     AccountStore.unlisten(this.accountChanged);
   }
+
   render() {
     return (
       <div className="App">
@@ -87,4 +94,3 @@ class Login extends React.Component {
 };
 
 export default Login;
-

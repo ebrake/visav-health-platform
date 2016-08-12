@@ -10,7 +10,7 @@
     "date": {
       "type": "date",
       "required": true,
-      "default": null
+      "default": "$now"
     },
     "duration": {
       "type": "number",
@@ -36,7 +36,7 @@
   },
   "validations": [],
   "relations": {
-    "has_many_reps": {
+    "reps": {
       "type": "hasMany",
       "model": "Rep",
       "foreignKey": "exercise"
