@@ -17,7 +17,9 @@
     "posttest": "nsp check",
     "test-client": "./node_modules/.bin/karma start ./QA/test/karma.conf.client.js",
     "test-client-debug": "./node_modules/.bin/karma start ./QA/test/karma.conf.client.js --debug",
-    "test-server": "./node_modules/.bin/mocha ./server/__tests__/**/*.js"
+    "test-server": "./node_modules/.bin/mocha ./server/__tests__/**/*.js",
+    "doc-server": "./node_modules/.bin/jsdoc -c ./QA/jsdoc/server.config.json",
+    "doc-client": "./node_modules/.bin/jsdoc -c ./QA/jsdoc/client.config.json"
   },
   "dependencies": {
     "babel-cli": "^6.11.4",
