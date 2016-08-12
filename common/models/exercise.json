@@ -36,7 +36,7 @@
   },
   "validations": [],
   "relations": {
-    "has_many_reps": {
+    "reps": {
       "type": "hasMany",
       "model": "Rep",
       "foreignKey": "exercise"

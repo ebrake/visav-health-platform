@@ -153,10 +153,10 @@ module.exports = function(Exercise) {
     .then(function(results){
       console.log("Results:");
       console.log(results);
-      return cb(null, { status: 'success', data: results });
+      return cb(null, { status: 'success' });
     })
     .catch(function(err){
-      console.log("Issue creating healthdata:");
+      console.log("Issue creating exercise data:");
       console.log(err);
       return cb(null, { status: 'failure', message: err.message });
     }) 
@@ -188,6 +188,7 @@ module.exports = function(Exercise) {
 
     Exercise.find({
       where: { person: person.id },
+      include: 'reps',
       order: "date DESC",
       limit: limit || retrieveLimit
     }, function(err, data){ 
