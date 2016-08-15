@@ -22,8 +22,8 @@ import './css/base.css';
 import './css/App.css';
 import './css/SegmentedControl.css'
 import './css/Telesession.css';
-import './css/Header.css';
-import './css/Nav.css';
+import './css/header.css';
+import './css/nav.css';
 
 //import main app component
 import App from './components/App.jsx';
