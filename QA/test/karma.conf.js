@@ -30,6 +30,9 @@ var settings = {
       devtool: 'inline-source-map',
       module: {
         loaders: [
+          // loader for jade
+          // {test: /\.jade$/, loader: 'jade'},
+          
           { test: /\.js/, exclude:/node_modules/, loader: 'babel-loader' },
           { test: /\.jsx/, exclude:/node_modules/, loader: 'babel-loader' }     
         ]
