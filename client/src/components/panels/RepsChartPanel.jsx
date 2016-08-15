@@ -78,7 +78,7 @@ class RepsChartPanel extends React.Component {
 
   render() {
     return (
-      <div className="RepsChartPanel panel">
+      <div className="RepsChartPanel graph-panel panel">
         <h1 className="title">Rep chart for exercise: {this.exerciseName}</h1>
         <LineChart
           margins= {margins}

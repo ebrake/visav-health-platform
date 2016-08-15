@@ -92,7 +92,7 @@ class Exercises extends React.Component {
 
   render() {
     return (
-      <div className="Exercises panel">
+      <div className="Exercises graph-panel panel">
         <h1 className="title">Exercises Chart</h1>
         <LineChart
           margins= {margins}
