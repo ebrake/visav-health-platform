@@ -17,8 +17,6 @@ var cacheStores = () => {
   localStorage.setItem('snapshot', snapshot);
 }
 
-window.addEventListener('unload', cacheStores);
-
 var authCheck = (nextState, replace) => {
   let snapshot = localStorage.getItem('snapshot');
   alt.bootstrap(snapshot);
@@ -38,15 +36,15 @@ var logout = (nextState, replace) => {
 
 var routes = (
   <Router history={hashHistory}>
-    <Route path="/" component={Home} />
-    <Route path="/login" component={Login} />
-    <Route path="/signup" component={Signup} />
-    <Route path="/charts" component={Charts} onEnter={authCheck} />
-    <Route path="/telesession" component={Telesession} onEnter={authCheck} />
-    <Route path="/patient" component={PatientProfile} onEnter={authCheck} />
-    <Route path="/me" component={PatientProfile} onEnter={authCheck} />
-    <Route path="/doctor" component={DoctorProfile} onEnter={authCheck} />
-    <Route path="/logout" onEnter={logout} />
+    <Route path="/" component={Home} onLeave={cacheStores} />
+    <Route path="/login" component={Login} onLeave={cacheStores} />
+    <Route path="/signup" component={Signup} onLeave={cacheStores} />
+    <Route path="/charts" component={Charts} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/telesession" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/patient" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/me" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/doctor" component={DoctorProfile} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/logout" onEnter={logout} onLeave={cacheStores} />
   </Router>
 );
 
