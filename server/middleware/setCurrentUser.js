@@ -1,5 +1,3 @@
-var loopback = require('loopback');
-
 module.exports = function() {
   return function setCurrentUser(req, res, next) {
     if (!req.accessToken) {
@@ -14,12 +12,6 @@ module.exports = function() {
       }
 
       delete user.password;
-
-      var loopbackContext = loopback.getCurrentContext();
-      if (loopbackContext) {
-        loopbackContext.set('user', user);
-      }
-
       req.user = user;
 
       next();
