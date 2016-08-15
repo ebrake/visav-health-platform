@@ -1,0 +1,20 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "source": {
+        "include" :["client/src/components", "client/src/alt", "client/scripts"],
+        "includePattern": ".+\\.js(jsx)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": [],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    },
+    "opts": {
+        "recurse" : true,
+        "destination": "./QA/jsdoc/client"
+    }
+}

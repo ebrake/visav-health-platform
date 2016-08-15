@@ -14,7 +14,12 @@
     "package-prod": "npm run clean-prod-package && cp -rf server server-dist && ./node_modules/.bin/babel --optional runtime -d server-dist ./server",
     "postinstall": "npm run build-client && npm run package-prod && npm run package-client",
     "pretest": "eslint .",
-    "posttest": "nsp check"
+    "posttest": "nsp check",
+    "test-client": "./node_modules/.bin/karma start ./QA/test/karma.conf.client.js",
+    "test-client-debug": "./node_modules/.bin/karma start ./QA/test/karma.conf.client.js --debug",
+    "test-server": "./node_modules/.bin/mocha ./server/__tests__/**/*.js",
+    "doc-server": "./node_modules/.bin/jsdoc -c ./QA/jsdoc/server.config.json",
+    "doc-client": "./node_modules/.bin/jsdoc -c ./QA/jsdoc/client.config.json"
   },
   "dependencies": {
     "babel-cli": "^6.11.4",
@@ -25,8 +30,8 @@
     "babel-preset-react": "^6.11.1",
     "bluebird": "^3.4.1",
     "compression": "^1.0.3",
-    "consolidate": "^0.14.1",
     "cors": "^2.5.2",
+    "express-handlebars": "^3.0.0",
     "fs": "0.0.2",
     "handlebars": "^4.0.5",
     "helmet": "^1.3.0",
@@ -43,15 +48,31 @@
     "react-router": "^2.6.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^1.0.1",
+    "systemjs": "^0.19.36",
     "uuid": "^2.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.11.4",
     "eslint": "^2.5.3",
-    "nsp": "^2.1.0"
+    "nsp": "^2.1.0",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
+    "expect": "^1.13.0",
+    "karma": "^0.13.15",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-cli": "1.0.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-mocha": "^1.0.1",
+    "karma-sourcemap-loader": "^0.3.6",
+    "karma-webpack": "^1.7.0",
+    "mocha": "^2.3.4",
+    "react-addons-test-utils": "^15.1.0",
+    "webpack": "^1.12.9",
+    "jsdoc": "^3.4.0"
   },
   "engines": {
-    "node": "6.3.0"
+    "node": "6.3.0",
+    "npm": "3.10.3"
   },
   "repository": {
     "type": "",

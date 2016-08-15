@@ -56,7 +56,7 @@
 
 2. Log in with your Heroku account: `heroku login`
 
-3. Add the Heroku remote in the root folder: `git remote set-url heroku https://git.heroku.com/visav.git`
+3. Add the Heroku remote in the root folder: `heroku git:remote -a visav`
 
 ##### Environment Variables
 
@@ -122,3 +122,17 @@ Password: testtest
 
 2. Sign In: [http://localhost:3000/#/login/](http://localhost:3000/#/login/)
 
+### Unit Test
+1. Client unit test:
+  1.1 Rebuild client distribution: `npm run package-client` 
+  1.2 Run unit test for client: `npm run test-client`
+2. Server unit test:
+  Run command: 'npm run test-server'
+
+### Generate javascript documentation.
+1. Generate client documentation:
+  Run command `npm run doc-client`
+  The docs will be generated in QA/jsdoc/client.
+2. Generate server documentation:
+  Run command `npm run doc-server`
+  The docs will be generated in QA/jsdoc/server.
