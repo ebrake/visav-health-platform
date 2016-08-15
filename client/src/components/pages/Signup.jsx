@@ -20,7 +20,7 @@ class Signup extends React.Component {
     if (!this.state.password) return console.log('No password!');
     let self = this;
     fetch(
-      process.env.API_ROOT + 'user/create', 
+      process.env.API_ROOT + 'api/people/create', 
       {
         method: 'POST', 
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
@@ -42,7 +42,7 @@ class Signup extends React.Component {
   }
 
   login() {
-    fetch(process.env.API_ROOT + 'user/login', {
+    fetch(process.env.API_ROOT + 'api/people/login', {
       method: 'POST', 
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
