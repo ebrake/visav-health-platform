@@ -17,6 +17,8 @@
   - [Front End Development Server](#front-end-development-server)
 * [How to Publish](#how-to-publish)
 * [How to Login](#how-to-login)
+* [How to Unit Test](#how-to-unit-test)
+* [How to Generate Documentation](#how-to-generate-documentation)
 
 ## How to Install
 
@@ -122,14 +124,14 @@ Password: testtest
 
 2. Sign In: [http://localhost:3000/#/login/](http://localhost:3000/#/login/)
 
-### Unit Test
+## How to Unit Test
 1. Client unit test:
   1.1 Rebuild client distribution: `npm run package-client` 
   1.2 Run unit test for client: `npm run test-client`
 2. Server unit test:
   Run command: 'npm run test-server'
 
-### Generate javascript documentation.
+## How to Generate Documentation.
 1. Generate client documentation:
   Run command `npm run doc-client`
   The docs will be generated in QA/jsdoc/client.
