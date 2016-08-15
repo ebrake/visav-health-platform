@@ -3,6 +3,8 @@ import scriptLoader from 'react-async-script-loader'
 import { config } from 'react-loopback';
 import MainHeader from '../headers/MainHeader';
 import RepsChartPanel from '../panels/RepsChartPanel';
+import ExercisesChartPanel from '../panels/ExercisesChartPanel';
+
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 @scriptLoader(
   'https://static.opentok.com/v2/js/opentok.min.js'
@@ -88,6 +90,7 @@ class Telesession extends React.Component {
         </div>
         <div className="charts-container">
           <RepsChartPanel />
+          <ExercisesChartPanel />
         </div>
       </div>
     );

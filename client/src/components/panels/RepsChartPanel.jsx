@@ -13,27 +13,16 @@ var x = (point) => {
 class RepsChartPanel extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
     this.state = {
       exercise: undefined,
-      exerciseName: 'LOADING...'
+      exerciseName: 'LOADING...',
+      chartSeries: []
     };
     ExerciseActions.getExercises();
     this.exercisesChanged = this.exercisesChanged.bind(this);
-  }
+    this.unit = this.unit.bind(this);
 
-  unit(){
-    if (this.state.exercise) {
-      console.log('EXERCISE:');
-      console.dir(this.state.exercise);
-      if (this.state.exercise.reps.length < 0) {
-        return this.state.exercise.reps[0].unit;
-      }
-      else return 'NO REPS';
-    }
-    else{
-      return 'NO EXERCISE';
-    }
-    
   }
 
   chartSeries(){
@@ -42,6 +31,14 @@ class RepsChartPanel extends React.Component {
       name: this.unit(),
       color: '#ff7f0e'
     }];
+  }
+
+  unit(){
+    var exercise = this.state.exercise;
+    if (exercise && exercise.reps && exercise.reps.length > 0){
+      return exercise.reps[0].unit;
+    }
+    else return 'No unit'
   }
 
   chartData(){
@@ -65,8 +62,10 @@ class RepsChartPanel extends React.Component {
   exercisesChanged(exerciseState){
     this.setState({
       exercise: exerciseState.displayedExercise,
-      exerciseName: exerciseState.displayedExercise.type
     });
+    this.setState({
+      chartSeries: this.chartSeries()
+    })
   }
 
   componentDidMount(){
@@ -87,7 +86,7 @@ class RepsChartPanel extends React.Component {
           data={this.chartData()}
           width={width}
           height={height}
-          chartSeries={this.chartSeries()}
+          chartSeries={this.state.chartSeries}
           x={x}
         ></LineChart>
       </div>
