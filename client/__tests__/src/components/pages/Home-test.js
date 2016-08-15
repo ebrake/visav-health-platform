@@ -4,16 +4,8 @@ import expect from 'expect';
 
 import SegmentedControl from 'react-segmented-control';
 
-var rfr = require('rfr');
 
-//var la = require('lazy-ass');
-//the module to test.
-rfr.setRoot('/Users/michael007/Desktop/projects/dellinger');
-console.log("RFR root:" + rfr.root);
-console.log("NODE_PROJ_ENV:" + process.env.NODE_PROJ_ROOT);
-
-var Home = require(process.env.NODE_PROJ_ROOT + '/client/src/components/pages/Home.jsx');
-//var Home = rfr('client/src/components/pages/Home.jsx');
+var Home = require("../../../../src/components/pages/Home.jsx");
 
 
 describe('home', function () {
