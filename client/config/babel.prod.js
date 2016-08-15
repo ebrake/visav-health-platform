@@ -9,6 +9,7 @@ module.exports = {
     'babel-plugin-transform-class-properties',
     'babel-plugin-transform-object-rest-spread',
     'babel-plugin-transform-react-constant-elements',
-    'babel-plugin-transform-decorators-legacy'
+    'babel-plugin-transform-decorators-legacy',
+    'babel-plugin-transform-remove-strict-mode'
   ].map(require.resolve)
 };
