@@ -44,6 +44,8 @@ class PatientProfile extends React.Component {
     this.setState({
       exercises: exerciseState.exercises
     });
+    console.log('exercises:');
+    console.dir(this.state.exercises);
   }
 
   componentDidMount(){

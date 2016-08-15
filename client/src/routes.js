@@ -11,6 +11,7 @@ import DoctorProfile from './components/pages/doctor/DoctorProfile'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
 var authCheck = (nextState, replace) => {
+  return;
   let state = AccountStore.getState();
   if (!state.user) {
     console.log('Not logged in... redirecting...');

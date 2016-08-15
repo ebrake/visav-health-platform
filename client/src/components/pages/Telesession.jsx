@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import scriptLoader from 'react-async-script-loader'
 import { config } from 'react-loopback';
 import MainHeader from '../headers/MainHeader';
-
+import RepsChartPanel from '../panels/RepsChartPanel';
+import ExerciseActions from '../../alt/actions/ExerciseActions';
 @scriptLoader(
   'https://static.opentok.com/v2/js/opentok.min.js'
 )
@@ -73,15 +74,20 @@ class Telesession extends React.Component {
 
     var jsLoaded;
     if (this.state.opentokScriptLoaded==null || this.state.opentokScriptLoaded==true) jsLoaded = null;
-    else jsLoaded = <p><font color="red">Warning: Video can't load due to a JavaScript error.</font></p>;
+    else jsLoaded = <p><font color="red">Warning: Video cannot load due to a JavaScript error.</font></p>;
 
     return (
       <div className="Telesession">
         <MainHeader />
-        <button onClick={this.createSession.bind(this)}><h1>Create Session</h1></button>
-        {jsLoaded}
-        <div className="videoContainer">
-          <section ref="tokboxContainer" />
+        <div className="telesession-container">
+          <button onClick={this.createSession.bind(this)}><h1>Create Session</h1></button>
+          {jsLoaded}
+          <div className="videoContainer">
+            <section ref="tokboxContainer" />
+          </div>
+        </div>
+        <div className="charts-container">
+          <RepsChartPanel />
         </div>
       </div>
     );
