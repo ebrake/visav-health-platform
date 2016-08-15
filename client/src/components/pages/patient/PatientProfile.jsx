@@ -16,6 +16,7 @@ let strings = new LocalizedStrings({
    french:"Français"
   }
 });
+
 class PatientProfile extends React.Component {
   constructor(props) {
     super(props);
