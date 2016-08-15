@@ -11,7 +11,10 @@
     "plugins": [],
     "templates": {
         "cleverLinks": false,
-        "monospaceLinks": false
+        "monospaceLinks": false,
+         "default":{
+            "useLongnameInNav": true
+        }
     },
     "opts": {
         "recurse" : true,

@@ -1,6 +1,7 @@
 # jsdoc tags
 Please visit http://usejsdoc.org for details.
 
+```javascript
 example:
 /**
  * Represents a book.
@@ -10,3 +11,4 @@ example:
  */
 function Book(title, author) {
 }
+```
