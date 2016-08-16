@@ -1,5 +1,5 @@
-var config = require('../../server/config.json');
- 
+var GLOBAL_CONFIG = require('../../global.config');
+
 module.exports = function(Person) {
   Person.remoteCreate = function(req, cb) {
     if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
@@ -18,6 +18,23 @@ module.exports = function(Person) {
       return cb(null, createdUser);
     }) 
   }
+
+  //send verification email after registration
+  Person.afterRemote('remoteCreate', function(context, createdObject, next) {
+
+    var createdUser = createdObject.user;
+
+    Person.app.models.Email.send({
+      to: createdUser.email,
+      from: GLOBAL_CONFIG.SYSTEM_EMAIL,
+      subject: 'Welcome to VISAV',
+      html: "Account created"
+    }, function(err) {
+      if (err) return next(err);
+      next();
+    });
+
+  });
 
   Person.remoteMethod(
     "remoteCreate",
