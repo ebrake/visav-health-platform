@@ -60,8 +60,6 @@ class RepsChartPanel extends React.Component {
   exercisesChanged(exerciseState){
     this.setState({
       exercise: exerciseState.displayedExercise,
-    });
-    this.setState({
       chartSeries: this.chartSeries()
     })
   }
@@ -77,7 +75,7 @@ class RepsChartPanel extends React.Component {
   render() {
     return (
       <div className="RepsChartPanel graph-panel panel">
-        <h1 className="title">Rep chart for exercise: {this.exerciseName}</h1>
+        <h1 className="title">Rep chart {this.state.exercise ? 'for exercise: '+this.state.exercise.type.slice(10) : ''}</h1>
         <LineChart
           margins= {margins}
           title={title}

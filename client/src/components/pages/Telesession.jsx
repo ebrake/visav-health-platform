@@ -88,8 +88,10 @@ class Telesession extends React.Component {
                 <h1>Create New Session</h1>
               </button>
               {jsLoaded}
-              <div className="videoContainer">
-                <section ref="tokboxContainer" />
+              <div className="video-container">
+                <div className="video">
+                  <section ref="tokboxContainer" />
+                </div>
               </div>
             </div>
             <div className="charts-container">
