@@ -1,4 +1,6 @@
 var GLOBAL_CONFIG = require('../../global.config');
+var path = require('path');
+import loopback from 'loopback';
 
 module.exports = function(Person) {
   Person.remoteCreate = function(req, cb) {
@@ -23,12 +25,12 @@ module.exports = function(Person) {
   Person.afterRemote('remoteCreate', function(context, createdObject, next) {
 
     var createdUser = createdObject.user;
-
+    var template = loopback.template(path.resolve(__dirname, '../../public/views/email-template-welcome.ejs'));
     Person.app.models.Email.send({
       to: createdUser.email,
       from: GLOBAL_CONFIG.SYSTEM_EMAIL,
       subject: 'Welcome to VISAV',
-      html: "Account created"
+      html: template({user:createdUser})
     }, function(err) {
       if (err) return next(err);
       next();
