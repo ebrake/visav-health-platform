@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import throttle from 'lodash.throttle';
+import { LineChart } from 'react-d3-basic';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
-import { LineChart } from 'react-d3-basic';
 
 var x = (point) => {
   return point.index;
@@ -21,7 +22,7 @@ class Exercises extends React.Component {
     };
     ExerciseActions.getExercises();
     this.exercisesChanged = this.exercisesChanged.bind(this);
-    this.resize = this.resize.bind(this);
+    this.resize = throttle(this.resize, 200).bind(this);
   }
 
   chartSeries(){
