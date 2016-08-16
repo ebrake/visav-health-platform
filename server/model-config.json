@@ -25,6 +25,10 @@
     "dataSource": "psql",
     "public": false
   },
+  "Email": {
+    "dataSource": "emails",
+    "public": false
+  },
   "RoleMapping": {
     "dataSource": "psql",
     "public": false
