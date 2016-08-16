@@ -58,7 +58,9 @@
 
 2. Log in with your Heroku account: `heroku login`
 
-3. Add the Heroku remote in the root folder: `heroku git:remote -a visav`
+3. Add the Heroku live remote: `heroku git:remote -r heroku -a visav` — this will be locally named "heroku"
+
+4. Add the Heroku staging remote: `heroku git:remote -r staging -a visav-staging` – this will be locally named "staging"
 
 ##### Environment Variables
 
