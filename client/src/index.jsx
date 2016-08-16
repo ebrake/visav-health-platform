@@ -25,6 +25,7 @@ import './css/Telesession.css';
 import './css/header.css';
 import './css/nav.css';
 import './css/charts.css';
+import './css/panel.css';
 
 //import main app component
 import App from './components/App.jsx';
