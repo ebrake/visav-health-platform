@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import { LineChart } from 'react-d3-basic';
-let width = 700,
+let width = 600,
   height = 300,
-  margins = {left: 100, right: 100, top: 50, bottom: 50},
+  margins = {left: 60, right: 40, top: 50, bottom: 50},
   title = "User sample";
 var x = (point) => {
   return point.index;

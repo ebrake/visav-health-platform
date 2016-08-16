@@ -26,6 +26,8 @@ import './css/header.css';
 import './css/nav.css';
 import './css/charts.css';
 import './css/panel.css';
+import './css/media.css';
+import './css/flex.css';
 
 //import main app component
 import App from './components/App.jsx';

@@ -79,18 +79,24 @@ class Telesession extends React.Component {
     else jsLoaded = <p><font color="red">Warning: Video cannot load due to a JavaScript error.</font></p>;
 
     return (
-      <div className="Telesession">
+      <div className="Telesession page">
         <MainHeader />
-        <div className="telesession-container">
-          <button onClick={this.createSession.bind(this)}><h1>Create Session</h1></button>
-          {jsLoaded}
-          <div className="videoContainer">
-            <section ref="tokboxContainer" />
+        <div className="content-container">
+          <div className="row-gt-md">
+            <div className="telesession-container">
+              <button onClick={this.createSession.bind(this)} className="create-session-button">
+                <h1>Create New Session</h1>
+              </button>
+              {jsLoaded}
+              <div className="videoContainer">
+                <section ref="tokboxContainer" />
+              </div>
+            </div>
+            <div className="charts-container">
+              <RepsChartPanel />
+              <ExercisesChartPanel />
+            </div>
           </div>
-        </div>
-        <div className="charts-container">
-          <RepsChartPanel />
-          <ExercisesChartPanel />
         </div>
       </div>
     );

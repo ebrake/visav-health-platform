@@ -3,9 +3,9 @@ import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 
 import { LineChart } from 'react-d3-basic';
-let width = 700,
+let width = 600,
   height = 300,
-  margins = {left: 100, right: 100, top: 50, bottom: 50},
+  margins = {left: 60, right: 40, top: 50, bottom: 50},
   title = "User sample";
 var x = (point) => {
   return point.index;
@@ -13,7 +13,6 @@ var x = (point) => {
 class RepsChartPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
     this.state = {
       exercise: undefined,
       exerciseName: 'LOADING...',
@@ -22,7 +21,6 @@ class RepsChartPanel extends React.Component {
     ExerciseActions.getExercises();
     this.exercisesChanged = this.exercisesChanged.bind(this);
     this.unit = this.unit.bind(this);
-
   }
 
   chartSeries(){

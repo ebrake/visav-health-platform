@@ -1,0 +1,47 @@
+@import 'media.css';
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-gt-xs {
+  display: flex;
+  flex-direction: column;
+
+  @media (--gt-xs) {
+    flex-direction: row;
+  }
+}
+
+.row-gt-sm {
+  display: flex;
+  flex-direction: column;
+
+  @media (--gt-sm) {
+    flex-direction: row;
+  }
+}
+
+.row-gt-md {
+  display: flex;
+  flex-direction: column;
+
+  @media (--gt-md) {
+    flex-direction: row;
+  }
+}
+
+.row-gt-lg {
+  display: flex;
+  flex-direction: column;
+
+  @media (--gt-lg) {
+    flex-direction: row;
+  }
+}
