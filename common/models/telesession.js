@@ -1,20 +1,11 @@
 var OpenTok   = require('opentok');
 
-var apiKey = process.env.OPENTOK_API_KEY,
-    apiSecret = process.env.OPENTOK_SECRET;
-
-// Verify that the API Key and API Secret are defined
-if (!apiKey || !apiSecret) {
-  console.log('You must specify OPENTOK_API_KEY and OPENTOK_SECRET environment variables');
-  process.exit(1);
-}
-
 module.exports = function(Telesession) {
 
   Telesession.createSession = function(cb) {
 
     // Initialize OpenTok
-    const opentok = new OpenTok(apiKey, apiSecret);
+    const opentok = new OpenTok(process.env.OPENTOK_API_KEY, process.env.OPENTOK_SECRET);
 
     opentok.createSession(function(err, session) {
 
@@ -53,7 +44,7 @@ module.exports = function(Telesession) {
   Telesession.createToken = function(req, cb) {
 
     // Initialize OpenTok
-    const opentok = new OpenTok(apiKey, apiSecret);
+    const opentok = new OpenTok(process.env.OPENTOK_API_KEY, process.env.OPENTOK_SECRET);
 
     var token = opentok.generateToken(req.body.sessionId, {
       expireTime : (new Date().getTime() / 1000)+(7 * 24 * 60 * 60), // in one week
