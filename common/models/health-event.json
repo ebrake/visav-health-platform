@@ -47,10 +47,24 @@
       "type": "string",
       "required": true,
       "default": "''"
+    },
+    "exerciseDate": {
+      "type": "date",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
     }
   },
   "validations": [],
   "relations": {
+    "person": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "person"
+    },
     "exercise": {
       "type": "hasOne",
       "model": "Exercise",
