@@ -1,5 +1,10 @@
-var config = require('../../server/config.json');
- 
+import React from 'react';
+import Oy from 'oy-vey';
+import GettingStartedEmail from '../../public/email-templates/GettingStartedEmail.jsx';
+
+var GLOBAL_CONFIG = require('../../global.config');
+var path = require('path');
+
 module.exports = function(Person) {
   Person.remoteCreate = function(req, cb) {
     if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
@@ -18,6 +23,27 @@ module.exports = function(Person) {
       return cb(null, createdUser);
     }) 
   }
+
+  //send verification email after registration
+  Person.afterRemote('remoteCreate', function(context, createdObject, next) {
+
+    // TODO: Add e-mail to database queue if sending fails
+
+    var createdUser = createdObject.user;
+    Person.app.models.Email.send({
+      to: createdUser.email,
+      from: GLOBAL_CONFIG.SYSTEM_EMAIL,
+      subject: 'Welcome to VISAV',
+      html: Oy.renderTemplate(<GettingStartedEmail user={createdUser} />, {
+        title: 'Getting Started with VISAV',
+        previewText: 'Welcome to VISAV...'
+      })
+    }, function(err) {
+      if (err) return next(err);
+      next();
+    });
+
+  });
 
   Person.remoteMethod(
     "remoteCreate",
