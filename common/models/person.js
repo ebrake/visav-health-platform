@@ -27,6 +27,8 @@ module.exports = function(Person) {
   //send verification email after registration
   Person.afterRemote('remoteCreate', function(context, createdObject, next) {
 
+    // TODO: Add e-mail to database queue if sending fails
+
     var createdUser = createdObject.user;
     Person.app.models.Email.send({
       to: createdUser.email,
