@@ -72,6 +72,10 @@ module.exports = function(Healthevent) {
               createdHealthEvent.isDemo = HealthEventObj.isDemo;
               createdHealthEvent.createdDate = HealthEventObj.date;
 
+              if (!createdHealthEvent.exercise) {
+                createdHealthEvent.exercise = HealthEventObj.exercise;
+              }
+
               createdHealthEvent.save(function(err){
                 if (err) return reject(err);
                 console.log("Upserted HealthEvent: "+createdHealthEvent.id);
