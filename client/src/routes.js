@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, hashHistory } from 'react-router'
+import { Router, Route, browserHistory } from 'react-router'
 import AccountStore from './alt/stores/AccountStore';
 import AccountActions from './alt/actions/AccountActions';
 import alt from './alt/alt';
@@ -35,7 +35,7 @@ var logout = (nextState, replace) => {
 };
 
 var routes = (
-  <Router history={hashHistory}>
+  <Router history={browserHistory}>
     <Route path="/" component={Home} onLeave={cacheStores} />
     <Route path="/login" component={Login} onLeave={cacheStores} />
     <Route path="/signup" component={Signup} onLeave={cacheStores} />

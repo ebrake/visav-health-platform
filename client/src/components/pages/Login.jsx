@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
-import { hashHistory } from 'react-router';
+import { withRouter } from 'react-router';
 class Login extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       email: '',
       password: ''
     };
+
     this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
-
   }  
 
   login() {
@@ -21,25 +23,23 @@ class Login extends React.Component {
       method: 'POST', 
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
-    }).then(function(response){
-      return response.json();
-    })
+    }).then(response => response.json())
     .then( data => {
       AccountActions.loginUser(data);
 
       //redirect
       console.log('Login successful! Redirecting...');
-      hashHistory.push('/me');
+      this.props.router.push('/me');
     })
     .catch((err) => {
       //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
-      console.log('Error:');
+      console.log('Error logging in:');
       console.dir(err);
     })
   }
 
   logout() {
-    hashHistory.push('/logout');
+    this.props.router.push('/logout');
   }
 
   handleChange(key) {
@@ -91,5 +91,13 @@ class Login extends React.Component {
     );
   }
 };
+
+Login.propTypes = {
+  router: React.PropTypes.shape({
+    push: React.PropTypes.func.isRequired
+  }).isRequired
+}
+
+Login = withRouter(Login);
 
 export default Login;
