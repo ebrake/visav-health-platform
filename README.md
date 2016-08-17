@@ -124,9 +124,9 @@ Password: testtest
 
 (This assumes you are running the front-end client in development mode)
 
-1. (Optional) Load the Sign Up screen: [http://localhost:3000/#/signup/](http://localhost:3000/#/signup/) and create an account
+1. (Optional) Load the Sign Up screen: [http://localhost:3000/signup/](http://localhost:3000/signup/) and create an account
 
-2. Sign In: [http://localhost:3000/#/login/](http://localhost:3000/#/login/)
+2. Sign In: [http://localhost:3000/login/](http://localhost:3000/login/)
 
 ## How to Unit Test
 1. Client unit test:

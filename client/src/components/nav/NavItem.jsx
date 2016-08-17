@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { hashHistory } from 'react-router';
+import { withRouter } from 'react-router';
 class NavItem extends React.Component {
   constructor(props) {
     super(props);
@@ -9,10 +9,10 @@ class NavItem extends React.Component {
 
   handleClick(){
     if (this.props.path) {
-      hashHistory.push(this.props.path);
+      this.props.router.push(this.props.path);
     }
     else { 
-      hashHistory.push('/'+this.props.title);
+      this.props.router.push('/'+this.props.title);
     }
   }
   render() {
@@ -34,9 +34,15 @@ NavItem.propTypes = {
   imgSrc: React.PropTypes.string,
   path: React.PropTypes.string,
   title: React.PropTypes.string.isRequired,
+  router: React.PropTypes.shape({
+    push: React.PropTypes.func.isRequired
+  }).isRequired
 };
+
 NavItem.defaultProps = {
 
 };
-export default NavItem;
 
+NavItem = withRouter(NavItem);
+
+export default NavItem;
