@@ -1,6 +1,6 @@
 {
-  "name": "Exercise",
-  "plural": "Exercises",
+  "name": "HealthEvent",
+  "plural": "HealthEvents",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -10,10 +10,9 @@
     "date": {
       "type": "date",
       "required": true,
-      "dataType": "decimal",
       "default": "$now"
     },
-    "duration": {
+    "intensity": {
       "type": "number",
       "required": true,
       "default": 0,
@@ -21,7 +20,7 @@
       "precision": 32,
       "scale": 0,
       "postgresql": {
-        "columnName": "duration",
+        "columnName": "intensity",
         "dataType": "decimal",
         "dataLength": null,
         "dataPrecision": 32,
@@ -31,33 +30,31 @@
     },
     "isDemo": {
       "type": "boolean",
+      "required": true,
       "default": false
     },
-    "type": {
+    "perceivedTrend": {
       "type": "string",
-      "default": ""
+      "required": true,
+      "default": "''"
     },
     "note": {
       "type": "string",
-      "default": ""
-    },
-    "createdDate": {
-      "type": "date",
       "required": true,
-      "default": "$now"
+      "default": "''"
+    },
+    "type": {
+      "type": "string",
+      "required": true,
+      "default": "''"
     }
   },
   "validations": [],
   "relations": {
-    "reps": {
-      "type": "hasMany",
-      "model": "Rep",
+    "exercise": {
+      "type": "hasOne",
+      "model": "Exercise",
       "foreignKey": "exercise"
-    },
-    "person": {
-      "type": "belongsTo",
-      "model": "Person",
-      "foreignKey": "person"
     }
   },
   "acls": [],

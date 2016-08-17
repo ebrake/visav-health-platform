@@ -9,8 +9,8 @@
   "properties": {
     "value": {
       "type": "number",
-      "default": 0,
       "required": true,
+      "default": 0,
       "length": null,
       "precision": 32,
       "scale": 0,
@@ -35,8 +35,8 @@
     },
     "duration": {
       "type": "number",
-      "default": 0,
       "required": true,
+      "default": 0,
       "length": null,
       "precision": 32,
       "scale": 0,
