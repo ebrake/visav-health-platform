@@ -1,6 +1,9 @@
+import React from 'react';
+import Oy from 'oy-vey';
+import GettingStartedEmail from '../../public/email-templates/GettingStartedEmail.jsx';
+
 var GLOBAL_CONFIG = require('../../global.config');
 var path = require('path');
-import loopback from 'loopback';
 
 module.exports = function(Person) {
   Person.remoteCreate = function(req, cb) {
@@ -25,12 +28,14 @@ module.exports = function(Person) {
   Person.afterRemote('remoteCreate', function(context, createdObject, next) {
 
     var createdUser = createdObject.user;
-    var template = loopback.template(path.resolve(__dirname, '../../public/views/email-template-welcome.ejs'));
     Person.app.models.Email.send({
       to: createdUser.email,
       from: GLOBAL_CONFIG.SYSTEM_EMAIL,
       subject: 'Welcome to VISAV',
-      html: template({user:createdUser})
+      html: Oy.renderTemplate(<GettingStartedEmail user={createdUser} />, {
+        title: 'Getting Started with VISAV',
+        previewText: 'Welcome to VISAV...'
+      })
     }, function(err) {
       if (err) return next(err);
       next();
