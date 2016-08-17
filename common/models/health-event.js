@@ -4,7 +4,8 @@ module.exports = function(Healthevent) {
   var saveHealthEvent = function(healthEvent, person, Exercise) {
     return new Promise(function(resolve, reject){
       var date = healthEvent.date
-        , exerciseDate = healthEvent.exerciseStartDate;
+        , exerciseDate = healthEvent.exerciseStartDate
+        , noExercise = false;
 
       if (typeof date != 'date') {
         try {
@@ -16,13 +17,16 @@ module.exports = function(Healthevent) {
         return reject(new Error("missing required field date on a HealthEvent"));
       }
 
-      if (typeof exerciseDate != 'date') {
+      if (typeof exerciseDate != 'date' && exerciseDate != 'NO_EXERCISE') {
         try {
           exerciseDate = new Date(exerciseDate)
         } catch(e) { return reject(e); }
       }
 
-      if (!exerciseDate) {
+      if (exerciseDate == 'NO_EXERCISE') {
+        exerciseDate = new Date();
+        noExercise = true;
+      } else if (!exerciseDate) {
         exerciseDate = new Date();
       }
 
@@ -46,7 +50,7 @@ module.exports = function(Healthevent) {
           var HealthEventObj = {
             person: person.id,
             exercise: exerciseId ? exerciseId : undefined,
-            exerciseDate: exerciseId ? undefined : exerciseDate,
+            exerciseDate: (exerciseId || noExercise) ? undefined : exerciseDate,
             date: date,
             createdDate: new Date(),
             note: healthEvent.note || '',
