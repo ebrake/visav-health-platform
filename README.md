@@ -7,7 +7,8 @@
 
 > Proud of legitimate and unbelievably clean project Dillinger, as it should be, and as it will be.
 
-> In staging: [https://staging.visav.io](https://secure.visav.io) — tracking "dev" branch
+> In staging: [https://staging.visav.io](https://staging.visav.io) — tracking "dev" branch
+
 > In production: [https://secure.visav.io](https://secure.visav.io) — tracking "master" branch
 
 * [How to Install](#how-to-install)
