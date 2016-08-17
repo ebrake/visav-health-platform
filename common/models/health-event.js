@@ -50,7 +50,7 @@ module.exports = function(Healthevent) {
           var HealthEventObj = {
             person: person.id,
             exercise: exerciseId ? exerciseId : undefined,
-            exerciseDate: (exerciseId || noExercise) ? undefined : exerciseDate,
+            exerciseDate: noExercise ? undefined : exerciseDate,
             date: date,
             createdDate: new Date(),
             note: healthEvent.note || '',
