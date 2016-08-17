@@ -50,7 +50,7 @@ module.exports = function(Healthevent) {
             date: date,
             createdDate: new Date(),
             note: healthEvent.note || '',
-            isDemo: healthEvent.isDemo || falsehealthEvent,
+            isDemo: healthEvent.isDemo || false,
             intensity: healthEvent.intensity || 0,
             perceivedTrend: healthEvent.perceivedTrend || '',
             type: healthEvent.type || ''

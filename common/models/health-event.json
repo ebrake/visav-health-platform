@@ -68,7 +68,7 @@
     "exercise": {
       "type": "hasOne",
       "model": "Exercise",
-      "foreignKey": "exercise"
+      "foreignKey": "healthevent"
     }
   },
   "acls": [],
