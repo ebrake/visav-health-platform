@@ -1,9 +1,8 @@
 import React from 'react';
-
 import EmptySpace from './EmptySpace.jsx';
 
-
 const Footer = (props) => {
+
   const style = {
     color: props.color,
     backgroundColor: '#dddddd',
@@ -12,6 +11,12 @@ const Footer = (props) => {
   const spaceStyle = {
     lineHeight: '1px',
     fontSize: '1px'
+  };
+
+  const tdStyle = {
+    fontFamily: 'Arial',
+    textAlign: 'center',
+    backgroundColor: '#eee'
   };
 
   return (
@@ -39,10 +44,7 @@ const Footer = (props) => {
               <tbody>
                 <tr>
                   <td
-                    align="center"
-                    bgColor="#EEEEEE"
-                    style={{fontFamily: 'Arial'}}>
-
+                    style={tdStyle}>
                     <EmptySpace height="10" />
 
                     <a
@@ -66,9 +68,7 @@ const Footer = (props) => {
               <tbody>
                 <tr>
                   <td
-                    align="center"
-                    bgColor="#EEEEEE"
-                    style={{fontFamily: 'Arial'}}>
+                    style={tdStyle}>
 
                     <EmptySpace height="10" />
 
@@ -104,6 +104,5 @@ const Footer = (props) => {
 Footer.propTypes = {
   color: React.PropTypes.string.isRequired
 };
-
 
 export default Footer;

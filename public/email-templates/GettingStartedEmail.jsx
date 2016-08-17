@@ -4,7 +4,8 @@ import Header from './modules/Header.jsx';
 import Body from './modules/Body.jsx';
 import Footer from './modules/Footer.jsx';
 
-export default function StatelessComponent(props) {
+export default function GettingStartedEmail(props) {
+  
   const { user } = props;
 
   return (
@@ -22,7 +23,6 @@ export default function StatelessComponent(props) {
 
 }
 
-StatelessComponent.propTypes = {
+GettingStartedEmail.propTypes = {
   user: React.PropTypes.object.isRequired
 };
-

@@ -5,7 +5,6 @@
 
 import React from 'react';
 
-
 const EmptySpace = (props) => {
   const style = {
     lineHeight: `${props.height}px`,
@@ -31,6 +30,5 @@ const EmptySpace = (props) => {
 EmptySpace.defaultProps = {
   height: '16'
 };
-
 
 export default EmptySpace;

@@ -1,12 +1,12 @@
 import React from 'react';
-
 import EmptySpace from './EmptySpace.jsx';
 
-
 const Header = (props) => {
+
   const style = {
     color: props.color,
-    fontWeight: 'bold'
+    fontFamily: 'Arial',
+    textAlign: 'center'
   };
 
   return (
@@ -24,9 +24,12 @@ const Header = (props) => {
               <tbody>
                 <tr>
                   <td
-                    align="center"
-                    style={{color: props.color, fontFamily: 'Arial'}}>
-                    Logo here
+                    style={style}>
+                    <img
+                    src="https://www.krisandbrake.com/images/kris-and-brake-logo.png"
+                    height={100}
+                    width={600}
+                    style={{display: 'block', maxWidth: '100%'}} />
                   </td>
                 </tr>
               </tbody>
@@ -43,6 +46,5 @@ const Header = (props) => {
 Header.propTypes = {
   color: React.PropTypes.string.isRequired
 };
-
 
 export default Header;
