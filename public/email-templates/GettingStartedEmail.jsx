@@ -22,7 +22,3 @@ export default function GettingStartedEmail(props) {
   );
 
 }
-
-GettingStartedEmail.propTypes = {
-  user: React.PropTypes.object.isRequired
-};

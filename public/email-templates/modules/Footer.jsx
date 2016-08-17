@@ -101,8 +101,4 @@ const Footer = (props) => {
   );
 };
 
-Footer.propTypes = {
-  color: React.PropTypes.string.isRequired
-};
-
 export default Footer;

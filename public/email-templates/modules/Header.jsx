@@ -43,8 +43,5 @@ const Header = (props) => {
   );
 };
 
-Header.propTypes = {
-  color: React.PropTypes.string.isRequired
-};
 
 export default Header;
