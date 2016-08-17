@@ -38,24 +38,29 @@ module.exports = function(Exercise) {
         };
 
         if (entries.length > 0) {
-          //upsert doesn't actually work as we can't make a composite key involving a foreign key in loopback, so just remove it and insert the updated one
-          Rep.destroyById(entries[0].id, function(err2){
-            if (err2) return reject(err2);
-            Rep.create(RepObj, function(err3, createdRep) {
-              if (err3) return reject(err3);
-              createdRep.save(function(err4){
-                if (err4) return reject(err4);
-                console.log("Upserted Rep: "+createdRep.id);
-                return resolve(createdRep);
-              })
-            });
+          //upsert (manually) 
+          Rep.findById(entries[0].id, function(err, createdRep){
+            if (err) return reject(err);
+
+            createdRep.duration = RepObj.duration;
+            createdRep.note = RepObj.note;
+            createdRep.isDemo = RepObj.isDemo;
+            createdRep.value = RepObj.value;
+            createdRep.unit = RepObj.unit;
+            createdRep.createdDate = RepObj.date;
+
+            createdRep.save(function(err){
+              if (err) return reject(err);
+              console.log("Upserted Rep: "+createdRep.id);
+              return resolve(createdRep);
+            })
           })
         } else {
           //insert
-          Rep.create(RepObj, function(err2, createdRep) {
-            if (err2) return reject(err2);
-            createdRep.save(function(err3){
-              if (err3) return reject(err3);
+          Rep.create(RepObj, function(err, createdRep) {
+            if (err) return reject(err);
+            createdRep.save(function(err){
+              if (err) return reject(err);
               console.log("Inserted Rep: "+createdRep.id);
               return resolve(createdRep);
             })
@@ -111,24 +116,28 @@ module.exports = function(Exercise) {
         };
 
         if (entries.length > 0) {
-          //upsert doesn't actually work as we can't make a composite key involving a foreign key in loopback, so just remove it and insert the updated one
-          Exercise.destroyById(entries[0].id, function(err2){
-            if (err2) return reject(err2);
-            Exercise.create(ExerciseObj, function(err3, createdExercise) {
-              if (err3) return reject(err3);
-              createdExercise.save(function(err4){
-                if (err4) return reject(err4);
-                console.log("Upserted Exercise: "+createdExercise.id);
-                return resolve(saveReps(reps, person, createdExercise, Rep));
-              })
-            });
+          //upsert (manually)
+          Exercise.findById(entries[0].id, function(err, createdExercise){
+            if (err) return reject(err);
+
+            createdExercise.duration = ExerciseObj.duration;
+            createdExercise.type = ExerciseObj.type;
+            createdExercise.note = ExerciseObj.note;
+            createdExercise.isDemo = ExerciseObj.isDemo;
+            createdExercise.createdDate = ExerciseObj.createdDate;
+
+            createdExercise.save(function(err){
+              if (err) return reject(err);
+              console.log("Upserted Exercise: "+createdExercise.id);
+              return resolve(saveReps(reps, person, createdExercise, Rep));
+            })
           })
         } else {
           //insert
-          Exercise.create(ExerciseObj, function(err2, createdExercise) {
-            if (err2) return reject(err2);
-            createdExercise.save(function(err3){
-              if (err3) return reject(err3);
+          Exercise.create(ExerciseObj, function(err, createdExercise) {
+            if (err) return reject(err);
+            createdExercise.save(function(err){
+              if (err) return reject(err);
               console.log("Inserted Exercise: "+createdExercise.id);
               return resolve(saveReps(reps, person, createdExercise, Rep));
             })

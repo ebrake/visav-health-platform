@@ -57,17 +57,22 @@ module.exports = function(Healthevent) {
           };
 
           if (entries.length > 0) {
-            //upsert doesn't actually work as we can't make a composite key involving a foreign key in loopback, so just remove it and insert the updated one
-            Healthevent.destroyById(entries[0].id, function(err){
+            //upsert (manually)
+            Healthevent.findById(entries[0].id, function(err, createdHealthEvent){
               if (err) return reject(err);
-              Healthevent.create(HealthEventObj, function(err, createdHealthEvent) {
+
+              createdHealthEvent.note = HealthEventObj.note;
+              createdHealthEvent.type = HealthEventObj.type;
+              createdHealthEvent.intensity = HealthEventObj.intensity;
+              createdHealthEvent.perceivedTrend = HealthEventObj.perceivedTrend;
+              createdHealthEvent.isDemo = HealthEventObj.isDemo;
+              createdHealthEvent.createdDate = HealthEventObj.date;
+
+              createdHealthEvent.save(function(err){
                 if (err) return reject(err);
-                createdHealthEvent.save(function(err){
-                  if (err) return reject(err);
-                  console.log("Upserted HealthEvent: "+createdHealthEvent.id);
-                  return resolve(createdHealthEvent);
-                })
-              });
+                console.log("Upserted HealthEvent: "+createdHealthEvent.id);
+                return resolve(createdHealthEvent);
+              })
             })
           } else {
             //insert
