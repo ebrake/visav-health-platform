@@ -1,4 +1,5 @@
 process.env.NODE_ENV = 'production';
+process.env.API_ROOT = 'https://secure.visav.io/';
 
 var path = require('path');
 var rimrafSync = require('rimraf').sync;

@@ -1,9 +1,10 @@
 process.env.NODE_ENV = 'staging';
+process.env.API_ROOT = 'https://staging.visav.io/';
 
 var path = require('path');
 var rimrafSync = require('rimraf').sync;
 var webpack = require('webpack');
-var config = require('../config/webpack.config.staging');
+var config = require('../config/webpack.config.prod');
 
 var isInNodeModules = 'node_modules' ===
   path.basename(path.resolve(path.join(__dirname, '..', '..')));
