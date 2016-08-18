@@ -33,13 +33,12 @@ class HealthEventsChartPanel extends React.Component {
     let dataArray = [];
     var healthEvents  = this.state.healthEvents;
     if(healthEvents && healthEvents.length > 0) {
-        for(var i = 0; i < healthEvents.length; i++){
-          let pointDict = {};
-          pointDict['intensity'] = healthEvents[i].intensity;
-          pointDict['date'] = healthEvents[i].date;
-          pointDict['index'] = i;
-          dataArray.push(pointDict);
-        }
+      for(var i = 0; i < healthEvents.length; i++){
+        let pointDict = {};
+        pointDict['intensity'] = healthEvents[i].intensity;
+        pointDict['date'] = healthEvents[i].date;
+        pointDict['index'] = i;
+        dataArray.push(pointDict);
       }
     }
     return dataArray;
