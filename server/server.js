@@ -18,6 +18,19 @@ class StartServer {
       if (error) throw error;
       if (!isMainModule) return;
 
+      var requiredEnvKeys = [
+      "NODE_ENV",
+      "OPENTOK_API_KEY",
+      "OPENTOK_SECRET",
+      "POSTMARK_API_TOKEN",
+      "POSTMARK_SMTP_SERVER"];
+      requiredEnvKeys.forEach(function(key) {
+        if (!process.env[key]) {
+          console.log("WARNING, you must specify an .env key/value for "+key);
+          process.exit(1);
+        }
+      });
+
       const server = app.listen(port, () => {
         app.emit('started');
         var baseUrl = app.get('url').replace(/\/$/, '');

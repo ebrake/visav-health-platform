@@ -5,7 +5,7 @@ import exphbs from 'express-handlebars'
 import loopback from 'loopback'
 import System from 'systemjs'
 
-const clientDir = (process.env.NODE_ENV=="production" ? "client-dist" : "client")
+const clientDir = (process.env.NODE_ENV!=="production" ? "client-dist" : "client")
 
 // IMPORTANT: Do not delete. Needed for production
 SystemJS.import('../../'+clientDir+'/src/components/pages/Charts.jsx').then(function (_) {

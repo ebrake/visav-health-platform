@@ -7,7 +7,9 @@
 
 > Proud of legitimate and unbelievably clean project Dillinger, as it should be, and as it will be.
 
-> In production: [https://secure.visav.io](https://secure.visav.io)
+> In staging: [https://staging.visav.io](https://staging.visav.io) — tracking "dev" branch
+
+> In production: [https://secure.visav.io](https://secure.visav.io) — tracking "master" branch
 
 * [How to Install](#how-to-install)
   - [Install dependencies](#install-dependencies)
@@ -58,22 +60,26 @@
 
 2. Log in with your Heroku account: `heroku login`
 
-3. Add the Heroku remote in the root folder: `heroku git:remote -a visav`
+3. Add the Heroku live remote: `heroku git:remote -r heroku -a visav` — this will be locally named "heroku"
+
+4. Add the Heroku staging remote: `heroku git:remote -r staging -a visav-staging` – this will be locally named "staging"
 
 ##### Environment Variables
 
 It is essential that you have a .env file in the project, to load secure/environment constants.
 
-```
-PORT			= 4000
-NODE_ENV 		= development
-OPENTOK_API_KEY = (Obtain from command: heroku config -a visav)
-OPENTOK_SECRET 	= (Obtain from command: heroku config -a visav)
-FACEBOOK_APP_SECRET  = (Obtain from command: heroku config -a visav)
-FACEBOOK_APP_ID  = (Obtain from command: heroku config -a visav)
-```
+NAME | VALUE
+--- | --- | ---
+`PORT` 							| `4000`
+`NODE_ENV` 						| `development`
+`OPENTOK_API_KEY` 				| *Obtain with:* `heroku config -a visav`
+`OPENTOK_SECRET` 				| *Obtain with:* `heroku config -a visav`
+`FACEBOOK_APP_SECRET` 			| *Obtain with:* `heroku config -a visav`
+`FACEBOOK_APP_ID` 				| *Obtain with:* `heroku config -a visav`
+`POSTMARK_API_TOKEN` 			| *Obtain with:* `heroku config -a visav`
+`POSTMARK_SMTP_SERVER` 			| *Obtain with:* `heroku config -a visav`
 
-> You can also use a command line tool [https://github.com/xavdid/heroku-config](https://github.com/xavdid/heroku-config) to copy in Heroku environment variables to a .env file. Just remember to set `PORT=4000` and `NODE_ENV=development`, on your local project!
+> You can also use a command line tool [https://github.com/xavdid/heroku-config](https://github.com/xavdid/heroku-config) to copy in all Heroku environment variables to a .env file. Just remember to set `PORT=4000` and `NODE_ENV=development`, on your local project!
 
 ### Build Project
 
@@ -120,9 +126,9 @@ Password: testtest
 
 (This assumes you are running the front-end client in development mode)
 
-1. (Optional) Load the Sign Up screen: [http://localhost:3000/#/signup/](http://localhost:3000/#/signup/) and create an account
+1. (Optional) Load the Sign Up screen: [http://localhost:3000/signup/](http://localhost:3000/signup/) and create an account
 
-2. Sign In: [http://localhost:3000/#/login/](http://localhost:3000/#/login/)
+2. Sign In: [http://localhost:3000/login/](http://localhost:3000/login/)
 
 ## How to Unit Test
 1. Client unit test:

@@ -130,8 +130,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env':{
-        'NODE_ENV': JSON.stringify('production'),
-        'API_ROOT': JSON.stringify('https://secure.visav.io/')
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'API_ROOT': JSON.stringify(process.env.API_ROOT)
       }
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
