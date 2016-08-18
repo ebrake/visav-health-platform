@@ -4,7 +4,7 @@ import { config } from 'react-loopback';
 import MainHeader from '../headers/MainHeader';
 import RepsChartPanel from '../panels/RepsChartPanel';
 import ExercisesChartPanel from '../panels/ExercisesChartPanel';
-
+import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 @scriptLoader(
   'https://static.opentok.com/v2/js/opentok.min.js'
@@ -91,6 +91,7 @@ class Telesession extends React.Component {
         <div className="charts-container">
           <RepsChartPanel />
           <ExercisesChartPanel />
+          <HealthEventsChartPanel />
         </div>
       </div>
     );

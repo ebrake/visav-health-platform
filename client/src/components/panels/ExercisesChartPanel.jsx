@@ -9,7 +9,7 @@ let width = 700,
 var x = (point) => {
   return point.index;
 };
-class Exercises extends React.Component {
+class ExercisesChartPanel extends React.Component {
   constructor(props) {
     super(props);
 
@@ -92,7 +92,7 @@ class Exercises extends React.Component {
 
   render() {
     return (
-      <div className="Exercises panel">
+      <div className="ExercisesChartPanel panel">
         <h1 className="title">Exercises Chart</h1>
         <LineChart
           margins= {margins}
@@ -108,5 +108,5 @@ class Exercises extends React.Component {
   }
 };
 
-export default Exercises;
+export default ExercisesChartPanel;
 
