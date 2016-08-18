@@ -16,15 +16,9 @@
       "type": "number",
       "required": true,
       "default": 0,
-      "length": null,
-      "precision": 32,
-      "scale": 0,
       "postgresql": {
         "columnName": "intensity",
-        "dataType": "decimal",
-        "dataLength": null,
-        "dataPrecision": 32,
-        "dataScale": 0,
+        "dataType": "double precision",
         "nullable": "YES"
       }
     },
