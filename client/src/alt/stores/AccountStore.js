@@ -1,5 +1,5 @@
-var alt = require('../alt');
-var AccountActions = require('../actions/AccountActions');
+import alt from '../alt'
+import AccountActions from '../actions/AccountActions';
 
 class AccountStore {
   constructor() {
@@ -20,4 +20,4 @@ class AccountStore {
   }
 }
 
-module.exports = alt.createStore(AccountStore, 'AccountStore');
+export default alt.createStore(AccountStore, 'AccountStore');
