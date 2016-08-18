@@ -5,6 +5,8 @@ import MainHeader from '../../headers/MainHeader'
 import AccountStore from '../../../alt/stores/AccountStore'
 import ExerciseStore from '../../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../../alt/actions/ExerciseActions';
+import HealthEventStore from '../../../alt/stores/HealthEventStore';
+import HealthEventActions from '../../../alt/actions/HealthEventActions';
 
 
 let strings = new LocalizedStrings({
@@ -24,7 +26,9 @@ class PatientProfile extends React.Component {
   constructor(props) {
     super(props);
     let accountState = AccountStore.getState();
+
     ExerciseActions.getExercises();
+    HealthEventActions.getHealthEvents();
 
     this.state = {
       language: 'en',
@@ -34,6 +38,7 @@ class PatientProfile extends React.Component {
 
     this.updateLanguage = this.updateLanguage.bind(this);
     this.exercisesChanged = this.exercisesChanged.bind(this);
+    this.healthEventsChanged = this.healthEventsChanged.bind(this);
   } 
 
   updateLanguage(language) {
@@ -45,16 +50,22 @@ class PatientProfile extends React.Component {
     this.setState({
       exercises: exerciseState.exercises
     });
-    console.log('exercises:');
-    console.dir(this.state.exercises);
+  }
+
+  healthEventsChanged(healthEventState) {
+    this.setState({
+      healthEvents: healthEventState.healthEvents
+    });
   }
 
   componentDidMount(){
     ExerciseStore.listen(this.exercisesChanged);
+    HealthEventStore.listen(this.healthEventsChanged);
   }
 
   componentWillUnmount(){
     ExerciseStore.unlisten(this.exercisesChanged);
+    HealthEventStore.unlisten(this.healthEventsChanged);
   }
 
   render() {
