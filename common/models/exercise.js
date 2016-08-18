@@ -82,7 +82,7 @@ module.exports = function(Exercise) {
     }) 
   }
 
-  var saveExerciseAndReps = function(exercise, person, Rep) {
+  var saveExerciseAndReps = function(exercise, person, Healthevent, Rep) {
     return new Promise(function(resolve, reject){
       var date = exercise.date
         , reps = exercise.reps;
@@ -98,51 +98,66 @@ module.exports = function(Exercise) {
         return reject(new Error('Mising required field date on an exercise.'));
       }
 
-      Exercise.find({
-        where: { person: person.id, date: date }
-      }, function(err, entries){
+      Healthevent.find({
+        where: { person: person.id, exerciseDate: date }
+      }, function(err, healthevents){
         if (err) {
           return reject(err);
         }
 
-        var ExerciseObj = {
-          person: person.id,
-          date: date,
-          duration: exercise.duration || 0,
-          createdDate: new Date(),
-          type: exercise.type,
-          note: exercise.note || '',
-          isDemo: exercise.isDemo || false
-        };
+        var healtheventId = healthevents[0] ? healthevents[0].id : false;
 
-        if (entries.length > 0) {
-          //upsert (manually)
-          Exercise.findById(entries[0].id, function(err, createdExercise){
-            if (err) return reject(err);
+        Exercise.find({
+          where: { person: person.id, date: date }
+        }, function(err, entries){
+          if (err) {
+            return reject(err);
+          }
 
-            createdExercise.duration = ExerciseObj.duration;
-            createdExercise.type = ExerciseObj.type;
-            createdExercise.note = ExerciseObj.note;
-            createdExercise.isDemo = ExerciseObj.isDemo;
-            createdExercise.createdDate = ExerciseObj.createdDate;
+          var ExerciseObj = {
+            person: person.id,
+            healthevent: healtheventId ? healtheventId : undefined,
+            date: date,
+            duration: exercise.duration || 0,
+            createdDate: new Date(),
+            type: exercise.type,
+            note: exercise.note || '',
+            isDemo: exercise.isDemo || false
+          };
 
-            createdExercise.save(function(err){
+          if (entries.length > 0) {
+            //upsert (manually)
+            Exercise.findById(entries[0].id, function(err, createdExercise){
               if (err) return reject(err);
-              console.log("Upserted Exercise: "+createdExercise.id);
-              return resolve(saveReps(reps, person, createdExercise, Rep));
+
+              createdExercise.duration = ExerciseObj.duration;
+              createdExercise.type = ExerciseObj.type;
+              createdExercise.note = ExerciseObj.note;
+              createdExercise.isDemo = ExerciseObj.isDemo;
+              createdExercise.createdDate = ExerciseObj.createdDate;
+
+              if (!createdExercise.healthevent) {
+                createdExercise.healthevent = ExerciseObj.healthevent;
+              }
+
+              createdExercise.save(function(err){
+                if (err) return reject(err);
+                console.log("Upserted Exercise: "+createdExercise.id);
+                return resolve(saveReps(reps, person, createdExercise, Rep));
+              })
             })
-          })
-        } else {
-          //insert
-          Exercise.create(ExerciseObj, function(err, createdExercise) {
-            if (err) return reject(err);
-            createdExercise.save(function(err){
+          } else {
+            //insert
+            Exercise.create(ExerciseObj, function(err, createdExercise) {
               if (err) return reject(err);
-              console.log("Inserted Exercise: "+createdExercise.id);
-              return resolve(saveReps(reps, person, createdExercise, Rep));
-            })
-          });
-        }
+              createdExercise.save(function(err){
+                if (err) return reject(err);
+                console.log("Inserted Exercise: "+createdExercise.id);
+                return resolve(saveReps(reps, person, createdExercise, Rep));
+              })
+            });
+          }
+        })
       })
     })
   }
@@ -153,11 +168,12 @@ module.exports = function(Exercise) {
     } 
 
     var person = req.user
-      , Rep = req.app.models.Rep;
+      , Rep = req.app.models.Rep
+      , Healthevent = req.app.models.Healthevent;
 
     Promise.all(data.map(function(exercise){
       //We don't actually have the Rep model anywhere except on the request, so we need to pass it down the chain
-      return saveExerciseAndReps(exercise, person, Rep);
+      return saveExerciseAndReps(exercise, person, Healthevent, Rep);
     }))
     .then(function(results){
       console.log("Results:");
