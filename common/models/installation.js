@@ -12,11 +12,11 @@ module.exports = function(Installation) {
 
     Installation.create({
         appId: req.body.appId,
-        userId: person.id,
         deviceToken: req.body.deviceToken,
         deviceType: req.body.deviceType,
         created: new Date(),
         modified: new Date(),
+        person: person.id,
         status: 'Active'
     }, function (err, result) {
         if (err) {
