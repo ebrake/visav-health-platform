@@ -54,9 +54,9 @@
       "foreignKey": "person"
     },
     "healthevent": {
-      "type": "hasOne",
+      "type": "belongsTo",
       "model": "HealthEvent",
-      "foreignKey": "exercise"
+      "foreignKey": "healthevent"
     }
   },
   "acls": [],
