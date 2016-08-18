@@ -7,6 +7,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var customMedia = require("postcss-custom-media");
 
 // TODO: hide this behind a flag and eliminate dead code on eject.
 // This shouldn't be exposed to the user.
@@ -102,7 +103,8 @@ module.exports = {
             postcssEasyImport,
             postcssStripInlineComment,
             autoprefixer, 
-            precss
+            precss,
+            customMedia
             ];
   },
   plugins: [
