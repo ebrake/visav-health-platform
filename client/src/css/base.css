@@ -14,4 +14,6 @@ body {
   display: flex;
   flex-direction: column;
   padding: 10px;
+  flex: 1 1 1px;
+  overflow: scroll;
 }
