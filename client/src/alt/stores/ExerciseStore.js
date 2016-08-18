@@ -1,10 +1,11 @@
-var alt = require('../alt');
-var ExerciseActions = require('../actions/ExerciseActions');
+import alt from '../alt'
+import ExerciseActions from '../actions/ExerciseActions';
 
 class ExerciseStore {
   constructor() {
     this.exercises = [];
     this.displayedExercise = undefined;
+
     this.bindListeners({
       handleGetExercises: ExerciseActions.GET_EXERCISES,
       handleDisplayedExercise: ExerciseActions.GET_EXERCISES
@@ -14,17 +15,18 @@ class ExerciseStore {
   handleGetExercises(exercises) {
     this.exercises = exercises;
   }
+
   handleDisplayedExercise(exercises) {
-    if (exercises.length>0) {
-      for(var i = 0; i<exercises.length; i++){
-        if (exercises[0].reps.length > 0) {
+    if (exercises.length > 0) {
+      for (var i = 0; i < exercises.length - 1; i++) {
+        if (exercises[i].reps.length > 0) {
           this.displayedExercise = exercises[i];
           return;
         }
       }
-      this.displayedExercise = exercises[0];
     }
+    this.displayedExercise = undefined;
   }
 }
 
-module.exports = alt.createStore(ExerciseStore, 'ExerciseStore');
+export default alt.createStore(ExerciseStore, 'ExerciseStore');
