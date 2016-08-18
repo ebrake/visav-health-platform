@@ -1,6 +1,6 @@
 var Promise = require('bluebird');
 
-module.exports = function(Healthevent) {
+module.exports = function(HealthEvent) {
   var saveHealthEvent = function(healthEvent, person, Exercise) {
     return new Promise(function(resolve, reject){
       var date = healthEvent.date
@@ -39,7 +39,7 @@ module.exports = function(Healthevent) {
 
         var exerciseId = exercises[0] ? exercises[0].id : false;
 
-        Healthevent.find({
+        HealthEvent.find({
           where: { person: person.id, date: date }
         }, function(err, entries){
           if (err) {
@@ -62,7 +62,7 @@ module.exports = function(Healthevent) {
 
           if (entries.length > 0) {
             //upsert (manually)
-            Healthevent.findById(entries[0].id, function(err, createdHealthEvent){
+            HealthEvent.findById(entries[0].id, function(err, createdHealthEvent){
               if (err) return reject(err);
 
               createdHealthEvent.note = HealthEventObj.note;
@@ -84,7 +84,7 @@ module.exports = function(Healthevent) {
             })
           } else {
             //insert
-            Healthevent.create(HealthEventObj, function(err, createdHealthEvent) {
+            HealthEvent.create(HealthEventObj, function(err, createdHealthEvent) {
               if (err) return reject(err);
               createdHealthEvent.save(function(err){
                 if (err) return reject(err);
@@ -98,7 +98,7 @@ module.exports = function(Healthevent) {
     })
   }  
 
-  Healthevent.receiveData = function(req, data, cb) {
+  HealthEvent.receiveData = function(req, data, cb) {
     if (!req.user) {
       return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
     } 
@@ -122,7 +122,7 @@ module.exports = function(Healthevent) {
     }) 
   }
 
-  Healthevent.remoteMethod(
+  HealthEvent.remoteMethod(
     "receiveData",
     {
       accepts: [
@@ -139,15 +139,16 @@ module.exports = function(Healthevent) {
 
   var retrieveLimit = 1000;
 
-  Healthevent.retrieveData = function(req, limit, cb) {
+  HealthEvent.retrieveData = function(req, limit, cb) {
     if (!req.user) {
       return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
     } 
 
     var person = req.user;
 
-    Healthevent.find({
+    HealthEvent.find({
       where: { person: person.id },
+      include: 'exercise',
       order: "date DESC",
       limit: limit || retrieveLimit
     }, function(err, data){ 
@@ -156,7 +157,7 @@ module.exports = function(Healthevent) {
     });
   }
 
-  Healthevent.remoteMethod(
+  HealthEvent.remoteMethod(
     "retrieveData",
     { 
       accepts: [

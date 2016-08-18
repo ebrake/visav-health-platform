@@ -82,7 +82,7 @@ module.exports = function(Exercise) {
     }) 
   }
 
-  var saveExerciseAndReps = function(exercise, person, Healthevent, Rep) {
+  var saveExerciseAndReps = function(exercise, person, HealthEvent, Rep) {
     return new Promise(function(resolve, reject){
       var date = exercise.date
         , reps = exercise.reps;
@@ -98,7 +98,7 @@ module.exports = function(Exercise) {
         return reject(new Error('Mising required field date on an exercise.'));
       }
 
-      Healthevent.find({
+      HealthEvent.find({
         where: { person: person.id, exerciseDate: date }
       }, function(err, healthevents){
         if (err) {
@@ -169,11 +169,11 @@ module.exports = function(Exercise) {
 
     var person = req.user
       , Rep = req.app.models.Rep
-      , Healthevent = req.app.models.Healthevent;
+      , HealthEvent = req.app.models.HealthEvent;
 
     Promise.all(data.map(function(exercise){
       //We don't actually have the Rep model anywhere except on the request, so we need to pass it down the chain
-      return saveExerciseAndReps(exercise, person, Healthevent, Rep);
+      return saveExerciseAndReps(exercise, person, HealthEvent, Rep);
     }))
     .then(function(results){
       console.log("Results:");
