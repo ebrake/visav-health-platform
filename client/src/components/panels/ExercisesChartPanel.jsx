@@ -7,6 +7,7 @@ import ExerciseActions from '../../alt/actions/ExerciseActions';
 var x = (point) => {
   return point.index;
 };
+
 class ExercisesChartPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -16,12 +17,16 @@ class ExercisesChartPanel extends React.Component {
       chartSeries: [],
       width: 600,
       height: 300,
-      margins: {left: 60, right: 40, top: 50, bottom: 50},
-      title: "User sample"
+      margins: {left: 60, right: 40, top: 10, bottom: 30},
+      title: "User sample",
+      data: { min: 0, max: 0, avg: 0 }
     };
+
     ExerciseActions.getExercises();
+
     this.exercisesChanged = this.exercisesChanged.bind(this);
     this.resize = throttle(this.resize, 200).bind(this);
+    this.calcMinMaxAvgReps = this.calcMinMaxAvgReps.bind(this);
   }
 
   chartSeries(){
@@ -78,11 +83,31 @@ class ExercisesChartPanel extends React.Component {
     }
   }
 
+  calcMinMaxAvgReps(exercises) {
+    let min = Infinity, max = -Infinity, avg = 0;
+    exercises.forEach(exercise => {
+      if (exercise.reps.length < min) min = exercise.reps.length;
+      if (exercise.reps.length > max) max = exercise.reps.length;
+      if (typeof exercise.reps.length == 'number') avg += exercise.reps.length;
+    })
+
+    avg = avg / exercises.length;
+    
+    this.setState({
+      data: { min: min, max: max, avg: avg }
+    });
+
+    console.log("Calculated min max avg reps:");
+    console.dir(this.state.data);
+  }
+
   exercisesChanged(exerciseState){
     this.setState({
       exercises: exerciseState.exercises,
       chartSeries: this.chartSeries()
     });
+
+    this.calcMinMaxAvgReps(exerciseState.exercises);
   }
 
   componentDidMount(){

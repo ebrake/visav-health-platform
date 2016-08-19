@@ -11,19 +11,23 @@ var x = (point) => {
 class RepsChartPanel extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       exercise: undefined,
       exerciseName: 'LOADING...',
       chartSeries: [],
       width: 600,
       height: 300,
-      margins: {left: 60, right: 40, top: 50, bottom: 50},
+      margins: {left: 60, right: 40, top: 10, bottom: 30},
       title: "User sample"
     };
+
     ExerciseActions.getExercises();
+
     this.exercisesChanged = this.exercisesChanged.bind(this);
     this.unit = this.unit.bind(this);
     this.resize = throttle(this.resize, 200).bind(this);
+    this.calcMinMaxAvgValue = this.calcMinMaxAvgValue.bind(this);
   }
 
   chartSeries(){
@@ -60,11 +64,32 @@ class RepsChartPanel extends React.Component {
     return dataArray;
   }
 
+  calcMinMaxAvgValue(exercise) {
+    let min = Infinity, max = -Infinity, avg = 0;
+
+    exercise.reps.forEach(rep => {
+      if (rep.value < min) min = rep.value;
+      if (rep.value > max) max = rep.value;
+      if (typeof rep.value == 'number') avg += rep.value;
+    })
+
+    avg = avg / exercise.reps.length;
+
+    this.setState({
+      data: { min: min, max: max, avg: avg }
+    });
+
+    console.log('Calculated min max avg value:');
+    console.dir(this.state.data);
+  }
+
   exercisesChanged(exerciseState){
     this.setState({
       exercise: exerciseState.displayedExercise,
       chartSeries: this.chartSeries()
     })
+
+    this.calcMinMaxAvgValue(exerciseState.displayedExercise);
   }
 
   componentDidMount(){

@@ -3,7 +3,8 @@
   background: white;
   border: 1px solid #e5e5e5;
 
-  h1 {
+  h1.title {
     text-align: center;
+    margin: 10px 0;
   }
 }
