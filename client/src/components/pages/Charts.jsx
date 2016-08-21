@@ -3,6 +3,8 @@ import LocalizedStrings from 'react-localization';
 import { Chart } from 'react-d3-core';
 import { LineChart } from 'react-d3-basic';
 import MainHeader from '../headers/MainHeader'
+import AuthenticatedPage from './AuthenticatedPage'
+
 let chartData = [
   {
     name: "Lavon Hilll I",
@@ -68,8 +70,7 @@ class Charts extends React.Component {
 
   render() {
     return (
-      <div className="Charts page">
-        <MainHeader />
+      <div className="Charts content-container">
         <div className="title-container">
           <h2 className="title">Charts</h2>
         </div>
@@ -83,10 +84,9 @@ class Charts extends React.Component {
           x={x}
         ></LineChart>
       </div>
-
     );
   }
 };
 
-export default Charts;
+export default AuthenticatedPage(Charts);
 

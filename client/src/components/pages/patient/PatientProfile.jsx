@@ -7,7 +7,7 @@ import ExerciseStore from '../../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../../alt/actions/ExerciseActions';
 import HealthEventStore from '../../../alt/stores/HealthEventStore';
 import HealthEventActions from '../../../alt/actions/HealthEventActions';
-
+import AuthenticatedPage from '../AuthenticatedPage';
 
 let strings = new LocalizedStrings({
   en:{
@@ -71,8 +71,7 @@ class PatientProfile extends React.Component {
 
   render() {
     return (
-      <div className="PatientProfile profile page">
-        <MainHeader />
+      <div className="PatientProfile profile content-container">
         <div id="welcome">
           <h2>{strings.welcome}, {this.state.user.name}</h2>
         </div>
@@ -82,5 +81,5 @@ class PatientProfile extends React.Component {
   }
 };
 
-export default PatientProfile;
+export default AuthenticatedPage(PatientProfile);
 

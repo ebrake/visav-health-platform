@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import MainHeader from '../../headers/MainHeader'
-
-
+import AuthenticatedPage from '../AuthenticatedPage';
+import AccountStore from '../../../alt/stores/AccountStore';
 
 let strings = new LocalizedStrings({
   en:{
@@ -32,8 +32,7 @@ class DoctorProfile extends React.Component {
   }
   render() {
     return (
-      <div className="DoctorProfile profile page">
-        <MainHeader />
+      <div className="DoctorProfile profile content-container">
         <div id="welcome">
           <h2>{strings.welcome}, {this.state.user.name}</h2>
         </div>
@@ -42,5 +41,5 @@ class DoctorProfile extends React.Component {
   }
 };
 
-export default DoctorProfile;
+export default AuthenticatedPage(DoctorProfile);
 

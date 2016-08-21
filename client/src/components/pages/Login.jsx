@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
-import { withRouter } from 'react-router';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
