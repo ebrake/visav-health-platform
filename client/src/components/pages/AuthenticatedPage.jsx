@@ -30,7 +30,7 @@ export default (ComposedComponent) => {
 
     render() {
       return (
-      <div className="App">
+      <div className="page">
         <MainHeader />
         <ComposedComponent
           {...this.props}

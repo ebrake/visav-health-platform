@@ -36,22 +36,21 @@ class VisavList extends React.Component {
   render() {
     return (
       <div className="visav-list-container">
-        <ul className="visav-list">
+        <div className="items">
           { 
             this.state.rows.map((row, index) => {
-                return (
-                  <li className="visav-list-item" key={index}>
-                    <div className="vli-key">{row.key}</div>
-                    <div className="vli-value">{row.value}</div>
-                  </li>
-                );
+              return (
+                <div className="item" key={index}>
+                  <div className="key">{row.key}</div>
+                  <div className="value">{row.value}</div>
+                </div>
+              );
             })
           }
-        </ul>
+        </div>
       </div>
     );
   }
 };
 
 export default VisavList;
-

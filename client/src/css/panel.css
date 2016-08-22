@@ -9,22 +9,30 @@
   }
 }
 
-.visav-list {
-  list-style-type: none;
-}
-
-.visav-list-item {
-  display: flex;
-  flex-direction: row;
-
-  .vli-key {
-    text-align: right;
-    flex: 1 1 1px;
-    margin-right: 10px;
+.visav-list-container {
+  .items {
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  .vli-value {
-    text-align: left;
-    flex: 1 1 1px;
+  .items .item {
+    flex: 1 0 200px;
+    @media (min-width: 440px) {
+      max-width: 50%;
+    }
+
+    display: flex;
+    flex-direction: row;
+
+    .key {
+      flex: 1 1 1px;
+      text-align: right;
+      margin-right: 10px;
+    }
+
+    .value {
+      flex: 1 1 1px;
+      text-align: left;
+    }
   }
 }
