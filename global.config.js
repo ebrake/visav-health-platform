@@ -14,7 +14,7 @@ var conf = {
 
 function readCredentialsFile(name) {  
   return fs.readFileSync(
-    path.resolve(__dirname, 'credentials', name),
+    path.resolve(__dirname, 'server/credentials', name),
     'UTF-8'
   );
 }
