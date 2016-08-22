@@ -7,6 +7,23 @@ export default (ComposedComponent) => {
     constructor(props) {
       super(props);
 
+      this.state = {
+        user: AccountStore.getState() ? AccountStore.getState().user : undefined
+      }
+    }
+
+    accountChanged(accountStore) {
+      this.setState({
+        user: accountStore.user
+      })
+    }
+
+    componentDidMount(){
+      AccountStore.listen(this.accountChanged);
+    }
+
+    componentWillUnmount(){
+      AccountStore.unlisten(this.accountChanged);
     }
 
     render() {
@@ -14,7 +31,8 @@ export default (ComposedComponent) => {
       <div className="App">
         <MainHeader />
         <ComposedComponent
-          {...this.props} />
+          {...this.props}
+          user={this.state.user} />
       </div>
       );
     }

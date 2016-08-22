@@ -53,7 +53,6 @@ class PatientProfile extends React.Component {
   }
 
   healthEventsChanged(healthEventState) {
-    console.dir(healthEventState);
     this.setState({
       healthEvents: healthEventState.healthEvents
     });
