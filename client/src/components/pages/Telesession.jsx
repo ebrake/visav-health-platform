@@ -4,7 +4,7 @@ import { config } from 'react-loopback';
 import MainHeader from '../headers/MainHeader';
 import RepsChartPanel from '../panels/RepsChartPanel';
 import ExercisesChartPanel from '../panels/ExercisesChartPanel';
-
+import NotificationActions from '../../alt/actions/NotificationActions';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 @scriptLoader(
   'https://static.opentok.com/v2/js/opentok.min.js'
@@ -18,6 +18,7 @@ class Telesession extends React.Component {
       createSessionResponse: '',
       opentokScriptLoaded: null
     };
+
   }
 
   componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
@@ -54,6 +55,10 @@ class Telesession extends React.Component {
     });
   }
 
+  callSelf() {
+    NotificationActions.callSelf();
+  }
+
   connectToSession() {
 
     const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.createSessionResponse.session.sessionId);
@@ -83,6 +88,8 @@ class Telesession extends React.Component {
         <MainHeader />
         <div className="telesession-container">
           <button onClick={this.createSession.bind(this)}><h1>Create Session</h1></button>
+          <button onClick={this.callSelf}><h1>Call Self</h1></button>
+
           {jsLoaded}
           <div className="videoContainer">
             <section ref="tokboxContainer" />
