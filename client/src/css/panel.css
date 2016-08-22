@@ -8,3 +8,23 @@
     margin: 10px 0;
   }
 }
+
+.visav-list {
+  list-style-type: none;
+}
+
+.visav-list-item {
+  display: flex;
+  flex-direction: row;
+
+  .vli-key {
+    text-align: right;
+    flex: 1 1 1px;
+    margin-right: 10px;
+  }
+
+  .vli-value {
+    text-align: left;
+    flex: 1 1 1px;
+  }
+}

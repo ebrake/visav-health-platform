@@ -3,6 +3,7 @@ import throttle from 'lodash.throttle';
 import { LineChart } from 'react-d3-basic';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
+import VisavList from './VisavList';
 
 var x = (point) => {
   return point.index;
@@ -16,10 +17,11 @@ class RepsChartPanel extends React.Component {
       exercise: undefined,
       exerciseName: 'LOADING...',
       chartSeries: [],
-      width: 600,
+      width: 560,
       height: 300,
       margins: {left: 60, right: 40, top: 10, bottom: 30},
-      title: "User sample"
+      title: "User sample",
+      listData: {}
     };
 
     ExerciseActions.getExercises();
@@ -27,7 +29,7 @@ class RepsChartPanel extends React.Component {
     this.exercisesChanged = this.exercisesChanged.bind(this);
     this.unit = this.unit.bind(this);
     this.resize = throttle(this.resize, 200).bind(this);
-    this.calcMinMaxAvgValue = this.calcMinMaxAvgValue.bind(this);
+    this.calcListData = this.calcListData.bind(this);
   }
 
   chartSeries(){
@@ -64,7 +66,7 @@ class RepsChartPanel extends React.Component {
     return dataArray;
   }
 
-  calcMinMaxAvgValue(exercise) {
+  calcListData(exercise) {
     let min = Infinity, max = -Infinity, avg = 0;
 
     exercise.reps.forEach(rep => {
@@ -73,23 +75,17 @@ class RepsChartPanel extends React.Component {
       if (typeof rep.value == 'number') avg += rep.value;
     })
 
-    avg = avg / exercise.reps.length;
+    avg = Number((avg / exercise.reps.length).toFixed(2));
 
-    this.setState({
-      data: { min: min, max: max, avg: avg }
-    });
-
-    console.log('Calculated min max avg value:');
-    console.dir(this.state.data);
+    return { Minimum: min, Maximum: max, Average: avg };
   }
 
   exercisesChanged(exerciseState){
     this.setState({
       exercise: exerciseState.displayedExercise,
-      chartSeries: this.chartSeries()
+      chartSeries: this.chartSeries(),
+      listData: this.calcListData(exerciseState.displayedExercise)
     })
-
-    this.calcMinMaxAvgValue(exerciseState.displayedExercise);
   }
 
   componentDidMount(){
@@ -105,7 +101,7 @@ class RepsChartPanel extends React.Component {
 
   resize(){
     var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    if (width < 640) {
+    if (width < 600) {
       var newMargin = width / 12;
       this.setState({
         width: width - 40,
@@ -120,7 +116,7 @@ class RepsChartPanel extends React.Component {
         <h1 className="title">
           Rep chart {this.state.exercise ? 'for exercise: '+this.state.exercise.type.slice(10) : ''}
         </h1>
-        <div style={{"width": this.state.width+"px", "margin": "0 auto"}}>
+        <div style={{"width": this.state.width+"px"}} className="chart-container">
           <LineChart
             margins= {this.state.margins}
             title={this.state.title}
@@ -131,6 +127,7 @@ class RepsChartPanel extends React.Component {
             x={x}
           ></LineChart>
         </div>
+        <VisavList data={this.state.listData} />
       </div>
     );
   }

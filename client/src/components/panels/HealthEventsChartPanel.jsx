@@ -15,17 +15,18 @@ class HealthEventsChartPanel extends React.Component {
     this.state = {
       healthEvents: [],
       chartSeries: [],
-      width: 600,
+      width: 560,
       height: 300,
       margins: {left: 60, right: 40, top: 10, bottom: 30},
-      title: "User sample"
+      title: "User sample",
+      listData: {}
     };
 
     HealthEventActions.getHealthEvents();
 
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
     this.resize = throttle(this.resize, 200).bind(this);
-    this.calcMinMaxAvgIntensity = this.calcMinMaxAvgIntensity.bind(this);
+    this.calcListData = this.calcListData.bind(this);
   }
 
   chartSeries(){
@@ -51,7 +52,7 @@ class HealthEventsChartPanel extends React.Component {
     return dataArray;
   }
 
-  calcMinMaxAvgIntensity(healthEvents) {
+  calcListData(healthEvents) {
     let min = Infinity, max = -Infinity, avg = 0;
 
     healthEvents.forEach(he => {
@@ -60,23 +61,17 @@ class HealthEventsChartPanel extends React.Component {
       if (typeof he.intensity == 'number') avg += he.intensity;
     })
 
-    avg = avg / healthEvents.length;
+    avg = Number((avg / healthEvents.length).toFixed(2));
 
-    this.setState({
-      data: { min: min, max: max, avg: avg }
-    });
-
-    console.log('Calculated min max avg intensity:');
-    console.dir(this.state.data);
+    return { Minimum: min, Maximum: max, Average: avg };
   }
 
   healthEventsChanged(healthEventState){
     this.setState({
       healthEvents: healthEventState.healthEvents,
-      chartSeries: this.chartSeries()
+      chartSeries: this.chartSeries(),
+      listData: this.calcListData(healthEventState.healthEvents)
     });
-
-    this.calcMinMaxAvgIntensity(healthEventState.healthEvents);
   }
 
   componentDidMount(){
@@ -92,7 +87,7 @@ class HealthEventsChartPanel extends React.Component {
 
   resize(){
     var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    if (width < 640) {
+    if (width < 600) {
       var newMargin = width / 12;
       this.setState({
         width: width - 40,
@@ -105,7 +100,7 @@ class HealthEventsChartPanel extends React.Component {
     return (
       <div className="HealthEventsChartPanel panel">
         <h1 className="title">Health Events Chart</h1>
-        <div style={{"width": this.state.width+"px", "margin": "0 auto"}}>
+        <div style={{"width": this.state.width+"px"}} className="chart-container">
           <LineChart
             margins= {this.state.margins}
             title={this.state.title}
