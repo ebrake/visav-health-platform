@@ -1,4 +1,3 @@
-// Development builds run as "production" but point to localhost as API_ROOT.
 process.env.NODE_ENV = (process.env.NODE_ENV || 'development');
 process.env.API_ROOT = (process.env.API_ROOT || 'http://localhost:4000/');
 
