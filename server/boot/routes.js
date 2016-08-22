@@ -1,8 +1,4 @@
-import React from "react";
-import Router from "react-router";
-import ReactDOMServer from 'react-dom/server'
 import loopback from 'loopback'
-import System from 'systemjs'
 import Path from 'path'
 
 const clientDir = (process.env.NODE_ENV!=="development" ? "client-dist" : "client")

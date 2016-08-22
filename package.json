@@ -49,7 +49,6 @@
     "react-router": "^2.6.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^1.0.1",
-    "systemjs": "^0.19.36",
     "uuid": "^2.0.2"
   },
   "devDependencies": {
