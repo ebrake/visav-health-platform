@@ -2,6 +2,40 @@ var OpenTok   = require('opentok');
 
 module.exports = function(Telesession) {
 
+  Telesession.callUser = function(req, limit, cb) {
+
+    var Notification = req.app.models.notification;
+    var PushModel = req.app.models.push;
+
+    var badge = 1;
+
+    // TODO: Find the target user's device registration!
+    var pushId = 1;
+
+    var note = new Notification({
+      expirationInterval: 3600, // Expires 1 hour from now.
+      badge: badge++,
+      sound: 'ping.aiff',
+      alert: '\uD83D\uDCE7 \u2709 ' + 'Hello',
+      messageFrom: 'Ray'
+    });
+
+    PushModel.notifyById(pushId, note, function (err) {
+      if (err) {
+        console.error('Cannot notify %j: %s', req.params.id, err.stack);
+        next(err);
+        return;
+      }
+      console.log('pushing notification to %j', req.params.id);
+      res.send(200, 'OK');
+    });
+
+    PushModel.on('error', function (err) {
+      console.error('Push Notification error: ', err.stack);
+    });
+
+  }
+
   Telesession.createSession = function(cb) {
 
     // Initialize OpenTok
@@ -32,14 +66,6 @@ module.exports = function(Telesession) {
 
     });
   }
-  
-  Telesession.remoteMethod(
-    'createSession',
-    {
-      http: {path: '/createSession', verb: 'post'},
-      returns: {arg: 'telesession', root: true}
-    }
-  );
 
   Telesession.createToken = function(req, cb) {
 
@@ -58,6 +84,14 @@ module.exports = function(Telesession) {
   }
 
   Telesession.remoteMethod(
+    'createSession',
+    {
+      http: {path: '/createSession', verb: 'post'},
+      returns: {arg: 'telesession', root: true}
+    }
+  );
+
+  Telesession.remoteMethod(
     'createToken',
     {
       accepts: [
@@ -67,5 +101,17 @@ module.exports = function(Telesession) {
       returns: {arg: 'telesession', root: true}
     }
   );
+
+  Telesession.remoteMethod(
+    "callUser",
+    { 
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } }
+      ],
+      http: { path: '/callUser', verb: 'post' },
+      returns: {arg: 'userCalled', root: true},
+      description: "Call a user, sends a push notification"
+    }
+  )
 
 };
