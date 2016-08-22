@@ -13,10 +13,15 @@ class Login extends React.Component {
 
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.goToSignup = this.goToSignup.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
   }  
+
+  goToSignup() {
+    this.props.router.push('/signup');
+  }
 
   login() {
     fetch(process.env.API_ROOT + 'api/people/login', {
@@ -79,6 +84,7 @@ class Login extends React.Component {
           <button className="accounts-button" onClick={this.logout}>
             <span>Logout</span>
           </button>
+          <span className="accounts-link" onClick={this.goToSignup}>{"Don't have an account? Sign up"}</span>
         </div>
       </div>
     );

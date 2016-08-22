@@ -1,7 +1,7 @@
 .accounts-button {
   height: 40px;
   width: 100%;
-  background: #000000;
+  background: #000;
   border: none;
   color: white;
   margin: 0 auto 10px;
@@ -27,5 +27,14 @@
   width: 400px;
   max-width: 100%;
   box-sizing: border-box;
-   
+}
+
+.accounts-link {
+  text-align: center;
+  cursor: pointer;
+
+  &:hover,
+  &::after {
+    text-decoration: underline;
+  }
 }

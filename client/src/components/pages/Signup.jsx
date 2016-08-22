@@ -13,9 +13,14 @@ class Signup extends React.Component {
     };
 
     this.login = this.login.bind(this);
+    this.goToLogin = this.goToLogin.bind(this);
     this.createUser = this.createUser.bind(this);
     this.handleChange = this.handleChange.bind(this);
   } 
+
+  goToLogin() {
+    this.props.router.push('/login');
+  }
 
   createUser() {
     if (!this.state.email) return console.log('No email!');
@@ -84,6 +89,7 @@ class Signup extends React.Component {
             <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} />
           </div>
           <button className="accounts-button" onClick={this.createUser}><span>Create User</span></button>
+          <span className="accounts-link" onClick={this.goToLogin}>{"Have an account? Log in"}</span>
         </div>
       </div>
     );
