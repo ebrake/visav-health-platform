@@ -6,10 +6,10 @@
   "acls": [],
   "methods": {},
   "relations": {
-    "userId": {
+    "person": {
       "type": "belongsTo",
       "model": "Person",
-      "foreignKey": "userId"
+      "foreignKey": "person"
     }
   }
 }

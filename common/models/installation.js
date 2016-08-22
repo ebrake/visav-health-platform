@@ -1,15 +1,14 @@
 
-module.exports = function(installation) {
+module.exports = function(Installation) {
 
-  installation.beforeRemote('replaceOrCreate',function(ctx, modelInstance, next){
+  Installation.beforeRemote('replaceOrCreate',function(ctx, modelInstance, next){
 
-    // Override userId with reference to user.
-    // Demo user is 1
-
-    // TODO: Link to actual user through request!
-
-    ctx.req.body.userId = 1;
-
+    var id = ctx.req.params.id || null;
+    ctx.req.body.person = id;
+    if (ctx.req.params.deviceType=='iOS') {
+      ctx.req.body.deviceType = 'ios';
+    }
+    
     next();
   });
 

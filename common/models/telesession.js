@@ -2,38 +2,42 @@ var OpenTok   = require('opentok');
 
 module.exports = function(Telesession) {
 
-  Telesession.callUser = function(req, limit, cb) {
-
+  Telesession.callUser = function(req, cb) {
     var Notification = req.app.models.notification;
     var PushModel = req.app.models.push;
-
+    var Installation = req.app.models.installation;
     var badge = 1;
+    if (req.body.userId) {
+      Installation.find({where: {person:req.body.userId}}, function(err, installations){
+        if (installations.length > 0) {
+          var installationId = installations[0].id;
+          var notification = new Notification({
+            expirationInterval: 3600, // Expires 1 hour from now.
+            badge: badge++,
+            sound: 'ping.aiff',
+            alert: '\uD83D\uDCE7 \u2709 ' + 'Hello',
+            messageFrom: 'Ray'
+          });
 
-    // TODO: Find the target user's device registration!
-    var pushId = 1;
+          PushModel.notifyById(installationId, notification, function (err) {
+            if (err) {
+              console.error('Cannot notify %j: %s', installationId, err.stack);
+              return;
+            }
+            console.log('pushing notification to %j', installationId);
+            cb(null, null);
+          });
 
-    var note = new Notification({
-      expirationInterval: 3600, // Expires 1 hour from now.
-      badge: badge++,
-      sound: 'ping.aiff',
-      alert: '\uD83D\uDCE7 \u2709 ' + 'Hello',
-      messageFrom: 'Ray'
-    });
-
-    PushModel.notifyById(pushId, note, function (err) {
-      if (err) {
-        console.error('Cannot notify %j: %s', req.params.id, err.stack);
-        next(err);
-        return;
-      }
-      console.log('pushing notification to %j', req.params.id);
-      res.send(200, 'OK');
-    });
-
-    PushModel.on('error', function (err) {
-      console.error('Push Notification error: ', err.stack);
-    });
-
+          PushModel.on('error', function (err) {
+            console.error('Push Notification error: ', err.stack);
+          });
+        };
+        
+      });
+    }
+    else{
+      console.error('Call User Error: Please provide valid userId in req.body.userId');
+    }
   }
 
   Telesession.createSession = function(cb) {
@@ -112,6 +116,6 @@ module.exports = function(Telesession) {
       returns: {arg: 'userCalled', root: true},
       description: "Call a user, sends a push notification"
     }
-  )
+  );
 
 };

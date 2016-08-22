@@ -22,5 +22,9 @@ function readCredentialsFile(name) {
 // Apple Push Notification Certificates
 conf.apnsCertData = readCredentialsFile('phlex_dev_cert.pem');
 conf.apnsKeyData = readCredentialsFile('phlex_dev_key.pem');
+conf.gcmServerApiKey = '';
+conf.appName = 'Phlex';
+conf.appId = 'com.krisandbrake.Phlex';
+conf.applicationUserId = 'strongloop';
 
 module.exports = conf;
