@@ -10,6 +10,8 @@ export default (ComposedComponent) => {
       this.state = {
         user: AccountStore.getState() ? AccountStore.getState().user : undefined
       }
+
+      this.accountChanged = this.accountChanged.bind(this);
     }
 
     accountChanged(accountStore) {
