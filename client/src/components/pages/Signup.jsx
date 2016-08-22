@@ -81,6 +81,7 @@ class Signup extends React.Component {
   render() {
     return (
       <div className="page">
+        <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
           <div className="accounts-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
@@ -91,6 +92,7 @@ class Signup extends React.Component {
           <button className="accounts-button" onClick={this.createUser}><span>Create User</span></button>
           <span className="accounts-link" onClick={this.goToLogin}>{"Have an account? Log in"}</span>
         </div>
+        <div className="accounts-flex-padding"></div>
       </div>
     );
   }

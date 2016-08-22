@@ -38,3 +38,7 @@
     text-decoration: underline;
   }
 }
+
+.accounts-flex-padding {
+  flex: 1 1 1px;
+}
