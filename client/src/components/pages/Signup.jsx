@@ -75,14 +75,15 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to React</h2>
-        </div>
-        <div className="App-body">
-          <input className="account-text-field" placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
-          <input className="account-text-field" placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} />
-          <button className="fb-login-button" onClick={this.createUser}><span>Create User</span></button>
+      <div className="page">
+        <div className="content-container accounts-container">
+          <div className="accounts-input-wrapper">
+            <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
+          </div>
+          <div className="accounts-input-wrapper">
+            <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} />
+          </div>
+          <button className="accounts-button" onClick={this.createUser}><span>Create User</span></button>
         </div>
       </div>
     );

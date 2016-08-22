@@ -65,27 +65,20 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to React</h2>
-        </div>
-        <div className="App-body">
-          <input className="account-text-field" placeholder="Email" value={this.state.email} 
-            onChange={this.handleChange('email')} />
-
-          <input className="account-text-field" placeholder="Password" value={this.state.password} 
-            onChange={this.handleChange('password')} />
-
-          <button className="fb-login-button" onClick={this.login}>
+      <div className="page">
+        <div className="content-container accounts-container">
+          <div className="accounts-input-wrapper">
+            <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
+          </div>
+          <div className = "accounts-input-wrapper">
+            <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} />
+          </div>
+          <button className="accounts-button" onClick={this.login}>
             <span>Login</span>
           </button>
-
-          <button className="fb-login-button" onClick={this.logout}>
+          <button className="accounts-button" onClick={this.logout}>
             <span>Logout</span>
           </button>
-
-          {/*<FacebookLogin  cssClass="fb-login-button" appId="1641537292841144" autoLoad={false} fields="name,email,picture"  
-                          callback={console.log} version="2.7" />*/}
         </div>
       </div>
     );
