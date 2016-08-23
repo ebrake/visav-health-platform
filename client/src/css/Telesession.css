@@ -20,7 +20,7 @@
 
 .telesession-container {
   position: relative;
-  flex: 1 0 300px;
+  flex: 1 1 300px;
 
   @media (--gt-md) {
     margin-right: 10px;
