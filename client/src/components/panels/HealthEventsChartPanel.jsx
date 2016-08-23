@@ -3,6 +3,7 @@ import throttle from 'lodash.throttle';
 import { LineChart } from 'react-d3-basic';
 import HealthEventStore from '../../alt/stores/HealthEventStore';
 import HealthEventActions from '../../alt/actions/HealthEventActions';
+import VisavList from './VisavList';
 
 var x = (point) => {
   return point.index;
@@ -65,6 +66,8 @@ class HealthEventsChartPanel extends React.Component {
       if (typeof he.intensity == 'number') avg += he.intensity;
     })
 
+    min = Number(min.toFixed(2));
+    max = Number(max.toFixed(2));
     avg = Number((avg / healthEvents.length).toFixed(2));
 
     return { Minimum: min, Maximum: max, Average: avg };
@@ -121,6 +124,7 @@ class HealthEventsChartPanel extends React.Component {
             x={x}
           ></LineChart>
         </div>
+        <VisavList data={this.state.listData} />
       </div>
     );
   }

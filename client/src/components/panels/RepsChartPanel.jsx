@@ -79,6 +79,8 @@ class RepsChartPanel extends React.Component {
       if (typeof rep.value == 'number') avg += rep.value;
     })
 
+    min = Number(min.toFixed(2));
+    max = Number(max.toFixed(2));
     avg = Number((avg / exercise.reps.length).toFixed(2));
 
     return { Minimum: min, Maximum: max, Average: avg };

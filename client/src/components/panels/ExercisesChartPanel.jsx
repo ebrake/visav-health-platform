@@ -3,6 +3,7 @@ import throttle from 'lodash.throttle';
 import { LineChart } from 'react-d3-basic';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
+import VisavList from './VisavList';
 
 var x = (point) => {
   return point.index;
@@ -95,6 +96,8 @@ class ExercisesChartPanel extends React.Component {
       if (typeof exercise.reps.length == 'number') avg += exercise.reps.length;
     })
 
+    min = Number(min.toFixed(2));
+    max = Number(max.toFixed(2));
     avg = Number((avg / exercises.length).toFixed(2));
     
     return { Minimum: min, Maximum: max, Average: avg };
@@ -151,6 +154,7 @@ class ExercisesChartPanel extends React.Component {
             x={x}
           ></LineChart>
         </div>
+        <VisavList data={this.state.listData} />
       </div>
     );
   }
