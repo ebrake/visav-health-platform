@@ -20,7 +20,7 @@
       width: 100px;
       height: 100px;
 
-      .button-image-full {
+      .btn-image-content {
         background-image: url('../img/call.png');
       }
     }
@@ -29,7 +29,7 @@
       width: 100px;
       height: 100px;
 
-      .button-image-full {
+      .btn-image-content {
         background-image: url('../img/hang-up.png');
       }
     }

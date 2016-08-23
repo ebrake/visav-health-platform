@@ -118,10 +118,10 @@ class Telesession extends React.Component {
         <div className="theatre">
           <div className="theatre-overlay">
             <button onClick={this.disconnectFromSession.bind(this)} className="btn-image btn-cancel">
-              <div className="button-image-full" />
+              <div className="btn-image-content" />
             </button>
             <button onClick={this.callSelf} className="btn-image btn-call">
-              <div className="button-image-full" />
+              <div className="btn-image-content" />
             </button>
           </div>
           <div className="video-container">
