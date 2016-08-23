@@ -18,6 +18,7 @@ class Telesession extends React.Component {
       createSessionResponse: '',
       opentokScriptLoaded: null
     };
+    this.callSelf = this.callSelf.bind(this);
 
   }
 
@@ -56,7 +57,7 @@ class Telesession extends React.Component {
   }
 
   callSelf() {
-    NotificationActions.callSelf();
+    NotificationActions.callSelf(this.state.createSessionResponse.session.sessionId);
   }
 
   connectToSession() {

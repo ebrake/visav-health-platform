@@ -9,6 +9,7 @@ module.exports = function(Telesession) {
     var badge = 1;
     if (req.body.userId) {
       Installation.find({where: {person:req.body.userId}}, function(err, installations){
+        let sessionId = req.body.sessionId || 'No Session Id';
         if (installations.length > 0) {
           var installationId = installations[0].id;
           var notification = new Notification({
@@ -17,7 +18,8 @@ module.exports = function(Telesession) {
             badge: badge++,
             sound: 'ping.aiff',
             alert: '\uD83D\uDCDE ' + 'Incoming phone call from Physician',
-            messageFrom: 'Physician'
+            messageFrom: 'Physician',
+            sessionId: sessionId
           });
 
           PushModel.notifyById(installationId, notification, function (err) {
@@ -84,7 +86,7 @@ module.exports = function(Telesession) {
     var response = {
       token: token
     }
-    cb(nil, response);
+    cb(null, response);
 
   }
 
@@ -102,7 +104,7 @@ module.exports = function(Telesession) {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
-      http: {path: '/createToken', verb: 'post'},
+      http: {path: '/createToken', verb: 'put'},
       returns: {arg: 'telesession', root: true}
     }
   );
