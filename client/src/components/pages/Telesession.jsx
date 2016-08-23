@@ -102,31 +102,32 @@ class Telesession extends React.Component {
     var jsLoaded;
     if (this.state.opentokScriptLoaded==null || this.state.opentokScriptLoaded==true) jsLoaded = null;
     else jsLoaded = <p><font color="red">Warning: Video cannot load due to a JavaScript error.</font></p>;
-    var sessionButton;
+    var createSessionButton;
     var callButton;
-    var videoContainer
+    var theatre
     if (this.state.activeSession == null) {
-      sessionButton = 
+      createSessionButton = 
         <button onClick={this.createSession.bind(this)} className="create-session-button">
           <h1>Create New Session</h1>
         </button>;
-      videoContainer = null;
+      theatre = null;
     }
     else{
-      sessionButton = 
-      <button onClick={this.disconnectFromSession.bind(this)} className="create-session-button">
-        <h1>Cancel Session</h1>
-      </button>;
-
-      callButton = 
-        <button onClick={this.callSelf} className="create-session-button">
-          <h1>Call Self</h1>
-        </button>;
-
-      videoContainer =
-        <div className="video-container">
-          <div className="video">
-            <section ref="tokboxContainer" />
+      createSessionButton = null;
+      theatre =
+        <div className="theatre">
+          <div className="theatre-overlay">
+            <button onClick={this.disconnectFromSession.bind(this)} className="create-session-button">
+              <h1>Cancel Session</h1>
+            </button>
+            <button onClick={this.callSelf} className="create-session-button">
+              <h1>Call Self</h1>
+            </button>
+          </div>
+          <div className="video-container">
+            <div className="video">
+              <section ref="tokboxContainer" />
+            </div>
           </div>
         </div>
     }
@@ -134,10 +135,9 @@ class Telesession extends React.Component {
     return (
       <div className="Telesession content-container row-gt-md">
         <div className="telesession-container">
-          {sessionButton}
-          {callButton}
+          {createSessionButton}
           {jsLoaded}
-          {videoContainer}
+          {theatre}
         </div>
         <div className="charts-container">
           <RepsChartPanel />

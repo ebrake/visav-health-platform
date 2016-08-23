@@ -1,5 +1,20 @@
 @import 'media.css';
-
+.theatre{
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  background-color: black;
+  position:relative;
+  .theatre-overlay{
+    position:absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
 .video-container {
   position: relative;
   width: 100%;
@@ -32,12 +47,10 @@
   }
 }
 
-.create-session-button {
-  float: left;
-  z-index: 5;
+
+.charts-container{
+  overflow: scroll;
 }
-
-
 .RepsChartPanel {
   margin-bottom: 10px;
 }
