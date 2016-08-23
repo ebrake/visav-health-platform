@@ -13,10 +13,11 @@ module.exports = function(Telesession) {
           var installationId = installations[0].id;
           var notification = new Notification({
             expirationInterval: 3600, // Expires 1 hour from now.
+            category: "CALL_USER",
             badge: badge++,
             sound: 'ping.aiff',
-            alert: '\uD83D\uDCE7 \u2709 ' + 'Hello',
-            messageFrom: 'Ray'
+            alert: '\uD83D\uDCDE ' + 'Incoming phone call from Physician',
+            messageFrom: 'Physician'
           });
 
           PushModel.notifyById(installationId, notification, function (err) {
