@@ -107,7 +107,7 @@ class Telesession extends React.Component {
     var theatre
     if (this.state.activeSession == null) {
       createSessionButton = 
-        <button onClick={this.createSession.bind(this)} className="create-session-button">
+        <button onClick={this.createSession.bind(this)} className="btn-create">
           <h1>Create New Session</h1>
         </button>;
       theatre = null;
@@ -117,11 +117,11 @@ class Telesession extends React.Component {
       theatre =
         <div className="theatre">
           <div className="theatre-overlay">
-            <button onClick={this.disconnectFromSession.bind(this)} className="create-session-button">
-              <h1>Cancel Session</h1>
+            <button onClick={this.disconnectFromSession.bind(this)} className="btn-image btn-cancel">
+              <div className="button-image-full" />
             </button>
-            <button onClick={this.callSelf} className="create-session-button">
-              <h1>Call Self</h1>
+            <button onClick={this.callSelf} className="btn-image btn-call">
+              <div className="button-image-full" />
             </button>
           </div>
           <div className="video-container">

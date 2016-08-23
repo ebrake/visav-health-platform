@@ -19,6 +19,8 @@ config.set('OPENTOK_API_KEY', '45631802');
 
 //CSS imports
 import './css/base.css';
+import './css/button.css';
+
 import './css/Accounts.css';
 import './css/App.css';
 import './css/SegmentedControl.css'
@@ -29,7 +31,6 @@ import './css/charts.css';
 import './css/panel.css';
 import './css/media.css';
 import './css/flex.css';
-
 //import main app component
 import App from './components/App.jsx';
 

@@ -1,20 +1,41 @@
 @import 'media.css';
-.theatre{
+
+.theatre {
   flex: 1 0 auto;
   display: flex;
   align-items: center;
   background-color: black;
-  position:relative;
-  .theatre-overlay{
-    position:absolute;
+  position: relative;
+
+  .theatre-overlay {
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    .btn-call {
+      width: 100px;
+      height: 100px;
+
+      .button-image-full {
+        background-image: url('../img/call.png');
+      }
+    }
+
+    .btn-cancel {
+      width: 100px;
+      height: 100px;
+
+      .button-image-full {
+        background-image: url('../img/hang-up.png');
+      }
+    }
   }
 }
+
 .video-container {
   position: relative;
   width: 100%;
@@ -47,10 +68,10 @@
   }
 }
 
-
-.charts-container{
+.charts-container {
   overflow: scroll;
 }
+
 .RepsChartPanel {
   margin-bottom: 10px;
 }
