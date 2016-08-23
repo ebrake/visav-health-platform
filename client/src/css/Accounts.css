@@ -1,0 +1,44 @@
+.accounts-button {
+  height: 40px;
+  width: 100%;
+  background: #000;
+  border: none;
+  color: white;
+  margin: 0 auto 10px;
+}
+
+.accounts-input-wrapper {
+  margin-bottom: 10px;
+  border: 1px solid black;
+  padding: 5px 9px;
+
+  input {
+    width: 100%;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    outline: none;
+  }
+}
+
+.accounts-container {
+  margin: 0 auto;
+  width: 400px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.accounts-link {
+  text-align: center;
+  cursor: pointer;
+
+  &:hover,
+  &::after {
+    text-decoration: underline;
+  }
+}
+
+.accounts-flex-padding {
+  flex: 1 1 1px;
+}

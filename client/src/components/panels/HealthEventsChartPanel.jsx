@@ -124,7 +124,6 @@ class HealthEventsChartPanel extends React.Component {
             x={x}
           ></LineChart>
         </div>
-        <VisavList data={this.state.listData} />
       </div>
     );
   }
