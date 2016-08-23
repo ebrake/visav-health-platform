@@ -19,7 +19,8 @@
 }
 
 .telesession-container {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   flex: 1 1 300px;
 
   @media (--gt-md) {
@@ -32,11 +33,10 @@
 }
 
 .create-session-button {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
+  float: left;
+  z-index: 5;
 }
+
 
 .RepsChartPanel {
   margin-bottom: 10px;

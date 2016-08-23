@@ -94,7 +94,7 @@ class Telesession extends React.Component {
             <button onClick={this.createSession.bind(this)} className="create-session-button">
               <h1>Create New Session</h1>
             </button>
-            <button onClick={this.callSelf}><h1>Call Self</h1></button>
+            <button onClick={this.callSelf} className="create-session-button"><h1>Call Self</h1></button>
             {jsLoaded}
             <div className="video-container">
               <div className="video">
