@@ -18,12 +18,7 @@ class NotificationActions {
         }
       ).then(responseObject => responseObject.json())
       .then(response => {
-        console.log('flag3');
-        if (response.data.status === 'success') {
-          return dispatch(response.data.exercises);
-        } else { 
-          return dispatch([]);
-        }
+        // do something with response if we want
       })
       .catch((err) => {
         console.log('error:');

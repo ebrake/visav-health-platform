@@ -46,7 +46,7 @@ class Telesession extends React.Component {
         createSessionResponse: response
       });
       this.connectToSession();
-      console.log(response);
+      //console.log(response);
     })
     .catch((err) => {
       this.setState({
