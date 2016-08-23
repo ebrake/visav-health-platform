@@ -139,7 +139,7 @@ class RepsChartPanel extends React.Component {
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
             <Legend verticalAlign="top" height={30} />
             <XAxis dataKey="index" />
-            <YAxis />
+            <YAxis domain={['auto', 'auto']} />
           </AreaChart>
         </div>
         <VisavList data={this.state.listData} />

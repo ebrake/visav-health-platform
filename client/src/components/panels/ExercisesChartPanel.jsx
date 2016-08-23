@@ -60,7 +60,7 @@ class ExercisesChartPanel extends React.Component {
         let pointDict = {};
         if (exercises[i].reps.length > 0) {
           pointDict['value'] = this.avgValueForExercise(exercises[i]);
-          pointDict['unit'] = exercises[i].reps[0].unit;//assumes all reps have same unit for one exercise
+          pointDict['unit'] = exercises[i].reps[0].unit; //assumes all reps have same unit for one exercise
           pointDict['date'] = exercises[i].date;
         }
         else{
@@ -140,6 +140,12 @@ class ExercisesChartPanel extends React.Component {
     }
   }
 
+  tickFormatter(arg){
+    if (arg == '') return '-';
+    var date = new Date(arg);
+    return date.getMonth()+'/'+date.getDay();
+  }
+
   render() {
     return (
       <div className="ExercisesChartPanel graph-panel panel">
@@ -150,8 +156,8 @@ class ExercisesChartPanel extends React.Component {
             <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
             <Legend verticalAlign="top" height={30} />
-            <XAxis dataKey="index" />
-            <YAxis />
+            <XAxis dataKey="date" tickFormatter={this.tickFormatter} interval={0} />
+            <YAxis domain={['auto', 'auto']} />
           </AreaChart>
         </div>
       </div>
