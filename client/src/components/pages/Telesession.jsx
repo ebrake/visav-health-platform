@@ -19,7 +19,9 @@ class Telesession extends React.Component {
     super(props);
     this.state = {
       createSessionResponse: '',
-      opentokScriptLoaded: null
+      opentokScriptLoaded: null,
+      activeSession:null,
+      activePublisher: null
     };
     this.callSelf = this.callSelf.bind(this);
 
@@ -66,12 +68,13 @@ class Telesession extends React.Component {
   connectToSession() {
 
     const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.createSessionResponse.session.sessionId);
-
+    this.setState({activeSession: session});
     const publisher = OT.initPublisher(this.refs.tokboxContainer, {
       insertMode: 'replace',
       width: '100%',
       height: '100%'
     })
+    this.setState({activePublisher: publisher});
 
     session.connect(this.state.createSessionResponse.token, function (error) {
       if (!error) {
@@ -81,32 +84,65 @@ class Telesession extends React.Component {
 
   }
 
+  disconnectFromSession(){
+    const session = this.state.activeSession;
+    if (session) {
+      session.unpublish(this.state.activePublisher);
+      session.disconnect();
+    }
+    this.setState({
+      activeSession: null,
+      activePublisher: null
+    });
+
+  }
+
   render() {
 
     var jsLoaded;
     if (this.state.opentokScriptLoaded==null || this.state.opentokScriptLoaded==true) jsLoaded = null;
     else jsLoaded = <p><font color="red">Warning: Video cannot load due to a JavaScript error.</font></p>;
+    var sessionButton;
+    var callButton;
+    var videoContainer
+    if (this.state.activeSession == null) {
+      sessionButton = 
+        <button onClick={this.createSession.bind(this)} className="create-session-button">
+          <h1>Create New Session</h1>
+        </button>;
+      videoContainer = null;
+    }
+    else{
+      sessionButton = 
+      <button onClick={this.disconnectFromSession.bind(this)} className="create-session-button">
+        <h1>Cancel Session</h1>
+      </button>;
+
+      callButton = 
+        <button onClick={this.callSelf} className="create-session-button">
+          <h1>Call Self</h1>
+        </button>;
+
+      videoContainer =
+        <div className="video-container">
+          <div className="video">
+            <section ref="tokboxContainer" />
+          </div>
+        </div>
+    }
 
     return (
-      <div className="Telesession content-container">
-        <div className="row-gt-md">
-          <div className="telesession-container">
-            <button onClick={this.createSession.bind(this)} className="create-session-button">
-              <h1>Create New Session</h1>
-            </button>
-            <button onClick={this.callSelf} className="create-session-button"><h1>Call Self</h1></button>
-            {jsLoaded}
-            <div className="video-container">
-              <div className="video">
-                <section ref="tokboxContainer" />
-              </div>
-            </div>
-          </div>
-          <div className="charts-container">
-            <RepsChartPanel />
-            <ExercisesChartPanel />
-            <HealthEventsChartPanel />
-          </div>
+      <div className="Telesession content-container row-gt-md">
+        <div className="telesession-container">
+          {sessionButton}
+          {callButton}
+          {jsLoaded}
+          {videoContainer}
+        </div>
+        <div className="charts-container">
+          <RepsChartPanel />
+          <ExercisesChartPanel />
+          <HealthEventsChartPanel />
         </div>
       </div>
     );
