@@ -1,4 +1,3 @@
-'use strict';
 
 var testUser = {
   email: 'dev@test.user',
@@ -8,17 +7,15 @@ var testUser = {
 
 module.exports = function(app) {
 
-  if (process.env.NODE_ENV == 'development') {
-    app.models.Person.find({
-      where: {
-        email: testUser.email
-      }
-    }, function(err, devUsers){
-      if (err) return;
-      if (devUsers[0]) return;
-
-      app.models.Person.create(testUser);
-    });
+  var filter = {
+    where: {
+      email: testUser.email
+    }
   }
+
+  app.models.Person.findOrCreate(filter, testUser, function(err, person, created) {
+    if (err) console.log(err);
+    else if (created) console.log("User created: "+testUser.email)
+  });
 
 };
