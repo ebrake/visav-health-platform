@@ -1,49 +1,50 @@
 {
-  "name": "Rep",
-  "plural": "Reps",
+  "name": "HealthEvent",
+  "plural": "HealthEvents",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "value": {
-      "type": "number",
-      "required": true,
-      "default": 0,
-      "postgresql": {
-        "columnName": "value",
-        "dataType": "double precision",
-        "nullable": "YES"
-      }
-    },
-    "unit": {
-      "type": "string",
-      "required": true,
-      "default": "\"\""
-    },
     "date": {
       "type": "date",
       "required": true,
       "default": "$now"
     },
-    "duration": {
+    "intensity": {
       "type": "number",
       "required": true,
       "default": 0,
       "postgresql": {
-        "columnName": "duration",
+        "columnName": "intensity",
         "dataType": "double precision",
         "nullable": "YES"
       }
     },
     "isDemo": {
       "type": "boolean",
+      "required": true,
       "default": false
+    },
+    "perceivedTrend": {
+      "type": "string",
+      "required": true,
+      "default": "''"
     },
     "note": {
       "type": "string",
-      "default": ""
+      "required": true,
+      "default": "''"
+    },
+    "type": {
+      "type": "string",
+      "required": true,
+      "default": "''"
+    },
+    "exerciseDate": {
+      "type": "date",
+      "required": false
     },
     "createdDate": {
       "type": "date",
@@ -57,6 +58,11 @@
       "type": "belongsTo",
       "model": "Person",
       "foreignKey": "person"
+    },
+    "exercise": {
+      "type": "belongsTo",
+      "model": "Exercise",
+      "foreignKey": "exercise"
     }
   },
   "acls": [],

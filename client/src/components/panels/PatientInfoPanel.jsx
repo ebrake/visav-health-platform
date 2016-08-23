@@ -3,6 +3,7 @@ import LocalizedStrings from 'react-localization';
 import SegmentedControl from 'react-segmented-control'
 
 class PatientInfoPanel extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -25,5 +26,6 @@ class PatientInfoPanel extends React.Component {
 PatientInfoPanel.propTypes = {
   user: React.PropTypes.object.isRequired
 };
+
 export default PatientInfoPanel;
 

@@ -1,54 +1,14 @@
-import React from "react";
-import Router from "react-router";
-import ReactDOMServer from 'react-dom/server'
-import exphbs from 'express-handlebars'
 import loopback from 'loopback'
-import System from 'systemjs'
+import Path from 'path'
 
-const clientDir = (process.env.NODE_ENV!=="production" ? "client-dist" : "client")
-
-// IMPORTANT: Do not delete. Needed for production
-SystemJS.import('../../'+clientDir+'/src/components/pages/Charts.jsx').then(function (_) {
-});
-SystemJS.import('../../'+clientDir+'/src/components/pages/Login.jsx').then(function (_) {
-});
+const clientDir = (process.env.NODE_ENV!=="development" ? "client-dist" : "client")
 
 module.exports = function routes(app) {
 
-  app.engine('handlebars', exphbs({extname: '.html'}));
-  app.set('view engine', 'handlebars');
-
-  app.set("views", "public/views");
   app.use(loopback.static(clientDir+"/build"));
 
-  let bootstrap = {};
-  app.get("/", function (req, res) {
-    let factory = React.createFactory(Home);
-    const html = ReactDOMServer.renderToString(factory({}));
-    res.render("index", {
-      markup: html,
-      clientDir: clientDir,
-      bootstrap: JSON.stringify(bootstrap)
-    });
+  app.use(function(req, res) {
+    res.sendFile(Path.join(__dirname, '../', '../', clientDir, 'build', 'index.html'));
   });
 
-  app.get("/charts", function (req, res) {
-    let factory = React.createFactory(Charts);
-    const html = ReactDOMServer.renderToString(factory({}));
-    res.render("index", {
-      markup: html,
-      clientDir: clientDir,
-      bootstrap: JSON.stringify(bootstrap)
-    });
-  });
-
-  app.get("/login", function (req, res) {
-    let factory = React.createFactory(Login);
-    const html = ReactDOMServer.renderToString(factory({}));
-    res.render("index", {
-      markup: html,
-      clientDir: clientDir,
-      bootstrap: JSON.stringify(bootstrap)
-    });
-  });
 }
