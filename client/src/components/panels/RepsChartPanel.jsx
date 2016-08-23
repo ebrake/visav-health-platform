@@ -71,13 +71,16 @@ class RepsChartPanel extends React.Component {
   }
 
   calcListData(exercise) {
+    if (!exercise) 
+      return { Minimum: 0, Maximum: 0, Average: 0 };
+
     let min = Infinity, max = -Infinity, avg = 0;
 
     exercise.reps.forEach(rep => {
       if (rep.value < min) min = rep.value;
       if (rep.value > max) max = rep.value;
       if (typeof rep.value == 'number') avg += rep.value;
-    })
+    });
 
     min = Number(min.toFixed(2));
     max = Number(max.toFixed(2));
