@@ -7,6 +7,8 @@ import ExercisesChartPanel from '../panels/ExercisesChartPanel';
 import NotificationActions from '../../alt/actions/NotificationActions';
 import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
+import AuthenticatedPage from './AuthenticatedPage';
+
 @scriptLoader(
   'https://static.opentok.com/v2/js/opentok.min.js'
 )
@@ -86,28 +88,24 @@ class Telesession extends React.Component {
     else jsLoaded = <p><font color="red">Warning: Video cannot load due to a JavaScript error.</font></p>;
 
     return (
-      <div className="Telesession page">
-        <MainHeader />
-        <div className="content-container">
-          <div className="row-gt-md">
-            <div className="telesession-container">
-              <button onClick={this.createSession.bind(this)} className="create-session-button">
-                <h1>Create New Session</h1>
-              </button>
-              <button onClick={this.callSelf}><h1>Call Self</h1></button>
-              {jsLoaded}
-              <div className="video-container">
-                <div className="video">
-                  <section ref="tokboxContainer" />
-                </div>
+      <div className="Telesession content-container">
+        <div className="row-gt-md">
+          <div className="telesession-container">
+            <button onClick={this.createSession.bind(this)} className="create-session-button">
+              <h1>Create New Session</h1>
+            </button>
+            <button onClick={this.callSelf} className="create-session-button"><h1>Call Self</h1></button>
+            {jsLoaded}
+            <div className="video-container">
+              <div className="video">
+                <section ref="tokboxContainer" />
               </div>
             </div>
-            <div className="charts-container">
-              <RepsChartPanel />
-              <ExercisesChartPanel />
-              <HealthEventsChartPanel />
-
-            </div>
+          </div>
+          <div className="charts-container">
+            <RepsChartPanel />
+            <ExercisesChartPanel />
+            <HealthEventsChartPanel />
           </div>
         </div>
       </div>
@@ -115,4 +113,4 @@ class Telesession extends React.Component {
   }
 }
 
-export default Telesession;
+export default AuthenticatedPage(Telesession);

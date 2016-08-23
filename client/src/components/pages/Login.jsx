@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
-import { withRouter } from 'react-router';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -13,10 +14,14 @@ class Login extends React.Component {
 
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.goToSignup = this.goToSignup.bind(this);
+    this.keyPressed = this.keyPressed.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.componentWillUnmount = this.componentWillUnmount.bind(this);
   }  
+
+  goToSignup() {
+    this.props.router.push('/signup');
+  }
 
   login() {
     fetch(process.env.API_ROOT + 'api/people/login', {
@@ -25,14 +30,18 @@ class Login extends React.Component {
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
     }).then(response => response.json())
     .then( data => {
-      AccountActions.loginUser(data);
-
-      //redirect
-      console.log('Login successful! Redirecting...');
-      this.props.router.push('/me');
+      if (data.token && data.token.status != 'error') {
+        AccountActions.loginUser(data);
+        //redirect
+        console.log('Login successful! Redirecting...');
+        this.props.router.push('/me');
+      } else {
+        //display validation messages
+        console.log('Error logging in:');
+        console.dir(data);
+      }
     })
     .catch((err) => {
-      //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
       console.log('Error logging in:');
       console.dir(err);
     })
@@ -42,12 +51,19 @@ class Login extends React.Component {
     this.props.router.push('/logout');
   }
 
-  handleChange(key) {
+  handleChange(field) {
     return function(event) {
       var state = {};
-      state[key] = event.target.value;
+      state[field] = event.target.value;
       this.setState(state);
     }.bind(this);
+  }
+
+  keyPressed(ev) {
+    if (ev.keyCode == 13) {
+      ev.preventDefault();
+      this.login();
+    }
   }
 
   accountChanged(state) {
@@ -65,28 +81,24 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to React</h2>
-        </div>
-        <div className="App-body">
-          <input className="account-text-field" placeholder="Email" value={this.state.email} 
-            onChange={this.handleChange('email')} />
-
-          <input className="account-text-field" placeholder="Password" value={this.state.password} 
-            onChange={this.handleChange('password')} />
-
-          <button className="fb-login-button" onClick={this.login}>
+      <div className="page">
+        <div className="accounts-flex-padding"></div>
+        <div className="content-container accounts-container">
+          <div className="accounts-input-wrapper">
+            <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} onKeyUp={this.keyPressed} />
+          </div>
+          <div className = "accounts-input-wrapper">
+            <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
+          </div>
+          <button className="accounts-button" onClick={this.login}>
             <span>Login</span>
           </button>
-
-          <button className="fb-login-button" onClick={this.logout}>
+          <button className="accounts-button" onClick={this.logout}>
             <span>Logout</span>
           </button>
-
-          {/*<FacebookLogin  cssClass="fb-login-button" appId="1641537292841144" autoLoad={false} fields="name,email,picture"  
-                          callback={console.log} version="2.7" />*/}
+          <span className="accounts-link" onClick={this.goToSignup}>{"Don't have an account? Sign up"}</span>
         </div>
+        <div className="accounts-flex-padding"></div>
       </div>
     );
   }
