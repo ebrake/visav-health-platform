@@ -1,26 +1,30 @@
 var GLOBAL_CONFIG = require('../../global.config');
 
 module.exports = function(Application) {
-  Application.beforeSave = function (next) {
-    if (this.name === GLOBAL_CONFIG.appName) {
-      this.id = GLOBAL_CONFIG.appId;
+  Application.observe('before save', function(ctx, next) {
+    var modelInstance = ctx.instance;
+    if (modelInstance.name === GLOBAL_CONFIG.appName) {
+      modelInstance.id = GLOBAL_CONFIG.appId;
     }
     next();
-  };
-  Application.afterSave = function (next){
+  });
+  Application.observe('after save', function(ctx, next) {
+    var modelInstance = ctx.instance;
     Application.register(
-      this.userId,
-      this.name,
+      modelInstance.userId,
+      modelInstance.name,
       {
-        description: this.description,
-        pushSettings: this.pushSettings
+        description: modelInstance.description,
+        pushSettings: modelInstance.pushSettings
       },
       function (err, app) {
         if (err) {
+          console.log('ERROR REGISTERING APPLICATION ' + JSON.stringify(err));
           return next(err);
         }
+        console.log('SUCCESSFULLY REGISTERED APPLICATION...');
         return next(null, app);
       }
     );
-  }
+  });
 }
