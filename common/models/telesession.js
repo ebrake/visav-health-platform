@@ -96,6 +96,7 @@ module.exports = function(Telesession) {
     var response = {
       token: token
     }
+    
     cb(null, response);
 
   }
@@ -109,13 +110,14 @@ module.exports = function(Telesession) {
   );
 
   Telesession.remoteMethod(
-    'createToken',
+    "createToken",
     {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
-      http: {path: '/createToken', verb: 'put'},
-      returns: {arg: 'telesession', root: true}
+      http: { path: '/createToken', verb: 'post' },
+      returns: { arg: 'result', root: true },
+      description: "Creates a session token"
     }
   );
 
