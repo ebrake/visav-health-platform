@@ -1,6 +1,6 @@
 import React from 'react';
 import Oy from 'oy-vey';
-import GettingStartedEmail from '../../public/email-templates/GettingStartedEmail.jsx';
+import GettingStartedEmail from '../../client/src/components/email-templates/GettingStartedEmail.jsx';
 
 var GLOBAL_CONFIG = require('../../global.config');
 var path = require('path');
