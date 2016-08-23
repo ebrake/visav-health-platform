@@ -9,7 +9,7 @@
     "start-prod": "node ./server/server.init-prod",
     "start-dev": "node ./server/server.init-dev",
     "package-client": "./node_modules/.bin/babel --optional runtime --ignore ./client/node_modules -d client-dist ./client && rm -f -r ./client && mv client-dist client",
-    "package-prod": "./node_modules/.bin/babel --optional runtime -d server-dist ./server  && ./node_modules/.bin/babel --optional runtime -d common-dist ./common && rm -f -r ./server && mv server-dist server && rm -f -r ./common-dist && mv common-dist common",
+    "package-prod": "./node_modules/.bin/babel --optional runtime -d server-dist ./server  && ./node_modules/.bin/babel --optional runtime -d common-dist ./common && rm -f -r ./server && mv server-dist server && rm -f -r ./common && mv common-dist common",
     "pretest": "eslint .",
     "posttest": "nsp check",
     "test-client": "./node_modules/.bin/karma start ./QA/test/karma.conf.client.js",
