@@ -6,10 +6,19 @@
   h1.title {
     text-align: center;
     margin: 10px 0;
+    flex: 1 1 1px;
   }
 }
 
+.chart-container {
+  flex: 1 1 1px;
+  margin: 0 auto 10px;
+}
+
 .visav-list-container {
+  flex: 1 1 1px;
+  margin-bottom: 10px;
+
   .items {
     display: flex;
     flex-wrap: wrap;
@@ -17,6 +26,7 @@
 
   .items .item {
     flex: 1 0 200px;
+
     @media (min-width: 440px) {
       max-width: 50%;
     }
