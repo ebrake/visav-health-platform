@@ -3,7 +3,13 @@
   "base": "Installation",
   "properties": {},
   "validations": [],
-  "relations": {},
   "acls": [],
-  "methods": {}
+  "methods": {},
+  "relations": {
+    "userId": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "userId"
+    }
+  }
 }

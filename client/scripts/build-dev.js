@@ -1,5 +1,5 @@
-process.env.NODE_ENV = 'staging';
-process.env.API_ROOT = 'https://staging.visav.io/';
+process.env.NODE_ENV = (process.env.NODE_ENV || 'development');
+process.env.API_ROOT = (process.env.API_ROOT || 'http://localhost:4000/');
 
 var path = require('path');
 var rimrafSync = require('rimraf').sync;
@@ -13,7 +13,7 @@ rimrafSync(relative + '/build');
 
 webpack(config).run(function(err, stats) {
   if (err) {
-    console.error('Failed to create a staging build. Reason:');
+    console.error('Failed to create a development build. Reason:');
     console.error(err.message || err);
     process.exit(1);
   }
@@ -27,5 +27,5 @@ webpack(config).run(function(err, stats) {
   console.log('  hs');
   console.log('  ' + openCommand + ' http://localhost:8080');
   console.log();
-  console.log('The bundle is optimized and ready to be deployed to staging.');
+  console.log('The bundle is optimized and ready to be deployed to development.');
 });

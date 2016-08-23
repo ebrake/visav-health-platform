@@ -4,6 +4,7 @@ import { config } from 'react-loopback';
 import MainHeader from '../headers/MainHeader';
 import RepsChartPanel from '../panels/RepsChartPanel';
 import ExercisesChartPanel from '../panels/ExercisesChartPanel';
+import NotificationActions from '../../alt/actions/NotificationActions';
 import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
@@ -20,6 +21,8 @@ class Telesession extends React.Component {
       createSessionResponse: '',
       opentokScriptLoaded: null
     };
+    this.callSelf = this.callSelf.bind(this);
+
   }
 
   componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
@@ -46,7 +49,7 @@ class Telesession extends React.Component {
         createSessionResponse: response
       });
       this.connectToSession();
-      console.log(response);
+      //console.log(response);
     })
     .catch((err) => {
       this.setState({
@@ -54,6 +57,10 @@ class Telesession extends React.Component {
       });
       console.error(err);
     });
+  }
+
+  callSelf() {
+    NotificationActions.callSelf(this.state.createSessionResponse.session.sessionId);
   }
 
   connectToSession() {
@@ -87,6 +94,7 @@ class Telesession extends React.Component {
             <button onClick={this.createSession.bind(this)} className="create-session-button">
               <h1>Create New Session</h1>
             </button>
+            <button onClick={this.callSelf}><h1>Call Self</h1></button>
             {jsLoaded}
             <div className="video-container">
               <div className="video">
@@ -98,7 +106,6 @@ class Telesession extends React.Component {
             <RepsChartPanel />
             <ExercisesChartPanel />
             <HealthEventsChartPanel />
-
           </div>
         </div>
       </div>

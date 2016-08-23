@@ -2,6 +2,57 @@ var OpenTok   = require('opentok');
 
 module.exports = function(Telesession) {
 
+  Telesession.callUser = function(req, cb) {
+
+    if (!req.user) {
+      return cb(null, { status: 'failure', message: 'Cannot call user; Anonymous request (no user to attach to)' });
+    } 
+
+    var Notification = req.app.models.notification;
+    var PushModel = req.app.models.push;
+    var Installation = req.app.models.installation;
+    var badge = 1;
+    if (req.body.userId) {
+      Installation.find({where: {person:req.body.userId}}, function(err, installations){
+        let sessionId = req.body.sessionId || 'No Session Id';
+        if (installations.length > 0) {
+          var installationId = installations[0].id;
+          var notification = new Notification({
+            expirationInterval: 3600, // Expires 1 hour from now.
+            category: "CALL_USER",
+            badge: badge++,
+            sound: 'ping.aiff',
+            alert: '\uD83D\uDCDE ' + 'Incoming call',
+            from: {
+              firstName: req.user.firstName,
+              lastName: req.user.lastName,
+              email: req.user.email,
+              id: req.user.id
+            },
+            sessionId: sessionId
+          });
+
+          PushModel.notifyById(installationId, notification, function (err) {
+            if (err) {
+              console.error('Cannot notify %j: %s', installationId, err.stack);
+              return;
+            }
+            console.log('pushing notification to %j', installationId);
+            cb(null, null);
+          });
+
+          PushModel.on('error', function (err) {
+            console.error('Push Notification error: ', err.stack);
+          });
+        };
+        
+      });
+    }
+    else{
+      console.error('Call User Error: Please provide valid userId in req.body.userId');
+    }
+  }
+
   Telesession.createSession = function(cb) {
 
     // Initialize OpenTok
@@ -32,14 +83,6 @@ module.exports = function(Telesession) {
 
     });
   }
-  
-  Telesession.remoteMethod(
-    'createSession',
-    {
-      http: {path: '/createSession', verb: 'post'},
-      returns: {arg: 'telesession', root: true}
-    }
-  );
 
   Telesession.createToken = function(req, cb) {
 
@@ -53,9 +96,17 @@ module.exports = function(Telesession) {
     var response = {
       token: token
     }
-    cb(nil, response);
+    cb(null, response);
 
   }
+
+  Telesession.remoteMethod(
+    'createSession',
+    {
+      http: {path: '/createSession', verb: 'post'},
+      returns: {arg: 'telesession', root: true}
+    }
+  );
 
   Telesession.remoteMethod(
     'createToken',
@@ -63,8 +114,20 @@ module.exports = function(Telesession) {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
-      http: {path: '/createToken', verb: 'post'},
+      http: {path: '/createToken', verb: 'put'},
       returns: {arg: 'telesession', root: true}
+    }
+  );
+
+  Telesession.remoteMethod(
+    "callUser",
+    { 
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } }
+      ],
+      http: { path: '/callUser', verb: 'post' },
+      returns: {arg: 'userCalled', root: true},
+      description: "Call a user, sends a push notification"
     }
   );
 
