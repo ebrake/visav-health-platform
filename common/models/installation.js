@@ -22,7 +22,19 @@ module.exports = function(Installation) {
     req.body.userId = userId;
 
     Installation.findOrCreate(filter, req.body, function(err, install, created) {
-      return cb(err,install);
+      if (err || created) return cb(err,install);
+      if (!created) {
+
+        //upsert doesn't actually work as we can't make a composite key involving a foreign key in loopback, so just remove it and insert the updated one
+        Installation.destroyById(install.id, function(err2){
+          if (err2) return cb(err,null);
+          Installation.create(req.body, function(err3, createdInstall) {
+            if (err3) return cb(err3,createdInstall);
+            return cb(err3,createdInstall);
+          });
+        })
+        
+      }
     });
 
   }
