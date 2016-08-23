@@ -14,6 +14,7 @@ class Login extends React.Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.goToSignup = this.goToSignup.bind(this);
+    this.keyPressed = this.keyPressed.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
@@ -30,14 +31,18 @@ class Login extends React.Component {
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
     }).then(response => response.json())
     .then( data => {
-      AccountActions.loginUser(data);
-
-      //redirect
-      console.log('Login successful! Redirecting...');
-      this.props.router.push('/me');
+      if (data.token && data.token.status != 'error') {
+        AccountActions.loginUser(data);
+        //redirect
+        console.log('Login successful! Redirecting...');
+        this.props.router.push('/me');
+      } else {
+        //display validation messages
+        console.log('Error logging in:');
+        console.dir(data);
+      }
     })
     .catch((err) => {
-      //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
       console.log('Error logging in:');
       console.dir(err);
     })
@@ -47,12 +52,19 @@ class Login extends React.Component {
     this.props.router.push('/logout');
   }
 
-  handleChange(key) {
+  handleChange(field) {
     return function(event) {
       var state = {};
-      state[key] = event.target.value;
+      state[field] = event.target.value;
       this.setState(state);
     }.bind(this);
+  }
+
+  keyPressed(ev) {
+    if (ev.keyCode == 13) {
+      ev.preventDefault();
+      this.login();
+    }
   }
 
   accountChanged(state) {
@@ -74,10 +86,10 @@ class Login extends React.Component {
         <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
           <div className="accounts-input-wrapper">
-            <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
+            <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} onKeyUp={this.keyPressed} />
           </div>
           <div className = "accounts-input-wrapper">
-            <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} />
+            <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
           </div>
           <button className="accounts-button" onClick={this.login}>
             <span>Login</span>

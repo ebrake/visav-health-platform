@@ -14,6 +14,7 @@ class Signup extends React.Component {
 
     this.login = this.login.bind(this);
     this.goToLogin = this.goToLogin.bind(this);
+    this.keyPressed = this.keyPressed.bind(this);
     this.createUser = this.createUser.bind(this);
     this.handleChange = this.handleChange.bind(this);
   } 
@@ -23,8 +24,8 @@ class Signup extends React.Component {
   }
 
   createUser() {
-    if (!this.state.email) return console.log('No email!');
-    if (!this.state.password) return console.log('No password!');
+    if (!this.state.email) return console.log('No email!'); //trigger email validation message
+    if (!this.state.password) return console.log('No password!'); //trigger password validation message
     let self = this;
     fetch(
       process.env.API_ROOT + 'api/people/create', 
@@ -37,9 +38,13 @@ class Signup extends React.Component {
       return response.json();
     })
     .then(function(data){
-      if (data.user) {
+      if (data.user && data.user.status != 'error') {
         console.log('User creation successful! Logging in...');
         self.login();
+      } else {
+        //trigger "duplicate email" or whatever error message is in data.user.type
+        console.log("Error creating account:");
+        console.dir(data);
       }
     })
     .catch(function(err){
@@ -70,12 +75,19 @@ class Signup extends React.Component {
     })
   }
 
-  handleChange(key) {
+  handleChange(field) {
     return function(event) {
       var state = {};
-      state[key] = event.target.value;
+      state[field] = event.target.value;
       this.setState(state);
     }.bind(this);
+  }
+
+  keyPressed(ev) {
+    if (ev.keyCode == 13) {
+      ev.preventDefault();
+      this.createUser();
+    }
   }
 
   render() {
@@ -87,7 +99,7 @@ class Signup extends React.Component {
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
           </div>
           <div className="accounts-input-wrapper">
-            <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} />
+            <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
           </div>
           <button className="accounts-button" onClick={this.createUser}><span>Create User</span></button>
           <span className="accounts-link" onClick={this.goToLogin}>{"Have an account? Log in"}</span>

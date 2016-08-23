@@ -7,15 +7,17 @@ var path = require('path');
 
 module.exports = function(Person) {
   Person.remoteCreate = function(req, cb) {
-    if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
-    if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
+    if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'Please provide a valid email address', status: 'error' });
+    if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'No password was provided', status: 'error' });
 
     Person.create({
       email: req.body.email.toLowerCase(),
       password: req.body.password
     }, function(err, createdUser){
       if (err) {
-        return cb(null, { error: err, type: 'signup', status: 'error' });
+        var type = 'Issue creating account. Please try again later';
+        if (err.message.toLowerCase().indexOf('email already exists') >= 0) type = 'Email is already in use';
+        return cb(null, { error: err, type: type, status: 'error' });
       }
 
       console.log("Created user "+req.body.email);
@@ -26,6 +28,10 @@ module.exports = function(Person) {
 
   //send verification email after registration
   Person.afterRemote('remoteCreate', function(context, createdObject, next) {
+
+    if (createdObject.user.status == 'error') {
+      return next();
+    }
 
     // TODO: Add e-mail to database queue if sending fails
 
