@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import throttle from 'lodash.throttle';
-import { LineChart } from 'react-d3-basic';
+import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import VisavList from './VisavList';
@@ -9,9 +9,10 @@ var x = (point) => {
   return point.index;
 };
 
-var margins = { left: 50, right: 50, top: 10, bottom: 30 }
+var margins = { left: -10, right: 50, top: 10, bottom: 0 }
   , width = 560
-  , height = 300;
+  , height = 300
+  , fillColor = '#00F0FF';
 
 class RepsChartPanel extends React.Component {
   constructor(props) {
@@ -132,15 +133,14 @@ class RepsChartPanel extends React.Component {
           Rep chart {this.state.exercise ? 'for exercise: '+this.state.exercise.type.slice(10) : ''}
         </h1>
         <div style={{"width": this.state.width+"px"}} className="chart-container">
-          <LineChart
-            margins= {this.state.margins}
-            title={this.state.title}
-            data={this.chartData()}
-            width={this.state.width}
-            height={this.state.height}
-            chartSeries={this.state.chartSeries}
-            x={x}
-          ></LineChart>
+          <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
+            margin={this.state.margins} >
+            <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
+            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+            <Legend verticalAlign="top" height={30} />
+            <XAxis dataKey="index" />
+            <YAxis />
+          </AreaChart>
         </div>
         <VisavList data={this.state.listData} />
       </div>
