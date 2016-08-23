@@ -3,23 +3,20 @@ module.exports = function(Installation) {
 
   Installation.register = function(req, cb) {
 
-    //this is null for me...
-    //var id = ctx.req.params.id || null;
-    //ctx.req.body.userId = id;
-
-    var userId = 1;
-    // TODO: Link to user object, referenced through AUTH HTTP token.
+    if (!req.user) {
+      return cb(null, { status: 'failure', message: 'Cannot register push notification; Anonymous request (no user to attach to)' });
+    } 
 
     var deviceType = req.body.deviceType;
 
     var filter = {
       where: {
         deviceType: deviceType,
-        userId: userId
+        userId: req.user.id
       }
     }
 
-    req.body.userId = userId;
+    req.body.userId = req.user.id;
 
     Installation.findOrCreate(filter, req.body, function(err, install, created) {
       if (err || created) return cb(err,install);
