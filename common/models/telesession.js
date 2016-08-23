@@ -3,6 +3,11 @@ var OpenTok   = require('opentok');
 module.exports = function(Telesession) {
 
   Telesession.callUser = function(req, cb) {
+
+    if (!req.user) {
+      return cb(null, { status: 'failure', message: 'Cannot call user; Anonymous request (no user to attach to)' });
+    } 
+
     var Notification = req.app.models.notification;
     var PushModel = req.app.models.push;
     var Installation = req.app.models.installation;
@@ -17,8 +22,13 @@ module.exports = function(Telesession) {
             category: "CALL_USER",
             badge: badge++,
             sound: 'ping.aiff',
-            alert: '\uD83D\uDCDE ' + 'Incoming phone call from Physician',
-            messageFrom: 'Physician',
+            alert: '\uD83D\uDCDE ' + 'Incoming call',
+            from: {
+              firstName: req.user.firstName,
+              lastName: req.user.lastName,
+              email: req.user.email,
+              id: req.user.id
+            },
             sessionId: sessionId
           });
 

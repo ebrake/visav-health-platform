@@ -15,7 +15,7 @@ class PatientInfoPanel extends React.Component {
       <div className="PatientInfoPanel panel">
         <h1 className="title">Patient Info</h1>
         <ul id="patient-info-list">
-          <span>Patient Name: {this.props.user.name}</span>
+          <span>Patient Name: {this.props.user.firstName} {this.props.user.lastName}</span>
         </ul>
       </div>
     );

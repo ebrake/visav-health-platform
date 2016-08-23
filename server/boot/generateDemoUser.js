@@ -2,7 +2,8 @@
 var testUser = {
   email: 'dev@test.user',
   password: 'testtest',
-  name: 'Brodysseus'
+  firstName: 'Brody',
+  lastName: 'McLeon'
 };
 
 module.exports = function(app) {

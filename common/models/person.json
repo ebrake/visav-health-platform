@@ -6,9 +6,13 @@
     "validateUpsert": true
   },
   "properties": {
-    "name": {
+    "firstName": {
       "type": "String",
-      "default": "Abroham Lincoln"
+      "default": "Abroham"
+    },
+    "lastName": {
+      "type": "String",
+      "default": "Lincoln"
     }
   },
   "validations": [],
