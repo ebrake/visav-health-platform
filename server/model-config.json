@@ -75,5 +75,9 @@
   "HealthEvent": {
     "dataSource": "psql",
     "public": true
+  },
+  "HealthEventEmail": {
+    "dataSource": "psql",
+    "public": false
   }
 }

@@ -1,6 +1,53 @@
 var Promise = require('bluebird');
+var GLOBAL_CONFIG = require('../../global.config');
+var path = require('path');
+
+import React from 'react';
+import Oy from 'oy-vey';
 
 module.exports = function(HealthEvent) {
+  var sendHealthEventEmail = function(healthEvent, person, HealthEventEmail, Email) {
+    return new Promise(function(resolve, reject){
+      var threshold = .5;
+
+      if (healthEvent.intensity > threshold || healthEvent.perceivedTrend.toLowerCase() == 'increasing') {
+        //send email here
+      } else {
+        resolve('No email sent for HealthEvent '+healthEvent.id+'.');
+      }
+    })
+  }
+
+  var generateHealthEventEmails = function(createdHealthEvents, person, HealthEventEmail, Email) {
+    return new Promise(function(resolve, reject){
+      HealthEventEmail.find({
+        where: { patient: person.id },
+        order: 'date DESC'
+      }, function(err, healthEventEmails){
+        if (err) return reject(err);
+        var lastEmailSentAt = new Date(0);
+        if (healthEventEmails && healthEventEmails.length > 0) {
+          lastEmailSentAt = healthEventEmails[0].date;
+        }
+        var healthEvents = [];
+        createdHealthEvents.forEach(function(he){
+          if (he.date > lastEmailSentAt) healthEvents.push(he);
+        })
+
+        //now we execute logic deciding if we send another email on only what is contained in healthEvents
+        return Promise.all(healthEvents.map(function(he){
+          return sendHealthEventEmail(he, person, HealthEventEmail, Email);
+        }))
+        .then(function(results){
+          return resolve(results);
+        })
+        .catch(function(err){
+          return reject(err);
+        })
+      })
+    })
+  }
+
   var saveHealthEvent = function(healthEvent, person, Exercise) {
     return new Promise(function(resolve, reject){
       var date = healthEvent.date
@@ -99,27 +146,38 @@ module.exports = function(HealthEvent) {
   }  
 
   HealthEvent.receiveData = function(req, data, cb) {
-    if (!req.user) {
+    if (!req.user || !req.user.id) {
       return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
     } 
 
     var person = req.user
-      , Exercise = req.app.models.Exercise;
+      , Exercise = req.app.models.Exercise
+      , HealthEventEmail = req.app.models.HealthEventEmail
+      , Email = req.app.models.Email;
 
     Promise.all(data.map(function(healthEvent){
       //We don't actually have the Rep model anywhere except on the request, so we need to pass it down the chain
       return saveHealthEvent(healthEvent, person, Exercise);
     }))
-    .then(function(results){
-      console.log("Results:");
-      console.log(results);
-      return cb(null, { status: 'success' });
-    })
-    .catch(function(err){
+    .then(function(createdHealthEvents){
+      cb(null, { status: 'success' });
+      //note the use of side effects; look into putting this cb at the end of the promise chain if strange bugs arise in this code
+      return generateHealthEventEmails(createdHealthEvents, person, HealthEventEmail, Email);
+    }, function(err){
       console.log("Issue creating HealthEvent data:");
       console.log(err);
       return cb(null, { status: 'failure', message: err.message });
     }) 
+    .then(function(emailResults){
+      console.log("Email results:");
+      console.log(emailResults);
+      return null;
+    })
+    .catch(function(err){
+      console.log("Issue sending emails:");
+      console.log(err);
+    })
+    
   }
 
   HealthEvent.remoteMethod(
