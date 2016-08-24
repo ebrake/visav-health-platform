@@ -5,9 +5,8 @@ import Body from './modules/Body';
 import Footer from './modules/Footer';
 
 export default function HealthEventNotificationEmail(props) {
-  const { healthEventEmail } = props;
-  const { doctor, patient, healthEvent } = healthEventEmail;
-  const { exercise } = healthEvent;
+  const { healthEventEmail, doctor, patient, healthEvent, exercise } = props;
+
   const buttonStyle = {
     margin:'0 10px'
   };
@@ -36,8 +35,7 @@ export default function HealthEventNotificationEmail(props) {
 
   if (healthEvent.exercise) {
     whilePerformingExerciseString = <span> after performing {exercise.type}</span>;
-  }
-  else{
+  } else {
     whilePerformingExerciseString = null;
   }
 
@@ -70,24 +68,24 @@ export default function HealthEventNotificationEmail(props) {
 }
 
 HealthEventNotificationEmail.defaultProps = { 
+  doctor: {
+    firstName: 'Doc',
+    lastName: 'Halliday'
+  },
+  patient: {
+    firstName: 'Pat',
+    lastName: 'Malaise',
+    gender: 'other'
+  },
   healthEventEmail: {
-    id: 12315412,
-    doctor: {
-      firstName: 'Doc',
-      lastName: 'Halliday'
-    },
-    patient: {
-      firstName: 'Pat',
-      lastName: 'Malaise',
-      gender: 'other'
-    },
-    healthEvent: {
-      intensity: 7,
-      perceivedTrend: 'increasing',
-      type: 'swelling',
-      exercise: {
-        type: 'knee raises'
-      }
-    },
-  } 
+    id: 12315412
+  },
+  healthEvent: {
+    intensity: 7,
+    perceivedTrend: 'increasing',
+    type: 'swelling'
+  },
+  exercise: {
+    type: 'knee raises'
+  }
 };
