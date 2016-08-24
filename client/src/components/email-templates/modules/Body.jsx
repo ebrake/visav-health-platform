@@ -3,12 +3,13 @@ import EmptySpace from './EmptySpace';
 
 export default (props) => {
 
-  const textStyle = {
+  const bodyStyle = {
     color: '#42444c',
     backgroundColor: '#eeeeee',
     fontFamily: 'Arial',
     fontSize: '18px',
-    textAlign: 'center'
+    textAlign: 'center',
+    padding: '20px'
   };
 
   return (
@@ -16,9 +17,12 @@ export default (props) => {
       <tbody>
         <tr>
           <td
-            style={textStyle}>
+            className="body"
+            style={bodyStyle}>
             <EmptySpace height={200} />
-            {props.children}
+            <div className="content">
+              {props.children}
+            </div>
             <EmptySpace height={200} />
           </td>
         </tr>

@@ -8,8 +8,29 @@ export default function HealthEventNotificationEmail(props) {
   const { healthEventEmail } = props;
   const { doctor, patient, healthEvent } = healthEventEmail;
   const { exercise } = healthEvent;
+  const buttonStyle = {
+    margin:'0 10px'
+  };
+  const actionsStyle = {
+    margin: '20px 0 0 0'
+  };
   var whilePerformingExerciseString;
   var noteString;
+  var pronoun;
+  var feelsString;
+  if (patient.gender == 'male') {
+    pronoun = <span>he</span>;
+    feelsString = <span>He feels</span>;
+  }
+  else if (patient.gender == 'female') {
+    pronoun = <span>she</span>;
+    feelsString = <span>She feels</span>;
+  }
+  else{
+    pronoun = <span>they</span>;
+    feelsString = <span>They feel</span>;
+  }
+
   if (healthEvent.exercise) {
     whilePerformingExerciseString = <span> after performing {exercise.type}</span>;
   }
@@ -24,15 +45,12 @@ export default function HealthEventNotificationEmail(props) {
       <Body>
         <h2 className="title">{patient.firstName} {patient.lastName} had an adverse health event!</h2>
         <div className="health-event-info">
-          <p>{patient.firstName} experienced an adverse health event ({healthEvent.type}){whilePerformingExerciseString}.</p>
-          <p>
-            In {patient.firstName}&rsquo;s estimation, they experienced {healthEvent.type} with an intensity of {healthEvent.intensity}.
-            They feel that the intensity is {healthEvent.perceivedTrend}.
-          </p>
+          <p>{patient.firstName} experienced an adverse health event ({healthEvent.type}){whilePerformingExerciseString}. In {patient.firstName}&rsquo;s estimation, {pronoun} experienced {healthEvent.type} with an intensity of {healthEvent.intensity}/10.</p>
+          <p>{feelsString} that the intensity is {healthEvent.perceivedTrend}.</p>
         </div>
-        <div className="actions">
-          <button className="btn-take-action">Take action now!</button>
-          <button className="btn-dismiss">Dismiss notification</button>
+        <div style={actionsStyle} className="actions">
+          <button style={buttonStyle} className="btn-take-action">Take action now!</button>
+          <button style={buttonStyle} className="btn-dismiss">Dismiss notification</button>
         </div>
       </Body>
 
@@ -50,7 +68,8 @@ HealthEventNotificationEmail.defaultProps = {
     },
     patient: {
       firstName: 'Pat',
-      lastName: 'Malaise'
+      lastName: 'Malaise',
+      gender: 'other'
     },
     healthEvent: {
       intensity: 7,
@@ -60,6 +79,5 @@ HealthEventNotificationEmail.defaultProps = {
         type: 'knee raises'
       }
     },
-
   } 
 };
