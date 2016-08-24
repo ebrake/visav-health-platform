@@ -7,7 +7,7 @@ button {
   position: relative;
   border: none;
   background-color: transparent;
-  
+
   &:focus {
     outline: 0;
   }

@@ -46,3 +46,20 @@
     }
   }
 }
+
+.chart-tooltip {
+  margin: 0;
+  line-height: 24px;
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 10px;
+
+  .title {
+    font-weight: 700;
+  }
+
+  span {
+    display: block;
+    margin: 0;
+  }
+}

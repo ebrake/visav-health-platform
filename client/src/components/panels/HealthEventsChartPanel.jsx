@@ -43,15 +43,21 @@ class HealthEventsChartPanel extends React.Component {
     }];
   }
 
+  format(date){
+    date = new Date(date);
+    return date.toLocaleDateString()+' '+date.toLocaleTimeString();
+  }
+
   chartData(){
     let dataArray = [];
     var healthEvents  = this.state.healthEvents;
     if(healthEvents && healthEvents.length > 0) {
       for(var i = 0; i < healthEvents.length; i++){
         let pointDict = {};
-        pointDict['intensity'] = healthEvents[i].intensity;
-        pointDict['date'] = healthEvents[i].date;
+        pointDict['intensity'] = Number((healthEvents[i].intensity*10).toFixed(2));
+        pointDict['date'] = this.format(healthEvents[i].date);
         pointDict['index'] = i;
+        pointDict['name'] = healthEvents[i].type;
         dataArray.push(pointDict);
       }
     }
@@ -110,6 +116,11 @@ class HealthEventsChartPanel extends React.Component {
     }
   }
 
+  tickFormatter(arg){
+    var date = new Date(arg);
+    return (date.getMonth()+1)+'/'+date.getDate();
+  }
+
   render() {
     return (
       <div className="HealthEventsChartPanel panel">
@@ -117,11 +128,12 @@ class HealthEventsChartPanel extends React.Component {
         <div style={{"width": this.state.width+"px"}} className="chart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >
-            <Area unit="Intensity" type="monotone" dataKey="intensity" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <Legend verticalAlign="top" height={30} />
-            <XAxis dataKey="index" />
+            <XAxis dataKey="date" tickFormatter={this.tickFormatter} />
             <YAxis domain={['auto', 'auto']} />
+            <Legend verticalAlign="top" height={30} />
+            <Tooltip content={<HealthEventsToolTip />} />
+            <Area type="monotone" dataKey="intensity" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
           </AreaChart>
         </div>
       </div>
@@ -129,5 +141,29 @@ class HealthEventsChartPanel extends React.Component {
   }
 };
 
-export default HealthEventsChartPanel;
+class HealthEventsToolTip extends React.Component {
+  render() {
+    const { active } = this.props;
 
+    if (active) {
+      const { payload, label } = this.props;
+      var title = 'Health Event', value = '';
+      if (payload && payload[0]) {
+        title += ': '+payload[0].payload.name;
+        value = payload[0].name+' : '+payload[0].value;
+      }
+
+      return (
+        <div className="chart-tooltip">
+          <span className="title">{`${title}`}</span>
+          <span className="value">{label}</span>
+          <span className="value">{value}</span>
+        </div>
+      );
+    }
+
+    return null;
+  }
+}
+
+export default HealthEventsChartPanel;

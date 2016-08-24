@@ -60,10 +60,10 @@ class RepsChartPanel extends React.Component {
       if (reps.length > 0) {
         for(var i = 0; i < reps.length; i++){
           let pointDict = {};
-          pointDict['value'] = reps[i].value;
+          pointDict['value'] = Number(reps[i].value.toFixed(2));
           pointDict['unit'] = reps[i].unit;
           pointDict['date'] = reps[i].date;
-          pointDict['index'] = i;
+          pointDict['index'] = "Rep "+i;
           dataArray.push(pointDict);
         }
       }
@@ -130,16 +130,17 @@ class RepsChartPanel extends React.Component {
     return (
       <div className="RepsChartPanel graph-panel panel">
         <h1 className="title">
-          Rep chart {this.state.exercise ? 'for exercise: '+this.state.exercise.type.slice(10) : ''}
+          Rep Chart {this.state.exercise ? 'for '+this.state.exercise.type : ''}
         </h1>
         <div style={{"width": this.state.width+"px"}} className="chart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >
-            <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <Legend verticalAlign="top" height={30} />
             <XAxis dataKey="index" />
             <YAxis domain={['auto', 'auto']} />
+            <Legend verticalAlign="top" height={30} />
+            <Tooltip labelStyle={{fontWeight: 700}} itemStyle={{color: 'black'}} />
+            <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
           </AreaChart>
         </div>
         <VisavList data={this.state.listData} />

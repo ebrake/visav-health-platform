@@ -51,6 +51,11 @@ class ExercisesChartPanel extends React.Component {
     else return 'No unit'
   }
 
+  format(date){
+    date = new Date(date);
+    return date.toLocaleDateString()+' '+date.toLocaleTimeString();
+  }
+
   chartData(){
     let dataArray = [];
     let exercises = this.state.exercises;
@@ -59,18 +64,18 @@ class ExercisesChartPanel extends React.Component {
       for(var i = 0; i < exercises.length; i++){
         let pointDict = {};
         if (exercises[i].reps.length > 0) {
-          pointDict['value'] = this.avgValueForExercise(exercises[i]);
+          pointDict['value'] = Number(this.avgValueForExercise(exercises[i]).toFixed(2));
           pointDict['unit'] = exercises[i].reps[0].unit; //assumes all reps have same unit for one exercise
-          pointDict['date'] = exercises[i].date;
-        }
-        else{
+        } else {
           pointDict['value'] = 0;
           pointDict['unit'] = 'NO REPS';
-          pointDict['date'] = new Date();
         }
+        pointDict['date'] = this.format(exercises[i].date);
         pointDict['index'] = i;
-        pointDict['exerciseName'] = exercises[i].type;
-        dataArray.push(pointDict);
+        pointDict['name'] = exercises[i].type;
+        if (pointDict.unit != 'NO REPS') {
+          dataArray.push(pointDict);
+        }
       }
     }
     return dataArray;
@@ -141,9 +146,8 @@ class ExercisesChartPanel extends React.Component {
   }
 
   tickFormatter(arg){
-    if (arg == '') return '-';
     var date = new Date(arg);
-    return date.getMonth()+'/'+date.getDate();
+    return (date.getMonth()+1)+'/'+date.getDate();
   }
 
   render() {
@@ -153,11 +157,12 @@ class ExercisesChartPanel extends React.Component {
         <div style={{"width": this.state.width+"px"}} className="chart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >
-            <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <Legend verticalAlign="top" height={30} />
             <XAxis dataKey="date" tickFormatter={this.tickFormatter} interval={0} />
             <YAxis domain={['auto', 'auto']} />
+            <Legend verticalAlign="top" height={30} />
+            <Tooltip content={<ExercisesTooltip />} />
+            <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
           </AreaChart>
         </div>
       </div>
@@ -165,5 +170,29 @@ class ExercisesChartPanel extends React.Component {
   }
 };
 
-export default ExercisesChartPanel;
+class ExercisesTooltip extends React.Component {
+  render() {
+    const { active } = this.props;
 
+    if (active) {
+      const { payload, label } = this.props;
+      var title = 'Exercise', value = '';
+      if (payload && payload[0]) {
+        title = payload[0].payload.name;
+        value = payload[0].name+' : '+payload[0].value;
+      }
+
+      return (
+        <div className="chart-tooltip">
+          <span className="title">{`${title}`}</span>
+          <span className="value">{label}</span>
+          <span className="value">{value}</span>
+        </div>
+      );
+    }
+
+    return null;
+  }
+}
+
+export default ExercisesChartPanel;

@@ -149,7 +149,7 @@ module.exports = function(HealthEvent) {
     HealthEvent.find({
       where: { person: person.id },
       include: 'exercise',
-      order: "date DESC",
+      order: "date ASC",
       limit: limit || retrieveLimit
     }, function(err, data){ 
       if (err) return cb(null, { status: 'failure', message: err.message });
