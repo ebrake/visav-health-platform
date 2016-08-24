@@ -11,8 +11,8 @@
       "default": false
     },
     "actionTaken": {
-      "type": "string",
-      "default": ""
+      "type": "boolean",
+      "default": false
     },
     "date": {
       "type": "date",
