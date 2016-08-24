@@ -1,5 +1,5 @@
 import React from 'react';
-import EmptySpace from './EmptySpace.jsx';
+import EmptySpace from './EmptySpace';
 
 export default (props) => {
 
