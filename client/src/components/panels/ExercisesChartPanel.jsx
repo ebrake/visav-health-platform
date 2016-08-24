@@ -143,7 +143,7 @@ class ExercisesChartPanel extends React.Component {
   tickFormatter(arg){
     if (arg == '') return '-';
     var date = new Date(arg);
-    return date.getMonth()+'/'+date.getDay();
+    return date.getMonth()+'/'+date.getDate();
   }
 
   render() {
