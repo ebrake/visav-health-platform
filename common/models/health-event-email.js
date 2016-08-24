@@ -11,8 +11,10 @@ module.exports = function(HealthEventEmail) {
         if (healthEventEmail) {
           healthEventEmail.dismissed = true;
           healthEventEmail.save(function(err){
-            if (err) return reject(err);
-            return resolve(healthEventEmail);
+            if (err) console.log(err);
+            else{
+              console.log('HealthEventEmail with id: ' + emailId + ' was successfully dismissed');
+            }
           });
         }
         else{
@@ -35,8 +37,10 @@ module.exports = function(HealthEventEmail) {
         if (healthEventEmail) {
           healthEventEmail.actionTaken = true;
           healthEventEmail.save(function(err){
-            if (err) return reject(err);
-            return resolve(healthEventEmail);
+            if (err) console.log(err);
+            else{
+              console.log('Action was taken on HealthEventEmail with id: ' + emailId);
+            }
           });
         }
         else{
