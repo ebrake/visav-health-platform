@@ -18,6 +18,9 @@ export default function HealthEventNotificationEmail(props) {
   var noteString;
   var pronoun;
   var feelsString;
+  var takeActionURL = process.env.API_ROOT + 'api/healthEventEmails/takeAction/';
+  var dismissURL = process.env.API_ROOT + 'api/healthEventEmails/dismiss/';
+
   if (patient.gender == 'male') {
     pronoun = <span>he</span>;
     feelsString = <span>He feels</span>;
@@ -49,8 +52,14 @@ export default function HealthEventNotificationEmail(props) {
           <p>{feelsString} that the intensity is {healthEvent.perceivedTrend}.</p>
         </div>
         <div style={actionsStyle} className="actions">
-          <button style={buttonStyle} className="btn-take-action">Take action now!</button>
-          <button style={buttonStyle} className="btn-dismiss">Dismiss notification</button>
+          <form style={buttonStyle} action={takeActionURL} method="get">
+            <input type="hidden" name="healthEventEmailId" value={healthEventEmail.id} />
+            <input type="submit" value="Take action now!" />
+          </form>
+          <form style={buttonStyle} action={dismissURL} method="get">
+            <input type="hidden" name="healthEventEmailId" value={healthEventEmail.id} />
+            <input type="submit" value="Dismiss notification" />
+          </form>
         </div>
       </Body>
 
@@ -62,6 +71,7 @@ export default function HealthEventNotificationEmail(props) {
 
 HealthEventNotificationEmail.defaultProps = { 
   healthEventEmail: {
+    id: 12315412,
     doctor: {
       firstName: 'Doc',
       lastName: 'Halliday'

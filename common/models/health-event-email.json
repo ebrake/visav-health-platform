@@ -17,7 +17,7 @@
     "date": {
       "type": "date",
       "required": true,
-      "default": null
+      "default": "$now"
     },
     "delivered": {
       "type": "boolean",
@@ -48,6 +48,27 @@
       "foreignKey": "healthevent"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "takeAction"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "dismiss"
+    }
+  ],
   "methods": {}
 }

@@ -78,6 +78,6 @@
   },
   "HealthEventEmail": {
     "dataSource": "psql",
-    "public": false
+    "public": true
   }
 }
