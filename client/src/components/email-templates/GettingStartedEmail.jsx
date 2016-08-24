@@ -1,8 +1,8 @@
 import React from 'react';
-import Layout from './layouts/Layout.jsx';
-import Header from './modules/Header.jsx';
-import Body from './modules/Body.jsx';
-import Footer from './modules/Footer.jsx';
+import Layout from './layouts/Layout';
+import Header from './modules/Header';
+import Body from './modules/Body';
+import Footer from './modules/Footer';
 
 export default function GettingStartedEmail(props) {
   
