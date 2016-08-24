@@ -37,7 +37,7 @@ var logout = (nextState, replace) => {
 
 var routes = (
   <Router history={browserHistory}>
-    <Route path="/" component={Home} onLeave={cacheStores} />
+    <Route path="/" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
     { /* UNAUTHENTICATED PAGES */ }
     <Route path="/login" component={Login} onLeave={cacheStores} />
     <Route path="/signup" component={Signup} onLeave={cacheStores} />
