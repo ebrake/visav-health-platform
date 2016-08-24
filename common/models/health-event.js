@@ -104,7 +104,8 @@ module.exports = function(HealthEvent) {
     } 
 
     var person = req.user
-      , Exercise = req.app.models.Exercise;
+      , Exercise = req.app.models.Exercise
+      , HealthEventEmail = req.app.models.HealthEventEmail;
 
     Promise.all(data.map(function(healthEvent){
       //We don't actually have the Rep model anywhere except on the request, so we need to pass it down the chain
