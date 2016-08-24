@@ -5,9 +5,7 @@ import Body from './modules/Body';
 import Footer from './modules/Footer';
 
 export default function HealthEventNotificationEmail(props) {
-  const { healthEventEmail } = props;
-  const { doctor, patient, healthEvent } = healthEventEmail;
-  const { exercise } = healthEvent;
+  const { healthEventEmail, doctor, patient, healthEvent, exercise } = props;
   var whilePerformingExerciseString;
   var noteString;
   if (healthEvent.exercise) {

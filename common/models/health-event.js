@@ -4,21 +4,50 @@ var path = require('path');
 
 import React from 'react';
 import Oy from 'oy-vey';
+import HealthEventNotificationEmail from '../../client/src/components/email-templates/HealthEventNotificationEmail';
 
 module.exports = function(HealthEvent) {
-  var sendHealthEventEmail = function(healthEvent, person, HealthEventEmail, Email) {
+  var sendHealthEventEmail = function(healthEventAndExercise, person, HealthEventEmail, Email) {
     return new Promise(function(resolve, reject){
       var threshold = .5;
 
       if (healthEvent.intensity > threshold || healthEvent.perceivedTrend.toLowerCase() == 'increasing') {
-        //send email here
+        HealthEventEmail.create({
+          date: new Date(),
+          dismissed: false,
+          actionTaken: "",
+          delivered: false,
+          url: '',
+          patient: person.id,
+          doctor: person.id,
+          healthevent: healthEvent.id
+        }, function(err, createdEmail) {
+          if (err) return reject(err);
+          createdEmail.save(function(err){
+            if (err) return reject(err);
+            //send email here
+            Email.send({
+              to: person.email,
+              from: GLOBAL_CONFIG.SYSTEM_EMAIL,
+              subject: 'VISAV: '+person.firstName+' '+person.lastName+' has had an adverse Health Event',
+              html: Oy.renderTemplate(
+                <HealthEventNotificationEmail healthEventEmail={createdEmail} doctor={person} patient={person} 
+                    healthEvent={healthEventAndExercise.healthEvent} exercise={healthEventAndExercise.exercise}/>, 
+                {}
+              )
+            }, function(err) {
+              if (err) return reject(err);
+              resolve('Email sent for HealthEvent '+healthEventAndExercise.healthEvent.id+'.');
+            });
+          });
+        }) 
       } else {
-        resolve('No email sent for HealthEvent '+healthEvent.id+'.');
+        resolve('No email needing to be sent for HealthEvent '+healthEventAndExercise.healthEvent.id+'.');
       }
     })
   }
 
-  var generateHealthEventEmails = function(createdHealthEvents, person, HealthEventEmail, Email) {
+  var generateHealthEventEmails = function(createdHealthEventsAndExercises, person, HealthEventEmail, Email) {
     return new Promise(function(resolve, reject){
       HealthEventEmail.find({
         where: { patient: person.id },
@@ -30,13 +59,13 @@ module.exports = function(HealthEvent) {
           lastEmailSentAt = healthEventEmails[0].date;
         }
         var healthEvents = [];
-        createdHealthEvents.forEach(function(he){
-          if (he.date > lastEmailSentAt) healthEvents.push(he);
+        createdHealthEventsAndExercises.forEach(function(obj){
+          if (obj.healthEvent.date > lastEmailSentAt) healthEvents.push(obj);
         })
 
         //now we execute logic deciding if we send another email on only what is contained in healthEvents
-        return Promise.all(healthEvents.map(function(he){
-          return sendHealthEventEmail(he, person, HealthEventEmail, Email);
+        return Promise.all(healthEvents.map(function(obj){
+          return sendHealthEventEmail(obj, person, HealthEventEmail, Email);
         }))
         .then(function(results){
           return resolve(results);
@@ -126,7 +155,7 @@ module.exports = function(HealthEvent) {
               createdHealthEvent.save(function(err){
                 if (err) return reject(err);
                 console.log("Upserted HealthEvent: "+createdHealthEvent.id);
-                return resolve(createdHealthEvent);
+                return resolve({ healthEvent: createdHealthEvent, exercise: exercises[0] });
               })
             })
           } else {
@@ -136,7 +165,7 @@ module.exports = function(HealthEvent) {
               createdHealthEvent.save(function(err){
                 if (err) return reject(err);
                 console.log("Inserted HealthEvent: "+createdHealthEvent.id);
-                return resolve(createdHealthEvent);
+                return resolve({ healthEvent: createdHealthEvent, exercise: exercises[0] });
               })
             });
           }
@@ -159,10 +188,10 @@ module.exports = function(HealthEvent) {
       //We don't actually have the Rep model anywhere except on the request, so we need to pass it down the chain
       return saveHealthEvent(healthEvent, person, Exercise);
     }))
-    .then(function(createdHealthEvents){
+    .then(function(createdHealthEventsAndExercises){
       cb(null, { status: 'success' });
       //note the use of side effects; look into putting this cb at the end of the promise chain if strange bugs arise in this code
-      return generateHealthEventEmails(createdHealthEvents, person, HealthEventEmail, Email);
+      return generateHealthEventEmails(createdHealthEventsAndExercises, person, HealthEventEmail, Email);
     }, function(err){
       console.log("Issue creating HealthEvent data:");
       console.log(err);
