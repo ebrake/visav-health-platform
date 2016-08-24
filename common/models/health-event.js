@@ -42,6 +42,8 @@ module.exports = function(HealthEvent) {
               )
             }, function(err) {
               if (err) return reject(err);
+              createdEmail.delivered = true;
+              createdEmail.save();
               resolve('Email sent for HealthEvent '+healthEvent.id+'.');
             });
           });
