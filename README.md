@@ -85,7 +85,7 @@ NAME | VALUE
 
 ##### Back End
 
- 1. Run the following command: `npm install --ignore-scripts`
+ 1. Run the following command: `npm install`
 
 ##### Front End
 
