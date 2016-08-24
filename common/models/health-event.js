@@ -9,7 +9,9 @@ import HealthEventNotificationEmail from '../../client/src/components/email-temp
 module.exports = function(HealthEvent) {
   var sendHealthEventEmail = function(healthEventAndExercise, person, HealthEventEmail, Email) {
     return new Promise(function(resolve, reject){
-      var threshold = .5;
+      var threshold = .5
+        , healthEvent = healthEventAndExercise.healthEvent
+        , exercise = healthEventAndExercise.exercise;
 
       if (healthEvent.intensity > threshold || healthEvent.perceivedTrend.toLowerCase() == 'increasing') {
         HealthEventEmail.create({
@@ -17,7 +19,7 @@ module.exports = function(HealthEvent) {
           dismissed: false,
           actionTaken: "",
           delivered: false,
-          url: '',
+          url: 'test123',
           patient: person.id,
           doctor: person.id,
           healthevent: healthEvent.id
@@ -32,17 +34,20 @@ module.exports = function(HealthEvent) {
               subject: 'VISAV: '+person.firstName+' '+person.lastName+' has had an adverse Health Event',
               html: Oy.renderTemplate(
                 <HealthEventNotificationEmail healthEventEmail={createdEmail} doctor={person} patient={person} 
-                    healthEvent={healthEventAndExercise.healthEvent} exercise={healthEventAndExercise.exercise}/>, 
-                {}
+                    healthEvent={healthEvent} exercise={exercise}/>, 
+                {
+                  title: 'Health Notification from VISAV',
+                  previewText: 'Your patient has had an adverse health event...'
+                }
               )
             }, function(err) {
               if (err) return reject(err);
-              resolve('Email sent for HealthEvent '+healthEventAndExercise.healthEvent.id+'.');
+              resolve('Email sent for HealthEvent '+healthEvent.id+'.');
             });
           });
         }) 
       } else {
-        resolve('No email needing to be sent for HealthEvent '+healthEventAndExercise.healthEvent.id+'.');
+        resolve('No email needing to be sent for HealthEvent '+healthEvent.id+'.');
       }
     })
   }

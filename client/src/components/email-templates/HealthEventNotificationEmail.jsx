@@ -6,12 +6,11 @@ import Footer from './modules/Footer';
 
 export default function HealthEventNotificationEmail(props) {
   const { healthEventEmail, doctor, patient, healthEvent, exercise } = props;
-  var whilePerformingExerciseString;
-  var noteString;
-  if (healthEvent.exercise) {
+  var whilePerformingExerciseString
+    , noteString;
+  if (exercise) {
     whilePerformingExerciseString = <span> after performing {exercise.type}</span>;
-  }
-  else{
+  } else {
     whilePerformingExerciseString = null;
   }
 
