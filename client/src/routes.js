@@ -11,6 +11,7 @@ import PatientProfile from './components/pages/patient/PatientProfile'
 import DoctorProfile from './components/pages/doctor/DoctorProfile'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
+import EmailGettingStarted from './components/email-templates/GettingStartedEmail'
 
 var cacheStores = () => {
   let snapshot = alt.takeSnapshot();
@@ -36,7 +37,7 @@ var logout = (nextState, replace) => {
 
 var routes = (
   <Router history={browserHistory}>
-    <Route path="/" component={Home} onLeave={cacheStores} />
+    <Route path="/" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
     { /* UNAUTHENTICATED PAGES */ }
     <Route path="/login" component={Login} onLeave={cacheStores} />
     <Route path="/signup" component={Signup} onLeave={cacheStores} />
@@ -47,6 +48,7 @@ var routes = (
     <Route path="/patient" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/me" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/doctor" component={DoctorProfile} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/email-templates/GettingStarted" component={EmailGettingStarted} />
   </Router>
 );
 
