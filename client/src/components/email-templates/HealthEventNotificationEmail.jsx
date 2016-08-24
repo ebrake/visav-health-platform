@@ -44,10 +44,10 @@ export default function HealthEventNotificationEmail(props) {
       <Header color="#134ac0" />
 
       <Body>
-        <h2 className="title">{patient.firstName} {patient.lastName} had an adverse health event!</h2>
+        <h2 className="title">{(''+patient.firstName+' '+patient.lastName+'')} had an adverse health event!</h2>
         <div className="health-event-info">
-          <p>{patient.firstName} experienced an adverse health event ({healthEvent.type}){whilePerformingExerciseString}. In {patient.firstName}&rsquo;s estimation, {pronoun} experienced {healthEvent.type} with an intensity of {healthEvent.intensity}/10.</p>
-          <p>{feelsString} that the intensity is {healthEvent.perceivedTrend}.</p>
+          <p>{patient.firstName} experienced an adverse health event ({healthEvent.type.toLowerCase()}){whilePerformingExerciseString}. In {patient.firstName}&rsquo;s estimation, {pronoun} experienced {healthEvent.type.toLowerCase()} with an intensity of {Math.round(healthEvent.intensity * 10)}/10.</p>
+          <p>{feelsString} that the intensity is {healthEvent.perceivedTrend.toLowerCase()}.</p>
         </div>
         <div style={actionsStyle} className="actions">
           <form style={buttonStyle} action={takeActionURL} method="get">
