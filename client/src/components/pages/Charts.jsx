@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
-import { Chart } from 'react-d3-core';
-import { LineChart } from 'react-d3-basic';
-import MainHeader from '../headers/MainHeader'
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import AuthenticatedPage from './AuthenticatedPage'
 
 let chartData = [
@@ -34,7 +32,7 @@ let chartData = [
     index: 5
   },
   {
-    name: "Ashlynn Kuhn MD",
+    name: "Ash Kuhn",
     BMI: 23.77,
     age: 32,
     birthday: "1985-08-09T00:00:00.000Z",
@@ -57,7 +55,8 @@ let width = 700,
       name: 'BMI',
       color: '#ff7f0e'
     }
-  ];
+  ],
+  fillColor = "#00F0FF";
 // your x accessor
 var x = (d) => {
   return d.index;
@@ -74,15 +73,13 @@ class Charts extends React.Component {
         <div className="title-container">
           <h2 className="title">Charts</h2>
         </div>
-        <LineChart
-          margins= {margins}
-          title={title}
-          data={chartData}
-          width={width}
-          height={height}
-          chartSeries={chartSeries}
-          x={x}
-        ></LineChart>
+        <BarChart width={width} height={height} data={chartData} margin={margins} >
+            <Bar name="BMI" type="monotone" dataKey="BMI" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
+            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+            <Legend verticalAlign="top" height={30} />
+            <XAxis dataKey="name" />
+            <YAxis domain={['auto', 'auto']} />
+          </BarChart>
       </div>
     );
   }
