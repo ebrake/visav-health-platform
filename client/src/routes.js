@@ -12,6 +12,7 @@ import DoctorProfile from './components/pages/doctor/DoctorProfile'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
 import EmailGettingStarted from './components/email-templates/GettingStartedEmail'
+import HealthEventNotificationEmail from './components/email-templates/HealthEventNotificationEmail'
 
 var cacheStores = () => {
   let snapshot = alt.takeSnapshot();
@@ -49,6 +50,7 @@ var routes = (
     <Route path="/me" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/doctor" component={DoctorProfile} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/email-templates/GettingStarted" component={EmailGettingStarted} />
+    <Route path="/email-templates/HealthEventNotification" component={HealthEventNotificationEmail} onEnter={authCheck} />
   </Router>
 );
 

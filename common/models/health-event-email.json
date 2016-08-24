@@ -1,0 +1,74 @@
+{
+  "name": "HealthEventEmail",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "dismissed": {
+      "type": "boolean",
+      "default": false
+    },
+    "actionTaken": {
+      "type": "boolean",
+      "default": false
+    },
+    "date": {
+      "type": "date",
+      "required": true,
+      "default": "$now"
+    },
+    "delivered": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "url": {
+      "type": "string",
+      "required": true,
+      "default": "''"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "patient": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "patient"
+    },
+    "doctor": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "doctor"
+    },
+    "healthEvent": {
+      "type": "belongsTo",
+      "model": "HealthEvent",
+      "foreignKey": "healthevent"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "takeAction"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "dismiss"
+    }
+  ],
+  "methods": {}
+}
