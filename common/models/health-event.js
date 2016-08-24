@@ -1,6 +1,28 @@
 var Promise = require('bluebird');
 
 module.exports = function(HealthEvent) {
+  var generateHealthEventEmail = function(createdHealthEvents, person, HealthEventEmail) {
+    var threshold = 5
+      , sendEmail = false;
+
+    HealthEventEmail.find({
+      where: { patient: person.id },
+      order: 'date DESC'
+    }, function(err, foundHealthEvents){
+      var lastEmailSentAt = new Date(0);
+      if (foundHealthEvents && foundHealthEvents.length > 0) {
+        lastEmailSentAt = foundHealthEvents[0].date;
+      }
+      var healthEvents = [];
+      createdHealthEvents.forEach(function(he){
+        if (he.date > lastEmailSentAt) healthEvents.push(he);
+      })
+
+      //now we execute logic deciding if we send another email on only what is contained in healthEvents
+      return Promise.resolve();
+    })
+  }
+
   var saveHealthEvent = function(healthEvent, person, Exercise) {
     return new Promise(function(resolve, reject){
       var date = healthEvent.date
@@ -99,7 +121,7 @@ module.exports = function(HealthEvent) {
   }  
 
   HealthEvent.receiveData = function(req, data, cb) {
-    if (!req.user) {
+    if (!req.user || !req.user.id) {
       return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
     } 
 
@@ -111,10 +133,15 @@ module.exports = function(HealthEvent) {
       //We don't actually have the Rep model anywhere except on the request, so we need to pass it down the chain
       return saveHealthEvent(healthEvent, person, Exercise);
     }))
-    .then(function(results){
-      console.log("Results:");
-      console.log(results);
-      return cb(null, { status: 'success' });
+    .then(function(createdHealthEvents){
+      cb(null, { status: 'success' });
+      //note the use of side effects; look into putting this cb at the end of the promise chain if strange bugs arise in this code
+      return generateHealthEventEmail(createdHealthEvents, person, HealthEventEmail);
+    })
+    .then(function(emailResults){
+      console.log("Email results:");
+      console.log(emailResults);
+      return null;
     })
     .catch(function(err){
       console.log("Issue creating HealthEvent data:");
