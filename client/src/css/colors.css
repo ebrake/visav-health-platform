@@ -24,7 +24,7 @@ $green: #e3e304;
 $color-bg: $darkest-grey;
 $color-header-bg: $dark-grey;
 $color-panel-bg: $dark-grey;
-$color-panel-border: $medium-dark-grey;
+$color-panel-border: black;
 
 $dark-text-color: $medium-dark-grey;
 $medium-text-color: $light-grey;
