@@ -4,7 +4,6 @@ import AccountStore from './alt/stores/AccountStore';
 import AccountActions from './alt/actions/AccountActions';
 import alt from './alt/alt';
 
-import Home from './components/pages/Home.jsx'
 import Charts from './components/pages/Charts.jsx'
 import Telesession from './components/pages/Telesession.jsx'
 import PatientProfile from './components/pages/patient/PatientProfile'

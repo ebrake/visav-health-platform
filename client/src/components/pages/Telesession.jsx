@@ -122,7 +122,7 @@ class Telesession extends React.Component {
     var theatre
     if (this.state.activeSession == null) {
       createSessionButton = 
-        <button onClick={this.createSession.bind(this)} className="btn-create">
+        <button onClick={this.createSession.bind(this)} className="btn-create button">
           <h1>Create New Session</h1>
         </button>;
       theatre = null;
@@ -149,7 +149,7 @@ class Telesession extends React.Component {
     }
 
     return (
-      <div className="Telesession content-container row-gt-md">
+      <div className="Telesession content-container row-gt-sm">
         <div className="telesession-container">
           {createSessionButton}
           {jsLoaded}

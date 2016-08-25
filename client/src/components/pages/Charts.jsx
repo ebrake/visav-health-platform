@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
-import AuthenticatedPage from './AuthenticatedPage'
+import AuthenticatedPage from './AuthenticatedPage';
+import colors from '../utils/colors';
 
 let chartData = [
   {
@@ -56,7 +57,7 @@ let width = 700,
       color: '#ff7f0e'
     }
   ],
-  fillColor = "#00F0FF";
+  fillColor = colors.primaryGraphColor;
 // your x accessor
 var x = (d) => {
   return d.index;

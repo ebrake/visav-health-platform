@@ -1,16 +1,24 @@
+@import 'colors.css';
+
 .accounts-button {
   height: 40px;
   width: 100%;
-  background: #000;
+  background: $button-color;
   border: none;
-  color: white;
+  color: $light-text-color;
   margin: 0 auto 10px;
+
+  &:hover {
+    background: $button-hover-color;
+    color: $button-hover-text-color;
+  }
 }
 
 .accounts-input-wrapper {
   margin-bottom: 10px;
   border: 1px solid black;
   padding: 5px 9px;
+  background: $lightest-grey;
 
   input {
     width: 100%;
@@ -19,6 +27,7 @@
     margin: 0;
     width: 100%;
     outline: none;
+    background: transparent;
   }
 }
 
@@ -27,6 +36,8 @@
   width: 400px;
   max-width: 100%;
   box-sizing: border-box;
+  background: $color-panel-bg;
+  border: 1px solid $color-panel-border;
 }
 
 .accounts-link {

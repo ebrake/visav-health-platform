@@ -1,10 +1,11 @@
 @import 'media.css';
+@import 'colors.css';
 
 .theatre {
   flex: 1 0 auto;
   display: flex;
   align-items: center;
-  background-color: black;
+  background: $color-panel-bg;
   position: relative;
 
   .theatre-overlay {
@@ -42,7 +43,6 @@
   width: 100%;
   padding-bottom: 56.25%;
   background: white;
-  border: 1px solid #e5e5e5;
 }
 
 .video {
@@ -51,26 +51,31 @@
   height: 100%;
 }
 
-.Telesession {
-  background: #f7f7f7;
-}
-
 .telesession-container {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
+  background: $color-panel-bg;
+  border: 1px solid $color-panel-border;
 
-  @media (--gt-md) {
-    margin-right: 10px;
+  @media (--gt-sm) {
+    margin-left: 10px;
+    order: 1;
   }
 
-  @media (--lt-lg) {
+  @media (--lt-md) {
     margin-bottom: 10px;
   }
 }
 
 .charts-container {
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+
+  .graph-panel {
+    flex: 1 0 auto;
+  }
 }
 
 .RepsChartPanel {
@@ -78,9 +83,5 @@
 }
 
 .ExercisesChartPanel {
-  margin-bottom: 10px;
-}
-
-.HealthEventsChartPanel {
   margin-bottom: 10px;
 }

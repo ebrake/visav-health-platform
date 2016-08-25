@@ -1,65 +1,19 @@
+@import 'colors.css';
+
 .panel {
   padding: 10px;
-  background: white;
-  border: 1px solid #e5e5e5;
+  background: $color-panel-bg;
+  border: 1px solid $color-panel-border;
 
   h1.title {
     text-align: center;
     margin: 10px 0;
     flex: 1 1 1px;
-  }
-}
-
-.chart-container {
-  flex: 1 1 1px;
-  margin: 0 auto 10px;
-}
-
-.visav-list-container {
-  flex: 1 1 1px;
-  margin-bottom: 10px;
-
-  .items {
-    display: flex;
-    flex-wrap: wrap;
+    font-size: 24px;
+    color: $medium-text-color;
   }
 
-  .items .item {
-    flex: 1 0 200px;
-
-    @media (min-width: 440px) {
-      max-width: 50%;
-    }
-
-    display: flex;
-    flex-direction: row;
-
-    .key {
-      flex: 1 1 1px;
-      text-align: right;
-      margin-right: 10px;
-    }
-
-    .value {
-      flex: 1 1 1px;
-      text-align: left;
-    }
-  }
-}
-
-.chart-tooltip {
-  margin: 0;
-  line-height: 24px;
-  border: 1px solid #ccc;
-  background-color: white;
-  padding: 10px;
-
-  .title {
-    font-weight: 700;
-  }
-
-  span {
-    display: block;
-    margin: 0;
+  .recharts-legend-item-text {
+    color: $medium-text-color;
   }
 }
