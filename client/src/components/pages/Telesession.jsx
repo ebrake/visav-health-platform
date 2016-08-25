@@ -164,6 +164,9 @@ class Telesession extends React.Component {
             {overlay}
             {vidContainer}
           </div>
+          <div className="info-panel panel">
+
+          </div>
 
         </div>
         

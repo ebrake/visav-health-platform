@@ -54,6 +54,10 @@
   width: 40vw;
   height: 30vw;
 }
+.info-panel{
+  flex: 1 0 auto;
+  margin-top: 10px;
+}
 
 
 .video {
