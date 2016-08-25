@@ -119,47 +119,54 @@ class Telesession extends React.Component {
     else jsLoaded = <p><font color="red">Warning: Video cannot load due to a JavaScript error.</font></p>;
     var createSessionButton;
     var callButton;
-    var theatre
+    var theatre;
     if (this.state.activeSession == null) {
       createSessionButton = 
         <button onClick={this.createSession.bind(this)} className="btn-create button">
           <h1>Create New Session</h1>
         </button>;
-      theatre = null;
+
     }
     else{
       createSessionButton = null;
-      theatre =
-        <div className="theatre">
-          <div className="theatre-overlay">
-            <button onClick={this.disconnectFromSession.bind(this)} className="btn-image btn-cancel">
-              <div className="btn-image-content" />
-            </button>
-            <button onClick={this.callSelf} className="btn-image btn-call">
-              <div className="btn-image-content" />
-            </button>
-          </div>
-          <div className="video-container">
-            <div className="video">
-              <section ref="publisherContainer" />
-              <section ref="subscriberContainer" />
-            </div>
-          </div>
-        </div>
     }
 
+    var overlay = 
+      <div className="theatre-overlay">
+        <button onClick={this.disconnectFromSession.bind(this)} className="btn-image btn-cancel">
+          <div className="btn-image-content" />
+        </button>
+        {createSessionButton}
+        <button onClick={this.callSelf} className="btn-image btn-call">
+          <div className="btn-image-content" />
+        </button>
+      </div>
+          
+    var vidContainer = 
+      <div className="video-container">
+        <div className="video">
+          <section ref="publisherContainer" />
+          <section ref="subscriberContainer" />
+        </div>
+      </div>
+
+    
     return (
       <div className="Telesession content-container row-gt-sm">
-        <div className="telesession-container">
-          {createSessionButton}
-          {jsLoaded}
-          {theatre}
-        </div>
-        <div className="charts-container">
+        <div className="left-column charts-container">
           <RepsChartPanel />
           <ExercisesChartPanel />
           <HealthEventsChartPanel />
         </div>
+        <div className="right-column">
+          <div className="telesession-panel panel">
+            {jsLoaded}
+            {overlay}
+            {vidContainer}
+          </div>
+
+        </div>
+        
       </div>
     );
   }
