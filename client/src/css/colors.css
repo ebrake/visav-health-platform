@@ -54,6 +54,7 @@ $nav-item-text-hover: $dark-text-color;
 /* BUTTONS */
 
 $button-color: $medium-dark-grey;
+$button-border-color: black;
 $button-text-color: $light-text-color;
 $button-selected-color: $bright-blue;
 $button-selected-text-color: $dark-text-color;

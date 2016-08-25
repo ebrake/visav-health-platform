@@ -1,3 +1,5 @@
+@import 'colors.css';
+
 button {
   position: relative;
 }
@@ -21,5 +23,16 @@ button {
     background-size: contain;
     background-repeat: no-repeat;
     background-color: transparent;
+  }
+}
+
+.button {
+  background: $button-color;
+  color: $light-text-color;
+  border: $button-border-color;
+
+  &:hover {
+    background: $button-hover-color;
+    color: $button-hover-text-color;
   }
 }

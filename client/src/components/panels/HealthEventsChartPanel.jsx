@@ -10,7 +10,7 @@ var x = (point) => {
   return point.index;
 };
 
-var margins = { left: -10, right: 50, top: 10, bottom: 0 }
+var margins = { left: -10, right: 50, top: 10, bottom: 20 }
   , width = 560
   , height = 300
   , fillColor = colors.primaryGraphColor;

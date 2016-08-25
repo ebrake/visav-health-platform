@@ -70,6 +70,12 @@
 
 .charts-container {
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+
+  .graph-panel{
+    flex: 1 0 auto;
+  }
 }
 
 .RepsChartPanel {
