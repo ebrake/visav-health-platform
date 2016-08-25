@@ -1,4 +1,5 @@
 @import 'media.css';
+@import 'colors.css';
 
 .theatre {
   flex: 1 0 auto;
@@ -51,17 +52,14 @@
   height: 100%;
 }
 
-.Telesession {
-  background: #f7f7f7;
-}
-
 .telesession-container {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
 
   @media (--gt-md) {
-    margin-right: 10px;
+    margin-left: 10px;
+    order: 1;
   }
 
   @media (--lt-lg) {

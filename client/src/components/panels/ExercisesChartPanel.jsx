@@ -4,6 +4,7 @@ import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'r
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import VisavList from './VisavList';
+import colors from '../utils/colors';
 
 var x = (point) => {
   return point.index;
@@ -12,7 +13,7 @@ var x = (point) => {
 var margins = { left: -10, right: 50, top: 10, bottom: 0 }
   , width = 560
   , height = 300
-  , fillColor = '#00F0FF';
+  , fillColor = colors.brightBlue;
 
 class ExercisesChartPanel extends React.Component {
   constructor(props) {
@@ -153,7 +154,7 @@ class ExercisesChartPanel extends React.Component {
   render() {
     return (
       <div className="ExercisesChartPanel graph-panel panel">
-        <h1 className="title">Exercises Chart</h1>
+        <h1 className="title">Range of Motion</h1>
         <div style={{"width": this.state.width+"px"}} className="chart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >

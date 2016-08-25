@@ -1,13 +1,52 @@
-$selectedColor: #0ff;
+/* colors */
+$bright-blue: #39a5d6;
+$light-blue: #969cb4;
+$medium-blue: #3c3e4a;
+$dark-blue: #2b2e35;
+
+$purple: #a690df;
+
+$darkest-grey: #111;
+$dark-grey: #252525;
+$medium-dark-grey: #454545;
+$medium-light-grey: #777;
+$light-grey: #aaa;
+$lightest-grey: #ddd;
+
+$orange: #eda63a;
+
+$red: #f45757;
+
+$green: #e3e304;
+
+/* ALIASES */
+
+$color-bg: $darkest-grey;
+$color-header-bg: $dark-grey;
+$color-panel-bg: $dark-grey;
+$color-panel-border: $medium-dark-grey;
+
+$dark-text-color: $medium-dark-grey;
+$medium-text-color: $light-grey;
+$light-text-color: white;
+$secondary-text-color: $light-blue;
+$highlight-text-color: $bright-blue;
+$faded-text-color: $medium-dark-grey;
 
 /* HEADER */
-$color-header-bg: #aaa;
+
+$header-text: $medium-text-color;
+
+/* MISC */
+
+$selectedColor: $bright-blue;
 
 /* NAVIGATION */
 
-$color-NavItem-bg: transparent;
-$color-NavItem-text: #0ff;
-$color-NavItem-bg-selected: #f00;
-$color-NavItem-text-selected: #f0f;
-$color-NavItem-bg-hover: #0ff;
-$color-NavItem-text-hover: $color-header-bg;
+$nav-item-bg: transparent;
+$nav-item-text: $medium-text-color;
+$nav-item-bg-selected: $bright-blue;
+$nav-item-text-selected: $dark-text-color;
+$nav-item-bg-hover: $bright-blue;
+$nav-item-text-hover: $dark-text-color;
+

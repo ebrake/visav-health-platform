@@ -20,7 +20,7 @@ config.set('OPENTOK_API_KEY', '45631802');
 //CSS imports
 import './css/base.css';
 import './css/button.css';
-
+import './css/colors.css';
 import './css/Accounts.css';
 import './css/App.css';
 import './css/SegmentedControl.css'

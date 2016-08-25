@@ -1,12 +1,19 @@
+@import 'colors.css';
+
 .panel {
   padding: 10px;
-  background: white;
-  border: 1px solid #e5e5e5;
+  background: $color-panel-bg;
+  border: 1px solid $color-panel-border;
 
   h1.title {
     text-align: center;
     margin: 10px 0;
     flex: 1 1 1px;
+    color: $medium-text-color;
+  }
+
+  .recharts-legend-item-text {
+    color: $medium-text-color;
   }
 }
 
@@ -18,6 +25,7 @@
 .visav-list-container {
   flex: 1 1 1px;
   margin-bottom: 10px;
+  color: $medium-text-color;
 
   .items {
     display: flex;

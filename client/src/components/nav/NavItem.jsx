@@ -22,8 +22,8 @@ class NavItem extends React.Component {
           <div className="img-container">
             <img src={this.props.imgSrc} /> 
           </div>
-        : 
-        null }
+          : 
+          null }
         <span>{this.props.title}</span>
       </div>
     );
