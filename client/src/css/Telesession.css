@@ -73,6 +73,10 @@
   display: flex;
   flex-direction: column;
 
+  .rechart-container {
+    margin: 0 auto;
+  }
+
   .graph-panel {
     flex: 1 0 auto;
   }

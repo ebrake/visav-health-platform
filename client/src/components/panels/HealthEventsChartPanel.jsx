@@ -106,7 +106,7 @@ class HealthEventsChartPanel extends React.Component {
       var newMargin = newWidth / 12;
       this.setState({
         width: newWidth - 40,
-        margins: {left: newMargin, right: (newMargin - 12), top: 10, bottom: 30}
+        margins: {left: -10, right: newMargin, top: 10, bottom: 20}
       });
     } else {
       this.setState({
@@ -126,7 +126,7 @@ class HealthEventsChartPanel extends React.Component {
     return (
       <div className="HealthEventsChartPanel panel">
         <h1 className="title">Pain & Swelling</h1>
-        <div style={{"width": this.state.width+"px"}} className="chart-container">
+        <div style={{"width": this.state.width+"px"}} className="rechart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />

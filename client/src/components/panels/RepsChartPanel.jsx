@@ -116,7 +116,7 @@ class RepsChartPanel extends React.Component {
       var newMargin = newWidth / 12;
       this.setState({
         width: newWidth - 40,
-        margins: {left: newMargin, right: newMargin, top: 10, bottom: 30}
+        margins: {left: -10, right: newMargin, top: 10, bottom: 20}
       });
     } else {
       this.setState({
@@ -133,7 +133,7 @@ class RepsChartPanel extends React.Component {
         <h1 className="title">
           Rep ROM {this.state.exercise ? 'for '+this.state.exercise.type : ''}
         </h1>
-        <div style={{"width": this.state.width+"px"}} className="chart-container">
+        <div style={{"width": this.state.width+"px"}} className="rechart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
