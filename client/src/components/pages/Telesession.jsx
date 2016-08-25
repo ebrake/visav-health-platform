@@ -66,10 +66,10 @@ class Telesession extends React.Component {
   }
 
   connectToSession() {
-
+    var self = this;
     const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.createSessionResponse.session.sessionId);
     this.setState({activeSession: session});
-    const publisher = OT.initPublisher(this.refs.tokboxContainer, {
+    const publisher = OT.initPublisher(this.refs.publisherContainer, {
       insertMode: 'replace',
       width: '100%',
       height: '100%'
@@ -80,6 +80,21 @@ class Telesession extends React.Component {
       if (!error) {
         session.publish(publisher);
       }
+    });
+
+    session.on({
+      connectionCreated: function (event) {
+        if (event.connection.connectionId != session.connection.connectionId) {
+          console.log('Another client connected.');
+        }
+      },
+      connectionDestroyed: function connectionDestroyedHandler(event) {
+        console.log('A client disconnected.');
+      },
+    });
+
+    session.on("streamCreated", function (event) {
+      session.subscribe(event.stream, self.refs.subscriberContainer);
     });
 
   }
@@ -126,7 +141,8 @@ class Telesession extends React.Component {
           </div>
           <div className="video-container">
             <div className="video">
-              <section ref="tokboxContainer" />
+              <section ref="publisherContainer" />
+              <section ref="subscriberContainer" />
             </div>
           </div>
         </div>
