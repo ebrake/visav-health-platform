@@ -21,7 +21,8 @@ class Telesession extends React.Component {
       createSessionResponse: '',
       opentokScriptLoaded: null,
       activeSession:null,
-      activePublisher: null
+      activePublisher: null,
+      activeSubscriberStream: null
     };
     this.callSelf = this.callSelf.bind(this);
 
@@ -69,7 +70,7 @@ class Telesession extends React.Component {
     var self = this;
     const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.createSessionResponse.session.sessionId);
     this.setState({activeSession: session});
-    const publisher = OT.initPublisher(this.refs.publisherContainer, {
+    const publisher = OT.initPublisher(this.refs.publisherSection, {
       insertMode: 'replace',
       width: '100%',
       height: '100%'
@@ -94,7 +95,13 @@ class Telesession extends React.Component {
     });
 
     session.on("streamCreated", function (event) {
-      session.subscribe(event.stream, self.refs.subscriberContainer);
+      session.subscribe(event.stream, self.refs.subscriberSection, {
+        insertMode: 'replace',
+        width: '100%',
+        height: '100%'
+      })
+      self.setState({activeSubscriberStream: event.stream});
+      console.log('Subscribed to stream: ' + event.stream.id)
     });
 
   }
@@ -117,39 +124,52 @@ class Telesession extends React.Component {
     var jsLoaded;
     if (this.state.opentokScriptLoaded==null || this.state.opentokScriptLoaded==true) jsLoaded = null;
     else jsLoaded = <p><font color="red">Warning: Video cannot load due to a JavaScript error.</font></p>;
-    var createSessionButton;
-    var callButton;
-    var theatre;
+
+    var overlay;
     if (this.state.activeSession == null) {
-      createSessionButton = 
+      overlay = 
+      <div className="overlay">
         <button onClick={this.createSession.bind(this)} className="btn-create button">
           <h1>Create New Session</h1>
         </button>;
-
+      </div>
     }
     else{
-      createSessionButton = null;
-    }
-
-    var overlay = 
-      <div className="theatre-overlay">
+      overlay = 
+      <div className="overlay">
         <button onClick={this.disconnectFromSession.bind(this)} className="btn-image btn-cancel">
           <div className="btn-image-content" />
         </button>
-        {createSessionButton}
+        
         <button onClick={this.callSelf} className="btn-image btn-call">
           <div className="btn-image-content" />
         </button>
       </div>
-          
-    var vidContainer = 
+    }
+
+    var vidContainer;
+    if (this.state.activeSubscriberStream == null) {
+      vidContainer = 
       <div className="video-container">
-        <div className="video">
-          <section ref="publisherContainer" />
-          <section ref="subscriberContainer" />
+        <div className="publisher-container full">
+          <section ref="publisherSection"  />
+        </div>
+        <div className="subscriber-container hidden">
+          <section ref="subscriberSection"  />
         </div>
       </div>
-
+    }
+    else{
+      vidContainer = 
+      <div className="video-container">
+        <div className="publisher-container thumb">
+          <section ref="publisherSection"  />
+        </div>
+        <div className="subscriber-container full">
+          <section ref="subscriberSection"  />
+        </div>
+      </div>
+    }
     
     return (
       <div className="Telesession content-container row-gt-sm">
