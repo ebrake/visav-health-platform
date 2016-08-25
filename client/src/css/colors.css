@@ -28,7 +28,7 @@ $color-panel-border: $medium-dark-grey;
 
 $dark-text-color: $medium-dark-grey;
 $medium-text-color: $light-grey;
-$light-text-color: white;
+$light-text-color: $lightest-grey;
 $secondary-text-color: $light-blue;
 $highlight-text-color: $bright-blue;
 $faded-text-color: $medium-dark-grey;
@@ -40,6 +40,7 @@ $header-text: $medium-text-color;
 /* MISC */
 
 $selectedColor: $bright-blue;
+$primary-graph-color: $bright-blue;
 
 /* NAVIGATION */
 
@@ -50,3 +51,11 @@ $nav-item-text-selected: $dark-text-color;
 $nav-item-bg-hover: $bright-blue;
 $nav-item-text-hover: $dark-text-color;
 
+/* BUTTONS */
+
+$button-color: $medium-dark-grey;
+$button-text-color: $light-text-color;
+$button-selected-color: $bright-blue;
+$button-selected-text-color: $dark-text-color;
+$button-hover-color: $bright-blue;
+$button-hover-text-color: $dark-text-color;

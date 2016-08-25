@@ -71,8 +71,8 @@ class PatientProfile extends React.Component {
   render() {
     return (
       <div className="PatientProfile profile content-container">
-        <div id="welcome">
-          <h2>{strings.welcome}, {this.state.user.name}</h2>
+        <div className="title-container">
+          <h2>{strings.welcome}, {this.state.user.firstName+' '+this.state.user.lastName}</h2>
         </div>
         <PatientInfoPanel user={this.state.user} />
       </div>

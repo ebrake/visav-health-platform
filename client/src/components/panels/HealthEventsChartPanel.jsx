@@ -13,7 +13,7 @@ var x = (point) => {
 var margins = { left: -10, right: 50, top: 10, bottom: 0 }
   , width = 560
   , height = 300
-  , fillColor = colors.brightBlue;
+  , fillColor = colors.primaryGraphColor;
 
 class HealthEventsChartPanel extends React.Component {
   constructor(props) {

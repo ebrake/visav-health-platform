@@ -13,7 +13,7 @@ var x = (point) => {
 var margins = { left: -10, right: 50, top: 10, bottom: 0 }
   , width = 560
   , height = 300
-  , fillColor = colors.brightBlue;
+  , fillColor = colors.primaryGraphColor;
 
 class RepsChartPanel extends React.Component {
   constructor(props) {
@@ -140,7 +140,7 @@ class RepsChartPanel extends React.Component {
             <XAxis dataKey="index" />
             <YAxis domain={['auto', 'auto']} />
             <Legend verticalAlign="top" height={30} color="#fff" />
-            <Tooltip labelStyle={{fontWeight: 700}} itemStyle={{color: 'black'}} />
+            <Tooltip content={<RepsTooltip />} />
             <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
           </AreaChart>
         </div>
@@ -149,6 +149,29 @@ class RepsChartPanel extends React.Component {
     );
   }
 };
+
+class RepsTooltip extends React.Component {
+  render() {
+    const { active } = this.props;
+
+    if (active) {
+      const { payload, label } = this.props;
+      var value = '';
+      if (payload && payload[0]) {
+        value = payload[0].name+' : '+payload[0].value;
+      }
+
+      return (
+        <div className="chart-tooltip">
+          <span className="title">{`${label}`}</span>
+          <span className="value">{value}</span>
+        </div>
+      );
+    }
+
+    return null;
+  }
+}
 
 export default RepsChartPanel;
 

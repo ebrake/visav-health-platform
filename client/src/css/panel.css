@@ -61,9 +61,13 @@
   border: 1px solid #ccc;
   background-color: white;
   padding: 10px;
+  background-color: $color-panel-bg;
+  border: 1px solid $color-panel-border;
+  color: $medium-text-color;
 
   .title {
     font-weight: 700;
+    color: $light-text-color;
   }
 
   span {
