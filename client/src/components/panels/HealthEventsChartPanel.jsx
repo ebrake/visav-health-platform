@@ -156,7 +156,7 @@ class HealthEventsToolTip extends React.Component {
       return (
         <div className="chart-tooltip">
           <span className="title">{`${title}`}</span>
-          <span className="value">{label}</span>
+          <span className="value">{'date : '+label}</span>
           <span className="value">{value}</span>
         </div>
       );
