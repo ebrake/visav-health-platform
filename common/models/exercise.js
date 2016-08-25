@@ -214,7 +214,7 @@ module.exports = function(Exercise) {
     Exercise.find({
       where: { person: person.id },
       include: 'reps',
-      order: "date DESC",
+      order: "date ASC",
       limit: limit || retrieveLimit
     }, function(err, data){ 
       if (err) return cb(null, { status: 'failure', message: err.message });
