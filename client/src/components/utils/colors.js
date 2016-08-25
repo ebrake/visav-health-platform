@@ -1,17 +1,17 @@
 //try and keep this up to date with colors.css
 
-var brightBlue = "#39a5d6"
+var brightBlue = "#7299CC"
   , lightBlue = "#969cb4"
   , mediumBlue = "#3c3e4a"
   , darkBlue = "#2b2e35"
-  , purple = "#a690df"
+  , purple = "#a792e0"
   , darkestGrey = "#111"
   , darkGrey = "#252525"
   , mediumDarkGrey = "#454545"
   , mediumLightGrey = "#777"
   , lightGrey = "#aaa"
   , lightestGrey = "#ddd"
-  , orange = "#eda63a"
+  , orange = "#eda539"
   , red = "#f45757"
   , green = "#e3e304"
   , white = "#fff";
