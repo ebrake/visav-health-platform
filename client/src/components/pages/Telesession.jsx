@@ -133,7 +133,7 @@ class Telesession extends React.Component {
     }
 
     return (
-      <div className="Telesession content-container row-gt-md">
+      <div className="Telesession content-container row-gt-sm">
         <div className="telesession-container">
           {createSessionButton}
           {jsLoaded}
