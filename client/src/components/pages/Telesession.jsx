@@ -103,6 +103,7 @@ class Telesession extends React.Component {
 
     session.on("streamCreated", function (event) {
       session.subscribe(event.stream, self.refs.subscriberSection, {
+        insertMode:'append',
         width: '100%',
         height: '100%'
       })
