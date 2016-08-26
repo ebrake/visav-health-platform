@@ -10,7 +10,7 @@ var x = (point) => {
   return point.index;
 };
 
-var margins = { left: -10, right: 50, top: 10, bottom: 20 }
+var margins = { left: -10, right: 40, top: 10, bottom: 20 }
   , width = 1000
   , height = 300
   , fillColor = colors.primaryGraphColor;
@@ -115,8 +115,7 @@ class RepsChartPanel extends React.Component {
       , newWidth = document.getElementById("RepsChartPanel").offsetWidth;
 
     this.setState({
-      width: newWidth - diff,
-      margins: {left: -10, right: 40, top: 10, bottom: 20}
+      width: newWidth - diff
     });
   }
 

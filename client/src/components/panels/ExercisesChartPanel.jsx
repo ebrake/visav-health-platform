@@ -10,8 +10,8 @@ var x = (point) => {
   return point.index;
 };
 
-var margins = { left: -10, right: 50, top: 10, bottom: 20 }
-  , width = 560
+var margins = { left: -10, right: 40, top: 10, bottom: 20 }
+  , width = 1000
   , height = 300
   , fillColors = [colors.primaryGraphColor, colors.secondaryGraphColor, colors.tertiaryGraphColor];
 
@@ -130,20 +130,12 @@ class ExercisesChartPanel extends React.Component {
   }
 
   resize(){
-    var newWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    if (newWidth < 600) {
-      var newMargin = newWidth / 12;
-      this.setState({
-        width: newWidth - 40,
-        margins: {left: -10, right: newMargin, top: 10, bottom: 20}
-      });
-    } else {
-      this.setState({
-        width: width,
-        height: height,
-        margins: margins
-      })
-    }
+    var diff = 100
+      , newWidth = document.getElementById("ExercisesChartPanel").offsetWidth;
+
+    this.setState({
+      width: newWidth - diff
+    });
   }
 
   tickFormatter(arg){
