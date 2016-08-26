@@ -23,33 +23,44 @@
 }
 
 .visav-list-container {
-  flex: 1 1 1px;
-  margin-bottom: 10px;
   color: $medium-text-color;
+  width: 220px;
+  flex: 0 0 220px;
+  margin: 37px 20px 49px 0;
+  background: $color-panel-light-bg;
+  padding: 20px;
 
-  .items {
-    display: flex;
-    flex-wrap: wrap;
+  .vavl-title {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 10px;
   }
 
-  .items .item {
-    flex: 1 0 200px;
-
-    @media (min-width: 440px) {
-      max-width: 50%;
-    }
-
+  .visav-list {
     display: flex;
     flex-direction: row;
+    align-items: top;
+    justify-content: center;
+  }
+
+  .vavl-left-column {
+    flex: auto 0 1px;
+    margin-right: 15px;
+  }
+
+  .vavl-right-column {
+    flex: auto 0 1px;
+  }
+
+  .item {
+    margin-bottom: 5px;
 
     .key {
-      flex: 1 1 1px;
       text-align: right;
-      margin-right: 10px;
     }
 
     .value {
-      flex: 1 1 1px;
       text-align: left;
     }
   }

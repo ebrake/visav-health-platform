@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import HealthEventStore from '../../alt/stores/HealthEventStore';
 import HealthEventActions from '../../alt/actions/HealthEventActions';
@@ -32,7 +32,7 @@ class HealthEventsChartPanel extends React.Component {
     HealthEventActions.getHealthEvents();
 
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
-    this.resize = throttle(this.resize, 200).bind(this);
+    this.resize = debounce(this.resize, 30).bind(this);
     this.calcListData = this.calcListData.bind(this);
   }
 
@@ -124,7 +124,7 @@ class HealthEventsChartPanel extends React.Component {
 
   render() {
     return (
-      <div className="HealthEventsChartPanel panel">
+      <div id="HealthEventsChartPanel" className="graph-panel panel">
         <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
         <div style={{"width": this.state.width+"px"}} className="rechart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}

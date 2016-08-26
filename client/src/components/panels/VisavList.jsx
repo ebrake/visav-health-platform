@@ -5,6 +5,7 @@ class VisavList extends React.Component {
     super(props);
 
     this.state = {
+      title: 'Details',
       rows: []
     };
 
@@ -26,9 +27,11 @@ class VisavList extends React.Component {
   updateList(){
     let rows = [];
     for (var attr in this.props.data) {
-      rows.push({ key: attr, value: this.props.data[attr] });
+      if (attr != 'title')
+        rows.push({ key: attr, value: this.props.data[attr] });
     }
     this.setState({
+      title: this.props.data.title,
       rows: rows
     });
   }
@@ -36,17 +39,30 @@ class VisavList extends React.Component {
   render() {
     return (
       <div className="visav-list-container">
-        <div className="items">
+        <div className="vavl-title">{this.state.title}</div>
+        <div className="visav-list">
+          <div className="vavl-left-column">
           { 
             this.state.rows.map((row, index) => {
               return (
                 <div className="item" key={index}>
                   <div className="key">{row.key}</div>
+                </div>
+              );
+            })
+          }
+          </div>
+          <div className="vavl-right-column">
+          { 
+            this.state.rows.map((row, index) => {
+              return (
+                <div className="item" key={index}>
                   <div className="value">{row.value}</div>
                 </div>
               );
             })
           }
+          </div>
         </div>
       </div>
     );

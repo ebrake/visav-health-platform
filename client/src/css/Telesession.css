@@ -6,10 +6,6 @@
   display: flex;
   align-items: center;
   background: $color-panel-bg;
-
-  
-
-
 }
 
 .overlay {
@@ -40,6 +36,7 @@
     }
   }
 }
+
 .telesession-panel {
   display: flex;
   flex-direction: column;
@@ -48,19 +45,21 @@
   align-items: center;
   position: relative;
 }
-.video-container{
+
+.video-container {
   position: relative;
   flex: 0 1 auto;
   width: 40vw;
   height: 30vw;
 
-  .publisher-container{
-    &.full{
+  .publisher-container {
+    &.full {
       position: absolute;
       width: 100%;
       height: 100%;
     }
-    &.thumb{
+
+    &.thumb {
       position: absolute;
       width: 12vw;
       height: 9vw;
@@ -72,40 +71,37 @@
     }
   }
 
-  .subscriber-container{
-    
-    &.full{
+  .subscriber-container {
+    &.full {
       position: absolute;
       width: 100%;
       height: 100%;
     }
 
-    section{
-      width:100%;
-      height:100%;
+    section {
+      width: 100%;
+      height: 100%;
     }
   }
 }
 
-
-.right-column{
-  display:flex;
+.right-column {
+  display: flex;
   flex-direction: column;
   flex: 1 0 auto;
   margin-left: 10px;
 }
 
-.PatientInfoPanel{
+.PatientInfoPanel {
   flex: 1 0 auto;
   margin-top: 10px;
 }
 
-.left-column{
+.left-column {
   display: flex;
   flex-direction: column;
   flex: 1 0 40%;
 }
-
 
 .charts-container {
   overflow: scroll;
@@ -122,10 +118,20 @@
   }
 }
 
-.RepsChartPanel {
+#RepsChartPanel {
   margin-bottom: 10px;
+
+  .recharts-wrapper {
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  .recharts-wrapper > .recharts-surface {
+    width: 100%;
+    height: 300px;
+  }
 }
 
-.ExercisesChartPanel {
+#ExercisesChartPanel {
   margin-bottom: 10px;
 }

@@ -39,5 +39,7 @@ export default {
   secondaryTextColor: lightBlue,
   highlightTextColor: brightBlue,
   fadedTextColor: mediumDarkGrey,
-  primaryGraphColor: brightBlue
+  primaryGraphColor: brightBlue,
+  secondaryGraphColor: purple,
+  tertiaryGraphColor: orange
 }

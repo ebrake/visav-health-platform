@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
@@ -11,7 +11,7 @@ var x = (point) => {
 };
 
 var margins = { left: -10, right: 50, top: 10, bottom: 20 }
-  , width = 560
+  , width = 1000
   , height = 300
   , fillColor = colors.primaryGraphColor;
 
@@ -34,7 +34,7 @@ class RepsChartPanel extends React.Component {
 
     this.exercisesChanged = this.exercisesChanged.bind(this);
     this.unit = this.unit.bind(this);
-    this.resize = throttle(this.resize, 200).bind(this);
+    this.resize = debounce(this.resize, 30).bind(this);
     this.calcListData = this.calcListData.bind(this);
   }
 
@@ -88,7 +88,7 @@ class RepsChartPanel extends React.Component {
     max = Math.round(max);
     avg = Math.round((avg / exercise.reps.length));
 
-    return { Minimum: min, Maximum: max, Average: avg };
+    return { title: 'Details', Exercise: exercise.type.slice(10), Minimum: min, Maximum: max, Average: avg };
   }
 
   exercisesChanged(exerciseState){
@@ -111,40 +111,35 @@ class RepsChartPanel extends React.Component {
   }
 
   resize(){
-    var newWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    if (newWidth < 600) {
-      var newMargin = newWidth / 12;
-      this.setState({
-        width: newWidth - 40,
-        margins: {left: -10, right: newMargin, top: 10, bottom: 20}
-      });
-    } else {
-      this.setState({
-        width: width,
-        height: height,
-        margins: margins
-      })
-    }
+    var diff = 300
+      , newWidth = document.getElementById("RepsChartPanel").offsetWidth;
+
+    this.setState({
+      width: newWidth - diff,
+      margins: {left: -10, right: 40, top: 10, bottom: 20}
+    });
   }
 
   render() {
     return (
-      <div className="RepsChartPanel graph-panel panel">
+      <div id="RepsChartPanel" className="graph-panel panel">
         <h1 className="title">
           Range of Motion: Last Exercise
         </h1>
-        <div style={{"width": this.state.width+"px"}} className="rechart-container">
-          <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
-            margin={this.state.margins} >
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <XAxis dataKey="index" />
-            <YAxis domain={['auto', 'auto']} />
-            <Legend verticalAlign="top" height={30} color="#fff" />
-            <Tooltip content={<RepsTooltip />} />
-            <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
-          </AreaChart>
+        <div className="flex-row">
+          <div>
+            <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
+              margin={this.state.margins} >
+              <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+              <XAxis dataKey="index" />
+              <YAxis domain={['auto', 'auto']} />
+              <Legend verticalAlign="top" height={30} color="#fff" />
+              <Tooltip content={<RepsTooltip />} />
+              <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
+            </AreaChart>
+          </div>
+          <VisavList data={this.state.listData} />
         </div>
-        <VisavList data={this.state.listData} />
       </div>
     );
   }

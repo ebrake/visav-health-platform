@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
@@ -13,7 +13,7 @@ var x = (point) => {
 var margins = { left: -10, right: 50, top: 10, bottom: 20 }
   , width = 560
   , height = 300
-  , fillColor = colors.primaryGraphColor;
+  , fillColors = [colors.primaryGraphColor, colors.secondaryGraphColor, colors.tertiaryGraphColor];
 
 class ExercisesChartPanel extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class ExercisesChartPanel extends React.Component {
     ExerciseActions.getExercises();
 
     this.exercisesChanged = this.exercisesChanged.bind(this);
-    this.resize = throttle(this.resize, 200).bind(this);
+    this.resize = debounce(this.resize, 30).bind(this);
     this.calcListData = this.calcListData.bind(this);
   }
 
@@ -153,7 +153,7 @@ class ExercisesChartPanel extends React.Component {
 
   render() {
     return (
-      <div className="ExercisesChartPanel graph-panel panel">
+      <div id="ExercisesChartPanel" className="graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
         <div style={{"width": this.state.width+"px"}} className="rechart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
@@ -163,7 +163,7 @@ class ExercisesChartPanel extends React.Component {
             <YAxis domain={['auto', 'auto']} />
             <Legend verticalAlign="top" height={30} />
             <Tooltip content={<ExercisesTooltip />} />
-            <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
+            <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColors[0]} fillOpacity={0.1} fill={fillColors[0]} />
           </AreaChart>
         </div>
       </div>

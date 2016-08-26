@@ -25,6 +25,7 @@ $color-bg: $darkest-grey;
 $color-header-bg: $dark-grey;
 $color-panel-bg: $dark-grey;
 $color-panel-border: black;
+$color-panel-light-bg: $medium-dark-grey;
 
 $dark-text-color: $medium-dark-grey;
 $medium-text-color: $light-grey;
