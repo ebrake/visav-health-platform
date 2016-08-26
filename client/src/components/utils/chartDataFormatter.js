@@ -102,9 +102,9 @@ var formatHealthEventChartData = (healthEvents) => {
       dataPoint['date'] = toLocaleDateString(he.date);
       dataPoint['name'] = he.type;
 
-      var heDate = new Date(he.date);
-      dataPoint.month = heDate.getMonth();
-      dataPoint.day = heDate.getDate();
+      var d = new Date(he.date);
+      dataPoint.month = d.getMonth();
+      dataPoint.day = d.getDate();
 
       dataArray.push(dataPoint);
     }
@@ -113,7 +113,20 @@ var formatHealthEventChartData = (healthEvents) => {
   return addEmptyDaysToHealthEventChartData(dataArray);
 }
 
-var addEmptyDaysToExerciseChartData = (dataArray) => {
+var avgValueForExercise = (exercise) => {
+  if (exercise.reps.length > 0) {
+    let avg = 0;
+    for(var i = 0; i < exercise.reps.length; i++){
+      avg += exercise.reps[i].value / exercise.reps.length;
+    }
+    return avg;
+  }
+  else{
+    return 0;
+  }
+}
+
+var addEmptyDaysToExerciseChartData = (dataArray, keys) => {
   var lastDate = findNewestDate(dataArray);
   var lastDay = lastDate.getDate();
   var lastMonth = lastDate.getMonth();
@@ -125,12 +138,15 @@ var addEmptyDaysToExerciseChartData = (dataArray) => {
       lastDay = months[lastMonth].days;
     }
     if (!includes(dataArray, lastDay, lastMonth)) {
-      dataArray.push({
-        value: 0,
+      var pushObj = {
         unit: 'degrees',
         date: toLocaleDateString('2016-'+(lastMonth+1)+'-'+(lastDay)),
-        name: '-'
-      })
+        name: 'Exercise: -'
+      };
+
+      keys.forEach(k => { pushObj[k] = 0; })
+      
+      dataArray.push(pushObj);
     }
   }
 
@@ -139,7 +155,8 @@ var addEmptyDaysToExerciseChartData = (dataArray) => {
 
 var formatExerciseChartData = (exercises) => {
   let twoWeeksAgo = new Date(findNewestDate(exercises) - 1000*60*60*24*15)
-    , dataArray = [];
+    , dataArray = []
+    , keys = getKeysFor(exercises);
 
   if(exercises && exercises.length > 0) {
     for (var i = 0; i < exercises.length; i++){
@@ -149,27 +166,41 @@ var formatExerciseChartData = (exercises) => {
       }
 
       let dataPoint = {};
+      
+      keys.forEach(k => { dataPoint[k] = 0; })
+
       if (ex.reps.length > 0) {
-        dataPoint['value'] = Math.round(this.avgValueForExercise(ex));
+        dataPoint[getKey(ex)] = Math.round(avgValueForExercise(ex));
         dataPoint['unit'] = ex.reps[0].unit; //assumes all reps have same unit for one exercise
       } else {
-        dataPoint['value'] = 0;
         dataPoint['unit'] = 'NO REPS';
       }
       dataPoint['date'] = toLocaleDateString(ex.date);
       dataPoint['name'] = ex.type;
 
-      var exDate = new Date(ex.date);
-      dataPoint.month = exDate.getMonth();
-      dataPoint.day = exDate.getDate();
+      var d = new Date(ex.date);
+      dataPoint.month = d.getMonth();
+      dataPoint.day = d.getDate();
 
       if (dataPoint.unit != 'NO REPS')
         dataArray.push(dataPoint);
     }
   }
 
-  return dataArray;
-  //return addEmptyDaysToExerciseChartData(dataArray);
+  return addEmptyDaysToExerciseChartData(dataArray, keys);
+}
+
+var getKey = (ex) => {
+  return ex.type.slice(10);
+}
+
+var getKeysFor = (exercises) => {
+  var retArray = [];
+  exercises.forEach(ex =>{
+    if (retArray.indexOf(getKey(ex)) < 0) 
+      retArray.push(getKey(ex));
+  })
+  return retArray;
 }
 
 export default {
@@ -179,5 +210,9 @@ export default {
 
   makeExerciseChartData: (exercises) => {
     return formatExerciseChartData(exercises);
+  },
+
+  getKeysFor: (exercises) => {
+    return getKeysFor(exercises);
   }
 }

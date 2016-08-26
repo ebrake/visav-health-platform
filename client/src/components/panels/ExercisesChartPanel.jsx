@@ -5,6 +5,7 @@ import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import VisavList from './VisavList';
 import colors from '../utils/colors';
+import chartDataFormatter from '../utils/chartDataFormatter';
 
 var x = (point) => {
   return point.index;
@@ -13,7 +14,13 @@ var x = (point) => {
 var margins = { left: -10, right: 40, top: 10, bottom: 20 }
   , width = 1000
   , height = 300
-  , fillColors = [colors.primaryGraphColor, colors.secondaryGraphColor, colors.tertiaryGraphColor];
+  , fillColors = [
+      colors.primaryGraphColor, 
+      colors.secondaryGraphColor, 
+      colors.tertiaryGraphColor,
+      colors.red,
+      colors.green
+    ];
 
 class ExercisesChartPanel extends React.Component {
   constructor(props) {
@@ -26,7 +33,8 @@ class ExercisesChartPanel extends React.Component {
       height: height,
       margins: margins,
       title: "User sample",
-      listData: {}
+      listData: {},
+      keys: ['value']
     };
 
     ExerciseActions.getExercises();
@@ -58,41 +66,7 @@ class ExercisesChartPanel extends React.Component {
   }
 
   chartData(){
-    let dataArray = [];
-    let exercises = this.state.exercises;
-    if (exercises.length > 0) {
-      name = exercises[0].type;
-      for(var i = 0; i < exercises.length; i++){
-        let pointDict = {};
-        if (exercises[i].reps.length > 0) {
-          pointDict['value'] = Math.round(this.avgValueForExercise(exercises[i]));
-          pointDict['unit'] = exercises[i].reps[0].unit; //assumes all reps have same unit for one exercise
-        } else {
-          pointDict['value'] = 0;
-          pointDict['unit'] = 'NO REPS';
-        }
-        pointDict['date'] = this.format(exercises[i].date);
-        pointDict['index'] = i;
-        pointDict['name'] = exercises[i].type;
-        if (pointDict.unit != 'NO REPS') {
-          dataArray.push(pointDict);
-        }
-      }
-    }
-    return dataArray;
-  }
-
-  avgValueForExercise(exercise){
-    if (exercise.reps.length > 0) {
-      let avg = 0;
-      for(var i = 0; i < exercise.reps.length; i++){
-        avg += exercise.reps[i].value / exercise.reps.length;
-      }
-      return avg;
-    }
-    else{
-      return 0;
-    }
+    return chartDataFormatter.makeExerciseChartData(this.state.exercises);
   }
 
   calcListData(exercises) {
@@ -114,7 +88,8 @@ class ExercisesChartPanel extends React.Component {
     this.setState({
       exercises: exerciseState.exercises,
       chartSeries: this.chartSeries(),
-      listData: this.calcListData(exerciseState.exercises)
+      listData: this.calcListData(exerciseState.exercises),
+      keys: chartDataFormatter.getKeysFor(exerciseState.exercises)
     });
   }
 
@@ -155,7 +130,14 @@ class ExercisesChartPanel extends React.Component {
             <YAxis domain={['auto', 'auto']} />
             <Legend verticalAlign="top" height={30} />
             <Tooltip content={<ExercisesTooltip />} />
-            <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColors[0]} fillOpacity={0.1} fill={fillColors[0]} />
+            { 
+              this.state.keys.map((key, i) => {
+                if (i >= fillColors.length) 
+                  return null;
+
+                return <Area name={this.unit()+' ('+key.toLowerCase()+')'} type="monotone" dataKey={key} stroke={fillColors[i]} fillOpacity={0.1} fill={fillColors[i]} key={i} />;
+              })
+            }
           </AreaChart>
         </div>
       </div>
