@@ -5,7 +5,7 @@ import MainHeader from '../headers/MainHeader';
 import RepsChartPanel from '../panels/RepsChartPanel';
 import PatientInfoPanel from '../panels/PatientInfoPanel';
 import AccountStore from '../../alt/stores/AccountStore'
-
+import ImageButton from '../buttons/ImageButton';
 import ExercisesChartPanel from '../panels/ExercisesChartPanel';
 import NotificationActions from '../../alt/actions/NotificationActions';
 import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
@@ -135,21 +135,14 @@ class Telesession extends React.Component {
     if (this.state.activeSession == null) {
       overlay = 
       <div className="overlay">
-        <button onClick={this.createSession.bind(this)} className="btn-create button">
-          <h1>Create New Session</h1>
-        </button>
+        <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgURL="face-to-face.png" />
       </div>
     }
     else{
       overlay = 
       <div className="overlay">
-        <button onClick={this.disconnectFromSession.bind(this)} className="btn-image btn-cancel">
-          <div className="btn-image-content" />
-        </button>
-        
-        <button onClick={this.callSelf} className="btn-image btn-call">
-          <div className="btn-image-content" />
-        </button>
+        <ImageButton onClick={this.disconnectFromSession.bind(this)} imgURL="hang-up.png" className="btn-cancel"/>
+        <ImageButton onClick={this.callSelf.bind(this)} imgURL="call.png" className="btn-call"/>
       </div>
     }
 
