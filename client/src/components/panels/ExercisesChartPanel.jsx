@@ -151,10 +151,14 @@ class ExercisesTooltip extends React.Component {
 
     if (active) {
       const { payload, label } = this.props;
-      var title = 'Exercise', value = '';
-      if (payload && payload[0]) {
-        title = payload[0].payload.name;
-        value = payload[0].name+' : '+payload[0].value;
+      var title = 'No Exercises Done', value = 'There were no exercises tracked for this date.';
+      if (payload) {
+        payload.forEach(p =>{
+          if (p.value > 0) {
+            title = 'Exercise: '+p.dataKey+'';
+            value = 'degrees : '+p.value;
+          }
+        })
       }
 
       return (

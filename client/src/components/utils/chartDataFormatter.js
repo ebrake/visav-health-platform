@@ -58,20 +58,25 @@ var sortByDate = (dataArray) => {
 
 var addEmptyDaysToHealthEventChartData = (dataArray) => {
   var lastDate = findNewestDate(dataArray);
-  var lastDay = lastDate.getDate();
-  var lastMonth = lastDate.getMonth();
+  var day = lastDate.getDate()
+    , month = lastDate.getMonth()
+    , year = lastDate.getYear();
 
   for (var i = 1; i < 15; i++) {
-    lastDay--;
-    if (lastDay < 1) {
-      lastMonth--;
-      lastDay = months[lastMonth].days;
+    day--;
+    if (day < 1) {
+      month--;
+      if (month < 0) {
+        month = 11;
+        year --;
+      }
+      day = months[month].days;
     }
-    if (!includes(dataArray, lastDay, lastMonth)) {
+    if (!includes(dataArray, day, month)) {
       dataArray.push({
         swelling: 0,
         pain: 0,
-        date: toLocaleDateString('2016-'+(lastMonth+1)+'-'+(lastDay)),
+        date: toLocaleDateString(year+'-'+(month+1)+'-'+(day)),
         name: '-'
       })
     }
@@ -128,19 +133,24 @@ var avgValueForExercise = (exercise) => {
 
 var addEmptyDaysToExerciseChartData = (dataArray, keys) => {
   var lastDate = findNewestDate(dataArray);
-  var lastDay = lastDate.getDate();
-  var lastMonth = lastDate.getMonth();
+  var day = lastDate.getDate()
+    , month = lastDate.getMonth()
+    , year = lastDate.getFullYear();
 
   for (var i = 1; i < 15; i++) {
-    lastDay--;
-    if (lastDay < 1) {
-      lastMonth--;
-      lastDay = months[lastMonth].days;
+    day--;
+    if (day < 1) {
+      month--;
+      if (month < 0) {
+        month = 11;
+        year --;
+      }
+      day = months[month].days;
     }
-    if (!includes(dataArray, lastDay, lastMonth)) {
+    if (!includes(dataArray, day, month)) {
       var pushObj = {
         unit: 'degrees',
-        date: toLocaleDateString('2016-'+(lastMonth+1)+'-'+(lastDay)),
+        date: toLocaleDateString(year+'-'+(month+1)+'-'+(day)),
         name: 'Exercise: -'
       };
 
