@@ -24,8 +24,13 @@ class ImageButton extends React.Component {
     {
       display: none
     };
+
+    let classNames = this.props.className?
+    'ImageButton ' + this.props.className:
+    'ImageButton';
+    
     return (
-      <button onClick={this.props.onClick} className="ImageButton">
+      <button onClick={this.props.onClick} className={classNames}>
         <span>
           <div className="btn-image-content" style={imageContentStyle}/>
           <div className="btn-text-content" style={textContentStyle}>
@@ -40,7 +45,8 @@ class ImageButton extends React.Component {
 ImageButton.propTypes = {
   text: React.PropTypes.string,
   imgURL: React.PropTypes.string,
-  onClick: React.PropTypes.func
+  onClick: React.PropTypes.func,
+  className: React.PropTypes.string
 };
 
 export default ImageButton;
