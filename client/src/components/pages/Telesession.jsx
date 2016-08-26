@@ -3,6 +3,9 @@ import scriptLoader from 'react-async-script-loader'
 import { config } from 'react-loopback';
 import MainHeader from '../headers/MainHeader';
 import RepsChartPanel from '../panels/RepsChartPanel';
+import PatientInfoPanel from '../panels/PatientInfoPanel';
+import AccountStore from '../../alt/stores/AccountStore'
+
 import ExercisesChartPanel from '../panels/ExercisesChartPanel';
 import NotificationActions from '../../alt/actions/NotificationActions';
 import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
@@ -17,12 +20,15 @@ class Telesession extends React.Component {
   
   constructor(props) {
     super(props);
+    let accountState = AccountStore.getState();
+
     this.state = {
       createSessionResponse: '',
       opentokScriptLoaded: null,
       activeSession:null,
       activePublisher: null,
-      activeSubscriberStream: null
+      activeSubscriberStream: null,
+      loggedInUser: accountState.user
     };
     this.callSelf = this.callSelf.bind(this);
 
@@ -131,7 +137,7 @@ class Telesession extends React.Component {
       <div className="overlay">
         <button onClick={this.createSession.bind(this)} className="btn-create button">
           <h1>Create New Session</h1>
-        </button>;
+        </button>
       </div>
     }
     else{
@@ -173,10 +179,12 @@ class Telesession extends React.Component {
     
     return (
       <div className="Telesession content-container row-gt-sm">
-        <div className="left-column charts-container">
-          <RepsChartPanel />
-          <ExercisesChartPanel />
-          <HealthEventsChartPanel />
+        <div className="left-column">
+          <div className="charts-container" >
+            <RepsChartPanel />
+            <ExercisesChartPanel />
+            <HealthEventsChartPanel />
+          </div>
         </div>
         <div className="right-column">
           <div className="telesession-panel panel">
@@ -184,9 +192,7 @@ class Telesession extends React.Component {
             {overlay}
             {vidContainer}
           </div>
-          <div className="info-panel panel">
-
-          </div>
+          <PatientInfoPanel user={this.state.loggedInUser} />
 
         </div>
         

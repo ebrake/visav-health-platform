@@ -86,11 +86,6 @@
     }
   }
 }
-.info-panel{
-  flex: 1 0 auto;
-  margin-top: 10px;
-}
-
 
 
 .right-column{
@@ -99,10 +94,16 @@
   flex: 1 0 auto;
   margin-left: 10px;
 }
+
+.PatientInfoPanel{
+  flex: 1 0 auto;
+  margin-top: 10px;
+}
+
 .left-column{
   display: flex;
   flex-direction: column;
-  flex: 0 0 auto;
+  flex: 1 0 40%;
 }
 
 
@@ -110,6 +111,7 @@
   overflow: scroll;
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   .graph-panel {
     flex: 1 0 auto;
