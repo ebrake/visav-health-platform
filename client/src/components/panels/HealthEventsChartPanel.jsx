@@ -55,7 +55,7 @@ class HealthEventsChartPanel extends React.Component {
     if(healthEvents && healthEvents.length > 0) {
       for(var i = 0; i < healthEvents.length; i++){
         let pointDict = {};
-        pointDict['intensity'] = Number((healthEvents[i].intensity*10).toFixed(2));
+        pointDict['intensity'] = Math.round(healthEvents[i].intensity*10);
         pointDict['date'] = this.format(healthEvents[i].date);
         pointDict['index'] = i;
         pointDict['name'] = healthEvents[i].type;
@@ -74,9 +74,9 @@ class HealthEventsChartPanel extends React.Component {
       if (typeof he.intensity == 'number') avg += he.intensity;
     })
 
-    min = Number(min.toFixed(2));
-    max = Number(max.toFixed(2));
-    avg = Number((avg / healthEvents.length).toFixed(2));
+    min = Math.round(min);
+    max = Math.round(max);
+    avg = Math.round((avg / healthEvents.length));
 
     return { Minimum: min, Maximum: max, Average: avg };
   }
@@ -125,7 +125,7 @@ class HealthEventsChartPanel extends React.Component {
   render() {
     return (
       <div className="HealthEventsChartPanel panel">
-        <h1 className="title">Pain & Swelling</h1>
+        <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
         <div style={{"width": this.state.width+"px"}} className="rechart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >

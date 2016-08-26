@@ -65,7 +65,7 @@ class ExercisesChartPanel extends React.Component {
       for(var i = 0; i < exercises.length; i++){
         let pointDict = {};
         if (exercises[i].reps.length > 0) {
-          pointDict['value'] = Number(this.avgValueForExercise(exercises[i]).toFixed(2));
+          pointDict['value'] = Math.round(this.avgValueForExercise(exercises[i]));
           pointDict['unit'] = exercises[i].reps[0].unit; //assumes all reps have same unit for one exercise
         } else {
           pointDict['value'] = 0;
@@ -103,9 +103,9 @@ class ExercisesChartPanel extends React.Component {
       if (typeof exercise.reps.length == 'number') avg += exercise.reps.length;
     })
 
-    min = Number(min.toFixed(2));
-    max = Number(max.toFixed(2));
-    avg = Number((avg / exercises.length).toFixed(2));
+    min = Math.round(min);
+    max = Math.round(max);
+    avg = Math.round((avg / exercises.length));
     
     return { Minimum: min, Maximum: max, Average: avg };
   }
@@ -154,7 +154,7 @@ class ExercisesChartPanel extends React.Component {
   render() {
     return (
       <div className="ExercisesChartPanel graph-panel panel">
-        <h1 className="title">Range of Motion</h1>
+        <h1 className="title">Range of Motion: Last 2 Weeks</h1>
         <div style={{"width": this.state.width+"px"}} className="rechart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >
