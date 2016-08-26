@@ -1,6 +1,6 @@
 @import 'colors.css';
 
-.header {
+.MainHeader {
   display: flex;
   flex-direction: column;
   background-color: $color-header-bg;
@@ -19,4 +19,8 @@
     display: flex;
     color: $header-text;
   }
+}
+
+.VideoHeader{
+  
 }
