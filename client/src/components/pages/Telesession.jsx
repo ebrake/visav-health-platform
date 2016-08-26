@@ -120,7 +120,8 @@ class Telesession extends React.Component {
     }
     this.setState({
       activeSession: null,
-      activePublisher: null
+      activePublisher: null,
+      activeSubscriberStream: null
     });
 
   }
