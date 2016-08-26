@@ -15,6 +15,7 @@ var months = [
 
 var toLocaleDateString = (date) => {
   date = new Date(date);
+  console.log(date);
   return date.toLocaleDateString();
 }
 
@@ -23,10 +24,6 @@ var findNewestDate = (array) => {
   array.forEach(item => {
     if (new Date(item.date) > retDate) {
       retDate = new Date(item.date);
-    } else {
-      console.log('Huh?');
-      console.log(item.date);
-      console.log(retDate);
     }
   })
 
@@ -46,7 +43,7 @@ var sortByDate = (dataArray) => {
   while (dataArray.length){
     var minDate = new Date(), minIndex = -1;
     for (var i = 0; i < dataArray.length; i++) {
-      if (new Date(dataArray[i].date) < minDate) {
+      if (new Date(dataArray[i].date).getTime() < minDate.getTime()) {
         minDate = new Date(dataArray[i].date);
         minIndex = i;
       }
@@ -60,7 +57,7 @@ var addEmptyDaysToHealthEventChartData = (dataArray) => {
   var lastDate = findNewestDate(dataArray);
   var day = lastDate.getDate()
     , month = lastDate.getMonth()
-    , year = lastDate.getYear();
+    , year = lastDate.getFullYear();
 
   for (var i = 1; i < 15; i++) {
     day--;
