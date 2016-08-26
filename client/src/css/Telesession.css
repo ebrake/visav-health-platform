@@ -6,72 +6,112 @@
   display: flex;
   align-items: center;
   background: $color-panel-bg;
-  position: relative;
 
-  .theatre-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    z-index: 5;
+  
 
-    .btn-call {
-      width: 100px;
-      height: 100px;
 
-      .btn-image-content {
-        background-image: url('../img/call.png');
-      }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  z-index: 5;
+
+  .btn-call {
+    width: 100px;
+    height: 100px;
+
+    .btn-image-content {
+      background-image: url('../img/call.png');
     }
+  }
 
-    .btn-cancel {
-      width: 100px;
-      height: 100px;
+  .btn-cancel {
+    width: 100px;
+    height: 100px;
 
-      .btn-image-content {
-        background-image: url('../img/hang-up.png');
-      }
+    .btn-image-content {
+      background-image: url('../img/hang-up.png');
     }
   }
 }
-
-.video-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  background: white;
-}
-
-.video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.telesession-container {
+.telesession-panel {
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
-  background: $color-panel-bg;
-  border: 1px solid $color-panel-border;
+  flex: 0 0 50%;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.video-container{
+  position: relative;
+  flex: 0 1 auto;
+  width: 40vw;
+  height: 30vw;
 
-  @media (--gt-sm) {
-    margin-left: 10px;
-    order: 1;
+  .publisher-container{
+    &.full{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    &.thumb{
+      position: absolute;
+      width: 12vw;
+      height: 9vw;
+      right: 10px;
+      bottom: 10px;
+      z-index: 5;
+      border-radius: 5px;
+      overflow: hidden;
+    }
   }
 
-  @media (--lt-md) {
-    margin-bottom: 10px;
+  .subscriber-container{
+    
+    &.full{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    section{
+      width:100%;
+      height:100%;
+    }
   }
 }
+
+
+.right-column{
+  display:flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  margin-left: 10px;
+}
+
+.PatientInfoPanel{
+  flex: 1 0 auto;
+  margin-top: 10px;
+}
+
+.left-column{
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 40%;
+}
+
 
 .charts-container {
   overflow: scroll;
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   .rechart-container {
     margin: 0 auto;
