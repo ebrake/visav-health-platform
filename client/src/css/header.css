@@ -1,6 +1,6 @@
 @import 'colors.css';
 
-.header {
+.MainHeader {
   display: flex;
   flex-direction: column;
   background-color: $color-header-bg;

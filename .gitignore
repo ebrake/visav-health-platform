@@ -21,3 +21,4 @@ npm-debug.log
 server-dist
 client-dist
 /client/build/*
+/psd/*
