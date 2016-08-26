@@ -135,7 +135,7 @@ class Telesession extends React.Component {
     if (this.state.activeSession == null) {
       overlay = 
       <div className="overlay">
-        <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgURL="face-to-face.png" />
+        <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgURL="face-to-face.png" className="btn-create"/>
       </div>
     }
     else{

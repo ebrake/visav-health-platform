@@ -22,25 +22,17 @@
   .btn-call {
     width: 100px;
     height: 100px;
-
-    .btn-image-content {
-      background-image: url('../img/call.png');
-    }
+    background-color: transparent;
   }
 
   .btn-cancel {
     width: 100px;
     height: 100px;
-
-    .btn-image-content {
-      background-image: url('../img/hang-up.png');
-    }
+    background-color: transparent;
   }
 
   .btn-create{
-    .btn-image-content {
-      background-image: url('../img/face-to-face.png');
-    }
+    margin: 0 auto;
   }
 }
 .telesession-panel {
