@@ -50,6 +50,10 @@
     height: 30vw;
 
     .publisher-container{
+      section{
+        height:100%;
+        width: 100%;
+      }
       &.full{
         position: absolute;
         width: 100%;

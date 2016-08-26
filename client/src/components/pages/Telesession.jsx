@@ -77,7 +77,7 @@ class Telesession extends React.Component {
     const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.createSessionResponse.session.sessionId);
     this.setState({activeSession: session});
     const publisher = OT.initPublisher(this.refs.publisherSection, {
-      insertMode: 'replace',
+      insertMode:'append',
       width: '100%',
       height: '100%'
     })
@@ -97,12 +97,12 @@ class Telesession extends React.Component {
       },
       connectionDestroyed: function connectionDestroyedHandler(event) {
         console.log('A client disconnected.');
+        self.disconnectFromSession();
       },
     });
 
     session.on("streamCreated", function (event) {
       session.subscribe(event.stream, self.refs.subscriberSection, {
-        insertMode: 'replace',
         width: '100%',
         height: '100%'
       })
