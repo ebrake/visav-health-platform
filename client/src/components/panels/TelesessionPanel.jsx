@@ -14,17 +14,22 @@ class TelesessionPanel extends React.Component {
     let telesessionState = TelesessionStore.getState();
     let accountState = AccountStore.getState();
     var sessionId = telesessionState.sessionId;
-    
+
     this.state = {
       sessionId: sessionId,
       activeSession:null,
       activePublisher: null,
-      activeSubscriberStream: null,
-      loggedInUser: accountState.user
+      activeSubscriber: null,
+      opentokScriptLoaded: null,
+      loggedInUser: accountState.user,
+      muteMic: false,
+      muteSubscriber: false
     };
 
     this.callSelf = this.callSelf.bind(this);
     this.telesessionChanged = this.telesessionChanged.bind(this);
+    this.toggleMuteMic = this.toggleMuteMic.bind(this);
+    this.toggleMuteSubscriber = this.toggleMuteSubscriber.bind(this);
 
   }
 
@@ -46,9 +51,11 @@ class TelesessionPanel extends React.Component {
     this.setState({activeSession: session});
     const publisher = OT.initPublisher(this.refs.publisherSection, {
       insertMode:'append',
+      style: {buttonDisplayMode: 'off'},
       width: '100%',
       height: '100%'
     })
+    publisher.publishAudio(!this.state.muteMic);
     this.setState({activePublisher: publisher});
 
     session.connect(TelesessionStore.getState().token, function (error) {
@@ -71,12 +78,16 @@ class TelesessionPanel extends React.Component {
     });
 
     session.on("streamCreated", function (event) {
-      session.subscribe(event.stream, self.refs.subscriberSection, {
+      const subscriber = session.subscribe(event.stream, self.refs.subscriberSection, {
         insertMode:'append',
+        style: {buttonDisplayMode: 'off'},
         width: '100%',
         height: '100%'
       })
-      self.setState({activeSubscriberStream: event.stream});
+      subscriber.subscribeToAudio(!self.state.muteSubscriber);
+      self.setState({
+        activeSubscriber: subscriber
+      });
       console.log('Subscribed to stream: ' + event.stream.id)
     });
 
@@ -91,7 +102,7 @@ class TelesessionPanel extends React.Component {
     this.setState({
       activeSession: null,
       activePublisher: null,
-      activeSubscriberStream: null
+      activeSubscriber: null
     });
 
   }
@@ -113,6 +124,33 @@ class TelesessionPanel extends React.Component {
     TelesessionStore.unlisten(this.telesessionChanged);
   }
 
+  componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
+    if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
+      this.setState({opentokScriptLoaded: isScriptLoadSucceed});
+    }
+  }
+
+  toggleMuteMic(){
+    var newVal = !this.state.muteMic;
+    this.setState({muteMic: newVal});
+
+    if (this.state.activePublisher) {
+      //publishAudio is opposite of mute
+      this.state.activePublisher.publishAudio(!newVal);
+    }
+    
+  }
+
+  toggleMuteSubscriber(){
+    var newVal = !this.state.muteSubscriber;
+    this.setState({muteSubscriber: newVal});
+
+    if (this.state.activeSubscriber) {
+      //subscribeToAudio is opposite of mute
+      this.state.activeSubscriber.subscribeToAudio(!newVal);
+    }
+  }
+
   render() {
     var jsLoaded;
     if (this.state.opentokScriptLoaded==null || this.state.opentokScriptLoaded==true) jsLoaded = null;
@@ -122,19 +160,22 @@ class TelesessionPanel extends React.Component {
     if (this.state.activeSession == null) {
       overlay = 
       <div className="overlay">
-        <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgURL="face-to-face.png" className="btn-create"/>
+        <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgUrl="face-to-face.png" className="btn-create"/>
       </div>
     }
     else{
       overlay = 
       <div className="overlay">
-        <ImageButton onClick={this.disconnectFromSession.bind(this)} imgURL="hang-up.png" className="btn-cancel"/>
-        <ImageButton onClick={this.callSelf.bind(this)} imgURL="call.png" className="btn-call"/>
+        <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hang-up.png" className="btn-cancel"/>
+        <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call"/>
+        <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic" />
+        <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber" />
+
       </div>
     }
 
     var vidContainer;
-    if (this.state.activeSubscriberStream == null) {
+    if (this.state.activeSubscriber == null) {
       vidContainer = 
       <div className="video-container">
         <div className="publisher-container full">
@@ -157,7 +198,7 @@ class TelesessionPanel extends React.Component {
       </div>
     }
     return (
-      <div className="TelesessionPanel telesession-panel panel">
+      <div className="TelesessionPanel panel">
         {jsLoaded}
         {overlay}
         {vidContainer}

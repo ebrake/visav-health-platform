@@ -22,22 +22,11 @@ class Telesession extends React.Component {
     let accountState = AccountStore.getState();
 
     this.state = {
-      createSessionResponse: '',
-      opentokScriptLoaded: null,
       loggedInUser: accountState.user
     };
   }
 
-  componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
-    if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
-      this.setState({opentokScriptLoaded: isScriptLoadSucceed});
-    }
-  }
-
-
   render() {
-
-    
     return (
       <div className="Telesession content-container row-gt-sm">
         <div className="left-column">

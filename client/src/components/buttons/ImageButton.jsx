@@ -9,20 +9,68 @@ class ImageButton extends React.Component {
     this.state = {
 
     };
+    this.setImageUrl = this.setImageUrl.bind(this);
+
+  }
+
+  setImageUrl( selected ){
+    var finalUrl;
+    self = this;
+    if( this.props.imgUrl )
+    {
+      var imageName = this.props.imgUrl.split('.')[0];
+      var imageExtension = this.props.imgUrl.split('.')[1];
+      var defaultAssembledUrl = 'src/img/' + this.props.imgUrl;
+ 
+      if( selected ) {
+        var selectedAssembledUrl = 'src/img/' + imageName + '-selected.' + imageExtension;
+        if(this.doesImageExistsAtUrl(selectedAssembledUrl)){
+          console.log('IMAGE EXISTS');
+          self.setState({ imageUrl: selectedAssembledUrl });
+        }
+        else{
+          self.setState({ imageUrl: defaultAssembledUrl });
+        }
+      }
+      else{
+        this.setState({ imageUrl: defaultAssembledUrl });
+      }
+    }
+  }
+
+  doesImageExistsAtUrl(imgUrl){
+
+    var http = new XMLHttpRequest();
+
+    http.open('HEAD', imgUrl, false);
+    http.send();
+
+    return http.status != 404;
+  }
+
+  componentDidMount(){
+
+  }
+
+  componentWillReceiveProps(newProps) {
+
+    this.setImageUrl(newProps.selected);
+    
   }
 
   render() {
+
     let textContentStyle = this.props.text?null:
     {
       display: 'none'
     };
 
-    let imageContentStyle = this.props.imgURL?
+    var imageContentStyle = this.state.imageUrl?
     {
-      backgroundImage: 'url(\'src/img/' + this.props.imgURL + '\')'
-    }:
-    {
-      display: none
+      backgroundImage: 'url(\'' + this.state.imageUrl + '\''
+    } 
+    :{
+      display: 'none'
     };
 
     let classNames = this.props.className?
@@ -44,9 +92,10 @@ class ImageButton extends React.Component {
 
 ImageButton.propTypes = {
   text: React.PropTypes.string,
-  imgURL: React.PropTypes.string,
+  imgUrl: React.PropTypes.string,
   onClick: React.PropTypes.func,
-  className: React.PropTypes.string
+  className: React.PropTypes.string,
+  selected: React.PropTypes.bool
 };
 
 export default ImageButton;
