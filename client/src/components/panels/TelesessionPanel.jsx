@@ -31,8 +31,8 @@ class TelesessionPanel extends React.Component {
     this.telesessionChanged = this.telesessionChanged.bind(this);
     this.toggleMuteMic = this.toggleMuteMic.bind(this);
     this.toggleMuteSubscriber = this.toggleMuteSubscriber.bind(this);
-    this.mouseOver = this.mouseOver.bind(this);
-    this.mouseOut = this.mouseOut.bind(this);
+    this.mouseDidEnter = this.mouseDidEnter.bind(this);
+    this.mouseDidLeave = this.mouseDidLeave.bind(this);
 
   }
 
@@ -154,12 +154,12 @@ class TelesessionPanel extends React.Component {
     }
   }
 
-  mouseOver(){
+  mouseDidEnter(){
     this.setState({'isMousedOver': true});
 
   }
 
-  mouseOut(){
+  mouseDidLeave(){
     this.setState({'isMousedOver': false});
   }
 
@@ -172,14 +172,14 @@ class TelesessionPanel extends React.Component {
     let isActiveSession = (this.state.activeSession != null);
     var overlay = 
       <div className={isMousedOver ? 'overlay moused-over' : 'overlay'}>
-        <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hang-up.png" className="btn-cancel"/>
-        <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call"/>
-        <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic" />
-        <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber" />
+        <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hangup.png" className="btn-cancel btn-overlay"/>
+        <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call btn-overlay"/>
+        <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic btn-overlay" />
+        <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber btn-overlay" />
       </div>
 
     var createButton =
-      <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgUrl="face-to-face.png" className="btn-create"/>
+      <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
     var overlayOrCreate = (!isActiveSession)?createButton:overlay;
 
     var vidContainer = 
@@ -194,7 +194,7 @@ class TelesessionPanel extends React.Component {
       </div>
     
     return (
-      <div className="TelesessionPanel panel" onMouseEnter={this.mouseOver} onMouseLeave={this.mouseOut}>
+      <div className="TelesessionPanel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
         {jsLoaded}
         {vidContainer}
       </div>
