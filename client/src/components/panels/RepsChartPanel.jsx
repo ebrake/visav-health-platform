@@ -4,7 +4,7 @@ import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'r
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import VisavList from './VisavList';
-import colors from '../utils/colors';
+import PanelConfig from './PanelConfig';
 
 var x = (point) => {
   return point.index;
@@ -12,8 +12,7 @@ var x = (point) => {
 
 var margins = { left: -10, right: 40, top: 10, bottom: 20 }
   , width = 1000
-  , height = 300
-  , fillColor = colors.primaryGraphColor;
+  , height = 300;
 
 class RepsChartPanel extends React.Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class RepsChartPanel extends React.Component {
       chartSeries: [],
       width: width,
       height: height,
-      margins: {left: 50, right: 50, top: 10, bottom: 30},
+      margins: margins,
       title: "User sample",
       listData: {}
     };
@@ -111,7 +110,7 @@ class RepsChartPanel extends React.Component {
   }
 
   resize(){
-    var diff = 300
+    var diff = 100
       , newWidth = document.getElementById("RepsChartPanel").offsetWidth;
 
     this.setState({
@@ -132,12 +131,12 @@ class RepsChartPanel extends React.Component {
               <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
               <XAxis dataKey="index" />
               <YAxis domain={['auto', 'auto']} />
-              <Legend verticalAlign="top" height={30} color="#fff" />
+              <Legend verticalAlign="top" height={PanelConfig.legendHeight} color="#fff" />
               <Tooltip content={<RepsTooltip />} />
-              <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
+              <Area name={this.unit()} type="monotone" dataKey="value" stroke={PanelConfig.fillColors[0]} fillOpacity={PanelConfig.fillOpacity} fill={PanelConfig.fillColors[0]} />
             </AreaChart>
           </div>
-          <VisavList data={this.state.listData} />
+          { /*<VisavList data={this.state.listData} />*/ }
         </div>
       </div>
     );

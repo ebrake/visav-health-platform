@@ -4,7 +4,7 @@ import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'r
 import HealthEventStore from '../../alt/stores/HealthEventStore';
 import HealthEventActions from '../../alt/actions/HealthEventActions';
 import VisavList from './VisavList';
-import colors from '../utils/colors';
+import PanelConfig from './PanelConfig';
 import chartDataFormatter from '../utils/chartDataFormatter';
 
 var x = (point) => {
@@ -13,8 +13,7 @@ var x = (point) => {
 
 var margins = { left: -10, right: 40, top: 10, bottom: 20 }
   , width = 1000
-  , height = 300
-  , fillColors = [colors.primaryGraphColor, colors.secondaryGraphColor, colors.tertiaryGraphColor];
+  , height = 300;
 
 class HealthEventsChartPanel extends React.Component {
   constructor(props) {
@@ -113,10 +112,10 @@ class HealthEventsChartPanel extends React.Component {
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
             <XAxis dataKey="date" tickFormatter={this.tickFormatter} />
             <YAxis domain={['auto', 'auto']} />
-            <Legend verticalAlign="top" height={30} />
+            <Legend verticalAlign="top" height={50} />
             <Tooltip content={<HealthEventsToolTip />} />
-            <Area type="monotone" dataKey="swelling" stroke={fillColors[0]} fillOpacity={0.1} fill={fillColors[0]} />
-            <Area type="monotone" dataKey="pain" stroke={fillColors[1]} fillOpacity={0.1} fill={fillColors[1]} />
+            <Area type="monotone" dataKey="swelling" stroke={PanelConfig.fillColors[0]} fillOpacity={PanelConfig.fillOpacity} fill={PanelConfig.fillColors[0]} />
+            <Area type="monotone" dataKey="pain" stroke={PanelConfig.fillColors[1]} fillOpacity={PanelConfig.fillOpacity} fill={PanelConfig.fillColors[1]} />
           </AreaChart>
         </div>
       </div>

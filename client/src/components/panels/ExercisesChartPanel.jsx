@@ -4,7 +4,7 @@ import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'r
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import VisavList from './VisavList';
-import colors from '../utils/colors';
+import PanelConfig from './PanelConfig';
 import chartDataFormatter from '../utils/chartDataFormatter';
 
 var x = (point) => {
@@ -13,14 +13,7 @@ var x = (point) => {
 
 var margins = { left: -10, right: 40, top: 10, bottom: 20 }
   , width = 1000
-  , height = 300
-  , fillColors = [
-      colors.primaryGraphColor, 
-      colors.secondaryGraphColor, 
-      colors.tertiaryGraphColor,
-      colors.red,
-      colors.green
-    ];
+  , height = 300;
 
 class ExercisesChartPanel extends React.Component {
   constructor(props) {
@@ -128,14 +121,14 @@ class ExercisesChartPanel extends React.Component {
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
             <XAxis dataKey="date" tickFormatter={this.tickFormatter} interval={0} />
             <YAxis domain={['auto', 'auto']} />
-            <Legend verticalAlign="top" height={30} />
+            <Legend verticalAlign="top" height={50} />
             <Tooltip content={<ExercisesTooltip />} />
             { 
               this.state.keys.map((key, i) => {
-                if (i >= fillColors.length) 
+                if (i >= PanelConfig.fillColors.length) 
                   return null;
 
-                return <Area name={this.unit()+' ('+key.toLowerCase()+')'} type="monotone" dataKey={key} stroke={fillColors[i]} fillOpacity={0.1} fill={fillColors[i]} key={i} />;
+                return <Area name={this.unit()+' ('+key.toLowerCase()+')'} type="monotone" dataKey={key} stroke={PanelConfig.fillColors[i]} fillOpacity={PanelConfig.fillOpacity} fill={PanelConfig.fillColors[i]} key={i} />;
               })
             }
           </AreaChart>
