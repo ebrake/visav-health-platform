@@ -18,6 +18,15 @@
   flex-direction: row;
   justify-content: space-between;
   z-index: 5;
+  background-color: rgba(0,0,0,0.5);
+  opacity:0.0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+
+  &.moused-over{
+    opacity: 1.0;
+    pointer-events: auto;
+  }
 
   .btn-call {
     width: 100px;
@@ -42,6 +51,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+
 
   .video-container{
     position: relative;
