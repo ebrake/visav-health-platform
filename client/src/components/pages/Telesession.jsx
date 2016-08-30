@@ -26,12 +26,10 @@ class Telesession extends React.Component {
   render() {
     return (
       <div className="Telesession content-container row-gt-sm">
-        <div className="left-column">
-          <div className="charts-container" >
-            <RepsChartPanel />
-            <ExercisesChartPanel />
-            <HealthEventsChartPanel />
-          </div>
+        <div className="left-column charts-container">
+          <RepsChartPanel />
+          <ExercisesChartPanel />
+          <HealthEventsChartPanel />
         </div>
         <div className="right-column">
           <TelesessionPanel />
