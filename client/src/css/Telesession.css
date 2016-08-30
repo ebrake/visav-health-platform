@@ -138,3 +138,8 @@
 #ExercisesChartPanel {
   margin-bottom: 10px;
 }
+
+.flex-canvas {
+  flex: 1 1 500px;
+  height: 300px;
+}

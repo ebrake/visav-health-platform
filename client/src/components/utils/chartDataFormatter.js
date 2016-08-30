@@ -140,56 +140,45 @@ var avgValueForExercise = (exercise) => {
   }
 }
 
-var formatExerciseChartData = (exercises, key) => {
-  return {
-    datasets: [{
-      label: 'Scatter Dataset',
-      data: [{
-        x: -10,
-        y: 0
-      }, {
-        x: 0,
-        y: 10
-      }, {
-        x: 10,
-        y: 5
-      }]
-    }]
-  };
-
-
-  let twoWeeksAgo = new Date(findNewestDate(exercises) - (1000*60*60*24*15))
-    , dataArray = [];
+var formatExerciseChartData = (exercises) => {
+  var twoWeeksAgo = new Date(findNewestDate(exercises) - (1000*60*60*24*15))
+    , datasets = []
+    , currentDataSet = -1
+    , key = '';
 
   if(exercises && exercises.length > 0) {
     for (var i = 0; i < exercises.length; i++){
-      var ex = exercises[i];
+      let ex = exercises[i];
       if (new Date(ex.date) < twoWeeksAgo) {
         continue;
       }
 
-      let dataPoint = {};
+      key = getKey(ex);
+      currentDataSet = -1;
 
-      if (ex.reps.length > 0 && getKey(ex) == key) {
-        dataPoint['value'] = Math.round(avgValueForExercise(ex));
-        dataPoint['unit'] = ex.reps[0].unit; //assumes all reps have same unit for one exercise
-      } else {
-        dataPoint['unit'] = 'NO REPS';
+      for (var j = 0; j < datasets.length; j++) {
+        if (datasets[j].label == key) {
+          currentDataSet = j;
+        }
+      } 
+
+      if (currentDataSet < 0) {
+        currentDataSet = datasets.length;
+        datasets.push({ label: key, data: [] });
       }
-      dataPoint['date'] = toMilliseconds(ex.date);
-      dataPoint['name'] = ex.type;
 
-      var d = new Date(ex.date);
-      dataPoint.month = d.getMonth();
-      dataPoint.day = d.getDate();
-
-      if (dataPoint.unit !== 'NO REPS') {
-        dataArray.push(dataPoint);
-      }
+      if (ex.reps.length > 0) {
+        datasets[currentDataSet].data.push({
+          x: toMilliseconds(ex.date),
+          y: avgValueForExercise(ex)
+        });
+      } 
     }
   }
 
-  return dataArray;
+  return {
+    datasets: datasets
+  };
 }
 
 export default {
@@ -197,8 +186,8 @@ export default {
     return formatHealthEventChartData(healthEvents);
   },
 
-  makeExerciseChartData: (exercises, key) => {
-    return formatExerciseChartData(exercises, key);
+  makeExerciseChartData: (exercises) => {
+    return formatExerciseChartData(exercises);
   },
 
   getKeysFor: (exercises) => {

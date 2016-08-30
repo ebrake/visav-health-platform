@@ -7,10 +7,6 @@ import VisavList from './VisavList';
 import PanelConfig from './PanelConfig';
 import chartDataFormatter from '../utils/chartDataFormatter';
 
-var x = (point) => {
-  return point.index;
-};
-
 var margins = { left: -10, right: 40, top: 10, bottom: 20 }
   , width = 700
   , height = 300;
@@ -33,8 +29,8 @@ class ExercisesChartPanel extends React.Component {
     ExerciseActions.getExercises();
 
     this.exercisesChanged = this.exercisesChanged.bind(this);
+    this.buildNewChart = this.buildNewChart.bind(this);
     this.resize = debounce(this.resize, 30).bind(this);
-    this.calcListData = this.calcListData.bind(this);
   }
 
   chartSeries(){
@@ -62,7 +58,12 @@ class ExercisesChartPanel extends React.Component {
     return {
       scales: {
         xAxes: [{
-          type: 'linear',
+          type: 'time',
+          time: {
+            displayFormats: {
+              day: 'MMM D'
+            }
+          },
           position: 'bottom'
         }]
       },
@@ -71,32 +72,34 @@ class ExercisesChartPanel extends React.Component {
     }
   }
 
-  chartData(){
-    return chartDataFormatter.makeExerciseChartData(this.state.exercises);
-  }
-
-  calcListData(exercises) {
-    let min = Infinity, max = -Infinity, avg = 0;
-    exercises.forEach(exercise => {
-      if (exercise.reps.length < min) min = exercise.reps.length;
-      if (exercise.reps.length > max) max = exercise.reps.length;
-      if (typeof exercise.reps.length == 'number') avg += exercise.reps.length;
-    })
-
-    min = Math.round(min);
-    max = Math.round(max);
-    avg = Math.round((avg / exercises.length));
-    
-    return { Minimum: min, Maximum: max, Average: avg };
+  calculateChartData(exercises){
+    return chartDataFormatter.makeExerciseChartData(exercises);
   }
 
   exercisesChanged(exerciseState){
     this.setState({
       exercises: exerciseState.exercises,
       chartSeries: this.chartSeries(),
-      listData: this.calcListData(exerciseState.exercises),
-      keys: chartDataFormatter.getKeysFor(exerciseState.exercises)
+      chartData: this.calculateChartData(exerciseState.exercises)
     });
+  }
+
+  buildNewChart(){
+    if (!this.state.chartData) return;
+
+    if (this.state.chart){
+      this.state.chart.destroy();
+    }
+
+    let chartCanvas = this.refs['exercise-chart'];
+
+    let lineChart = new Chart(chartCanvas, {
+      type: 'line',
+      data: this.state.chartData,
+      options: this.chartOptions()
+    });
+
+    this.setState({chart: lineChart});
   }
 
   componentDidMount(){
@@ -104,15 +107,7 @@ class ExercisesChartPanel extends React.Component {
     window.addEventListener('resize', this.resize);
     this.resize();
 
-    let chartCanvas = this.refs['exercise-chart'];
-
-    let lineChart = new Chart(chartCanvas, {
-      type: 'line',
-      data: this.chartData(),
-      options: this.chartOptions()
-    });
-
-    this.setState({chart: lineChart});
+    this.buildNewChart();
   }
 
   componentWillUnmount(){
@@ -121,9 +116,9 @@ class ExercisesChartPanel extends React.Component {
   }
 
   componentDidUpdate(){
-    let chart = this.state.chart;
-    if (chart)
-      this.state.chart.update();
+    if (!this.state.chart || this.state.chartData.datasets.length != this.state.chart.data.datasets.length) {
+      this.buildNewChart();
+    }
   }
 
   resize(){
@@ -145,7 +140,7 @@ class ExercisesChartPanel extends React.Component {
       <div id="ExercisesChartPanel" className="graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
         <div className="flex-row">
-          <canvas ref={'exercise-chart'} height={300} width={'100%'}></canvas>
+          <canvas ref={'exercise-chart'} className="flex-canvas" height={300} ></canvas>
         </div>
       </div>
     );
