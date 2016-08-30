@@ -17,14 +17,13 @@
   flex-direction: row;
   justify-content: space-between;
   z-index: 5;
-  background-color: rgba(0,0,0,0.5);
-  opacity:0.0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
   padding: 10px;
-  //pointer-events: none;
   transition: opacity 0.5s ease-in-out;
 
-  &.moused-over{
-    opacity: 1.0;
+  &.moused-over {
+    opacity: 1;
     pointer-events: auto;
   }
 
@@ -47,7 +46,7 @@
   align-items: center;
   position: relative;
 
-  .video-container{
+  .video-container {
     position: relative;
     flex: 0 1 auto;
     width: 40vw;
@@ -55,14 +54,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    .btn-create{
+
+    .btn-create {
       height: 100px;
       width: 200px;
       z-index: 5;
     }
-    .publisher-container{
-      section{
-        height:100%;
+
+    .publisher-container {
+      section {
+        height: 100%;
         width: 100%;
       }
 
