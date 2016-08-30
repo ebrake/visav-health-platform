@@ -36,9 +36,7 @@ class Telesession extends React.Component {
         <div className="right-column">
           <TelesessionPanel />
           <PatientInfoPanel user={this.state.loggedInUser} />
-
         </div>
-        
       </div>
     );
   }
