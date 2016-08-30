@@ -8,6 +8,15 @@
   background: $color-panel-bg;
 }
 
+.Telesession {
+  > .left-column {
+    @media (--lt-md) {
+      order: 2;
+      margin-top: 10px;
+    }
+  }
+}
+
 .overlay {
   position: absolute;
   top: 0;
@@ -104,8 +113,11 @@
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  margin-left: 10px;
-  max-width: 50%;
+
+  @media (--gt-sm) {
+    margin-left: 10px;
+    max-width: 50%;
+  }
 }
 
 .PatientInfoPanel {
@@ -116,14 +128,21 @@
 .left-column {
   display: flex;
   flex-direction: column;
-  flex: 1 0 40%;
+  flex: 1 0 auto;
+
+  @media (--gt-sm) {
+    flex: 1 0 40%;
+  }
 }
 
 .charts-container {
   overflow: scroll;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  
+  @media (--gt-sm) {
+    height: 100%;
+  }
 
   .rechart-container {
     margin: 0 auto;

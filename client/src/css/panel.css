@@ -1,3 +1,4 @@
+@import 'media.css';
 @import 'colors.css';
 
 .panel {
@@ -14,6 +15,10 @@
     font-size: 24px;
     color: $medium-text-color;
     width: 100%;
+  }
+
+  h2 {
+    font-size: 20px;
   }
 
   .recharts-legend-item-text {
@@ -53,6 +58,8 @@
   }
 
   > .right-column {
-    margin-left: 20px;
+    @media (--gt-xs) {
+      margin-left: 20px;
+    }
   }
 }
