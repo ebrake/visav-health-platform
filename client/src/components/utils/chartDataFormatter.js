@@ -1,3 +1,5 @@
+import colors from './colors.js';
+
 var months = [
   { name: 'January', month: 1, days: 31 },
   { name: 'February', month: 2, days: 28 },
@@ -133,7 +135,7 @@ var avgValueForExercise = (exercise) => {
     for(var i = 0; i < exercise.reps.length; i++){
       avg += exercise.reps[i].value / exercise.reps.length;
     }
-    return avg;
+    return Number(avg.toFixed(2));
   }
   else{
     return 0;
@@ -141,6 +143,7 @@ var avgValueForExercise = (exercise) => {
 }
 
 var formatExerciseChartData = (exercises) => {
+  //compute data
   var twoWeeksAgo = new Date(findNewestDate(exercises) - (1000*60*60*24*15))
     , datasets = []
     , currentDataSet = -1
@@ -157,7 +160,7 @@ var formatExerciseChartData = (exercises) => {
       currentDataSet = -1;
 
       for (var j = 0; j < datasets.length; j++) {
-        if (datasets[j].label == key) {
+        if (datasets[j].label === key) {
           currentDataSet = j;
         }
       } 
@@ -175,6 +178,14 @@ var formatExerciseChartData = (exercises) => {
       } 
     }
   }
+
+  //configure datasets to have correct labels and colors
+  datasets = datasets.map((d, i) =>{
+    d.label = 'degrees ('+d.label+')';
+    d.borderColor = colors.getGraphColor(i, 1);
+    d.backgroundColor = colors.getGraphColor(i, 0.3);
+    return d;
+  })
 
   return {
     datasets: datasets
