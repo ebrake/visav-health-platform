@@ -49,7 +49,7 @@ class ImageButton extends React.Component {
   doesImageExistsAtUrl(imgUrl){
 
     var http = new XMLHttpRequest();
-    http.open('HEAD', imgUrl, false);
+    http.open('HEAD', imgUrl, true);
     http.send();
     return http.status != 404;
   }
