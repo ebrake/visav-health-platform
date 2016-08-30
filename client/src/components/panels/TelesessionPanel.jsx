@@ -8,7 +8,7 @@ import TelesessionStore from '../../alt/stores/TelesessionStore';
 import AccountStore from '../../alt/stores/AccountStore';
 import ImageButton from '../buttons/ImageButton';
 @scriptLoader(
-  'https://static.opentok.com/v2/js/opentok.min.js'
+  //'https://static.opentok.com/v2/js/opentok.min.js'
 )
 class TelesessionPanel extends React.Component {
   
@@ -23,7 +23,7 @@ class TelesessionPanel extends React.Component {
       activeSession:null,
       activePublisher: null,
       activeSubscriber: null,
-      opentokScriptLoaded: null,
+      opentokScriptLoaded: true,
       loggedInUser: accountState.user,
       muteMic: false,
       muteSubscriber: false,

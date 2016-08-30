@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import LocalizedStrings from 'react-localization';
-import SegmentedControl from 'react-segmented-control'
 import NavItem from '../nav/NavItem'
 class MainHeader extends React.Component {
   constructor(props) {
@@ -20,6 +18,5 @@ class MainHeader extends React.Component {
     );
   }
 };
-
 
 export default MainHeader;
