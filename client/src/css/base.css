@@ -1,3 +1,5 @@
+@import 'colors.css';
+
 body {
   margin: 0;
   padding: 0;
@@ -8,6 +10,7 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background: $color-bg;
 }
 
 .content-container {
@@ -16,4 +19,14 @@ body {
   padding: 10px;
   flex: 1 1 1px;
   overflow: scroll;
+  background: $color-bg;
+  color: $medium-text-color;
+}
+
+.title-container {
+  text-align: center;
+}
+
+.hidden{
+  display:none;
 }

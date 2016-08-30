@@ -4,15 +4,16 @@ import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'r
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import VisavList from './VisavList';
+import colors from '../utils/colors';
 
 var x = (point) => {
   return point.index;
 };
 
-var margins = { left: -10, right: 50, top: 10, bottom: 0 }
+var margins = { left: -10, right: 50, top: 10, bottom: 20 }
   , width = 560
   , height = 300
-  , fillColor = '#00F0FF';
+  , fillColor = colors.primaryGraphColor;
 
 class RepsChartPanel extends React.Component {
   constructor(props) {
@@ -130,7 +131,7 @@ class RepsChartPanel extends React.Component {
     return (
       <div className="RepsChartPanel graph-panel panel">
         <h1 className="title">
-          Rep Chart {this.state.exercise ? 'for '+this.state.exercise.type : ''}
+          Rep ROM {this.state.exercise ? 'for '+this.state.exercise.type : ''}
         </h1>
         <div style={{"width": this.state.width+"px"}} className="chart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
@@ -138,8 +139,8 @@ class RepsChartPanel extends React.Component {
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
             <XAxis dataKey="index" />
             <YAxis domain={['auto', 'auto']} />
-            <Legend verticalAlign="top" height={30} />
-            <Tooltip labelStyle={{fontWeight: 700}} itemStyle={{color: 'black'}} />
+            <Legend verticalAlign="top" height={30} color="#fff" />
+            <Tooltip content={<RepsTooltip />} />
             <Area name={this.unit()} type="monotone" dataKey="value" stroke={fillColor} fillOpacity={0.1} fill={fillColor} />
           </AreaChart>
         </div>
@@ -148,6 +149,29 @@ class RepsChartPanel extends React.Component {
     );
   }
 };
+
+class RepsTooltip extends React.Component {
+  render() {
+    const { active } = this.props;
+
+    if (active) {
+      const { payload, label } = this.props;
+      var value = '';
+      if (payload && payload[0]) {
+        value = payload[0].name+' : '+payload[0].value;
+      }
+
+      return (
+        <div className="chart-tooltip">
+          <span className="title">{`${label}`}</span>
+          <span className="value">{value}</span>
+        </div>
+      );
+    }
+
+    return null;
+  }
+}
 
 export default RepsChartPanel;
 

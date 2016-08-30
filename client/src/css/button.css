@@ -1,25 +1,44 @@
-button {
-  position: relative;
-}
+@import 'colors.css';
 
-.btn-image {
-  padding: 0;
+
+.ImageButton{
   position: relative;
-  border: none;
-  background-color: transparent;
+  padding: 10px;
+  width: 125px;
+  height: 50px;
+  background: $button-color;
+  color: $light-text-color;
+  border: $button-border-color;
 
   &:focus {
-    outline: 0;
+    outline: 0px solid $button-hover-color;
   }
 
-  .btn-image-content {
-    position: absolute;
-    top: 10px;
-    bottom: 10px;
-    right: 10px;
-    left: 10px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-color: transparent;
+  &:hover {
+    background: $button-hover-color;
+    color: $button-hover-text-color;
+  }
+
+  > span{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100%;
+
+    .btn-image-content{
+      flex: 1 0 30%;
+      height: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-color: transparent;
+      background-position: center;
+    }
+
+    .btn-text-content{
+      flex: 1 0 70%;
+      font-size: 16px;
+    }
   }
 }

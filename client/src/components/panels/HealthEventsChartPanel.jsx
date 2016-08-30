@@ -4,15 +4,16 @@ import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'r
 import HealthEventStore from '../../alt/stores/HealthEventStore';
 import HealthEventActions from '../../alt/actions/HealthEventActions';
 import VisavList from './VisavList';
+import colors from '../utils/colors';
 
 var x = (point) => {
   return point.index;
 };
 
-var margins = { left: -10, right: 50, top: 10, bottom: 0 }
+var margins = { left: -10, right: 50, top: 10, bottom: 20 }
   , width = 560
   , height = 300
-  , fillColor = '#00F0FF';
+  , fillColor = colors.primaryGraphColor;
 
 class HealthEventsChartPanel extends React.Component {
   constructor(props) {
@@ -124,7 +125,7 @@ class HealthEventsChartPanel extends React.Component {
   render() {
     return (
       <div className="HealthEventsChartPanel panel">
-        <h1 className="title">Health Events Chart</h1>
+        <h1 className="title">Pain & Swelling</h1>
         <div style={{"width": this.state.width+"px"}} className="chart-container">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >
