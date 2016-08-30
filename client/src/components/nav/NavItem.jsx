@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import ImageButton from '../buttons/ImageButton';
+
 class NavItem extends React.Component {
   constructor(props) {
     super(props);
@@ -17,15 +19,7 @@ class NavItem extends React.Component {
   }
   render() {
     return (
-      <div className="NavItem" onClick={this.handleClick}>
-        { this.props.imgSrc ? 
-          <div className="img-container">
-            <img src={this.props.imgSrc} /> 
-          </div>
-          : 
-          null }
-        <span>{this.props.title}</span>
-      </div>
+      <ImageButton className="NavItem" onClick={this.handleClick} imgUrl={this.props.imgSrc} text={this.props.title} />
     );
   }
 };
