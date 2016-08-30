@@ -91,8 +91,7 @@ function makeExerciseChartData(exercises) {
         continue;
       }
 
-      //FUTURE US, YOUR ISSUE WAS CAUSED BY THIS SLICE!!!!
-      key = ex.type.slice(10);
+      key = ex.type;
       currentDataSet = -1;
 
       for (var j = 0; j < datasets.length; j++) {
@@ -134,7 +133,7 @@ function makeRepChartData(exercise) {
     , labels = [];
 
   if (exercise) {
-    datasets[0].label = exercise.type.slice(10);
+    datasets[0].label = exercise.type;
 
     if (exercise.reps.length > 0){
       exercise.reps.forEach((rep, i) => {
