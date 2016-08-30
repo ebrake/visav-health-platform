@@ -7,14 +7,14 @@ class ImageButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isMousedOver: false
+      imageUrl: null
     };
-    this.setImageUrl = this.setImageUrl.bind(this);
+    this.imageUrl = this.imageUrl.bind(this);
     this.mouseDidEnter = this.mouseDidEnter.bind(this);
     this.mouseDidLeave = this.mouseDidLeave.bind(this);
   }
 
-  setImageUrl( isMousedOver, isSelected ){
+  imageUrl( isMousedOver, isSelected ){
     var finalUrl;
     self = this;
     if( this.props.imgUrl )
@@ -27,8 +27,7 @@ class ImageButton extends React.Component {
         if(this.doesImageExistsAtUrl(selectedAssembledUrl)){
           //if it's selected and there exists a selected image, 
           //override everything below and return selected image
-          self.setState({ imageUrl: selectedAssembledUrl });
-          return;
+          return selectedAssembledUrl;
         }
       }
       
@@ -37,15 +36,13 @@ class ImageButton extends React.Component {
         if(this.doesImageExistsAtUrl(hoverAssembledUrl)){
           //if it's moused over and there exists a hover image, 
           //override everything below and return hover image
-          self.setState({ imageUrl: hoverAssembledUrl });
-          return;
+          return hoverAssembledUrl;
         }
       }
 
       //if nothing else was found, we use the default url;
       var defaultAssembledUrl = 'src/img/' + this.props.imgUrl;
-      this.setState({ imageUrl: defaultAssembledUrl });
-      return;
+      return defaultAssembledUrl;
     }
   }
 
@@ -63,17 +60,19 @@ class ImageButton extends React.Component {
 
   componentWillReceiveProps(newProps) {
 
-    this.setImageUrl(false, newProps.selected);
-    
+    this.setState({ imageUrl: this.imageUrl(false, newProps.selected) });
+
   }
 
   mouseDidEnter(){
-    this.setImageUrl(true, this.props.selected);
+    this.setState({ imageUrl: this.imageUrl(true, this.props.selected) });
+
 
   }
 
   mouseDidLeave(){
-    this.setImageUrl(false, this.props.selected);
+    this.setState({ imageUrl: this.imageUrl(false, this.props.selected) });
+
   }
 
   render() {
@@ -83,13 +82,33 @@ class ImageButton extends React.Component {
       display: 'none'
     };
 
-    var imageContentStyle = this.state.imageUrl?
-    {
-      backgroundImage: 'url(\'' + this.state.imageUrl + '\''
-    } 
-    :{
-      display: 'none'
-    };
+    var imageContentStyle;
+
+    if(this.state.imageUrl){
+      //this should be the case in 99% of the renders where an image was specified
+      imageContentStyle = {
+        backgroundImage: 'url(\'' + this.state.imageUrl + '\''
+      } 
+    }
+    else if (this.props.imgUrl) {
+      //if it is first render and componentWillReceiveProps has not yet been fired
+      if (this.props.selected) {
+        imageContentStyle = {
+          backgroundImage: 'url(\'' + this.imageUrl( false, true ) + '\''
+        }
+      }
+      else{
+        imageContentStyle = {
+          backgroundImage: 'url(\'' + this.imageUrl( false, false ) + '\''
+        }
+      }
+    }
+    else{
+      imageContentStyle = {
+        display: 'none'
+      };
+    }
+    
 
     let classNames = this.props.className?
     'ImageButton ' + this.props.className:

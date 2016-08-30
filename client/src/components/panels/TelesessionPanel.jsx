@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { config } from 'react-loopback';
+import scriptLoader from 'react-async-script-loader'
 
 import TelesessionActions from '../../alt/actions/TelesessionActions';
 import NotificationActions from '../../alt/actions/NotificationActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import AccountStore from '../../alt/stores/AccountStore';
 import ImageButton from '../buttons/ImageButton';
-
+@scriptLoader(
+  'https://static.opentok.com/v2/js/opentok.min.js'
+)
 class TelesessionPanel extends React.Component {
   
   constructor(props) {
