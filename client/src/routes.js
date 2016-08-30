@@ -46,7 +46,7 @@ var routes = (
     <Route path="/charts" component={Charts} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/telesession" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/patient" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
-    <Route path="/me" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/me" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/doctor" component={DoctorProfile} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/email-templates/GettingStarted" component={EmailGettingStarted} />
     <Route path="/email-templates/HealthEventNotification" component={HealthEventNotificationEmail} onEnter={authCheck} />

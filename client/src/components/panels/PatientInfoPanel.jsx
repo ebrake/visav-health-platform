@@ -11,8 +11,8 @@ class PatientInfoPanel extends React.Component {
     let healthEventState = HealthEventStore.getState();
     let exerciseState = ExerciseStore.getState();
     this.state = {
-      lastExercise: exerciseState.exercises[exerciseState.exercises.length - 1],
-      lastHealthEvent: healthEventState.healthEvents[healthEventState.healthEvents.length - 1]
+      lastExercise: exerciseState.exercises[exerciseState.exercises.length - 1] || {},
+      lastHealthEvent: healthEventState.healthEvents[healthEventState.healthEvents.length - 1] || {}
     };
 
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
@@ -42,12 +42,12 @@ class PatientInfoPanel extends React.Component {
 
   render() {
     var healthEventIsDemo;
-    if (this.state.lastHealthEvent.isDemo) {
+    if (this.state.lastHealthEvent && this.state.lastHealthEvent.isDemo) {
       healthEventIsDemo = 
       <li>This health event was generated pseudo-randomly. It is not real.</li>
     }
     var exerciseIsDemo;
-    if (this.state.lastExercise.isDemo) {
+    if (this.state.lastExercise && this.state.lastExercise.isDemo) {
       exerciseIsDemo = 
       <li>This exercise was generated pseudo-randomly. It is not real.</li>
     }
@@ -59,8 +59,10 @@ class PatientInfoPanel extends React.Component {
             <h2 className="title">Medical Information</h2>
             <ul id="patient-info-list">
               <li>Name: {this.props.user.firstName} {this.props.user.lastName}</li>
-              <li>Date of Birth: 04/03/1976 (40 years old)</li>
+              <li>Date of Birth: 26/07/1973 (43 years old)</li>
               <li>Gender: Male</li>
+              <li>{"Height: 6'0\""}</li>
+              <li>Weight: 180lbs</li>
               <li>ID: 12313513221</li>
               <li>Known conditions:
                 <ul>
@@ -71,9 +73,12 @@ class PatientInfoPanel extends React.Component {
               </li>
               <li>Caregivers:
                 <ul>
-                  <li>Evangelina Jimenez (Spouse)</li>
-                  <li>Paco Jimenez (Son)</li>
-                  <li>Eunice Madrigold (Mother)</li>
+                  <li>Kate Goudie (Spouse)</li>
+                </ul>
+              </li>
+              <li>Doctors:
+                <ul>
+                  <li>Dr. Frank Eagen (Primary Physician)</li>
                 </ul>
               </li>
             </ul>
