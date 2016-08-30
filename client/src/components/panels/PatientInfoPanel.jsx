@@ -41,8 +41,6 @@ class PatientInfoPanel extends React.Component {
   }
 
   render() {
-    console.log(this.state.lastHealthEvent);
-    console.log(this.state.lastExercise);
     var healthEventIsDemo;
     if (this.state.lastHealthEvent.isDemo) {
       healthEventIsDemo = 
