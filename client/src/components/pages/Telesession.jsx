@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import scriptLoader from 'react-async-script-loader'
 import MainHeader from '../headers/MainHeader';
 import RepsChartPanel from '../panels/RepsChartPanel';
 import PatientInfoPanel from '../panels/PatientInfoPanel';
@@ -11,9 +10,7 @@ import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
 
-@scriptLoader(
-  'https://static.opentok.com/v2/js/opentok.min.js'
-)
+
 
 class Telesession extends React.Component {
   
@@ -22,22 +19,11 @@ class Telesession extends React.Component {
     let accountState = AccountStore.getState();
 
     this.state = {
-      createSessionResponse: '',
-      opentokScriptLoaded: null,
       loggedInUser: accountState.user
     };
   }
 
-  componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
-    if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
-      this.setState({opentokScriptLoaded: isScriptLoadSucceed});
-    }
-  }
-
-
   render() {
-
-    
     return (
       <div className="Telesession content-container row-gt-sm">
         <div className="left-column">

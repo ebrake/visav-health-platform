@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { config } from 'react-loopback';
+import scriptLoader from 'react-async-script-loader'
 
 import TelesessionActions from '../../alt/actions/TelesessionActions';
 import NotificationActions from '../../alt/actions/NotificationActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import AccountStore from '../../alt/stores/AccountStore';
 import ImageButton from '../buttons/ImageButton';
-
+@scriptLoader(
+  'https://static.opentok.com/v2/js/opentok.min.js'
+)
 class TelesessionPanel extends React.Component {
   
   constructor(props) {
@@ -14,17 +17,25 @@ class TelesessionPanel extends React.Component {
     let telesessionState = TelesessionStore.getState();
     let accountState = AccountStore.getState();
     var sessionId = telesessionState.sessionId;
-    
+
     this.state = {
       sessionId: sessionId,
       activeSession:null,
       activePublisher: null,
-      activeSubscriberStream: null,
-      loggedInUser: accountState.user
+      activeSubscriber: null,
+      opentokScriptLoaded: null,
+      loggedInUser: accountState.user,
+      muteMic: false,
+      muteSubscriber: false,
+      isMousedOver: false,
     };
 
     this.callSelf = this.callSelf.bind(this);
     this.telesessionChanged = this.telesessionChanged.bind(this);
+    this.toggleMuteMic = this.toggleMuteMic.bind(this);
+    this.toggleMuteSubscriber = this.toggleMuteSubscriber.bind(this);
+    this.mouseDidEnter = this.mouseDidEnter.bind(this);
+    this.mouseDidLeave = this.mouseDidLeave.bind(this);
 
   }
 
@@ -46,9 +57,11 @@ class TelesessionPanel extends React.Component {
     this.setState({activeSession: session});
     const publisher = OT.initPublisher(this.refs.publisherSection, {
       insertMode:'append',
+      style: {buttonDisplayMode: 'off'},
       width: '100%',
       height: '100%'
     })
+    publisher.publishAudio(!this.state.muteMic);
     this.setState({activePublisher: publisher});
 
     session.connect(TelesessionStore.getState().token, function (error) {
@@ -71,12 +84,16 @@ class TelesessionPanel extends React.Component {
     });
 
     session.on("streamCreated", function (event) {
-      session.subscribe(event.stream, self.refs.subscriberSection, {
+      const subscriber = session.subscribe(event.stream, self.refs.subscriberSection, {
         insertMode:'append',
+        style: {buttonDisplayMode: 'off'},
         width: '100%',
         height: '100%'
       })
-      self.setState({activeSubscriberStream: event.stream});
+      subscriber.subscribeToAudio(!self.state.muteSubscriber);
+      self.setState({
+        activeSubscriber: subscriber
+      });
       console.log('Subscribed to stream: ' + event.stream.id)
     });
 
@@ -91,7 +108,7 @@ class TelesessionPanel extends React.Component {
     this.setState({
       activeSession: null,
       activePublisher: null,
-      activeSubscriberStream: null
+      activeSubscriber: null
     });
 
   }
@@ -113,56 +130,83 @@ class TelesessionPanel extends React.Component {
     TelesessionStore.unlisten(this.telesessionChanged);
   }
 
+  componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
+    if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
+      this.setState({opentokScriptLoaded: isScriptLoadSucceed});
+    }
+  }
+
+  toggleMuteMic(){
+    var newVal = !this.state.muteMic;
+    this.setState({muteMic: newVal});
+
+    if (this.state.activePublisher) {
+      //publishAudio is opposite of mute
+      this.state.activePublisher.publishAudio(!newVal);
+    }
+    
+  }
+
+  toggleMuteSubscriber(){
+    var newVal = !this.state.muteSubscriber;
+    this.setState({muteSubscriber: newVal});
+
+    if (this.state.activeSubscriber) {
+      //subscribeToAudio is opposite of mute
+      this.state.activeSubscriber.subscribeToAudio(!newVal);
+    }
+  }
+
+  mouseDidEnter(){
+    this.setState({'isMousedOver': true});
+
+  }
+
+  mouseDidLeave(){
+    this.setState({'isMousedOver': false});
+  }
+
   render() {
-    var jsLoaded;
-    if (this.state.opentokScriptLoaded==null || this.state.opentokScriptLoaded==true) jsLoaded = null;
-    else jsLoaded = <p><font color="red">Warning: Video cannot load due to a JavaScript error.</font></p>;
-
-    var overlay;
-    if (this.state.activeSession == null) {
-      overlay = 
-      <div className="overlay">
-        <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgURL="face-to-face.png" className="btn-create"/>
-      </div>
+    if (this.state.opentokScriptLoaded!=true){
+      return (
+        <div className="TelesessionPanel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+          <p>Loading Opentok...</p>
+        </div>
+      )
     }
     else{
-      overlay = 
-      <div className="overlay">
-        <ImageButton onClick={this.disconnectFromSession.bind(this)} imgURL="hang-up.png" className="btn-cancel"/>
-        <ImageButton onClick={this.callSelf.bind(this)} imgURL="call.png" className="btn-call"/>
-      </div>
-    }
+      let isMousedOver = this.state.isMousedOver;
+      let isActiveSub = (this.state.activeSubscriber != null);
+      let isActiveSession = (this.state.activeSession != null);
+      var overlay = 
+        <div className={isMousedOver ? 'overlay moused-over' : 'overlay'}>
+          <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hangup.png" className="btn-cancel btn-overlay"/>
+          <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call btn-overlay"/>
+          <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic btn-overlay" />
+          <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber btn-overlay" />
+        </div>
 
-    var vidContainer;
-    if (this.state.activeSubscriberStream == null) {
-      vidContainer = 
-      <div className="video-container">
-        <div className="publisher-container full">
-          <section ref="publisherSection"  />
+      var createButton =
+        <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
+      var overlayOrCreate = (!isActiveSession)?createButton:overlay;
+
+      var vidContainer = 
+        <div className="video-container">
+          {overlayOrCreate}
+          <div className={isActiveSub ? 'publisher-container thumb':'publisher-container full'} >
+            <section ref="publisherSection"  />
+          </div>
+          <div className={isActiveSub ? 'subscriber-container full':'subscriber-subscriber hidden'}>
+            <section ref="subscriberSection"  />
+          </div>
         </div>
-        <div className="subscriber-container hidden">
-          <section ref="subscriberSection"  />
+      
+      return (
+        <div className="TelesessionPanel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+          {vidContainer}
         </div>
-      </div>
+      );
     }
-    else{
-      vidContainer = 
-      <div className="video-container">
-        <div className="publisher-container thumb">
-          <section ref="publisherSection"  />
-        </div>
-        <div className="subscriber-container full">
-          <section ref="subscriberSection"  />
-        </div>
-      </div>
-    }
-    return (
-      <div className="TelesessionPanel telesession-panel panel">
-        {jsLoaded}
-        {overlay}
-        {vidContainer}
-      </div>
-    );
   }
 };
 
