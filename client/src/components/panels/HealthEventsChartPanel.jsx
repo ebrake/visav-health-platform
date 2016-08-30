@@ -106,7 +106,7 @@ class HealthEventsChartPanel extends React.Component {
     return (
       <div id="HealthEventsChartPanel" className="graph-panel panel">
         <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
-        <div style={{"width": this.state.width+"px"}} className="rechart-container">
+        <div className="flex-row">
           <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
             margin={this.state.margins} >
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />

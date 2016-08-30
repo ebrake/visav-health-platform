@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import debounce from 'lodash.debounce';
-import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
+import Chart from 'chart.js';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import VisavList from './VisavList';
@@ -12,7 +12,7 @@ var x = (point) => {
 };
 
 var margins = { left: -10, right: 40, top: 10, bottom: 20 }
-  , width = 1000
+  , width = 700
   , height = 300;
 
 class ExercisesChartPanel extends React.Component {
@@ -58,6 +58,17 @@ class ExercisesChartPanel extends React.Component {
     return date.toLocaleDateString()+' '+date.toLocaleTimeString();
   }
 
+  chartOptions(){
+    return {
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom'
+        }]
+      }
+    }
+  }
+
   chartData(){
     return chartDataFormatter.makeExerciseChartData(this.state.exercises);
   }
@@ -90,11 +101,27 @@ class ExercisesChartPanel extends React.Component {
     ExerciseStore.listen(this.exercisesChanged);
     window.addEventListener('resize', this.resize);
     this.resize();
+
+    let chartCanvas = this.refs['exercise-chart'];
+
+    let lineChart = new Chart(chartCanvas, {
+      type: 'line',
+      data: this.chartData(),
+      options: this.chartOptions()
+    });
+
+    this.setState({chart: lineChart});
   }
 
   componentWillUnmount(){
     ExerciseStore.unlisten(this.exercisesChanged);
     window.removeEventListener('resize', this.resize);
+  }
+
+  componentDidUpdate(){
+    let chart = this.state.chart;
+    if (chart)
+      this.state.chart.update();
   }
 
   resize(){
@@ -115,23 +142,8 @@ class ExercisesChartPanel extends React.Component {
     return (
       <div id="ExercisesChartPanel" className="graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
-        <div style={{"width": this.state.width+"px"}} className="rechart-container">
-          <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
-            margin={this.state.margins} >
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <XAxis dataKey="date" tickFormatter={this.tickFormatter} interval={0} />
-            <YAxis domain={['auto', 'auto']} />
-            <Legend verticalAlign="top" height={50} />
-            <Tooltip content={<ExercisesTooltip />} />
-            { 
-              this.state.keys.map((key, i) => {
-                if (i >= PanelConfig.fillColors.length) 
-                  return null;
-
-                return <Area name={this.unit()+' ('+key.toLowerCase()+')'} type="monotone" dataKey={key} stroke={PanelConfig.fillColors[i]} fillOpacity={PanelConfig.fillOpacity} fill={PanelConfig.fillColors[i]} key={i} />;
-              })
-            }
-          </AreaChart>
+        <div className="flex-row">
+          <canvas ref={'exercise-chart'} height={this.state.height} width={this.state.width}></canvas>
         </div>
       </div>
     );
@@ -143,13 +155,20 @@ class ExercisesTooltip extends React.Component {
     const { active } = this.props;
 
     if (active) {
+      console.dir(this.props);
       const { payload, label } = this.props;
-      var title = 'No Exercises Done', value = 'There were no exercises tracked for this date.';
+      var title = 'No Exercises Done'
+        , value = 'There were no exercises tracked for this date.'
+        , date = '';
+
       if (payload) {
         payload.forEach(p =>{
-          if (p.value > 0) {
-            title = 'Exercise: '+p.dataKey+'';
+          if (p.name == 'key') {
+            title = 'Exercise: '+p.value+'';
+          } else if (p.name == 'value') {
             value = 'degrees : '+p.value;
+          } else if (p.name == 'date') {
+            date = new Date(p.value).toLocaleDateString();
           }
         })
       }
@@ -157,7 +176,7 @@ class ExercisesTooltip extends React.Component {
       return (
         <div className="chart-tooltip">
           <span className="title">{`${title}`}</span>
-          <span className="value">{'date : '+label}</span>
+          <span className="value">{'date : '+date}</span>
           <span className="value">{value}</span>
         </div>
       );

@@ -125,18 +125,15 @@ class RepsChartPanel extends React.Component {
           Range of Motion: Last Exercise
         </h1>
         <div className="flex-row">
-          <div>
-            <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
-              margin={this.state.margins} >
-              <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-              <XAxis dataKey="index" />
-              <YAxis domain={['auto', 'auto']} />
-              <Legend verticalAlign="top" height={PanelConfig.legendHeight} color="#fff" />
-              <Tooltip content={<RepsTooltip />} />
-              <Area name={this.unit()} type="monotone" dataKey="value" stroke={PanelConfig.fillColors[0]} fillOpacity={PanelConfig.fillOpacity} fill={PanelConfig.fillColors[0]} />
-            </AreaChart>
-          </div>
-          { /*<VisavList data={this.state.listData} />*/ }
+          <AreaChart width={this.state.width} height={this.state.height} data={this.chartData()}
+            margin={this.state.margins} >
+            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+            <XAxis dataKey="index" />
+            <YAxis domain={['auto', 'auto']} />
+            <Legend verticalAlign="top" height={PanelConfig.legendHeight} color="#fff" />
+            <Tooltip content={<RepsTooltip />} />
+            <Area name={this.unit()} type="monotone" dataKey="value" stroke={PanelConfig.fillColors[0]} fillOpacity={PanelConfig.fillOpacity} fill={PanelConfig.fillColors[0]} />
+          </AreaChart>
         </div>
       </div>
     );

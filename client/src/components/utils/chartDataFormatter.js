@@ -13,9 +13,9 @@ var months = [
   { name: 'December', month: 12, days: 31 }
 ];
 
-var toLocaleDateString = (date) => {
+var toMilliseconds = (date) => {
   date = new Date(date);
-  return date.toLocaleDateString();
+  return date.getTime();
 }
 
 var findNewestDate = (array) => {
@@ -85,7 +85,7 @@ var addEmptyDaysToHealthEventChartData = (dataArray) => {
       dataArray.push({
         swelling: 0,
         pain: 0,
-        date: toLocaleDateString(year+'-'+(month+1)+'-'+(day)),
+        date: toMilliseconds(year+'-'+(month+1)+'-'+(day)),
         name: '-'
       })
     }
@@ -113,7 +113,7 @@ var formatHealthEventChartData = (healthEvents) => {
         dataPoint['pain'] = Math.round(he.intensity*10);
         dataPoint['swelling'] = 0;
       }
-      dataPoint['date'] = toLocaleDateString(he.date);
+      dataPoint['date'] = toMilliseconds(he.date);
       dataPoint['name'] = he.type;
 
       var d = new Date(he.date);
@@ -140,42 +140,26 @@ var avgValueForExercise = (exercise) => {
   }
 }
 
-var addEmptyDaysToExerciseChartData = (dataArray, keys) => {
-  var lastDate = findNewestDate(dataArray);
-  var day = lastDate.getDate()
-    , month = lastDate.getMonth()
-    , year = lastDate.getFullYear();
+var formatExerciseChartData = (exercises, key) => {
+  return {
+    datasets: [{
+      label: 'Scatter Dataset',
+      data: [{
+        x: -10,
+        y: 0
+      }, {
+        x: 0,
+        y: 10
+      }, {
+        x: 10,
+        y: 5
+      }]
+    }]
+  };
 
-  for (var i = 1; i < 15; i++) {
-    day--;
-    if (day < 1) {
-      month--;
-      if (month < 0) {
-        month = 11;
-        year --;
-      }
-      day = months[month].days;
-    }
-    if (!arrayIncludesDate(dataArray, day, month)) {
-      var pushObj = {
-        unit: 'degrees',
-        date: toLocaleDateString(year+'-'+(month+1)+'-'+(day)),
-        name: 'Exercise: -'
-      };
 
-      keys.forEach(k => { pushObj[k] = 0; })
-      
-      dataArray.push(pushObj);
-    }
-  }
-
-  return sortByDate(dataArray);
-}
-
-var formatExerciseChartData = (exercises) => {
   let twoWeeksAgo = new Date(findNewestDate(exercises) - (1000*60*60*24*15))
-    , dataArray = []
-    , keys = getKeysFor(exercises);
+    , dataArray = [];
 
   if(exercises && exercises.length > 0) {
     for (var i = 0; i < exercises.length; i++){
@@ -185,28 +169,27 @@ var formatExerciseChartData = (exercises) => {
       }
 
       let dataPoint = {};
-      
-      keys.forEach(k => { dataPoint[k] = 0; })
 
-      if (ex.reps.length > 0) {
-        dataPoint[getKey(ex)] = Math.round(avgValueForExercise(ex));
+      if (ex.reps.length > 0 && getKey(ex) == key) {
+        dataPoint['value'] = Math.round(avgValueForExercise(ex));
         dataPoint['unit'] = ex.reps[0].unit; //assumes all reps have same unit for one exercise
       } else {
         dataPoint['unit'] = 'NO REPS';
       }
-      dataPoint['date'] = toLocaleDateString(ex.date);
+      dataPoint['date'] = toMilliseconds(ex.date);
       dataPoint['name'] = ex.type;
 
       var d = new Date(ex.date);
       dataPoint.month = d.getMonth();
       dataPoint.day = d.getDate();
 
-      if (dataPoint.unit !== 'NO REPS')
+      if (dataPoint.unit !== 'NO REPS') {
         dataArray.push(dataPoint);
+      }
     }
   }
 
-  return addEmptyDaysToExerciseChartData(dataArray, keys);
+  return dataArray;
 }
 
 export default {
@@ -214,8 +197,8 @@ export default {
     return formatHealthEventChartData(healthEvents);
   },
 
-  makeExerciseChartData: (exercises) => {
-    return formatExerciseChartData(exercises);
+  makeExerciseChartData: (exercises, key) => {
+    return formatExerciseChartData(exercises, key);
   },
 
   getKeysFor: (exercises) => {
