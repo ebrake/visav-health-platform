@@ -167,41 +167,46 @@ class TelesessionPanel extends React.Component {
   }
 
   render() {
-    var jsLoaded;
-    if (this.state.opentokScriptLoaded==null || this.state.opentokScriptLoaded==true) jsLoaded = null;
-    else jsLoaded = <p><font color="red">Warning: Video cannot load due to a JavaScript error.</font></p>;
-    let isMousedOver = this.state.isMousedOver;
-    let isActiveSub = (this.state.activeSubscriber != null);
-    let isActiveSession = (this.state.activeSession != null);
-    var overlay = 
-      <div className={isMousedOver ? 'overlay moused-over' : 'overlay'}>
-        <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hangup.png" className="btn-cancel btn-overlay"/>
-        <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call btn-overlay"/>
-        <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic btn-overlay" />
-        <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber btn-overlay" />
-      </div>
-
-    var createButton =
-      <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
-    var overlayOrCreate = (!isActiveSession)?createButton:overlay;
-
-    var vidContainer = 
-      <div className="video-container">
-        {overlayOrCreate}
-        <div className={isActiveSub ? 'publisher-container thumb':'publisher-container full'} >
-          <section ref="publisherSection"  />
+    if (this.state.opentokScriptLoaded!=true){
+      return (
+        <div className="TelesessionPanel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+          <p>Loading Opentok...</p>
         </div>
-        <div className={isActiveSub ? 'subscriber-container full':'subscriber-subscriber hidden'}>
-          <section ref="subscriberSection"  />
+      )
+    }
+    else{
+      let isMousedOver = this.state.isMousedOver;
+      let isActiveSub = (this.state.activeSubscriber != null);
+      let isActiveSession = (this.state.activeSession != null);
+      var overlay = 
+        <div className={isMousedOver ? 'overlay moused-over' : 'overlay'}>
+          <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hangup.png" className="btn-cancel btn-overlay"/>
+          <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call btn-overlay"/>
+          <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic btn-overlay" />
+          <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber btn-overlay" />
         </div>
-      </div>
-    
-    return (
-      <div className="TelesessionPanel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
-        {jsLoaded}
-        {vidContainer}
-      </div>
-    );
+
+      var createButton =
+        <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
+      var overlayOrCreate = (!isActiveSession)?createButton:overlay;
+
+      var vidContainer = 
+        <div className="video-container">
+          {overlayOrCreate}
+          <div className={isActiveSub ? 'publisher-container thumb':'publisher-container full'} >
+            <section ref="publisherSection"  />
+          </div>
+          <div className={isActiveSub ? 'subscriber-container full':'subscriber-subscriber hidden'}>
+            <section ref="subscriberSection"  />
+          </div>
+        </div>
+      
+      return (
+        <div className="TelesessionPanel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+          {vidContainer}
+        </div>
+      );
+    }
   }
 };
 

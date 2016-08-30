@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import scriptLoader from 'react-async-script-loader'
 import MainHeader from '../headers/MainHeader';
 import RepsChartPanel from '../panels/RepsChartPanel';
 import PatientInfoPanel from '../panels/PatientInfoPanel';
@@ -11,9 +10,7 @@ import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
 
-@scriptLoader(
-  'https://static.opentok.com/v2/js/opentok.min.js'
-)
+
 
 class Telesession extends React.Component {
   
