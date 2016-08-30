@@ -65,7 +65,9 @@ class ExercisesChartPanel extends React.Component {
           type: 'linear',
           position: 'bottom'
         }]
-      }
+      },
+      responsive: true,
+      maintainAspectRatio: false
     }
   }
 
@@ -143,7 +145,7 @@ class ExercisesChartPanel extends React.Component {
       <div id="ExercisesChartPanel" className="graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
         <div className="flex-row">
-          <canvas ref={'exercise-chart'} height={this.state.height} width={this.state.width}></canvas>
+          <canvas ref={'exercise-chart'} height={300} width={'100%'}></canvas>
         </div>
       </div>
     );
