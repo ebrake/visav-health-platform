@@ -157,6 +157,41 @@ function makeRepChartData(exercise) {
   };
 }
 
+var callbacks = {
+  makeTitleIntoDate: (arr, data) => {
+    let d = new Date(arr[0].xLabel);
+    return d.toLocaleDateString()+' '+d.toLocaleTimeString();
+  }
+}
+
+var legends = {
+  defaultLegend: {
+    labels: {
+      fontSize: 13,
+      boxWidth: 13,
+      usePointStyle: true
+    }
+  }
+}
+
+var axes = {
+  timeXAxes: [{
+    type: 'time',
+    time: {
+      displayFormats: {
+        day: 'MMM D'
+      },
+      unit: 'day'
+    },
+    position: 'bottom'
+  }],
+
+  categoryXAxes: [{
+    type: 'category',
+    position: 'bottom'
+  }]
+}
+
 export default {
   makeHealthEventChartData: (healthEvents) => {
     return makeHealthEventChartData(healthEvents);
@@ -170,8 +205,7 @@ export default {
     return makeRepChartData(exercise);
   },
 
-  makeTitleIntoDate: (arr, data) => {
-    let d = new Date(arr[0].xLabel);
-    return d.toLocaleDateString()+' '+d.toLocaleTimeString();
-  }
+  callbacks: callbacks,
+  legends: legends,
+  axes: axes
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
-import chartDataFormatter from '../utils/chartDataFormatter';
+import chartUtil from '../utils/chartUtil';
 
 class RepsChartPanel extends React.Component {
   constructor(props) {
@@ -22,25 +22,16 @@ class RepsChartPanel extends React.Component {
   chartOptions(){
     return {
       scales: {
-        xAxes: [{
-          type: 'category',
-          position: 'bottom'
-        }]
+        xAxes: chartUtil.axes.categoryXAxes
       },
-      legend: {
-        labels: {
-          fontSize: 13,
-          boxWidth: 13,
-          usePointStyle: true
-        }
-      },
+      legend: chartUtil.legends.defaultLegend,
       responsive: true,
       maintainAspectRatio: false
     }
   }
 
   calculateChartData(){
-    return chartDataFormatter.makeRepChartData(this.state.exercise);
+    return chartUtil.makeRepChartData(this.state.exercise);
   }
 
   exercisesChanged(exerciseState){
