@@ -36,6 +36,13 @@ class ExercisesChartPanel extends React.Component {
           title: chartDataFormatter.makeTitleIntoDate
         }
       },
+      legend: {
+        labels: {
+          fontSize: 13,
+          boxWidth: 13,
+          usePointStyle: true
+        }
+      },
       responsive: true,
       maintainAspectRatio: false
     }
