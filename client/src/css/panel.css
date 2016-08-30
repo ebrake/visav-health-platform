@@ -22,14 +22,18 @@
 }
 
 .PatientInfoPanel {
+  overflow: hidden;
+
   .columns {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    overflow: scroll;
   }
 
   .right-column,
   .left-column {
-    flex: 0 0 50%;
+    flex: 1 0 290px;
     display: flex;
     flex-direction: column;
 
@@ -46,5 +50,9 @@
         }
       }
     }
+  }
+
+  > .right-column {
+    margin-left: 20px;
   }
 }
