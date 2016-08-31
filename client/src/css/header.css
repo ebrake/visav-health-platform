@@ -4,6 +4,8 @@
   display: flex;
   flex-direction: column;
   background-color: $color-header-bg;
+  padding: 10px;
+  margin-bottom: 10px;
 
   .header-row {
     flex: 1 0 auto;
@@ -19,8 +21,4 @@
     display: flex;
     color: $header-text;
   }
-}
-
-.VideoHeader{
-  
 }

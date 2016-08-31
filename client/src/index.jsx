@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {polyfill} from 'es6-promise';
+
 polyfill();
 import 'whatwg-fetch';
 //All our headers need the accessToken attached as Authorization if it is there

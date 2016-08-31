@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import LocalizedStrings from 'react-localization';
-import SegmentedControl from 'react-segmented-control'
 
 class ImageButton extends React.Component {
   
@@ -47,7 +45,6 @@ class ImageButton extends React.Component {
   }
 
   doesImageExistsAtUrl(imgUrl){
-
     var http = new XMLHttpRequest();
     http.open('HEAD', imgUrl, true);
     http.send();

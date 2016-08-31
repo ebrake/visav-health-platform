@@ -6,7 +6,22 @@
   display: flex;
   align-items: center;
   background: $color-panel-bg;
+}
 
+.Telesession {
+  > .left-column {
+    @media (--lt-md) {
+      order: 2;
+      margin-top: 10px;
+    }
+  }
+
+  > .right-column {
+     @media (--gt-sm) {
+      margin-left: 10px;
+      max-width: 50%;
+    }
+  }
 }
 
 .overlay {
@@ -18,14 +33,13 @@
   flex-direction: row;
   justify-content: space-between;
   z-index: 5;
-  background-color: rgba(0,0,0,0.5);
-  opacity:0.0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
   padding: 10px;
-  //pointer-events: none;
   transition: opacity 0.5s ease-in-out;
 
-  &.moused-over{
-    opacity: 1.0;
+  &.moused-over {
+    opacity: 1;
     pointer-events: auto;
   }
 
@@ -35,10 +49,11 @@
     background-color: transparent;
   }
 
-  .btn-create{
+  .btn-create {
     margin: 0 auto;
   }
 }
+
 .TelesessionPanel {
   display: flex;
   flex-direction: column;
@@ -47,31 +62,43 @@
   align-items: center;
   position: relative;
 
-
-  .video-container{
+  .video-container {
     position: relative;
     flex: 0 1 auto;
-    width: 40vw;
-    height: 30vw;
+
+    @media (--gt-sm) {
+      width: 40vw;
+      height: 30vw;
+    }
+
+    @media (--lt-md) {
+      width: 80vw;
+      height: 60vw;
+    }
+
     display: flex;
     align-items: center;
     justify-content: center;
-    .btn-create{
+
+    .btn-create {
       height: 100px;
       width: 200px;
       z-index: 5;
     }
-    .publisher-container{
-      section{
-        height:100%;
+
+    .publisher-container {
+      section {
+        height: 100%;
         width: 100%;
       }
-      &.full{
+
+      &.full {
         position: absolute;
         width: 100%;
         height: 100%;
       }
-      &.thumb{
+
+      &.thumb {
         position: absolute;
         width: 12vw;
         height: 9vw;
@@ -83,57 +110,79 @@
       }
     }
 
-    .subscriber-container{
-      &.full{
+    .subscriber-container {
+      &.full {
         position: absolute;
         width: 100%;
         height: 100%;
       }
 
-      section{
-        width:100%;
-        height:100%;
+      section {
+        width: 100%;
+        height: 100%;
       }
     }
   }
 }
 
-
-
-.right-column{
-  display:flex;
+.right-column {
+  display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  margin-left: 10px;
 }
 
-.PatientInfoPanel{
-  flex: 1 0 auto;
+.PatientInfoPanel {
+  flex: 0 1 50%;
   margin-top: 10px;
 }
 
-.left-column{
+.left-column {
   display: flex;
   flex-direction: column;
-  flex: 1 0 40%;
-}
+  flex: 1 0 auto;
 
+  @media (--gt-sm) {
+    flex: 1 0 40%;
+  }
+}
 
 .charts-container {
   overflow: scroll;
   display: flex;
   flex-direction: column;
-  height: 100%;
+
+  @media (--gt-sm) {
+    height: 100%;
+  }
+
+  .rechart-container {
+    margin: 0 auto;
+  }
 
   .graph-panel {
     flex: 1 0 auto;
+
+    .recharts-wrapper {
+      height: 100% !important;
+      width: 100% !important;
+    }
+
+    .recharts-wrapper > .recharts-surface {
+      width: 100%;
+      height: 300px;
+    }
   }
 }
 
-.RepsChartPanel {
+#RepsChartPanel {
   margin-bottom: 10px;
 }
 
-.ExercisesChartPanel {
+#ExercisesChartPanel {
   margin-bottom: 10px;
+}
+
+.flex-canvas {
+  flex: 1 1 500px;
+  height: 300px;
 }

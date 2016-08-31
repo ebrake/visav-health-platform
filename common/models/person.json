@@ -8,11 +8,11 @@
   "properties": {
     "firstName": {
       "type": "String",
-      "default": "Abroham"
+      "default": "Kristopher"
     },
     "lastName": {
       "type": "String",
-      "default": "Lincoln"
+      "default": "Goudie"
     }
   },
   "validations": [],

@@ -1,7 +1,6 @@
 @import 'colors.css';
 
-
-.ImageButton{
+.ImageButton {
   position: relative;
   padding: 10px;
   width: 125px;
@@ -11,7 +10,7 @@
   border: $button-border-color;
 
   &:focus {
-    outline: 0px solid $button-hover-color;
+    outline: 0 solid $button-hover-color;
   }
 
   &:hover {
@@ -19,15 +18,15 @@
     color: $button-hover-text-color;
   }
 
-  > span{
+  > span {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
 
-    .btn-image-content{
+    .btn-image-content {
       flex: 1 0 30%;
       height: 100%;
       background-size: contain;
@@ -36,7 +35,7 @@
       background-position: center;
     }
 
-    .btn-text-content{
+    .btn-text-content {
       flex: 1 0 70%;
       font-size: 16px;
     }

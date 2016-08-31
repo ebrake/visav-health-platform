@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MainHeader from '../headers/MainHeader';
 import RepsChartPanel from '../panels/RepsChartPanel';
 import PatientInfoPanel from '../panels/PatientInfoPanel';
 import AccountStore from '../../alt/stores/AccountStore'
@@ -9,8 +8,6 @@ import ExercisesChartPanel from '../panels/ExercisesChartPanel';
 import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
-
-
 
 class Telesession extends React.Component {
   
@@ -26,19 +23,15 @@ class Telesession extends React.Component {
   render() {
     return (
       <div className="Telesession content-container row-gt-sm">
-        <div className="left-column">
-          <div className="charts-container" >
-            <RepsChartPanel />
-            <ExercisesChartPanel />
-            <HealthEventsChartPanel />
-          </div>
+        <div className="left-column charts-container">
+          <RepsChartPanel />
+          <ExercisesChartPanel />
+          <HealthEventsChartPanel />
         </div>
         <div className="right-column">
           <TelesessionPanel />
           <PatientInfoPanel user={this.state.loggedInUser} />
-
         </div>
-        
       </div>
     );
   }

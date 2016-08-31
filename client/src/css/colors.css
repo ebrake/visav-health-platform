@@ -1,19 +1,19 @@
 /* colors */
-$bright-blue: #39a5d6;
+$bright-blue: #7299cc;
 $light-blue: #969cb4;
 $medium-blue: #3c3e4a;
 $dark-blue: #2b2e35;
 
-$purple: #a690df;
+$purple: #a792e0;
 
 $darkest-grey: #111;
 $dark-grey: #252525;
 $medium-dark-grey: #454545;
 $medium-light-grey: #777;
 $light-grey: #aaa;
-$lightest-grey: #ECEEF1;
+$lightest-grey: #eceef1;
 
-$orange: #eda63a;
+$orange: #eda539;
 
 $red: #f45757;
 
@@ -25,6 +25,7 @@ $color-bg: $darkest-grey;
 $color-header-bg: $dark-grey;
 $color-panel-bg: $dark-grey;
 $color-panel-border: black;
+$color-panel-light-bg: $medium-dark-grey;
 
 $dark-text-color: $medium-dark-grey;
 $medium-text-color: $light-grey;

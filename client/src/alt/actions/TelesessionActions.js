@@ -1,9 +1,6 @@
 import alt from '../alt'
-import AccountStore from '../stores/AccountStore'
 
 class TelesessionActions {
-
-
   createSession(){
     return function (dispatch) {
       return  fetch(
@@ -26,9 +23,6 @@ class TelesessionActions {
       });
     }
   }
-
-
-
-
 }
+
 export default alt.createActions(TelesessionActions);
