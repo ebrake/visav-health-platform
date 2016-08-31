@@ -70,7 +70,7 @@ function avgValueForExercise(exercise) {
     for(var i = 0; i < exercise.reps.length; i++){
       avg += exercise.reps[i].value / exercise.reps.length;
     }
-    return Number(avg.toFixed(2));
+    return Math.round(avg);
   }
   else{
     return 0;
@@ -138,7 +138,7 @@ function makeRepChartData(exercise) {
     if (exercise.reps.length > 0){
       exercise.reps.forEach((rep, i) => {
         labels.push( 'Rep '+i+'' );
-        datasets[0].data.push( Number(rep.value.toFixed(2)) );
+        datasets[0].data.push( Math.round(rep.value) );
       })
     }
   }
@@ -192,6 +192,11 @@ var axes = {
   }]
 }
 
+var tooltips = {
+  titleFontColor: colors.getFontColor('light'),
+  bodyFontColor: colors.getFontColor('light')
+}
+
 export default {
   makeHealthEventChartData: (healthEvents) => {
     return makeHealthEventChartData(healthEvents);
@@ -207,5 +212,6 @@ export default {
 
   callbacks: callbacks,
   legends: legends,
-  axes: axes
+  axes: axes,
+  tooltips: tooltips
 }

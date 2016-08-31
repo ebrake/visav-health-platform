@@ -26,7 +26,9 @@ class ExercisesChartPanel extends React.Component {
       tooltips: {
         callbacks: {
           title: chartUtil.callbacks.makeTitleIntoDate
-        }
+        },
+        titleFontColor: chartUtil.tooltips.titleFontColor,
+        bodyFontColor: chartUtil.tooltips.bodyFontColor
       },
       legend: chartUtil.legends.defaultLegend,
       responsive: true,

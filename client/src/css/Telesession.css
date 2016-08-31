@@ -65,8 +65,17 @@
   .video-container {
     position: relative;
     flex: 0 1 auto;
-    width: 40vw;
-    height: 30vw;
+
+    @media (--gt-sm) {
+      width: 40vw;
+      height: 30vw;
+    }
+
+    @media (--lt-md) {
+      width: 80vw;
+      height: 60vw;
+    }
+
     display: flex;
     align-items: center;
     justify-content: center;

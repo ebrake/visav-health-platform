@@ -24,6 +24,10 @@ class RepsChartPanel extends React.Component {
       scales: {
         xAxes: chartUtil.axes.categoryXAxes
       },
+      tooltips: {
+        titleFontColor: chartUtil.tooltips.titleFontColor,
+        bodyFontColor: chartUtil.tooltips.bodyFontColor
+      },
       legend: chartUtil.legends.defaultLegend,
       responsive: true,
       maintainAspectRatio: false

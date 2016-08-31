@@ -15,12 +15,36 @@ var brightBlue = '114, 153, 204'
   , red = '244, 87, 87'
   , green = '227, 227, 4'
   , white = '255, 255, 255'
-  , graphColors = [brightBlue, purple, orange, red, green];
+  , graphColors = [brightBlue, purple, orange, red, green]
+  , fontColors = {
+      'dark': mediumDarkGrey,
+      'medium': lightGrey,
+      'light': lightestGrey,
+      'secondary': lightBlue,
+      'highlight': brightBlue,
+      'faded': mediumDarkGrey,
+    };
+
+var toRGB = (color) => {
+  return 'rgb('+color+')';
+}
+
+var toRGBA = (color, opacity) => {
+  opacity = opacity || 1;
+  return 'rgba('+color+', '+opacity+')';
+}
 
 export default {
   getGraphColor: (i, opacity) => {
-    if (i > graphColors.length) return 'rgb('+white+', '+opacity+')';
+    if (i > graphColors.length) return toRGBA(white);
     if (typeof opacity !== 'number') opacity = 1;
-    return 'rgba('+graphColors[i]+', '+opacity+')';
-  }
+    return toRGBA(graphColors[i], opacity);
+  },
+
+  getFontColor: (name) => {
+    if (!name || !fontColors[name]) 
+      return toRGB(lightGrey);
+
+    return toRGB(fontColors[name]);
+  },
 }
