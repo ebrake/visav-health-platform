@@ -1,6 +1,8 @@
 import loopback from 'loopback';
 import boot from 'loopback-boot';
 import { EventEmitter } from 'events';
+import enforce from 'express-sslify';
+
 //Globally set max listeners higher than 11
 //Otherwise, loopback-connector-postgresql will cause a mem-leak warning
 //because the default maximum is 10
@@ -13,11 +15,18 @@ class StartServer {
     const app = loopback();
     const port = process.env.PORT;
     
+    if (process.env.NODE_ENV !=='development') {
+      // Enforce SSL in production.
+      // Use enforce.HTTPS({ trustProtoHeader: true }) behind load balancer (e.g. Heroku)
+      app.use(enforce.HTTPS({ trustProtoHeader: true }));
+    }
+
     boot(app, __dirname, error => {
 
       if (error) throw error;
       if (!isMainModule) return;
 
+      // Require env keys
       var requiredEnvKeys = [
       "NODE_ENV",
       "OPENTOK_API_KEY",
@@ -33,7 +42,8 @@ class StartServer {
 
       const server = app.listen(port, () => {
         app.emit('started');
-        var baseUrl = app.get('url').replace(/\/$/, '');
+        var requireSSL = (process.env.NODE_ENV !== 'development');
+        var baseUrl = (requireSSL ? 'https://' : 'http://') + app.get('host') + ':' + app.get('port');
         console.log('Web server listening at: %s', baseUrl);
         if (app.get('loopback-component-explorer')) {
           var explorerPath = app.get('loopback-component-explorer').mountPath;
