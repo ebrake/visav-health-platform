@@ -18,5 +18,8 @@
     "cors": false,
     "handleErrors": false
   },
+  "swagger": {
+    "protocol": "https"
+  },
   "legacyExplorer": false
 }
