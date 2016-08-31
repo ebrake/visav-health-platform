@@ -33,7 +33,8 @@ class StartServer {
 
       const server = app.listen(port, () => {
         app.emit('started');
-        var baseUrl = app.get('url').replace(/\/$/, '');
+        var requireSSL = (process.env.NODE_ENV !== 'development');
+        var baseUrl = (requireSSL ? 'https://' : 'http://') + app.get('host') + ':' + app.get('port');
         console.log('Web server listening at: %s', baseUrl);
         if (app.get('loopback-component-explorer')) {
           var explorerPath = app.get('loopback-component-explorer').mountPath;
