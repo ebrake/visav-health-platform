@@ -38,6 +38,8 @@
   box-sizing: border-box;
   background: $color-panel-bg;
   border: 1px solid $color-panel-border;
+  flex: 0 0 auto;
+  padding: 40px 10px;
 }
 
 .accounts-link {
