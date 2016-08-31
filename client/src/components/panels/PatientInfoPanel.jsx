@@ -58,7 +58,7 @@ class PatientInfoPanel extends React.Component {
           <div className="left-column">
             <h2 className="title">Medical Information</h2>
             <ul id="patient-info-list">
-              <li>Name: {this.props.user.firstName} {this.props.user.lastName}</li>
+              <li>Name: Kristopher Goudie</li>
               <li>Date of Birth: 26/07/1973 (43 years old)</li>
               <li>Gender: Male</li>
               <li>{"Height: 6'0\""}</li>
