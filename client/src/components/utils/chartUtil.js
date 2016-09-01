@@ -137,7 +137,7 @@ function makeRepChartData(exercise) {
 
     if (exercise.reps.length > 0){
       exercise.reps.forEach((rep, i) => {
-        labels.push( 'Rep '+i+'' );
+        labels.push( 'Rep '+(i+1)+'' );
         datasets[0].data.push( Math.round(rep.value) );
       })
     }

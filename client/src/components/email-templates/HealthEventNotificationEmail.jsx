@@ -8,7 +8,17 @@ export default function HealthEventNotificationEmail(props) {
   const { healthEventEmail, doctor, patient, healthEvent, exercise } = props;
 
   const buttonStyle = {
-    margin:'0 10px'
+    outline: 'none',
+    border: 'none',
+    display: 'inline-block',
+    margin: '10px auto',
+    clear: 'both',
+    width: '65%',
+    height: '50px',
+    cursor: 'pointer',
+    color: '#444444',
+    fontSize: '15px',
+    fontStyle: 'bold',
   };
   const actionsStyle = {
     margin: '20px 0 0 0'
@@ -44,19 +54,18 @@ export default function HealthEventNotificationEmail(props) {
       <Header color="#134ac0" />
 
       <Body>
-        <h2 className="title">{(''+patient.firstName+' '+patient.lastName+'')} had an adverse health event!</h2>
+        <h2 className="title">You have 1 new notification</h2>
         <div className="health-event-info">
-          <p>{patient.firstName} experienced {healthEvent.type.toLowerCase()}{whilePerformingExerciseString}. In {patient.firstName}&rsquo;s estimation, {pronoun} experienced {healthEvent.type.toLowerCase()} with an intensity of {Math.round(healthEvent.intensity * 10)}/10.</p>
-          <p>{feelsString} that the intensity is {healthEvent.perceivedTrend.toLowerCase()}.</p>
+          <p>from {patient.firstName} {patient.lastName} regarding their therapy.</p>
         </div>
         <div style={actionsStyle} className="actions">
-          <form style={buttonStyle} action={takeActionURL} method="get">
+          <form action={takeActionURL} method="get">
             <input type="hidden" name="healthEventEmailId" value={healthEventEmail.id} />
-            <input type="submit" value="Take action now!" />
+            <input style={buttonStyle} type="submit" value="View now" />
           </form>
-          <form style={buttonStyle} action={dismissURL} method="get">
+          <form action={dismissURL} method="get">
             <input type="hidden" name="healthEventEmailId" value={healthEventEmail.id} />
-            <input type="submit" value="Dismiss notification" />
+            <input style={buttonStyle} type="submit" value="Remind me later" />
           </form>
         </div>
       </Body>

@@ -88,14 +88,14 @@ class PatientInfoPanel extends React.Component {
             <ul id="exercise-info-list">
               <li>Type: {this.state.lastExercise.type}</li>
               <li>Date: {(new Date(this.state.lastExercise.date)).toLocaleString()}</li>
-              <li>Exercise length: {this.state.lastExercise.duration} seconds</li>
+              <li>Exercise length: {(Number(this.state.lastExercise.duration)/1000).toFixed(1)} seconds</li>
               {exerciseIsDemo}
             </ul>
 
             <h2 className="title">Last Health Event</h2>
             <ul id="health-event-info-list">
               <li>Type: {this.state.lastHealthEvent.type}</li>
-              <li>Intensity: {this.state.lastHealthEvent.intensity}</li>
+              <li>Intensity: {(this.state.lastHealthEvent.intensity*10).toFixed(1)}</li>
               <li>Perceived Trend: {this.state.lastHealthEvent.perceivedTrend}</li>
               <li>Date: {(new Date(this.state.lastExercise.date)).toLocaleString()}</li>
               {healthEventIsDemo}
