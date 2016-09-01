@@ -166,12 +166,26 @@ var callbacks = {
 
 var legends = {
   defaultLegend: {
-    labels: {
-      fontSize: 13,
-      boxWidth: 13,
-      usePointStyle: true
-    }
+    display: false
   }
+}
+
+var legendCallback = (chart) => {
+  var datasets = chart.data.datasets
+    , legend = chart.legend
+    , generatedHTML = '<ul>';
+
+  legend.legendItems.forEach((item, i) => {
+    generatedHTML += 
+    '<li>'+
+      '<div class="legend-point" style="background-color:'+datasets[i].backgroundColor+';border:3px solid '+datasets[i].borderColor+';"></div>'+
+      '<span>'+item.text+'</span>'+
+    '</li>';
+  })
+
+  generatedHTML += '</ul>';
+
+  return generatedHTML;
 }
 
 var axes = {
@@ -213,5 +227,7 @@ export default {
   callbacks: callbacks,
   legends: legends,
   axes: axes,
-  tooltips: tooltips
+  tooltips: tooltips,
+  legendCallback: legendCallback,
+  chartHeight: 270
 }

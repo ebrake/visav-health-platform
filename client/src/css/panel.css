@@ -2,7 +2,7 @@
 @import 'colors.css';
 
 .panel {
-  padding: 20px 5%;
+  padding: 25px 5%;
   background: $color-panel-bg;
   border: 1px solid $color-panel-border;
   display: flex;
@@ -10,7 +10,7 @@
 
   > h1.title {
     text-align: center;
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
     flex: 0 0 auto;
     font-size: 24px;
     color: $medium-text-color;
@@ -46,7 +46,7 @@
     ul {
       padding-left: 17px;
 
-      @media(--gt-xs) {
+      @media (--gt-xs) {
         padding-right: 10px;
       }
 
