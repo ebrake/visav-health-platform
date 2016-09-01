@@ -21,12 +21,12 @@ class PatientInfoPanel extends React.Component {
   }
   healthEventsChanged(healthEventState){
     this.setState({
-      lastHealthEvent: healthEventState.healthEvents[healthEventState.healthEvents.length - 1]
+      lastHealthEvent: healthEventState.healthEvents[healthEventState.healthEvents.length - 1] || {}
     });
   }
   exercisesChanged(exerciseState){
     this.setState({
-      lastExercise: exerciseState.exercises[exerciseState.exercises.length - 1]
+      lastExercise: exerciseState.exercises[exerciseState.exercises.length - 1] || {}
     });
   }
 

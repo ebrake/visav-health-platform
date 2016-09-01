@@ -28,9 +28,7 @@ class ChartLegend extends React.Component {
   }
 
   injectLegend(){
-    console.log('Injecting legend into '+this.props.legendId+' via:');
-    console.dir(this.props.chart);
-    console.dir(this.props.chart.generateLegend());
+    window[this.props.chartId] = this.props.chart;
     document.getElementById(this.props.legendId).innerHTML = this.props.chart.generateLegend();
   }
 

@@ -13,7 +13,8 @@ class ExercisesChartPanel extends React.Component {
       exercises: [],
       chartData: { datasets: [] },
       chart: undefined,
-      currentLegend: ''
+      currentLegend: '',
+      chartId: 'ExercisesChartIdentifierForGlobalChartLegendDatasetToggle'
     };
 
     ExerciseActions.getExercises();
@@ -36,7 +37,7 @@ class ExercisesChartPanel extends React.Component {
       legend: chartUtil.legends.defaultLegend,
       responsive: true,
       maintainAspectRatio: false,
-      legendCallback: chartUtil.legendCallback
+      legendCallback: chartUtil.legendCallback(this.state.chartId)
     }
   }
 
@@ -72,11 +73,9 @@ class ExercisesChartPanel extends React.Component {
     return (
       <div id="ExercisesChartPanel" className="graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
-        <div className="flex-row">
-          <div className="flex-column chart-container">
-            <ChartLegend legendId="ExercisesChartLegend" chart={this.state.chart} />
-            <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
-          </div>
+        <ChartLegend legendId="ExercisesChartLegend" chartId={this.state.chartId} chart={this.state.chart} />
+        <div className="chart-container">
+          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
         </div>
       </div>
     );

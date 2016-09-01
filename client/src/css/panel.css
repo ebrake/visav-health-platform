@@ -2,7 +2,7 @@
 @import 'colors.css';
 
 .panel {
-  padding: 25px 5%;
+  padding: 25px 3%;
   background: $color-panel-bg;
   border: 1px solid $color-panel-border;
   display: flex;
