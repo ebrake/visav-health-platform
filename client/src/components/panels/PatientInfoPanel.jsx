@@ -88,7 +88,7 @@ class PatientInfoPanel extends React.Component {
             <ul id="exercise-info-list">
               <li>Type: {this.state.lastExercise.type}</li>
               <li>Date: {(new Date(this.state.lastExercise.date)).toLocaleString()}</li>
-              <li>Exercise length: {Number(this.state.lastExercise.duration).toFixed(1)} seconds</li>
+              <li>Exercise length: {(Number(this.state.lastExercise.duration)/1000).toFixed(1)} seconds</li>
               {exerciseIsDemo}
             </ul>
 
