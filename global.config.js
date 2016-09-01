@@ -20,8 +20,9 @@ function readCredentialsFile(name) {
 }
 
 // Apple Push Notification Certificates
-conf.apnsCertData = readCredentialsFile('phlex_dev_cert.pem');
-conf.apnsKeyData = readCredentialsFile('phlex_dev_key.pem');
+var apnsEnvIdentifier = (process.env.NODE_ENV==='development' ? 'dev' : 'prod');
+conf.apnsCertData = readCredentialsFile('phlex_'+apnsEnvIdentifier+'_cert.pem');
+conf.apnsKeyData = readCredentialsFile('phlex_'+apnsEnvIdentifier+'_key.pem');
 conf.gcmServerApiKey = '';
 conf.appName = 'Phlex';
 conf.appId = 'com.krisandbrake.Phlex';
