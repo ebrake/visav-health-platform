@@ -34,7 +34,7 @@ export default function HealthEventNotificationEmail(props) {
   }
 
   if (healthEvent.exercise) {
-    whilePerformingExerciseString = <span> after performing {exercise.type}</span>;
+    whilePerformingExerciseString = <span> after performing {exercise.type.toLowerCase()}</span>;
   } else {
     whilePerformingExerciseString = null;
   }
@@ -46,7 +46,7 @@ export default function HealthEventNotificationEmail(props) {
       <Body>
         <h2 className="title">{(''+patient.firstName+' '+patient.lastName+'')} had an adverse health event!</h2>
         <div className="health-event-info">
-          <p>{patient.firstName} experienced an adverse health event ({healthEvent.type.toLowerCase()}){whilePerformingExerciseString}. In {patient.firstName}&rsquo;s estimation, {pronoun} experienced {healthEvent.type.toLowerCase()} with an intensity of {Math.round(healthEvent.intensity * 10)}/10.</p>
+          <p>{patient.firstName} experienced {healthEvent.type.toLowerCase()}{whilePerformingExerciseString}. In {patient.firstName}&rsquo;s estimation, {pronoun} experienced {healthEvent.type.toLowerCase()} with an intensity of {Math.round(healthEvent.intensity * 10)}/10.</p>
           <p>{feelsString} that the intensity is {healthEvent.perceivedTrend.toLowerCase()}.</p>
         </div>
         <div style={actionsStyle} className="actions">
