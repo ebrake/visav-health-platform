@@ -13,7 +13,7 @@ module.exports = function(Telesession) {
     var Installation = req.app.models.installation;
     var badge = 1;
     if (req.body.userId) {
-      Installation.find({where: {person:req.body.userId}}, function(err, installations){
+      Installation.find({where: {userId:req.body.userId}}, function(err, installations){
         let sessionId = req.body.sessionId || 'No Session Id';
         if (installations.length > 0) {
           var installationId = installations[0].id;
