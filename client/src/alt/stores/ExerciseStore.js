@@ -18,7 +18,7 @@ class ExerciseStore {
 
   handleDisplayedExercise(exercises) {
     if (exercises.length > 0) {
-      for (var i = 0; i < exercises.length - 1; i++) {
+      for (var i = exercises.length-1; i >= 0; i--) {
         if (exercises[i].reps.length > 0) {
           this.displayedExercise = exercises[i];
           return;
