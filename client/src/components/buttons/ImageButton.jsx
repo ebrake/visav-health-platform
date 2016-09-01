@@ -84,19 +84,19 @@ class ImageButton extends React.Component {
     if(this.state.imageUrl){
       //this should be the case in 99% of the renders where an image was specified
       imageContentStyle = {
-        backgroundImage: 'url(\'' + this.state.imageUrl + '\''
+        backgroundImage: 'url(\'' + this.state.imageUrl + '\')'
       } 
     }
     else if (this.props.imgUrl) {
       //if it is first render and componentWillReceiveProps has not yet been fired
       if (this.props.selected) {
         imageContentStyle = {
-          backgroundImage: 'url(\'' + this.imageUrl( false, true ) + '\''
+          backgroundImage: 'url(\'' + this.imageUrl( false, true ) + '\')'
         }
       }
       else{
         imageContentStyle = {
-          backgroundImage: 'url(\'' + this.imageUrl( false, false ) + '\''
+          backgroundImage: 'url(\'' + this.imageUrl( false, false ) + '\')'
         }
       }
     }
