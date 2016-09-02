@@ -11,6 +11,7 @@ module.exports = function generateApplication(app) {
       apns: {
         certData: GLOBAL_CONFIG.apnsCertData,
         keyData: GLOBAL_CONFIG.apnsKeyData,
+        production: (process.env.NODE_ENV!=='development'),
         pushOptions: {
           // Extra options can go here for APN
         },
