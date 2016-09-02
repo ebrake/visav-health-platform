@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-var GLOBAL_CONFIG = require('../../global.config');
+var globalConfig = require('../../global.config');
 var path = require('path');
 
 import React from 'react';
@@ -30,13 +30,13 @@ module.exports = function(HealthEvent) {
             //send email here
             Email.send({
               to: person.email,
-              from: GLOBAL_CONFIG.SYSTEM_EMAIL,
-              subject: 'VISAV: '+person.firstName+' '+person.lastName+' has had an adverse Health Event',
+              from: globalConfig.SYSTEM_EMAIL,
+              subject: globalConfig.APP_NAME + ': '+person.firstName+' '+person.lastName+' has had an adverse Health Event',
               html: Oy.renderTemplate(
                 <HealthEventNotificationEmail healthEventEmail={createdEmail} doctor={person} patient={person} 
                     healthEvent={healthEvent} exercise={exercise}/>, 
                 {
-                  title: 'Health Notification from VISAV',
+                  title: 'Health Notification from '+globalConfig.APP_NAME,
                   previewText: 'Your patient has had an adverse health event...'
                 }
               )
