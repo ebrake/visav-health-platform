@@ -1,16 +1,16 @@
-var GLOBAL_CONFIG = require('../../global.config');
+var globalConfig = require('../../global.config');
 
 module.exports = function generateApplication(app) {
 
   let phlexApp = {
-    id: GLOBAL_CONFIG.appId,
-    userId: GLOBAL_CONFIG.applicationUserId,
-    name: GLOBAL_CONFIG.appName,
-    description: 'Phlex CRS',
+    id:             globalConfig.APP_ID,
+    name:           globalConfig.APP_NAME,
+    description:    globalConfig.APP_DESCRIPTION,
+    owner:          globalConfig.APP_OWNER,
     pushSettings: {
       apns: {
-        certData: GLOBAL_CONFIG.apnsCertData,
-        keyData: GLOBAL_CONFIG.apnsKeyData,
+        certData:   globalConfig.apnsCertData,
+        keyData:    globalConfig.apnsKeyData,
         production: (process.env.NODE_ENV!=='development'),
         pushOptions: {
           // Extra options can go here for APN
@@ -23,16 +23,20 @@ module.exports = function generateApplication(app) {
     }
   };
 
-  app.models.Application.findOne({
-    where: {
-      id: phlexApp.id
-    }
-  }, function(err, application){
-    if (err){
-      return;
-    }
-    if (application) return;
-    app.models.Application.create(phlexApp);
+  app.models.Application.findById(phlexApp.id, function(err, application){
+    if (err) return console.log("Application findById error: ",err);
+    if (!application) return app.models.Application.create(phlexApp);
+
+    // Update
+    application.description = phlexApp.description;
+    application.name = phlexApp.name;
+    application.userId = phlexApp.userId;
+    application.pushSettings = phlexApp.pushSettings;
+
+    application.save(function(err){
+      if (err) console.log("Application save error: ",err);
+    })
+
   });
   
 };
