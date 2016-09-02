@@ -4,8 +4,8 @@ var path = require('path');
 var conf = {
   SYSTEM_EMAIL: 'info@visav.io',
   APP_ID: 'com.krisandbrake.Phlex',
-  APP_DESCRIPTION: 'Phlex CRS',
-  APP_NAME: 'Phlex CRS',
+  APP_DESCRIPTION: 'Phlex RS',
+  APP_NAME: 'Phlex RS',
   APP_OWNER: 'E Brake'
 };
 
