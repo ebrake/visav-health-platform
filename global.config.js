@@ -2,7 +2,11 @@ var fs = require('fs');
 var path = require('path');
 
 var conf = {
-  SYSTEM_EMAIL: 'info@visav.io'
+  SYSTEM_EMAIL: 'info@visav.io',
+  APP_ID: 'com.krisandbrake.Phlex',
+  APP_DESCRIPTION: 'Phlex CRS',
+  APP_NAME: 'Phlex CRS',
+  APP_OWNER: 'E Brake'
 };
 
 // Google Push Notifications
@@ -24,8 +28,6 @@ var apnsEnvIdentifier = (process.env.NODE_ENV==='development' ? 'dev' : 'prod');
 conf.apnsCertData = readCredentialsFile('phlex_'+apnsEnvIdentifier+'_cert.pem');
 conf.apnsKeyData = readCredentialsFile('phlex_'+apnsEnvIdentifier+'_key.pem');
 conf.gcmServerApiKey = '';
-conf.appName = 'Phlex';
-conf.appId = 'com.krisandbrake.Phlex';
-conf.applicationUserId = 'strongloop';
+
 
 module.exports = conf;
