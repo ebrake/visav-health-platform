@@ -25,18 +25,38 @@ module.exports = function generateApplication(app) {
 
   app.models.Application.findById(phlexApp.id, function(err, application){
     if (err) return console.log("Application findById error: ",err);
-    if (!application) return app.models.Application.create(phlexApp);
+    if (!application) {
+      return app.models.Application.register(
+        phlexApp.owner,
+        phlexApp.name,
+        {
+          description: phlexApp.description,
+          pushSettings: phlexApp.pushSettings
+        },
+        function (err, app) {
+          if (err) return console.log('ERROR REGISTERING APPLICATION ' + JSON.stringify(err));
+          console.log('SUCCESSFULLY REGISTERED APPLICATION...');
+        }
+      );
+    }
 
-    // Update
-    application.description = phlexApp.description;
-    application.name = phlexApp.name;
-    application.userId = phlexApp.userId;
-    application.pushSettings = phlexApp.pushSettings;
+    if (process.env.DO_DANGEROUS_APPLICATION_RESET) {
+      // App exists, reset keys
+      app.models.Application.resetKeys(phlexApp.id, function(err) {
+        if (err) console.log("Application resetKeys error: ",err);
 
-    application.save(function(err){
-      if (err) console.log("Application save error: ",err);
-    })
+          // Update model
+          application.description = phlexApp.description;
+          application.name = phlexApp.name;
+          application.userId = phlexApp.userId;
+          application.pushSettings = phlexApp.pushSettings;
 
+          application.save(function(err){
+            if (err) console.log("Application save error: ",err);
+            console.log('SUCCESSFULLY RESET & UPDATED APPLICATION...');
+          });
+      });
+    }
   });
   
 };

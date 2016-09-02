@@ -8,28 +8,4 @@ module.exports = function(Application) {
     }
     next();
   });
-  Application.observe('after save', function(ctx, next) {
-    var modelInstance = ctx.instance;
-
-    Application.resetKeys(modelInstance.id, function(err) {
-      if (err) return next(err);
-      Application.register(
-        modelInstance.owner,
-        modelInstance.name,
-        {
-          description: modelInstance.description,
-          pushSettings: modelInstance.pushSettings
-        },
-        function (err, app) {
-          if (err) {
-            console.log('ERROR REGISTERING APPLICATION ' + JSON.stringify(err));
-            return next(err);
-          }
-          console.log('SUCCESSFULLY REGISTERED APPLICATION...');
-          return next(null, app);
-        }
-      );
-    });
-
-  });
 }
