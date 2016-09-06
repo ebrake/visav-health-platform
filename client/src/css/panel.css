@@ -20,10 +20,6 @@
   h2 {
     font-size: 20px;
   }
-
-  .recharts-legend-item-text {
-    color: $medium-text-color;
-  }
 }
 
 .PatientInfoPanel {
