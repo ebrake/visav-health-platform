@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
+import ChartLegend from './ChartLegend';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import chartUtil from '../utils/chartUtil';
@@ -10,8 +11,10 @@ class RepsChartPanel extends React.Component {
 
     this.state = {
       exercise: undefined,
-      exerciseName: 'LOADING...',
-      chartData: { labels: [], datasets: [] }
+      chartData: { labels: [], datasets: [] },
+      chart: undefined,
+      currentLegend: '',
+      chartId: 'RepsChartIdentifierForGlobalChartLegendDatasetToggle'
     };
 
     ExerciseActions.getExercises();
@@ -30,7 +33,8 @@ class RepsChartPanel extends React.Component {
       },
       legend: chartUtil.legends.defaultLegend,
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      legendCallback: chartUtil.legendCallback(this.state.chartId)
     }
   }
 
@@ -43,6 +47,15 @@ class RepsChartPanel extends React.Component {
       exercise: exerciseState.displayedExercise,
       chartData: this.calculateChartData(exerciseState.displayedExercise)
     })
+  }
+
+  componentDidUpdate(){
+    if (this.refs.chart.chart_instance.generateLegend().toString() != this.state.currentLegend){
+      this.setState({
+        chart: this.refs.chart.chart_instance,
+        currentLegend: this.refs.chart.chart_instance.generateLegend().toString()
+      })
+    }
   }
 
   componentDidMount(){
@@ -59,8 +72,9 @@ class RepsChartPanel extends React.Component {
         <h1 className="title">
           Range of Motion: Last Exercise
         </h1>
-        <div className="flex-row">
-          <Line data={this.state.chartData} options={this.chartOptions()} height={300} />
+        <ChartLegend legendId="RepsChartLegend" chartId={this.state.chartId} chart={this.state.chart} />
+        <div className="chart-container">
+          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
         </div>
       </div>
     );

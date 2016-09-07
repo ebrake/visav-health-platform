@@ -166,13 +166,42 @@ var callbacks = {
 
 var legends = {
   defaultLegend: {
-    labels: {
-      fontSize: 13,
-      boxWidth: 13,
-      usePointStyle: true
-    }
+    display: false
   }
 }
+
+//need to pass it an ID so we know which chart to read off the window
+var legendCallback = (chartId) => {
+  return function(chart) {
+    var datasets = chart.data.datasets
+    , legend = chart.legend
+    , generatedHTML = '<ul>';
+
+    legend.legendItems.forEach((item, i) => {
+      generatedHTML += 
+      '<li id="'+chartId+i+'" onClick="globalChartLegendDatasetToggle(event, '+i+', \''+chartId+'\', '+chartId+i+')">'+
+        '<div class="legend-point" style="background-color:'+datasets[i].backgroundColor+';border:3px solid '+datasets[i].borderColor+';"></div>'+
+        '<span>'+item.text+'</span>'+
+      '</li>';
+    })
+
+    generatedHTML += '</ul>';
+
+    return generatedHTML;
+  }
+}
+
+globalChartLegendDatasetToggle = function(e, datasetIndex, chartId, listElement) {
+  var ci = e.view[chartId];
+  var meta = ci.getDatasetMeta(datasetIndex);
+
+  meta.hidden = meta.hidden === null? !ci.data.datasets[datasetIndex].hidden : null;
+
+  ci.update();
+
+  if (meta.hidden) listElement.className = 'toggled';
+  else listElement.className = '';
+};
 
 var axes = {
   timeXAxes: [{
@@ -213,5 +242,7 @@ export default {
   callbacks: callbacks,
   legends: legends,
   axes: axes,
-  tooltips: tooltips
+  tooltips: tooltips,
+  legendCallback: legendCallback,
+  chartHeight: 270
 }

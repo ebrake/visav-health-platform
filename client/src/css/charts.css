@@ -21,3 +21,46 @@
     margin: 0;
   }
 }
+
+.graph-legend {
+  font-size: 13px;
+  color: $medium-light-grey;
+
+  .legend-point {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 14px;
+    margin-right: 3px;
+  }
+
+  span {
+    margin-top: 3px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  ul {
+    padding: 0;
+    margin: 5px 0 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  li {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    align-items: middle;
+    margin: 0 10px;
+    cursor: pointer;
+
+    &.toggled {
+      div {
+        border: 3px solid transparent !important;
+      }
+    }
+  }
+}

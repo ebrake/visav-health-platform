@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
+import ChartLegend from './ChartLegend';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import chartUtil from '../utils/chartUtil';
@@ -10,7 +11,10 @@ class ExercisesChartPanel extends React.Component {
 
     this.state = {
       exercises: [],
-      chartData: { datasets: [] }
+      chartData: { datasets: [] },
+      chart: undefined,
+      currentLegend: '',
+      chartId: 'ExercisesChartIdentifierForGlobalChartLegendDatasetToggle'
     };
 
     ExerciseActions.getExercises();
@@ -32,7 +36,8 @@ class ExercisesChartPanel extends React.Component {
       },
       legend: chartUtil.legends.defaultLegend,
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      legendCallback: chartUtil.legendCallback(this.state.chartId)
     }
   }
 
@@ -55,12 +60,22 @@ class ExercisesChartPanel extends React.Component {
     ExerciseStore.unlisten(this.exercisesChanged);
   }
 
+  componentDidUpdate(){
+    if (this.refs.chart.chart_instance.generateLegend().toString() != this.state.currentLegend){
+      this.setState({
+        chart: this.refs.chart.chart_instance,
+        currentLegend: this.refs.chart.chart_instance.generateLegend().toString()
+      })
+    }
+  }
+
   render() {
     return (
       <div id="ExercisesChartPanel" className="graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
-        <div className="flex-row">
-          <Line data={this.state.chartData} options={this.chartOptions()} height={300} />
+        <ChartLegend legendId="ExercisesChartLegend" chartId={this.state.chartId} chart={this.state.chart} />
+        <div className="chart-container">
+          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
         </div>
       </div>
     );
