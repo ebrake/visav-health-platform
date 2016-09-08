@@ -8,6 +8,7 @@ class Signup extends React.Component {
     super(props);
 
     this.state = {
+      organization: '',
       email: '',
       password: ''
     };
@@ -32,20 +33,18 @@ class Signup extends React.Component {
       {
         method: 'POST', 
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: this.state.email, password: this.state.password }) 
+        body: JSON.stringify({ 
+          organization: this.state.organization, 
+          email: this.state.email, 
+          password: this.state.password 
+        })
       }
     ).then(function(response){
       return response.json();
     })
     .then(function(data){
-      if (data.user && data.user.status != 'error') {
-        console.log('User creation successful! Logging in...');
-        self.login();
-      } else {
-        //trigger "duplicate email" or whatever error message is in data.user.type
-        console.log("Error creating account:");
-        console.dir(data);
-      }
+      console.log('Got response:');
+      console.log(data);
     })
     .catch(function(err){
       console.log('Error:');
@@ -96,12 +95,15 @@ class Signup extends React.Component {
         <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
           <div className="accounts-input-wrapper">
+            <input placeholder="Organization Name" value={this.state.organization} onChange={this.handleChange('organization')} />
+          </div>
+          <div className="accounts-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
           </div>
           <div className="accounts-input-wrapper">
             <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
           </div>
-          <button className="accounts-button" onClick={this.createUser}><span>Create User</span></button>
+          <button className="accounts-button" onClick={this.createUser}><span>Sign Up</span></button>
           <span className="accounts-link" onClick={this.goToLogin}>{"Have an account? Log in"}</span>
         </div>
         <div className="accounts-flex-padding"></div>
