@@ -1,5 +1,5 @@
 {
-  "name": "dillinger",
+  "name": "VISAV-backend",
   "version": "1.0.0",
   "scripts": {
     "backend": "heroku local -f Procfile.dev",
@@ -15,8 +15,7 @@
     "test-client": "./node_modules/.bin/karma start ./QA/test/karma.conf.client.js",
     "test-client-debug": "./node_modules/.bin/karma start ./QA/test/karma.conf.client.js --debug",
     "test-server": "./node_modules/.bin/mocha ./server/__tests__/**/*.js",
-    "doc-server": "./node_modules/.bin/jsdoc -c ./QA/jsdoc/server.config.json",
-    "doc-client": "./node_modules/.bin/jsdoc -c ./QA/jsdoc/client.config.json",
+    "doc": "./node_modules/.bin/jsdoc --package ./package.json -c ./QA/jsdoc/server.config.json && ./node_modules/.bin/jsdoc --package ./client/package.json -c ./QA/jsdoc/client.config.json",
     "heroku-postbuild": "npm run build-prod-client && npm run package-prod && npm run package-client"
   },
   "dependencies": {
@@ -55,6 +54,7 @@
     "eslint": "^2.5.3",
     "nsp": "^2.1.0",
     "babel-loader": "^6.2.0",
+    "docdash": "^0.4.0",
     "expect": "^1.13.0",
     "karma": "^0.13.15",
     "karma-chrome-launcher": "^1.0.1",

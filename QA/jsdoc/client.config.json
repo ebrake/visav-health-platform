@@ -14,7 +14,9 @@
         "monospaceLinks": false
     },
     "opts": {
+        "encoding": "utf8",
         "recurse" : true,
-        "destination": "./QA/jsdoc/client"
+        "destination": "./QA/jsdoc/",
+        "template": "node_modules/docdash"
     }
 }

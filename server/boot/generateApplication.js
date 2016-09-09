@@ -1,5 +1,9 @@
 var globalConfig = require('../../global.config');
 
+/**
+ * A boot script function that generates the Loopack Application object.
+ * @module boot/generateApplication
+ */
 module.exports = function generateApplication(app) {
 
   let phlexApp = {

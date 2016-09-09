@@ -1,4 +1,8 @@
-module.exports = {
+/**
+ * This always overrides datasources.json
+ * @module modules/datasources-local
+ */
+ module.exports = {
   "emails": {
     "name": "emails",
     "connector": "mail",

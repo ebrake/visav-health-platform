@@ -4,17 +4,22 @@
         "dictionaries": ["jsdoc","closure"]
     },
     "source": {
-        "include" :["server"],
+        "include" :["server","common"],
         "includePattern": ".+\\.js(jsx)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
-    "plugins": [],
+    "plugins": [
+        "plugins/markdown",
+        "plugins/summarize"
+    ],
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false
     },
     "opts": {
+        "encoding": "utf8",
         "recurse" : true, 
-        "destination": "./QA/jsdoc/server" 
+        "destination": "./QA/jsdoc/",
+        "template": "node_modules/docdash"
     }
 }

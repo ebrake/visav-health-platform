@@ -1,3 +1,4 @@
+/** @server */
 import loopback from 'loopback';
 import boot from 'loopback-boot';
 import { EventEmitter } from 'events';
@@ -8,8 +9,14 @@ import enforce from 'express-sslify';
 //because the default maximum is 10
 EventEmitter.prototype._maxListeners = 100;
 
+/** The first script executed to boot the Loopback application
+ */
 class StartServer {
 
+  /**
+   * Constructor
+   * @param {bool} isMainModule - is script launched as a main module? If true, the server will bind to port.
+   */
   constructor(isMainModule) {
 
     const app = loopback();
@@ -54,9 +61,11 @@ class StartServer {
 
       // Put this on the app so it's accessible.
       app.server = server;
+
     });
   }
 }
+
 export function startServer(isMainModule) {
   new StartServer(isMainModule);
 }
