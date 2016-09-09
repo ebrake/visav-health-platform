@@ -7,23 +7,48 @@ var path = require('path');
 
 module.exports = function(Person) {
   Person.remoteCreate = function(req, cb) {
-    if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'Please provide a valid email address', status: 'error' });
-    if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'No password was provided', status: 'error' });
+    if (!req.body.email) 
+      return cb(null, { error: new Error('No email!'), type: 'Please provide a valid email address', status: 'error' });
+    if (!req.body.password) 
+      return cb(null, { error: new Error('No password!'), type: 'No password was provided', status: 'error' });
+    if (!req.body.organization) 
+      return cb(null, { error: new Error('No organization!'), type: 'No organization name provided', status: 'error' });
 
     Person.create({
       email: req.body.email.toLowerCase(),
       password: req.body.password
-    }, function(err, createdUser){
-      if (err) {
-        var type = 'Issue creating account. Please try again later';
-        if (err.message.toLowerCase().indexOf('email already exists') >= 0) type = 'Email is already in use';
-        return cb(null, { error: err, type: type, status: 'error' });
-      }
-
+    })
+    .then(function(createdUser){
       console.log("Created user "+req.body.email);
 
-      return cb(null, createdUser);
-    }) 
+      return req.app.models.Role.findOne({
+        where: { name: 'doctor' }
+      })
+      .then(function(role){
+        role.principals.create({ 
+          principalType: req.app.models.RoleMapping.USER,
+          principalId: createdUser.id
+        })
+        .then(function(principal){
+          console.log('Successfully created user role:');
+          console.log(principal);
+        })
+        .catch(function(err){
+          console.log('Error assigning role to user. Ignoring.');
+          console.log(err);
+        });
+
+        return cb(null, createdUser);
+      })
+
+    }).catch(function(err){
+      var type = 'Issue creating account. Please try again later';
+
+      if (err && err.message && err.message.toLowerCase().indexOf('email already exists') >= 0) 
+        type = 'Email is already in use';
+
+      return cb(null, { error: err, type: type, status: 'error' });
+    })
   }
 
   //send verification email after registration
@@ -34,7 +59,6 @@ module.exports = function(Person) {
     }
 
     // TODO: Add e-mail to database queue if sending fails
-
     var createdUser = createdObject.user;
     Person.app.models.Email.send({
       to: createdUser.email,

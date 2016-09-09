@@ -43,8 +43,15 @@ class Signup extends React.Component {
       return response.json();
     })
     .then(function(data){
-      console.log('Got response:');
-      console.log(data);
+      if (data.user && data.user.status != 'error') {
+        console.log('User creation successful! Logging in...');
+        console.log(data);
+        self.login();
+      } else {
+        //trigger "duplicate email" or whatever error message is in data.user.type
+        console.log("Error creating account:");
+        console.dir(data);
+      }
     })
     .catch(function(err){
       console.log('Error:');
