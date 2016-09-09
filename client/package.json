@@ -5,6 +5,7 @@
   "dependencies": {
     "alt": "^0.18.5",
     "autoprefixer": "6.3.7",
+    "aws-mqtt-client": "0.0.4",
     "babel-core": "6.10.4",
     "babel-eslint": "6.1.2",
     "babel-loader": "6.2.4",
