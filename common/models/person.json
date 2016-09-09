@@ -20,27 +20,29 @@
     "doctors": {
       "type": "hasMany",
       "model": "Person",
-      "foreignKey": "patient",
+      "foreignKey": "patientId",
+      "keyThrough": "doctorId",
       "through": "DoctorPatient"
     },
     "patients": {
       "type": "hasMany",
       "model": "Person",
-      "foreignKey": "doctor",
+      "foreignKey": "doctorId",
+      "keyThrough": "patientId",
       "through": "DoctorPatient"
     },
     "caregivers": {
       "type": "hasMany",
       "model": "Person",
-      "foreignKey": "patient",
-      "keyThrough": "caregiver",
+      "foreignKey": "caregiveeId",
+      "keyThrough": "caregiverId",
       "through": "CaregiverPatient"
     },
     "caregivees": {
       "type": "hasMany",
       "model": "Person",
-      "foreignKey": "caregiver",
-      "keyThrough": "patient",
+      "foreignKey": "caregiverId",
+      "keyThrough": "caregiveeId",
       "through": "CaregiverPatient"
     }
   },

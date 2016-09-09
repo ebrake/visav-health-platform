@@ -6,6 +6,7 @@ var globalConfig = require('../../global.config');
 var path = require('path');
 
 module.exports = function(Person) {
+
   Person.remoteCreate = function(req, cb) {
     if (!req.body.email) 
       return cb(null, { error: new Error('No email!'), type: 'Please provide a valid email address', status: 'error' });
@@ -112,7 +113,7 @@ module.exports = function(Person) {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
-      http: { path: '/login', verb: 'post' },
+      http: { path: '/signin', verb: 'post' },
       returns: { arg: 'token', type: 'object' },
       description: "Accepts a user's email and password, returns an access token"
     }

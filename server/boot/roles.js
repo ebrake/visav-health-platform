@@ -19,14 +19,14 @@ function createRole(Role, roleName) {
   })
 }
 
-function createRoles(Role, attempt){
+function createRoles(Role, cb, attempt){
   attempt = attempt || 0;
 
   var roles = ['doctor', 'patient', 'caregiver']
     , threshold = 2;
 
   if (attempt >= threshold) 
-    throw new Error("Issue building roles on boot. See createRoles in server/boot/roles.js.");
+    return cb(new Error("Issue building roles on boot in server/boot/roles.js."));
 
   Promise.all(roles.map(function(roleName){
     return createRole(Role, roleName);
@@ -34,13 +34,14 @@ function createRoles(Role, attempt){
   .then(function(result){
     console.log('The following roles exist:');
     console.log(roles);
+    cb();
   })
   .catch(function(err){
-    createRoles(Role, (attempt+1));
+    createRoles(Role, cb, (attempt+1));
   })
 }
 
-module.exports = function(app) {
+module.exports = function(app, cb) {
   /*
    * The `app` object provides access to a variety of LoopBack resources such as
    * models (e.g. `app.models.YourModelName`) or data sources (e.g.
@@ -49,5 +50,5 @@ module.exports = function(app) {
    * for more info.
    */
 
-  createRoles(app.models.Role);
+  createRoles(app.models.Role, cb);
 };

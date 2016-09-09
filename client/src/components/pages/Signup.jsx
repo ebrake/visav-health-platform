@@ -62,7 +62,7 @@ class Signup extends React.Component {
   login() {
     var self = this;
 
-    fetch(process.env.API_ROOT + 'api/people/login', {
+    fetch(process.env.API_ROOT + 'api/people/signin', {
       method: 'POST', 
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })

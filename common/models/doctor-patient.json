@@ -11,12 +11,12 @@
     "doctor": {
       "type": "belongsTo",
       "model": "Person",
-      "foreignKey": "doctor"
+      "foreignKey": "doctorId"
     },
     "patient": {
       "type": "belongsTo",
       "model": "Person",
-      "foreignKey": "patient"
+      "foreignKey": "patientId"
     }
   },
   "acls": [],

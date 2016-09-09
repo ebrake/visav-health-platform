@@ -11,12 +11,12 @@
     "caregiver": {
       "type": "belongsTo",
       "model": "Person",
-      "foreignKey": "caregiver"
+      "foreignKey": "caregiverId"
     },
     "patient": {
       "type": "belongsTo",
       "model": "Person",
-      "foreignKey": "patient"
+      "foreignKey": "patientId"
     }
   },
   "acls": [],
