@@ -26,17 +26,16 @@ function createRoles(Role, attempt){
     , threshold = 2;
 
   if (attempt >= threshold) 
-    return;
+    throw new Error("Issue building roles on boot. See createRoles in server/boot/roles.js.");
 
   Promise.all(roles.map(function(roleName){
     return createRole(Role, roleName);
   }))
-  .then(function(success){
-    console.log('Roles now exist:');
-    console.log(success);
+  .then(function(result){
+    console.log('The following roles exist:');
+    console.log(roles);
   })
   .catch(function(err){
-    console.log('Error creating roles, trying again:');
     createRoles(Role, (attempt+1));
   })
 }

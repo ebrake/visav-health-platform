@@ -79,5 +79,13 @@
   "HealthEventEmail": {
     "dataSource": "psql",
     "public": true
+  },
+  "DoctorPatient": {
+    "dataSource": "psql",
+    "public": true
+  },
+  "CaregiverPatient": {
+    "dataSource": "psql",
+    "public": true
   }
 }

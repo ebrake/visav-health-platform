@@ -16,7 +16,34 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "doctors": {
+      "type": "hasMany",
+      "model": "Person",
+      "foreignKey": "patient",
+      "through": "DoctorPatient"
+    },
+    "patients": {
+      "type": "hasMany",
+      "model": "Person",
+      "foreignKey": "doctor",
+      "through": "DoctorPatient"
+    },
+    "caregivers": {
+      "type": "hasMany",
+      "model": "Person",
+      "foreignKey": "patient",
+      "keyThrough": "caregiver",
+      "through": "CaregiverPatient"
+    },
+    "caregivees": {
+      "type": "hasMany",
+      "model": "Person",
+      "foreignKey": "caregiver",
+      "keyThrough": "patient",
+      "through": "CaregiverPatient"
+    }
+  },
   "acls": [
     {
       "accessType": "EXECUTE",

@@ -1,0 +1,24 @@
+{
+  "name": "CaregiverPatient",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "caregiver": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "caregiver"
+    },
+    "patient": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "patient"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
