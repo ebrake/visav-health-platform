@@ -16,7 +16,14 @@ function awsIoTSocket(app) {
     const client = new AWSMqtt(awsOptions);
     
     const MQTT_TOPIC = 'calling/person';
-    const exampleMessage = {"BACKEND":{"calling":true}};
+    const exampleMessage = {
+      "BACKEND":
+        {"example":
+          { "calling":true,
+            "from":"/server/boot/awsIoTSocket.js"
+          }
+        }
+    };
 
     client.on('error', function (err) {
         logOutput('AWS IoT error: '+err);
@@ -29,11 +36,11 @@ function awsIoTSocket(app) {
       client.subscribe(MQTT_TOPIC, { qos: 0 }, function(err) {
         if (err) return logOutput(err);
 
-        setInterval(function() {
+        //setInterval(function() {
           client.publish(MQTT_TOPIC, JSON.stringify(exampleMessage), { qos: 0, retained: false }, function(err) {
             if (err) return logOutput(err);
           });
-        }, 5000);
+        //}, 5000);
 
       });
 
