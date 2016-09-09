@@ -2,7 +2,6 @@ import React from 'react';
 import Oy from 'oy-vey';
 import GettingStartedEmail from '../../client/src/components/email-templates/GettingStartedEmail';
 
-var globalConfig = require('../../global.config');
 var path = require('path');
 
 module.exports = function(Person) {
@@ -38,11 +37,11 @@ module.exports = function(Person) {
     var createdUser = createdObject.user;
     Person.app.models.Email.send({
       to: createdUser.email,
-      from: globalConfig.SYSTEM_EMAIL,
-      subject: 'Welcome to '+globalConfig.APP_NAME,
+      from: Person.app.globalConfig.SYSTEM_EMAIL,
+      subject: 'Welcome to '+Person.app.globalConfig.APP_NAME,
       html: Oy.renderTemplate(<GettingStartedEmail user={createdUser} />, {
-        title: 'Getting Started with '+globalConfig.APP_NAME,
-        previewText: 'Welcome to '+globalConfig.APP_NAME+'...'
+        title: 'Getting Started with '+Person.app.globalConfig.APP_NAME,
+        previewText: 'Welcome to '+Person.app.globalConfig.APP_NAME+'...'
       })
     }, function(err) {
       if (err) return next(err);

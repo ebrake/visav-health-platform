@@ -2,6 +2,7 @@ import loopback from 'loopback';
 import boot from 'loopback-boot';
 import { EventEmitter } from 'events';
 import enforce from 'express-sslify';
+import globalConfig from '../global.config';
 
 //Globally set max listeners higher than 11
 //Otherwise, loopback-connector-postgresql will cause a mem-leak warning
@@ -13,6 +14,10 @@ class StartServer {
   constructor(isMainModule) {
 
     const app = loopback();
+
+    // Put this on the app so it's accessible.
+    app.globalConfig = globalConfig;
+
     const port = process.env.PORT;
     
     if (process.env.NODE_ENV !=='development') {

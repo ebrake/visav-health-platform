@@ -10,17 +10,13 @@ function awsIoTSocket(app) {
       console.log(message);
     }
 
-    var AWSOpts = {
-      accessKeyId: 'AKIAJMXV7C4RR4AVLVUQ',
-      secretAccessKey: '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',
-      endpointAddress: 'azf5xkj2sjl2t.iot.us-west-2.amazonaws.com',
-      region: 'us-west-2'
-    }
-
+    const awsOptions = app.globalConfig.AWS_IOT_CONFIG;
+    Object.assign(awsOptions, {}); // Ths is how we can assign more config options
+    
+    const client = new AWSMqtt(awsOptions);
+    
     const MQTT_TOPIC = 'calling/person';
     const exampleMessage = {"BACKEND":{"calling":true}};
-
-    var client = new AWSMqtt(AWSOpts);
 
     client.on('error', function (err) {
         logOutput('AWS IoT error: '+err);
@@ -37,7 +33,7 @@ function awsIoTSocket(app) {
           client.publish(MQTT_TOPIC, JSON.stringify(exampleMessage), { qos: 0, retained: false }, function(err) {
             if (err) return logOutput(err);
           });
-        }, 1000);
+        }, 5000);
 
       });
 

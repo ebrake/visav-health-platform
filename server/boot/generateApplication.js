@@ -1,16 +1,14 @@
-var globalConfig = require('../../global.config');
-
 module.exports = function generateApplication(app) {
 
   let phlexApp = {
-    id:             globalConfig.APP_ID,
-    name:           globalConfig.APP_NAME,
-    description:    globalConfig.APP_DESCRIPTION,
-    owner:          globalConfig.APP_OWNER,
+    id:             app.globalConfig.APP_ID,
+    name:           app.globalConfig.APP_NAME,
+    description:    app.globalConfig.APP_DESCRIPTION,
+    owner:          app.globalConfig.APP_OWNER,
     pushSettings: {
       apns: {
-        certData:   globalConfig.apnsCertData,
-        keyData:    globalConfig.apnsKeyData,
+        certData:   app.globalConfig.apnsCertData,
+        keyData:    app.globalConfig.apnsKeyData,
         production: (process.env.NODE_ENV!=='development'),
         pushOptions: {
           // Extra options can go here for APN
