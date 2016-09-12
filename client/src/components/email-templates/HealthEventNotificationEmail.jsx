@@ -94,7 +94,5 @@ HealthEventNotificationEmail.defaultProps = {
     perceivedTrend: 'increasing',
     type: 'swelling'
   },
-  exercise: {
-    type: 'knee raises'
-  }
+  exercise: null
 };

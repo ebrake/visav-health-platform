@@ -1,10 +1,6 @@
 var Promise = require('bluebird');
-var globalConfig = require('../../global.config');
 var path = require('path');
-
-import React from 'react';
-import Oy from 'oy-vey';
-import HealthEventNotificationEmail from '../../client/src/components/email-templates/HealthEventNotificationEmail';
+import fetch from 'node-fetch';
 
 module.exports = function(HealthEvent) {
   var sendHealthEventEmail = function(healthEventAndExercise, person, HealthEventEmail, Email) {
@@ -14,40 +10,27 @@ module.exports = function(HealthEvent) {
         , exercise = healthEventAndExercise.exercise;
 
       if (healthEvent.intensity > threshold || healthEvent.perceivedTrend.toLowerCase() == 'increasing') {
-        HealthEventEmail.create({
-          date: new Date(),
-          dismissed: false,
-          actionTaken: "",
-          delivered: false,
-          url: 'test123',
-          patient: person.id,
-          doctor: person.id,
-          healthevent: healthEvent.id
-        }, function(err, createdEmail) {
-          if (err) return reject(err);
-          createdEmail.save(function(err){
-            if (err) return reject(err);
-            //send email here
-            Email.send({
-              to: person.email,
-              from: globalConfig.SYSTEM_EMAIL,
-              subject: globalConfig.APP_NAME + ': '+person.firstName+' '+person.lastName+' has had an adverse Health Event',
-              html: Oy.renderTemplate(
-                <HealthEventNotificationEmail healthEventEmail={createdEmail} doctor={person} patient={person} 
-                    healthEvent={healthEvent} exercise={exercise}/>, 
-                {
-                  title: 'Health Notification from '+globalConfig.APP_NAME,
-                  previewText: 'Your patient has had an adverse health event...'
-                }
-              )
-            }, function(err) {
-              if (err) return reject(err);
-              createdEmail.delivered = true;
-              createdEmail.save();
-              resolve('Email sent for HealthEvent '+healthEvent.id+'.');
-            });
-          });
-        }) 
+        var requestBody = JSON.stringify({
+            type: 'email',
+            subtype: 'healthEvent',
+            healthEvent: healthEvent,
+            sender: person,
+            recipient: person
+        });
+        
+        fetch(process.env.API_ROOT+'api/messages/send', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: requestBody
+        })
+        .then(function(res) {
+            return res.json();
+        }).then(function(json) {
+            console.log(json);
+        });
       } else {
         resolve('No email needing to be sent for HealthEvent '+healthEvent.id+'.');
       }
@@ -161,7 +144,7 @@ module.exports = function(HealthEvent) {
 
               createdHealthEvent.save(function(err){
                 if (err) return reject(err);
-                console.log("Upserted HealthEvent: "+createdHealthEvent.id);
+                //console.log("Upserted HealthEvent: "+createdHealthEvent.id);
                 return resolve({ healthEvent: createdHealthEvent, exercise: exercises[0] });
               })
             })
@@ -171,7 +154,7 @@ module.exports = function(HealthEvent) {
               if (err) return reject(err);
               createdHealthEvent.save(function(err){
                 if (err) return reject(err);
-                console.log("Inserted HealthEvent: "+createdHealthEvent.id);
+                //console.log("Inserted HealthEvent: "+createdHealthEvent.id);
                 return resolve({ healthEvent: createdHealthEvent, exercise: exercises[0] });
               })
             });

@@ -1,3 +1,8 @@
+var globalConfig = require('../../global.config');
+import Oy from 'oy-vey';
+import React from 'react';
+import HealthEventNotificationEmail from '../../client/src/components/email-templates/HealthEventNotificationEmail';
+
 module.exports = function(HealthEventEmail) {
   HealthEventEmail.dismiss = function(req, res, cb) {
     var emailId = req.query.healthEventEmailId
@@ -53,6 +58,52 @@ module.exports = function(HealthEventEmail) {
     res.redirect(process.env.API_ROOT + 'telesession');
   };
 
+  HealthEventEmail.send = function(req, res, cb) {
+    var { patient, doctor, healthEvent, exercise } = req.body;
+    var Email = req.app.models.Email;
+
+    if( patient && doctor && healthEvent){
+      HealthEventEmail.create({
+        date: new Date(),
+        dismissed: false,
+        actionTaken: "",
+        delivered: false,
+        url: 'test123',
+        recipient: doctor.id,
+        sender: patient.id,
+        healthevent: healthEvent.id
+      }, function(err, createdEmail) {
+        if (err) return;
+        createdEmail.save(function(err){
+          if (err) return;
+          //send email here
+          Email.send({
+            to: doctor.email,
+            from: globalConfig.SYSTEM_EMAIL,
+            subject: globalConfig.APP_NAME + ': '+patient.firstName+' '+patient.lastName+' has had an adverse Health Event',
+            html: Oy.renderTemplate(
+              <HealthEventNotificationEmail healthEventEmail={createdEmail} doctor={doctor} patient={patient} 
+                  healthEvent={healthEvent} exercise={exercise}/>, 
+              {
+                title: 'Health Notification from '+globalConfig.APP_NAME,
+                previewText: 'Visav: New Notification from ' + patient.firstName + ' ' + patient.lastName
+              }
+            )
+          }, function(err) {
+            if (err){
+              console.log(err);
+              return;
+            }
+            createdEmail.delivered = true;
+            createdEmail.save();
+          });
+        });
+      }) 
+    }
+    
+  };
+
+
   HealthEventEmail.remoteMethod(
     "dismiss",
     { 
@@ -75,6 +126,18 @@ module.exports = function(HealthEventEmail) {
       http: { path: '/takeAction', verb: 'get' },
       returns: { arg: 'data', type: 'array' },
       description: "Makes note that action has been taken on the provided HealthEventEmail, and redirects user to their dashboard."
+    }
+  );
+  HealthEventEmail.remoteMethod(
+    "send",
+    { 
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'res', type: 'object', http: { source: 'res' } },
+      ],
+      http: { path: '/send', verb: 'post' },
+      returns: { arg: 'data', type: 'array' },
+      description: "Send an email about a health event."
     }
   );
 };

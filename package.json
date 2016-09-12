@@ -40,6 +40,7 @@
     "loopback-component-model-diagram": "^0.2.0",
     "loopback-component-push": "^1.5.4",
     "loopback-connector-postgresql": "^2.6.3",
+    "node-fetch": "^1.6.0",
     "opentok": "^2.3.2",
     "oy-vey": "^0.7.0",
     "react": "^15.2.1",
