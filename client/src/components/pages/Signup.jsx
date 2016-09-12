@@ -45,7 +45,7 @@ class Signup extends React.Component {
     .then(response => {
       if (response && response.data && response.data.status != 'error') {
         console.log('User creation successful! Logging in...');
-        console.log(response);
+        console.dir(response);
         self.login();
       } else {
         //trigger "duplicate email" or whatever error message is in data.user.type

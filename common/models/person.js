@@ -51,6 +51,8 @@ function createResponseData(email, password, Person, orgName, Organization, quer
       created.user.organization = created.organization.id;
       created.user.save();
 
+      console.log('User created: '+created.user.email+'\nOrganization created: '+created.organization.name);
+
       return created;
     })
   }
