@@ -1,5 +1,9 @@
 var OpenTok   = require('opentok');
 
+/**
+ * Managed telesessions
+ * @class
+ */
 module.exports = function(Telesession) {
 
   Telesession.callUser = function(req, cb) {
@@ -53,12 +57,19 @@ module.exports = function(Telesession) {
     }
   }
 
+  /** @function createSession
+    Creates an OpenTok session
+   */
   Telesession.createSession = function(cb) {
 
-    // Initialize OpenTok
     const opentok = new OpenTok(process.env.OPENTOK_API_KEY, process.env.OPENTOK_SECRET);
 
-    opentok.createSession(function(err, session) {
+    /**
+      Create the session with relayed mediaMode
+      (Use a relayed instead of a routed session, if you have only two participants (or maybe even three) and you are not using archiving.)
+      {@link https://www.tokbox.com/developer/guides/create-session/|OpenTok Session Creation Overview}
+    */
+    opentok.createSession({mediaMode:"relayed"}, function(err, session) {
 
       if (err) return cb(err, session);
 
