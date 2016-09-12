@@ -69,13 +69,13 @@
     "jsdoc": "^3.4.0"
   },
   "engines": {
-    "node": "6.3.0",
+    "node": "6.5.0",
     "npm": "3.10.3"
   },
   "repository": {
     "type": "",
     "url": ""
   },
-  "license": "UNLICENSED",
+  "license": "Copyright 2016 Kris & Brake Consulting Ltd.",
   "description": "dillinger"
 }
