@@ -4,6 +4,7 @@ import AccountActions from '../actions/AccountActions';
 class AccountStore {
   constructor() {
     this.user = undefined;
+    this.role = undefined;
 
     this.bindListeners({
       handleLogin: AccountActions.LOGIN_USER,
@@ -13,6 +14,7 @@ class AccountStore {
 
   handleLogin(user) {
     this.user = user;
+    this.role = user.roles[0] ? user.roles[0].name : undefined;
   }
 
   handleLogout() {
