@@ -22,7 +22,7 @@ function createRole(Role, roleName) {
 function createRoles(Role, cb, attempt){
   attempt = attempt || 0;
 
-  var roles = ['doctor', 'patient', 'caregiver']
+  var roles = ['doctor', 'patient', 'caregiver', 'owner', 'admin']
     , threshold = 2;
 
   if (attempt >= threshold) 

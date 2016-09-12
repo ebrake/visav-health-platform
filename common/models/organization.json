@@ -1,0 +1,29 @@
+{
+  "name": "Organization",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "default": "''"
+    },
+    "address": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "validations": [],
+  "relations": {
+    "owner": {
+      "type": "belongsTo",
+      "model": "Person",
+      "foreignKey": "owner"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

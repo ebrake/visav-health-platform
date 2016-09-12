@@ -5,6 +5,77 @@ import GettingStartedEmail from '../../client/src/components/email-templates/Get
 var globalConfig = require('../../global.config');
 var path = require('path');
 
+function checkForUniqueOrganizationAndPerson(email, Person, orgName, Organization) {
+  return Promise.all([
+    Person.find({
+      where: { email: email }
+    }),
+    Organization.find({ 
+      where: { name: orgName }
+    })
+  ])
+}
+
+function createResponseData(email, password, Person, orgName, Organization, queryResult) {
+  if (queryResult[0].length > 0) {
+    return  Promise.resolve({ 
+              error: new Error('Email already in use'), 
+              type: 'email', 
+              status: 'error' 
+            });
+  } else if (queryResult[1].length > 0) {
+    return  Promise.resolve({ 
+              error: new Error('An organization already exists with that name'), 
+              type: 'organization', 
+              status: 'error' 
+            });
+  } else {
+    return Promise.all([
+      Organization.create({
+        name: orgName
+      }),
+      Person.create({
+        email: email,
+        password: password
+      })
+    ])
+    .then(function(created){
+      created = {
+        organization: created[0],
+        user: created[1]
+      };
+
+      created.organization.owner = created.user.id;
+      created.organization.save();
+
+      created.user.organization = created.organization.id;
+      created.user.save();
+
+      return created;
+    })
+  }
+}
+
+function assignOwnerRole(created, Role, RoleMapping) {
+  if (!created) {
+    return Promise.reject(new Error("Issue creating user"));
+  } else if (created.status == 'error') {
+    return Promise.resolve(created);
+  }
+
+  return Role.findOne({
+    where: { name: 'owner' }
+  })
+  .then(function(role){
+    return role.principals.create({ 
+      principalType: RoleMapping.USER,
+      principalId: created.user.id
+    })
+  }).then(function(principal){
+    return created;
+  })
+}
+
 module.exports = function(Person) {
 
   Person.remoteCreate = function(req, cb) {
@@ -15,52 +86,35 @@ module.exports = function(Person) {
     if (!req.body.organization) 
       return cb(null, { error: new Error('No organization!'), type: 'No organization name provided', status: 'error' });
 
-    Person.create({
-      email: req.body.email.toLowerCase(),
-      password: req.body.password
+    var Role = req.app.models.Role
+      , RoleMapping = req.app.models.RoleMapping
+      , Organization = req.app.models.Organization
+      , email = req.body.email
+      , password = req.body.password
+      , orgName = req.body.organization;
+
+    return checkForUniqueOrganizationAndPerson(email, Person, orgName, Organization)
+    .then(function(queryResult){
+      return createResponseData(email, password, Person, orgName, Organization, queryResult);
     })
-    .then(function(createdUser){
-      console.log("Created user "+req.body.email);
-
-      return req.app.models.Role.findOne({
-        where: { name: 'doctor' }
-      })
-      .then(function(role){
-        role.principals.create({ 
-          principalType: req.app.models.RoleMapping.USER,
-          principalId: createdUser.id
-        })
-        .then(function(principal){
-          console.log('Successfully created user role:');
-          console.log(principal);
-        })
-        .catch(function(err){
-          console.log('Error assigning role to user. Ignoring.');
-          console.log(err);
-        });
-
-        return cb(null, createdUser);
-      })
-
-    }).catch(function(err){
-      var type = 'Issue creating account. Please try again later';
-
-      if (err && err.message && err.message.toLowerCase().indexOf('email already exists') >= 0) 
-        type = 'Email is already in use';
-
-      return cb(null, { error: err, type: type, status: 'error' });
+    .then(function(created){
+      return assignOwnerRole(created, Role, RoleMapping)
+    })
+    .then(function(data){
+      return data;
+    }, function(err){
+      return { error: err, type: 'general', status: 'error' };
     })
   }
 
   //send verification email after registration
   Person.afterRemote('remoteCreate', function(context, createdObject, next) {
-
-    if (createdObject.user.status == 'error') {
+    if (!createdObject || !createdObject.data || createdObject.data.status == 'error') {
       return next();
     }
 
     // TODO: Add e-mail to database queue if sending fails
-    var createdUser = createdObject.user;
+    var createdUser = createdObject.data.user;
     Person.app.models.Email.send({
       to: createdUser.email,
       from: globalConfig.SYSTEM_EMAIL,
@@ -83,7 +137,7 @@ module.exports = function(Person) {
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/create', verb: 'post' },
-      returns: { arg: 'user', type: 'object' },
+      returns: { arg: 'data', type: 'object' },
       description: "Accepts a new user's email and password, returns the created user"
     }
   );

@@ -44,6 +44,11 @@
       "foreignKey": "caregiverId",
       "keyThrough": "caregiveeId",
       "through": "CaregiverPatient"
+    },
+    "organization": {
+      "type": "belongsTo",
+      "model": "Organization",
+      "foreignKey": "organization"
     }
   },
   "acls": [

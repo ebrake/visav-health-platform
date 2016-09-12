@@ -28,6 +28,7 @@ class Signup extends React.Component {
     if (!this.state.email) return console.log('No email!'); //trigger email validation message
     if (!this.state.password) return console.log('No password!'); //trigger password validation message
     let self = this;
+
     fetch(
       process.env.API_ROOT + 'api/people/create', 
       {
@@ -39,13 +40,12 @@ class Signup extends React.Component {
           password: this.state.password 
         })
       }
-    ).then(function(response){
-      return response.json();
-    })
-    .then(function(data){
-      if (data.user && data.user.status != 'error') {
+    )
+    .then(response => response.json())
+    .then(response => {
+      if (response && response.data && response.data.status != 'error') {
         console.log('User creation successful! Logging in...');
-        console.log(data);
+        console.log(response);
         self.login();
       } else {
         //trigger "duplicate email" or whatever error message is in data.user.type
@@ -53,7 +53,7 @@ class Signup extends React.Component {
         console.dir(data);
       }
     })
-    .catch(function(err){
+    .catch(err => {
       console.log('Error:');
       console.dir(err);
     })
@@ -66,15 +66,16 @@ class Signup extends React.Component {
       method: 'POST', 
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
-    }).then(response => response.json())
-    .then(function(data){
+    })
+    .then(response => response.json())
+    .then(data => {
       AccountActions.loginUser(data);
 
       //redirect
       console.log('Login successful! Redirecting...');
       self.props.router.push('/me');
     })
-    .catch(function(err){
+    .catch(err => {
       //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
       console.log('Error:');
       console.dir(err);
