@@ -148,18 +148,25 @@ module.exports = function(Person) {
     if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
     if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
 
-    Person.login({
-      email: req.body.email.toLowerCase(),
-      password: req.body.password
-    }, 'user', function(err, token){
-      if (err) {
-        return cb(null, { error: err, type: 'login', status: 'error' });
-      }
+    return Promise.all([
+      Person.login({
+        email: req.body.email.toLowerCase(),
+        password: req.body.password
+      }),
+      Person.findOne({
+        where: { email: req.body.email }
+      })
+    ])
+    .then(function(data){
+      data = {
+        token: data[0],
+        user: data[1]
+      };
 
-      delete token.user.password;
-      console.log("Logged in user "+req.body.email);
-
-      return cb(null, token);
+      return data;
+    })
+    .catch(function(err){
+      return { error: err, type: 'login', status: 'error' };
     })
   }
 
@@ -170,7 +177,7 @@ module.exports = function(Person) {
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/signin', verb: 'post' },
-      returns: { arg: 'token', type: 'object' },
+      returns: { arg: 'data', type: 'object' },
       description: "Accepts a user's email and password, returns an access token"
     }
   );

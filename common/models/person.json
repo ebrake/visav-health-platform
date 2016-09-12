@@ -49,6 +49,13 @@
       "type": "belongsTo",
       "model": "Organization",
       "foreignKey": "organization"
+    },
+    "roles": {
+      "type": "hasMany",
+      "model": "Role",
+      "through": "RoleMapping",
+      "foreignKey": "principalId",
+      "keyThrough": "roleId"
     }
   },
   "acls": [
@@ -67,5 +74,8 @@
       "property": "remoteCreate"
     }
   ],
-  "methods": {}
+  "methods": {},
+  "scope": {
+    "include": "roles"
+  }
 }

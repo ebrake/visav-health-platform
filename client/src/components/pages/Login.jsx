@@ -28,11 +28,12 @@ class Login extends React.Component {
       method: 'POST', 
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
-    }).then(response => response.json())
-    .then( response => {
-      if (response.token && response.token.status != 'error') {
-        AccountActions.loginUser(response);
-        //redirect
+    })
+    .then(response => response.json())
+    .then(response => {
+      if (response && response.data && response.data.status != 'error') {
+        AccountActions.loginUser(response.data);
+
         console.log('Login successful! Redirecting...');
         this.props.router.push('/me');
       } else {

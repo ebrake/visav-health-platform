@@ -60,24 +60,20 @@ class Signup extends React.Component {
   }
 
   login() {
-    var self = this;
-
     fetch(process.env.API_ROOT + 'api/people/signin', {
       method: 'POST', 
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
     })
     .then(response => response.json())
-    .then(data => {
-      AccountActions.loginUser(data);
+    .then(response => {
+      AccountActions.loginUser(response.data);
 
-      //redirect
       console.log('Login successful! Redirecting...');
-      self.props.router.push('/me');
+      this.props.router.push('/me');
     })
     .catch(err => {
-      //should add validation messages here, error will be one of 'email', 'password', 'login' (login meaning general issue)
-      console.log('Error:');
+      console.log('Error logging in:');
       console.dir(err);
     })
   }
