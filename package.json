@@ -43,6 +43,7 @@
     "node-fetch": "^1.6.0",
     "opentok": "^2.3.2",
     "oy-vey": "^0.7.0",
+    "plivo": "^0.3.3",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-router": "^2.6.0",

@@ -3,7 +3,7 @@ var path = require('path');
 import fetch from 'node-fetch';
 
 module.exports = function(HealthEvent) {
-  var sendHealthEventEmail = function(healthEventAndExercise, person, HealthEventEmail, Email) {
+  var sendHealthEventMessage = function(healthEventAndExercise, person, HealthEventMessage, Email) {
     return new Promise(function(resolve, reject){
       var threshold = .5
         , healthEvent = healthEventAndExercise.healthEvent
@@ -17,7 +17,6 @@ module.exports = function(HealthEvent) {
             sender: person,
             recipient: person
         });
-        
         fetch(process.env.API_ROOT+'api/messages/send', {
           method: 'POST',
           headers: {
@@ -37,9 +36,9 @@ module.exports = function(HealthEvent) {
     })
   }
 
-  var generateHealthEventEmails = function(createdHealthEventsAndExercises, person, HealthEventEmail, Email) {
+  var generateHealthEventMessages = function(createdHealthEventsAndExercises, person, HealthEventMessage, Email) {
     return new Promise(function(resolve, reject){
-      HealthEventEmail.find({
+      HealthEventMessage.find({
         where: { patient: person.id },
         order: 'date DESC'
       }, function(err, healthEventEmails){
@@ -55,7 +54,7 @@ module.exports = function(HealthEvent) {
 
         //now we execute logic deciding if we send another email on only what is contained in healthEvents
         return Promise.all(healthEvents.map(function(obj){
-          return sendHealthEventEmail(obj, person, HealthEventEmail, Email);
+          return sendHealthEventMessage(obj, person, HealthEventMessage, Email);
         }))
         .then(function(results){
           return resolve(results);
@@ -171,7 +170,7 @@ module.exports = function(HealthEvent) {
 
     var person = req.user
       , Exercise = req.app.models.Exercise
-      , HealthEventEmail = req.app.models.HealthEventEmail
+      , HealthEventMessage = req.app.models.HealthEventMessage
       , Email = req.app.models.Email;
 
     Promise.all(data.map(function(healthEvent){
@@ -181,7 +180,7 @@ module.exports = function(HealthEvent) {
     .then(function(createdHealthEventsAndExercises){
       cb(null, { status: 'success' });
       //note the use of side effects; look into putting this cb at the end of the promise chain if strange bugs arise in this code
-      return generateHealthEventEmails(createdHealthEventsAndExercises, person, HealthEventEmail, Email);
+      return generateHealthEventMessages(createdHealthEventsAndExercises, person, HealthEventMessage, Email);
     }, function(err){
       console.log("Issue creating HealthEvent data:");
       console.log(err);

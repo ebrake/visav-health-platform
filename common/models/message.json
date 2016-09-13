@@ -51,6 +51,20 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "send"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "sendEmail"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "sendText"
     }
   ],
   "methods": {}

@@ -1,5 +1,5 @@
 {
-  "name": "HealthEventEmail",
+  "name": "HealthEventMessage",
   "base": "Message",
   "idInjection": true,
   "options": {
@@ -40,6 +40,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "dismiss"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "send"
     }
   ],
   "methods": {}
