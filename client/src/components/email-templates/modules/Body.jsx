@@ -4,29 +4,18 @@ import EmptySpace from './EmptySpace';
 export default (props) => {
 
   const bodyStyle = {
-    color: '#42444c',
-    backgroundColor: '#eeeeee',
+    color: props.textColor,
+    backgroundColor: props.backgroundColor,
     fontFamily: 'Arial',
     fontSize: '18px',
     textAlign: 'center',
-    padding: '20px'
+    padding: '20px',
+    margin: '0px 0px 10px 0px'
   };
 
   return (
-    <table width="100%">
-      <tbody>
-        <tr>
-          <td
-            className="body"
-            style={bodyStyle}>
-            <EmptySpace height={200} />
-            <div className="content">
-              {props.children}
-            </div>
-            <EmptySpace height={200} />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div className="content" style={bodyStyle}>
+      {props.children}
+    </div>
   );
 };

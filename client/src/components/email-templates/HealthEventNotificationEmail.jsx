@@ -1,7 +1,8 @@
 import React from 'react';
 import Layout from './layouts/Layout';
-import Header from './modules/Header';
+import PhlexHeader from './modules/PhlexHeader';
 import Body from './modules/Body';
+import phlexColors from '../utils/phlexColors';
 import Footer from './modules/Footer';
 
 export default function HealthEventNotificationEmail(props) {
@@ -11,17 +12,19 @@ export default function HealthEventNotificationEmail(props) {
     outline: 'none',
     border: 'none',
     display: 'inline-block',
-    margin: '10px auto',
-    clear: 'both',
-    width: '65%',
+    margin: '10px ',
+    width: '40%',
     height: '50px',
     cursor: 'pointer',
-    color: '#444444',
+    color: phlexColors.getFontColor('light'),
     fontSize: '15px',
     fontStyle: 'bold',
+    float: 'middle',
+    backgroundColor: phlexColors.getColor('red'),
   };
   const actionsStyle = {
-    margin: '20px 0 0 0'
+    margin: '20px 0 0 0',
+    
   };
   var whilePerformingExerciseString;
   var noteString;
@@ -51,10 +54,10 @@ export default function HealthEventNotificationEmail(props) {
 
   return (
     <Layout>
-      <Header color="#134ac0" />
+      <PhlexHeader />
 
-      <Body>
-        <h2 className="title">You have 1 new notification</h2>
+      <Body backgroundColor={phlexColors.getColor('darkestGrey')} textColor={phlexColors.getFontColor('light')}>
+        <h2 className="title">Dr. {doctor.lastName}, you have 1 new notification</h2>
         <div className="health-event-info">
           <p>from {patient.firstName} {patient.lastName} regarding their therapy.</p>
         </div>
@@ -70,7 +73,7 @@ export default function HealthEventNotificationEmail(props) {
         </div>
       </Body>
 
-      <Footer color="#134ac0" />
+      <Footer />
     </Layout>
   );
 
