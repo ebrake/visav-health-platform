@@ -64,6 +64,7 @@ module.exports = function(HealthEventMessage) {
 
     if( patient && doctor && healthEvent){
       HealthEventMessage.create({
+        type: type,
         date: new Date(),
         dismissed: false,
         actionTaken: "",
