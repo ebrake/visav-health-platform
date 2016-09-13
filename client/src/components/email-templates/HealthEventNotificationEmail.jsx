@@ -56,7 +56,7 @@ export default function HealthEventNotificationEmail(props) {
     <Layout>
       <PhlexHeader />
 
-      <Body backgroundColor={phlexColors.getColor('darkestGrey')} textColor={phlexColors.getFontColor('light')}>
+      <Body textColor={phlexColors.getFontColor('dark')}>
         <h2 className="title">Dr. {doctor.lastName}, you have 1 new notification</h2>
         <div className="health-event-info">
           <p>from {patient.firstName} {patient.lastName} regarding their therapy.</p>
