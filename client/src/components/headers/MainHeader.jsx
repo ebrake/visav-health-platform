@@ -11,7 +11,6 @@ class MainHeader extends React.Component {
         <div className="header-row">
           <h1 className="title">Visav</h1>
           <ul className="horizontal-nav nav" id="primary-nav">
-            <NavItem title="Invite" />
             <NavItem title="Logout" imgSrc="logout.png" />
           </ul>
         </div>

@@ -30,7 +30,7 @@ class Signup extends React.Component {
     let self = this;
 
     fetch(
-      process.env.API_ROOT + 'api/people/create', 
+      process.env.API_ROOT + 'api/People/signup', 
       {
         method: 'POST', 
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },

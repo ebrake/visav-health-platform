@@ -64,14 +64,14 @@
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "ALLOW",
-      "property": "remoteLogin"
+      "property": "signin"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "ALLOW",
-      "property": "remoteCreate"
+      "property": "signup"
     },
     {
       "accessType": "EXECUTE",

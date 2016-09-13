@@ -138,9 +138,5 @@ Password: testtest
   Run command: 'npm run test-server'
 
 ## How to Generate Documentation.
-1. Generate client documentation:
-  Run command `npm run doc-client`
-  The docs will be generated in QA/jsdoc/client.
-2. Generate server documentation:
-  Run command `npm run doc-server`
-  The docs will be generated in QA/jsdoc/server.
+1. Run command `npm run doc`
+  The docs will be generated in QA/jsdoc/...

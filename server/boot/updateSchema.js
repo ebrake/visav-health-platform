@@ -1,5 +1,9 @@
 import fs from 'fs';
 
+/**
+ * A boot script function that automatically updates the PostgreSQL schema.
+ * @module boot/updateSchema
+ */
 module.exports = function enableAuthentication(app) {
   //Determine which app models require postgres
   var modelConfigObj = JSON.parse(fs.readFileSync('./server/model-config.json', 'utf8'));

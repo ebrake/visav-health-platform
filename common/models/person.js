@@ -2,12 +2,11 @@ import React from 'react';
 import Oy from 'oy-vey';
 import GettingStartedEmail from '../../client/src/components/email-templates/GettingStartedEmail';
 
-var globalConfig = require('../../global.config');
 var path = require('path');
 
 module.exports = function(Person) {
 
-  Person.remoteCreate = function(req, cb) {
+  Person.signup = function(req, cb) {
     if (!req.body.email) 
       return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
     if (!req.body.password) 
@@ -69,11 +68,11 @@ module.exports = function(Person) {
     var createdUser = createdObject.data.user;
     Person.app.models.Email.send({
       to: createdUser.email,
-      from: globalConfig.SYSTEM_EMAIL,
-      subject: 'Welcome to '+globalConfig.APP_NAME,
+      from: Person.app.globalConfig.SYSTEM_EMAIL,
+      subject: 'Welcome to '+Person.app.globalConfig.APP_NAME,
       html: Oy.renderTemplate(<GettingStartedEmail user={createdUser} />, {
-        title: 'Getting Started with '+globalConfig.APP_NAME,
-        previewText: 'Welcome to '+globalConfig.APP_NAME+'...'
+        title: 'Getting Started with '+Person.app.globalConfig.APP_NAME,
+        previewText: 'Welcome to '+Person.app.globalConfig.APP_NAME+'...'
       })
     }, function(err) {
       if (err) return next(err);
@@ -83,18 +82,18 @@ module.exports = function(Person) {
   });
 
   Person.remoteMethod(
-    "remoteCreate",
+    "signup",
     {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
-      http: { path: '/create', verb: 'post' },
+      http: { path: '/signup', verb: 'post' },
       returns: { arg: 'data', type: 'object' },
       description: "Accepts a new user's email and password, returns the created user"
     }
   );
 
-  Person.remoteLogin = function(req, cb){
+  Person.signin = function(req, cb){
     if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
     if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
 
@@ -121,7 +120,7 @@ module.exports = function(Person) {
   }
 
   Person.remoteMethod(
-    "remoteLogin",
+    "signin",
     {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } }
