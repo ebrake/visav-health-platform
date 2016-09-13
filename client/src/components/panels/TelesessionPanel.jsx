@@ -118,6 +118,10 @@ class TelesessionPanel extends React.Component {
       this.createSession();
     }
     else{
+      // If the session Id hasn't changed, don't auto-connect.
+      if (this.state.sessionId)
+        if (this.state.sessionId==sessionId)
+          return;
       this.setState({sessionId: sessionId});
       this.connectToSession();
     }
