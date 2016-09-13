@@ -1,4 +1,3 @@
-var globalConfig = require('../../global.config');
 import Oy from 'oy-vey';
 import React from 'react';
 import HealthEventNotificationEmail from '../../client/src/components/email-templates/HealthEventNotificationEmail';

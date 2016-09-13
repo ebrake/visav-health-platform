@@ -1,6 +1,5 @@
 import fetch from 'node-fetch';
 import plivo from 'plivo';
-var globalConfig = require('../../global.config');
 
 module.exports = function(Message) {
   Message.send = function(req, res, cb) {    
@@ -58,8 +57,8 @@ module.exports = function(Message) {
 
     Email.send({
       to: recipient.email,
-      from: globalConfig.SYSTEM_EMAIL,
-      subject: globalConfig.APP_NAME + subjectText,
+      from: req.app.globalConfig.SYSTEM_EMAIL,
+      subject: req.app.globalConfig.APP_NAME + subjectText,
       html: html
     }, function(err) {
       if (err){
