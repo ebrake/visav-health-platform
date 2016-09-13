@@ -28,6 +28,14 @@ class TelesessionActions {
     return event;
   }
 
+  sendChatMessage(data){
+    return data;
+  }
+
+  setActiveSession(session){
+    return session;
+  }
+
 }
 
 export default alt.createActions(TelesessionActions);

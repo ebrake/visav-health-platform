@@ -128,6 +128,28 @@
   flex: 1 0 auto;
 }
 
+.ChatPanel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  @media (--lt-md) {
+    flex: 1 0 auto;
+  }
+
+  .ChatMessageBox {
+    background-color: rgba(0, 0, 0, 0.5);
+    width:100%;
+    height:100px;
+    color: $medium-text-color;
+  }
+
+  .ChatInputBox {
+    width:100%;
+    height:30px;
+  }
+
+}
+
 .PatientInfoPanel {
   flex: 1 0 50%;
   margin-top: 10px;

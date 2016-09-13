@@ -54,6 +54,13 @@ class TelesessionPanel extends React.Component {
       return;
     }
     const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.sessionId);
+
+    // Set the OpenTok session in the TelesessionStore.
+    // (I am deferring the method as TelesessionActions may not be ready yet)
+    TelesessionActions.setActiveSession.defer(function() {
+      TelesessionActions.setActiveSession(session);
+    });
+
     this.setState({activeSession: session});
     const publisher = OT.initPublisher(this.refs.publisherSection, {
       insertMode:'append',
@@ -114,8 +121,37 @@ class TelesessionPanel extends React.Component {
     });
 
   }
-  telesessionChanged(telesessionState){
+  telesessionChanged(telesessionState) {
+
     var sessionId = telesessionState.sessionId;
+
+    if (telesessionState.messageToSend) {
+      /**
+        * Sends a chat message (signal) via this.state.activeSession
+      */
+      if (this.state.activeSession) {
+        var message = telesessionState.messageToSend;
+        telesessionState.messageToSend=null;
+        this.state.activeSession.signal(
+          {
+            data:JSON.stringify({
+              email: this.props.user.email,
+              message: message,
+              firstName: this.props.user.firstName,
+              lastName: this.props.user.lastName,
+              date: new Date()
+            }),
+            type:"chat"
+          },
+          function(error) {
+            if (error) console.log("signal error (" + error.code + "): " + error.message);
+            else console.log("signal sent.");
+          }
+        );
+
+      }
+    }
+
     if (!sessionId) {
       this.createSession();
     }
@@ -214,6 +250,10 @@ class TelesessionPanel extends React.Component {
       );
     }
   }
+};
+
+TelesessionPanel.propTypes = {
+  user: React.PropTypes.object.isRequired
 };
 
 export default TelesessionPanel;

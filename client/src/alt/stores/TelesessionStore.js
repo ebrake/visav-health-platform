@@ -7,7 +7,9 @@ class TelesessionStore {
 
     this.bindListeners({
       handleCreateSession: TelesessionActions.CREATE_SESSION,
-      handleBroadcastChat: TelesessionActions.BROADCAST_CHAT
+      handleBroadcastChat: TelesessionActions.BROADCAST_CHAT,
+      handleSendChatMessage:  TelesessionActions.SEND_CHAT_MESSAGE,
+      handleSetActiveSession: TelesessionActions.SET_ACTIVE_SESSION,
     });
 
   }
@@ -19,6 +21,10 @@ class TelesessionStore {
       this.sessionId = response.session.sessionId;
       this.token = response.token;
     }
+  }
+
+  handleSetActiveSession(session) {
+    this.activeSession = session;
   }
 
   handleBroadcastChat(event) {
@@ -35,6 +41,10 @@ class TelesessionStore {
     }
     console.log(event);
     this.chatEvents ? this.chatEvents.push(event) : this.chatEvents = [event];
+  }
+
+  handleSendChatMessage(message) {
+    this.messageToSend = message;
   }
 
 }
