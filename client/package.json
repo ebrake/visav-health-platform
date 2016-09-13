@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "alt": "^0.18.5",
+    "alt": "^0.18.6",
     "autoprefixer": "6.3.7",
     "babel-core": "6.10.4",
     "babel-eslint": "6.1.2",
