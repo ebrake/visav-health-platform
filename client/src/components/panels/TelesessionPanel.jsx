@@ -80,7 +80,9 @@ class TelesessionPanel extends React.Component {
         console.log('A client disconnected.');
         self.disconnectFromSession();
       },
-
+      "signal:chat": function (event) {
+        TelesessionActions.broadcastChat(event);
+      }
     });
 
     session.on("streamCreated", function (event) {

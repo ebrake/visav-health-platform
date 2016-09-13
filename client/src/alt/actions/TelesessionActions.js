@@ -23,6 +23,11 @@ class TelesessionActions {
       });
     }
   }
+
+  broadcastChat(event){
+    return event;
+  }
+
 }
 
 export default alt.createActions(TelesessionActions);
