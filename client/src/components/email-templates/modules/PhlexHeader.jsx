@@ -1,0 +1,28 @@
+import React from 'react';
+import EmptySpace from './EmptySpace';
+import phlexColors from '../../utils/phlexColors';
+
+const Header = (props) => {
+  const style = {
+    width: '100%',
+    margin: '50px 0px'
+  }
+  const h1Style = {
+    width: '100%',
+    size: '36px',
+    color: phlexColors.getColor('blue'),
+    fontFamily: 'Arial',
+    textAlign: 'center'
+  }
+
+  return (
+    <div style={style}>
+
+      <h1 style={h1Style}>Phlex RS</h1>
+
+    </div>
+  );
+};
+
+
+export default Header;
