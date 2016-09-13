@@ -50,7 +50,7 @@ class Signup extends React.Component {
       } else {
         //trigger "duplicate email" or whatever error message is in data.user.type
         console.log("Error creating account:");
-        console.dir(data);
+        console.dir(response);
       }
     })
     .catch(err => {

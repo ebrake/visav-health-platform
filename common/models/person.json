@@ -72,10 +72,20 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "remoteCreate"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "invite"
     }
   ],
   "methods": {},
   "scope": {
-    "include": "roles"
+    "include": [
+      "roles", 
+      "organization"
+    ]
   }
 }

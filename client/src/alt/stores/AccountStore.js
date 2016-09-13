@@ -14,7 +14,7 @@ class AccountStore {
 
   handleLogin(user) {
     this.user = user;
-    this.role = user.roles[0] ? user.roles[0].name : undefined;
+    this.role = (user.roles && user.roles[0]) ? user.roles[0].name : undefined;
   }
 
   handleLogout() {

@@ -44,6 +44,7 @@
     "oy-vey": "^0.7.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
+    "react-dropdown": "^1.1.0",
     "react-router": "^2.6.0",
     "recharts": "^0.13.3",
     "serve-favicon": "^2.0.1",
