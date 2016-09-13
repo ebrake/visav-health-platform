@@ -3,54 +3,41 @@ import plivo from 'plivo';
 var globalConfig = require('../../global.config');
 
 module.exports = function(Message) {
-  Message.send = function(req, res, cb) {
-    console.log('MESSAGE SEND HIT');
+  Message.send = function(req, res, cb) {    
     var { type, subtype, sender, recipient } = req.body;
     
     if (!type) {
       //find users preferred messaging type for the message's subtype
       //ex. Dr. X like texts for health events
-      //for now, hardcoding
+      //for now, hardcoding default
       type='email';
     }
     if (type && subtype && sender && recipient) {
-      if (type == "email") {
-        if (subtype == "healthEvent") {
-          if (req.body.healthEvent) {
-            var requestBody = JSON.stringify({
-              healthEvent: req.body.healthEvent,
-              doctor: recipient,
-              patient: sender,
-              type: type
-            });
-            fetch(process.env.API_ROOT+'api/healthEventMessages/send', {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: requestBody
-            })
-            .then(function(res) {
-              return res.json();
-            }).then(function(json) {
-              console.log(json);
-            });
-          }
-          else{
-            //healthEvent is required
-            return;
-          }
+      if (subtype == "healthEvent") {
+        if (req.body.healthEvent) {
+          var requestBody = JSON.stringify({
+            healthEvent: req.body.healthEvent,
+            doctor: recipient,
+            patient: sender,
+            type: type
+          });
+          fetch(process.env.API_ROOT+'api/healthEventMessages/send', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: requestBody
+          })
+          .then(function(res) {
+            return res.json();
+          }).then(function(json) {
+            console.log(json);
+          });
         }
-      }
-      else if (type == "text"){
-        if (subtype == "healthEvent") {
-
-        }
-      }
-      else if (type == "push"){
-        if (subtype == "call") {
-
+        else{
+          //healthEvent is required
+          return;
         }
       }
     }
@@ -86,17 +73,17 @@ module.exports = function(Message) {
     //send text
     var { recipient, contentString } = req.body;
     var plivoApi = plivo.RestAPI({
-      authId: globalConfig.PLIVO_AUTH_ID,
-      authToken: globalConfig.PLIVO_AUTH_TOKEN
+      authId: process.env.PLIVO_AUTH_ID,
+      authToken: process.env.PLIVO_AUTH_TOKEN
     });
     var plivoParams = {
-      'src': '1111111111', // Sender's phone number with country code
+      'src': 'ALPHA-ID', // Sender's phone number with country code
       'dst' : recipient.phone || 12508883312, // Receiver's phone Number with country code
       'text' : contentString || 'Hi, this is a test message from Visav',
-      'url' : "http://example.com/report/", // The URL to which with the status of the message is sent
-      'method' : "GET" // The method used to call the url
     };
-    plivoApi.send_message(params, function (status, response) {
+    console.log('sending text with params: ');
+    console.log(plivoParams);
+    plivoApi.send_message(plivoParams, function (status, response) {
       console.log('Status: ', status);
       console.log('API Response:\n', response);
       console.log('Message UUID:\n', response['message_uuid']);
