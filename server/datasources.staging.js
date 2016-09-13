@@ -1,12 +1,9 @@
-// In production
-// This will override datasources.json
-// to use secure environment variables (Heroku)
-// for database connection
-// To test, set NODE_ENV=production and DATABASE_URL=[heroku-postgresql-data-base-url] in your .env
-
+/**
+ * In STAGING environment this overrides datasources.json
+ * @module modules/datasources-staging
+ */
 module.exports = {
   "psql": {
-    "connector": "postgresql",
     "url": process.env.DATABASE_URL + '?ssl=true'
   }
 }

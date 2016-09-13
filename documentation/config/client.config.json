@@ -11,10 +11,15 @@
     "plugins": [],
     "templates": {
         "cleverLinks": false,
-        "monospaceLinks": false
+        "monospaceLinks": false,
+        "default": {
+            "includeDate": false
+        }
     },
     "opts": {
+        "encoding": "utf8",
         "recurse" : true,
-        "destination": "./QA/jsdoc/client"
+        "destination": "./documentation/",
+        "template": "node_modules/docdash"
     }
 }

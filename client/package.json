@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "version": "0.0.1",
+  "name": "VISAV-frontend",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "alt": "^0.18.5",
