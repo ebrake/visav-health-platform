@@ -77,7 +77,7 @@ module.exports = function(Message) {
       authToken: process.env.PLIVO_AUTH_TOKEN
     });
     var plivoParams = {
-      'src': 'ALPHA-ID', // Sender's phone number with country code
+      'src': process.env.PLIVO_SRC_NUMBER, // Sender's phone number with country code
       'dst' : recipient.phone || 12508883312, // Receiver's phone Number with country code
       'text' : contentString || 'Hi, this is a test message from Visav',
     };
