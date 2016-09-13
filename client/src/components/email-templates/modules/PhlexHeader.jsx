@@ -5,14 +5,15 @@ import phlexColors from '../../utils/phlexColors';
 const Header = (props) => {
   const style = {
     width: '100%',
-    margin: '50px 0px'
+    margin: '50px 0px 30px 0px'
   }
   const h1Style = {
     width: '100%',
-    size: '36px',
+    fontSize: '80px',
     color: phlexColors.getColor('blue'),
     fontFamily: 'Arial',
-    textAlign: 'center'
+    textAlign: 'center',
+    margin: '0 auto'
   }
 
   return (
