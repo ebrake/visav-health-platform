@@ -10,7 +10,7 @@ export default (props) => {
     fontSize: '18px',
     textAlign: 'center',
     padding: '20px',
-    margin: '0px 0px 10px 0px'
+    margin: '0px 0px 30px 0px'
   };
 
   return (
