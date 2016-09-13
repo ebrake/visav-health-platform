@@ -22,3 +22,5 @@ server-dist
 client-dist
 /client/build/*
 /psd/*
+documentation/VISAV-backend/*
+documentation/VISAV-frontend/*

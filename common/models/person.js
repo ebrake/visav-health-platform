@@ -6,7 +6,8 @@ var globalConfig = require('../../global.config');
 var path = require('path');
 
 module.exports = function(Person) {
-  Person.remoteCreate = function(req, cb) {
+
+  Person.createUser = function(req, cb) {
     if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'Please provide a valid email address', status: 'error' });
     if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'No password was provided', status: 'error' });
 
@@ -27,7 +28,7 @@ module.exports = function(Person) {
   }
 
   //send verification email after registration
-  Person.afterRemote('remoteCreate', function(context, createdObject, next) {
+  Person.afterRemote('createUser', function(context, createdObject, next) {
 
     if (createdObject.user.status == 'error') {
       return next();
@@ -51,19 +52,7 @@ module.exports = function(Person) {
 
   });
 
-  Person.remoteMethod(
-    "remoteCreate",
-    {
-      accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } }
-      ],
-      http: { path: '/create', verb: 'post' },
-      returns: { arg: 'user', type: 'object' },
-      description: "Accepts a new user's email and password, returns the created user"
-    }
-  );
-
-  Person.remoteLogin = function(req, cb){
+  Person.loginUser = function(req, cb){
     if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
     if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
 
@@ -83,12 +72,24 @@ module.exports = function(Person) {
   }
 
   Person.remoteMethod(
-    "remoteLogin",
+    "createUser",
     {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
-      http: { path: '/login', verb: 'post' },
+      http: { path: '/createUser', verb: 'post' },
+      returns: { arg: 'user', type: 'object' },
+      description: "Accepts a new user's email and password, returns the created user"
+    }
+  );
+
+  Person.remoteMethod(
+    "loginUser",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } }
+      ],
+      http: { path: '/loginUser', verb: 'post' },
       returns: { arg: 'token', type: 'object' },
       description: "Accepts a user's email and password, returns an access token"
     }

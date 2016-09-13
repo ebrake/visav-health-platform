@@ -6,6 +6,10 @@ var testUser = {
   lastName: 'McLeon'
 };
 
+/**
+ * A boot script function that generates the demo user.
+ * @module boot/generateDemoUser
+ */
 module.exports = function(app) {
 
   var filter = {
