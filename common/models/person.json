@@ -13,6 +13,9 @@
     "lastName": {
       "type": "String",
       "default": "Goudie"
+    },
+    "phone": {
+      "type": "String"
     }
   },
   "validations": [],
