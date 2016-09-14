@@ -23,6 +23,11 @@
       "type": "boolean",
       "required": true,
       "default": false
+    },
+    "deliveryMethod": {
+      "type": "string",
+      "required": false,
+      "default": "'email'"
     }
   },
   "validations": [],

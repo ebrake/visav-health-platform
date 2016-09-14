@@ -10,11 +10,6 @@
       "type": "string",
       "required": true,
       "default": "''"
-    },
-    "type": {
-      "type": "string",
-      "required": true,
-      "default": "''"
     }
   },
   "validations": [],
