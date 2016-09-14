@@ -6,9 +6,13 @@ import fetch from 'node-fetch';
 module.exports = function(HealthEventMessage) {
   HealthEventMessage.dismiss = function(req, res, cb) {
     var messageId = req.query.healthEventMessageId;
-
-    console.log('DISMISS REQUEST:');
-    console.log(messageId);
+    var err;
+    if (!messageId) {
+      err = new Error('Expected query value healthEventMessageId is missing.');
+      err.statusCode = 417;
+      err.code = 'MESSAGE_SEND_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
     HealthEventMessage.findOne({
         where: { id: messageId }
       }, function(err, healthEventMessage){
@@ -60,8 +64,14 @@ module.exports = function(HealthEventMessage) {
 
   HealthEventMessage.send = function(req, res, cb) {
     var { patient, doctor, healthEvent, exercise, deliveryMethod } = req.body;
-
-    if( patient && doctor && healthEvent){
+    var err;
+    if( !patient || !doctor || !healthEvent){
+      err = new Error('A valid patient, doctor and health event are required.');
+      err.statusCode = 417;
+      err.code = 'HEALTH_EVENT_MESSAGE_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    else{
       HealthEventMessage.create({
         deliveryMethod: deliveryMethod,
         date: new Date(),
@@ -73,9 +83,9 @@ module.exports = function(HealthEventMessage) {
         sender: patient.id,
         healthevent: healthEvent.id
       }, function(err, createdMessage) {
-        if (err) return;
+        if (err) return cb(err, { status: 'failure', message: err.message });
         createdMessage.save(function(err){
-          if (err) return;
+          if (err) return cb(err, { status: 'failure', message: err.message });
           var requestBody;
           var apiRoute;
           if (deliveryMethod=='text') {
@@ -119,11 +129,11 @@ module.exports = function(HealthEventMessage) {
               console.log(json);
               createdMessage.delivered = true;
               createdMessage.save();
+              return cb(null, { status: 'success' });
             });          
         });
       }) 
     }
-    
   };
 
 

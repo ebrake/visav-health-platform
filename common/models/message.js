@@ -4,7 +4,7 @@ import plivo from 'plivo';
 module.exports = function(Message) {
   Message.send = function(req, res, cb) {    
     var { type, deliveryMethod, sender, recipient } = req.body;
-    
+    var err;
     if (!deliveryMethod) {
       //find users preferred messaging type for the message's deliveryMethod
       //ex. Dr. X like texts for health events
@@ -32,22 +32,50 @@ module.exports = function(Message) {
             return res.json();
           }).then(function(json) {
             console.log(json);
+            return cb(null, { status: 'success' });
           });
         }
         else{
           //healthEvent is required
-          return;
+          err = new Error('A valid health event is required for messages with type=healthEvent.');
+          err.statusCode = 417;
+          err.code = 'MESSAGE_SEND_FAILED_MISSING_REQUIREMENTS';
+          return cb(err, { status: 'failure', message: err.message });
         }
+      }
+      else{
+        err = new Error('Unrecognized message type: ' + type);
+        err.statusCode = 422;
+        err.code = 'MESSAGE_SEND_FAILED_INVALID_REQUIREMENTS';
+        return cb(err, { status: 'failure', message: err.message });
       }
     }
     else{
-      //type, sender and receiver are required
-      return;
+      err = new Error('Valid type, sender and receiver are required');
+      err.statusCode = 417;
+      err.code = 'MESSAGE_SEND_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
     }
   };
 
   Message.sendEmail = function(req, res, cb) {
     var { recipient, html, subject } = req.body;
+    var err;
+    if (!recipient) {
+      err = new Error('Valid recipient required');
+      err.statusCode = 417;
+      err.code = 'EMAIL_SEND_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    else if (!recipient.email){
+      err = new Error('Valid email required on recipient.email');
+      err.statusCode = 422;
+      err.code = 'EMAIL_SEND_FAILED_INVALID_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+
+    if(!html) html = '';
+
     var subjectText;
     if (subject) {
       subjectText = ': ' + subject;
@@ -62,15 +90,31 @@ module.exports = function(Message) {
       html: html
     }, function(err) {
       if (err){
-        console.log(err);
-        return;
+        return cb(err, { status: 'failure', message: err.message });
       }
+      return cb(null, { status: 'success' });
     });
   };
 
   Message.sendText = function(req, res, cb) {
     //send text
     var { recipient, contentString } = req.body;
+
+    if (!recipient) {
+      err = new Error('Valid recipient required.');
+      err.statusCode = 417;
+      err.code = 'TEXT_SEND_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    else if (!recipient.phone){
+      err = new Error('Valid phone number required on recipient.phone');
+      err.statusCode = 422;
+      err.code = 'TEXT_SEND_FAILED_INVALID_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+
+    if(!contentString) contentString = '';
+
     var plivoApi = plivo.RestAPI({
       authId: process.env.PLIVO_AUTH_ID,
       authToken: process.env.PLIVO_AUTH_TOKEN
@@ -85,10 +129,23 @@ module.exports = function(Message) {
       console.log('API Response:\n', response);
       console.log('Message UUID:\n', response['message_uuid']);
       console.log('Api ID:\n', response['api_id']);
+      return cb(null, { status: 'success' });
     });
 
   };
 
+  Message.remoteMethod(
+    "dismiss",
+    { 
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'res', type: 'object', http: { source: 'res' } },
+      ],
+      http: { path: '/dismiss', verb: 'get' },
+      returns: { arg: 'data', type: 'array' },
+      description: "Makes note the provided message has been dismissed."
+    }
+  );
   Message.remoteMethod(
     "send",
     { 
