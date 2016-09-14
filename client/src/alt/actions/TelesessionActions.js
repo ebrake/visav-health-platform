@@ -24,11 +24,11 @@ class TelesessionActions {
     }
   }
 
-  broadcastChat(event){
+  receivedChat(event){
     return event;
   }
 
-  sendChatMessage(data){
+  sendChat(data){
     return data;
   }
 

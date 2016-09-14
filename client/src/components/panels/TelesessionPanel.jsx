@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { config } from 'react-loopback';
+import moment from 'moment';
 import scriptLoader from 'react-async-script-loader'
-
 import TelesessionActions from '../../alt/actions/TelesessionActions';
 import NotificationActions from '../../alt/actions/NotificationActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
@@ -72,9 +72,8 @@ class TelesessionPanel extends React.Component {
     this.setState({activePublisher: publisher});
 
     session.connect(TelesessionStore.getState().token, function (error) {
-      if (!error) {
-        session.publish(publisher);
-      }
+      if (error) return console.log('There was an error connecting to the session:', error.code, error.message);
+      session.publish(publisher);
     });
 
     session.on({
@@ -88,7 +87,7 @@ class TelesessionPanel extends React.Component {
         self.disconnectFromSession();
       },
       "signal:chat": function (event) {
-        TelesessionActions.broadcastChat(event);
+        TelesessionActions.receivedChat(event);
       }
     });
 
@@ -139,7 +138,7 @@ class TelesessionPanel extends React.Component {
               message: message,
               firstName: this.props.user.firstName,
               lastName: this.props.user.lastName,
-              date: new Date()
+              date: moment().format()
             }),
             type:"chat"
           },

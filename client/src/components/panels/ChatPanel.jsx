@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import moment from 'moment';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import TelesessionActions from '../../alt/actions/TelesessionActions';
 
@@ -34,7 +35,7 @@ class ChatPanel extends React.Component {
   }
 
   sendMessage(message) {
-    TelesessionActions.sendChatMessage(message);
+    TelesessionActions.sendChat(message);
   }
 
   handleKeyPress(event) {
@@ -59,10 +60,12 @@ class ChatPanel extends React.Component {
     if (chatEvents) {
       Rows = chatEvents.map(function(event) {
         const data = JSON.parse(event.data);
+        const dateString = moment(data.date).format('MMMM Do YYYY, h:mm:ss a');
+        const chatRowClass = (event.fromMe ? 'ChatRowFromMe' : 'ChatRowToMe');
         return (
-          <div className="ChatMessageRow" key={event.id}>
+          <div className={chatRowClass} key={event.id}>
             <span className="ChatMessageHeader">
-              <b>{data.email}</b> <span>{data.date}</span>
+              <b>{data.email}</b> <span>{dateString}</span>
             </span><br/>
             {data.message}
           </div>

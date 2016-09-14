@@ -7,8 +7,8 @@ class TelesessionStore {
 
     this.bindListeners({
       handleCreateSession: TelesessionActions.CREATE_SESSION,
-      handleBroadcastChat: TelesessionActions.BROADCAST_CHAT,
-      handleSendChatMessage:  TelesessionActions.SEND_CHAT_MESSAGE,
+      handleReceivedChat: TelesessionActions.RECEIVED_CHAT,
+      handleSendChat:  TelesessionActions.SEND_CHAT,
       handleSetActiveSession: TelesessionActions.SET_ACTIVE_SESSION,
     });
 
@@ -27,7 +27,7 @@ class TelesessionStore {
     this.activeSession = session;
   }
 
-  handleBroadcastChat(event) {
+  handleReceivedChat(event) {
     console.log("Chat event sent from connection " + event.from.id + " :");
     /** Assign a unique id to each event
      * (Useful in React; Each child in an array or iterator should have a unique "key" prop)
@@ -39,11 +39,12 @@ class TelesessionStore {
         return v.toString(16);
       });
     }
+    event.fromMe = event.from.connectionId === this.activeSession.connection.connectionId;
     console.log(event);
     this.chatEvents ? this.chatEvents.push(event) : this.chatEvents = [event];
   }
 
-  handleSendChatMessage(message) {
+  handleSendChat(message) {
     this.messageToSend = message;
   }
 

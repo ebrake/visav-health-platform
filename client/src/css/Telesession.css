@@ -143,9 +143,23 @@
     color: $medium-text-color;
   }
 
+  .ChatRowFromMe {
+    
+  }
+
+  .ChatRowToMe {
+
+  }
+
+  .ChatMessageHeader {
+
+  }
+
   .ChatInputBox {
     width:100%;
     height:30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: $medium-text-color;
   }
 
 }
