@@ -223,12 +223,19 @@ module.exports = function(HealthEvent) {
   }
 
   HealthEvent.retreiveData = function(req, cb) {
-    if (!req.user) {
-      return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
-    } 
-
     var person = req.user;
-
+    if (!person) {
+      err = new Error('Valid person required.');
+      err.statusCode = 417;
+      err.code = 'HEALTH_EVENT_GET_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    else if (!person.id){
+      err = new Error('Valid id required on person.id');
+      err.statusCode = 422;
+      err.code = 'HEALTH_EVENT_GET_FAILED_INVALID_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
     HealthEvent.find({
       where: { person: person.id },
       include: 'exercise',

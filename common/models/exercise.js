@@ -3,19 +3,38 @@ var Promise = require('bluebird');
 module.exports = function(Exercise) {
   /* RECEIVE DATA */
 
-  var saveRep = function(rep, person, exercise, Rep) {
+  var saveRep = function(req, rep, person, exercise) {
     return new Promise(function(resolve, reject){
+      var Rep = req.app.models.Rep;
       var date = rep.date;
 
-      if (typeof date != 'date') {
-        try { 
-          date = new Date(date);
-        } catch(e) { return reject(e); }
-      }
-
       if (!date) {
-        //missing required info
-        return reject(new Error('Missing required field date on a rep.'));
+        err = new Error('Valid date required on rep.date');
+        err.statusCode = 417;
+        err.code = 'REP_CREATE_FAILED_MISSING_REQUIREMENTS';
+        return reject(err);
+      }
+      if (typeof date != 'date') {
+        try {
+          date = new Date(date)
+        } catch(e) {
+          err = new Error('Could not create Date object from rep.date for reason:\n' + e.message);
+          err.statusCode = 422;
+          err.code = 'REP_CREATE_FAILED_INVALID_REQUIREMENTS';
+          return reject(err);
+        }
+      }
+      if (!person) {
+        err = new Error('Valid person required.');
+        err.statusCode = 417;
+        err.code = 'REP_CREATE_FAILED_MISSING_REQUIREMENTS';
+        return cb(err, { status: 'failure', message: err.message });
+      }
+      else if (!person.id){
+        err = new Error('Valid id required on person.id');
+        err.statusCode = 422;
+        err.code = 'REP_CREATE_FAILED_INVALID_REQUIREMENTS';
+        return cb(err, { status: 'failure', message: err.message });
       }
 
       Rep.find({
@@ -70,9 +89,9 @@ module.exports = function(Exercise) {
     })
   }
 
-  var saveReps = function(reps, person, exercise, Rep) {
+  var saveReps = function(req, reps, person, exercise) {
     return Promise.all(reps.map(function(rep){
-      return saveRep(rep, person, exercise, Rep);
+      return saveRep(req, rep, person, exercise);
     }))
     .then(function(reps){
       return { exercise: exercise, reps: reps };
@@ -82,39 +101,41 @@ module.exports = function(Exercise) {
     }) 
   }
 
-  var saveExerciseAndReps = function(exercise, person, HealthEvent, Rep) {
+  var saveExerciseAndReps = function(req, exercise, person) {
     return new Promise(function(resolve, reject){
+      var HealthEvent = req.app.models.HealthEvent;
       var date = exercise.date
-        , reps = exercise.reps;
-
-      if (typeof date != 'date') {
-        try {
-          date = new Date(date);
-        } catch(e) { return reject(e); }
-      }    
+      var reps = exercise.reps;
 
       if (!date) {
-        //we're missing required fields
-        return reject(new Error('Mising required field date on an exercise.'));
+        err = new Error('Valid date required on exercise.date');
+        err.statusCode = 417;
+        err.code = 'EXERCISE_SAVE_FAILED_MISSING_REQUIREMENTS';
+        return reject(err);
+      }
+      if (typeof date != 'date') {
+        try {
+          date = new Date(date)
+        } catch(e) {
+          err = new Error('Could not create Date object from exercise.date for reason:\n' + e.message);
+          err.statusCode = 422;
+          err.code = 'EXERCISE_SAVE_FAILED_INVALID_REQUIREMENTS';
+          return reject(err);
+        }
       }
 
       HealthEvent.find({
         where: { person: person.id, exerciseDate: date }
       }, function(err, healthevents){
-        if (err) {
-          return reject(err);
-        }
-
+        if (err) return reject(err);
         var healtheventId = healthevents[0] ? healthevents[0].id : false;
 
         Exercise.find({
           where: { person: person.id, date: date }
         }, function(err, entries){
-          if (err) {
-            return reject(err);
-          }
+          if (err) return reject(err);
 
-          var ExerciseObj = {
+          var exerciseObj = {
             person: person.id,
             healthevent: healtheventId ? healtheventId : undefined,
             date: date,
@@ -127,33 +148,33 @@ module.exports = function(Exercise) {
 
           if (entries.length > 0) {
             //upsert (manually)
-            Exercise.findById(entries[0].id, function(err, createdExercise){
+            Exercise.findById(entries[0].id, function(err, exercise){
               if (err) return reject(err);
 
-              createdExercise.duration = ExerciseObj.duration;
-              createdExercise.type = ExerciseObj.type;
-              createdExercise.note = ExerciseObj.note;
-              createdExercise.isDemo = ExerciseObj.isDemo;
-              createdExercise.createdDate = ExerciseObj.createdDate;
+              exercise.duration = exerciseObj.duration;
+              exercise.type = exerciseObj.type;
+              exercise.note = exerciseObj.note;
+              exercise.isDemo = exerciseObj.isDemo;
+              exercise.createdDate = exerciseObj.createdDate;
 
-              if (!createdExercise.healthevent) {
-                createdExercise.healthevent = ExerciseObj.healthevent;
+              if (!exercise.healthevent) {
+                exercise.healthevent = exerciseObj.healthevent;
               }
 
-              createdExercise.save(function(err){
+              exercise.save(function(err){
                 if (err) return reject(err);
-                //console.log("Upserted Exercise: "+createdExercise.id);
-                return resolve(saveReps(reps, person, createdExercise, Rep));
+                //console.log("Upserted Exercise: "+exercise.id);
+                return resolve(saveReps(req, reps, person, exercise));
               })
             })
           } else {
             //insert
-            Exercise.create(ExerciseObj, function(err, createdExercise) {
+            Exercise.create(exerciseObj, function(err, exercise) {
               if (err) return reject(err);
-              createdExercise.save(function(err){
+              exercise.save(function(err){
                 if (err) return reject(err);
-                //console.log("Inserted Exercise: "+createdExercise.id);
-                return resolve(saveReps(reps, person, createdExercise, Rep));
+                //console.log("Inserted Exercise: "+exercise.id);
+                return resolve(saveReps(req, reps, person, exercise));
               })
             });
           }
@@ -162,37 +183,77 @@ module.exports = function(Exercise) {
     })
   }
 
-  Exercise.receiveData = function(req, data, cb) {
-    if (!req.user) {
-      return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
-    } 
+  Exercise.receiveData = function(req, cb) {
+    var err;
+    var person = req.user;
+    var exercises = req.body.data;
 
-    var person = req.user
-      , Rep = req.app.models.Rep
-      , HealthEvent = req.app.models.HealthEvent;
+    if (!person) {
+      err = new Error('Valid person required.');
+      err.statusCode = 417;
+      err.code = 'EXERCISE_CREATE_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    else if (!person.id){
+      err = new Error('Valid id required on person.id');
+      err.statusCode = 422;
+      err.code = 'EXERCISE_CREATE_FAILED_INVALID_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
 
-    Promise.all(data.map(function(exercise){
-      //We don't actually have the Rep model anywhere except on the request, so we need to pass it down the chain
-      return saveExerciseAndReps(exercise, person, HealthEvent, Rep);
+    if (!exercises || !exercises.length) {
+      err = new Error('Valid exercises required.');
+      err.statusCode = 417;
+      err.code = 'EXERCISES_CREATE_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+
+    Promise.all(exercises.map(function(exercise){
+      //We don't actually have the Exercise model anywhere except on the request, so we need to pass it down the chain
+      return saveExerciseAndReps(req, exercise, person);
     }))
-    .then(function(results){
-      //console.log("Results:");
-      //console.log(results);
-      return cb(null, { status: 'success' });
+    .then(function(exercisesAndReps){
+      return cb(null, { status: 'success', message: 'Successfully saved ' + exercisesAndReps.length + ' exercises' });;
+    }, function(err){
+      return cb(err, { status: 'failure', message: err.message });
     })
-    .catch(function(err){
-      console.log("Issue creating exercise data:");
-      console.log(err);
-      return cb(null, { status: 'failure', message: err.message });
-    }) 
+  }
+
+  /* RETRIEVE DATA */
+
+  var retrieveLimit = 1000;
+
+  Exercise.retrieveData = function(req, cb) {
+    var limit = req.body.limit || retrieveLimit;
+    var person = req.user;
+    if (!person) {
+      err = new Error('Valid person required.');
+      err.statusCode = 417;
+      err.code = 'EXERCISE_GET_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    else if (!person.id){
+      err = new Error('Valid id required on person.id');
+      err.statusCode = 422;
+      err.code = 'EXERCISE_GET_FAILED_INVALID_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    Exercise.find({
+      where: { person: person.id },
+      include: 'reps',
+      order: "date ASC",
+      limit: limit,
+    }, function(err, data){ 
+      if (err) return cb(err, { status: 'failure', message: err.message });
+      return cb(null, { status: 'success', exercises: data });
+    });
   }
 
   Exercise.remoteMethod(
     "receiveData",
     {
       accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'data', type: 'object' }
+        { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/create', verb: 'put' },
       returns: { arg: 'result', type: 'object' },
@@ -200,34 +261,11 @@ module.exports = function(Exercise) {
     }
   );
 
-  /* RETRIEVE DATA */
-
-  var retrieveLimit = 1000;
-
-  Exercise.retrieveData = function(req, limit, cb) {
-    if (!req.user) {
-      return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
-    } 
-
-    var person = req.user;
-
-    Exercise.find({
-      where: { person: person.id },
-      include: 'reps',
-      order: "date ASC",
-      limit: limit || retrieveLimit
-    }, function(err, data){ 
-      if (err) return cb(null, { status: 'failure', message: err.message });
-      return cb(null, { status: 'success', exercises: data });
-    });
-  }
-
   Exercise.remoteMethod(
     "retrieveData",
     { 
       accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'limit', type: 'number' }
+        { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/get', verb: 'get' },
       returns: { arg: 'data', type: 'array' },
