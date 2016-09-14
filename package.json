@@ -46,6 +46,7 @@
     "plivo": "^0.3.3",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
+    "react-dropdown": "^1.1.0",
     "react-router": "^2.7.0",
     "recharts": "^0.13.3",
     "serve-favicon": "^2.0.1",

@@ -4,12 +4,12 @@ import AccountStore from './alt/stores/AccountStore';
 import AccountActions from './alt/actions/AccountActions';
 import alt from './alt/alt';
 
-import Charts from './components/pages/Charts.jsx'
 import Telesession from './components/pages/Telesession.jsx'
 import PatientProfile from './components/pages/patient/PatientProfile'
 import DoctorProfile from './components/pages/doctor/DoctorProfile'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
+import InviteUsers from './components/pages/InviteUsers.jsx'
 import LiveSocket from './components/pages/LiveSocket.jsx'
 import EmailGettingStarted from './components/email-templates/GettingStartedEmail'
 import HealthEventNotificationEmail from './components/email-templates/HealthEventNotificationEmail'
@@ -44,11 +44,11 @@ var routes = (
     <Route path="/signup" component={Signup} onLeave={cacheStores} />
     <Route path="/logout" onEnter={logout} onLeave={cacheStores} />
     { /* AUTHENTICATED PAGES */ }
-    <Route path="/charts" component={Charts} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/telesession" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/patient" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/me" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/doctor" component={DoctorProfile} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/invite" component={InviteUsers} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/liveSocket" component={LiveSocket} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/email-templates/GettingStarted" component={EmailGettingStarted} />
     <Route path="/email-templates/HealthEventNotification" component={HealthEventNotificationEmail} onEnter={authCheck} />
