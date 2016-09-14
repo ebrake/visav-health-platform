@@ -10,24 +10,26 @@ module.exports = function(HealthEventMessage) {
     if (!messageId) {
       err = new Error('Expected query value healthEventMessageId is missing.');
       err.statusCode = 417;
-      err.code = 'MESSAGE_SEND_FAILED_MISSING_REQUIREMENTS';
+      err.code = 'HEALTH_EVENT_MESSAGE_DISSMISS_FAILED_MISSING_REQUIREMENTS';
       return cb(err, { status: 'failure', message: err.message });
     }
     HealthEventMessage.findOne({
         where: { id: messageId }
       }, function(err, healthEventMessage){
-        if (err) throw err;
-        if (healthEventMessage) {
-          healthEventMessage.dismissed = true;
-          healthEventMessage.save(function(err){
-            if (err) console.log(err);
-            else{
-              console.log('HealthEventMessage with id: ' + messageId + ' was successfully dismissed');
-            }
-          });
+        if (err) return cb(err, { status: 'failure', message: err.message });
+        if (!healthEventMessage) {
+          err = new Error('Could not find HealthEventMessage with id: ' + messageId);
+          err.statusCode = 422;
+          err.code = 'HEALTH_EVENT_MESSAGE_DISSMISS_FAILED_INVALID_REQUIREMENTS';
+          return cb(err, { status: 'failure', message: err.message });
         }
         else{
-          console.log('COULD NOT FIND HEALTH EVENT Message WITH ID: ' + messageId);
+          healthEventMessage.dismissed = true;
+          healthEventMessage.save(function(err){
+            if (err) return cb(err, { status: 'failure', message: err.message });
+            return cb(null, { status: 'success', message: 'Successfully dismissed HealthEventMessage: ' + messageId });
+
+          });
         }
       }
     );
@@ -36,26 +38,32 @@ module.exports = function(HealthEventMessage) {
   };
 
   HealthEventMessage.takeAction = function(req, res, cb) {
-    var messageId = req.query.healthEventMessageId
-    console.log('TAKE ACTION REQUEST:');
-    console.log(messageId);
+    var messageId = req.query.healthEventMessageId;
+    if (!messageId) {
+      err = new Error('Expected query value healthEventMessageId is missing.');
+      err.statusCode = 417;
+      err.code = 'HEALTH_EVENT_MESSAGE_ACTION_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
     HealthEventMessage.findOne({
         where: { id: messageId }
       }, function(err, healthEventMessage){
         if (err) throw err;
-        if (healthEventMessage) {
+        if (!healthEventMessage) {
+          err = new Error('Could not find HealthEventMessage with id: ' + messageId);
+          err.statusCode = 422;
+          err.code = 'HEALTH_EVENT_MESSAGE_ACTION_FAILED_INVALID_REQUIREMENTS';
+          return cb(err, { status: 'failure', message: err.message });
+        }
+        else{
           healthEventMessage.actionTaken = true;
           healthEventMessage.save(function(err){
             if (err) console.log(err);
             else{
-              console.log('Action was taken on healthEventMessage with id: ' + messageId);
+              return cb(null, { status: 'success', message: 'Successful action on HealthEventMessage: ' + messageId });
             }
           });
         }
-        else{
-          console.log('COULD NOT FIND HEALTH EVENT MESSAGE WITH ID: ' + messageId);
-        }
-        
       }
     );
 
@@ -114,8 +122,10 @@ module.exports = function(HealthEventMessage) {
               subject: subject
             });
           }
+
+          var assembledAPIRoute = process.env.API_ROOT + 'api/messages/' + apiRoute;
           
-          fetch(process.env.API_ROOT + 'api/messages/' + apiRoute, {
+          fetch(assembledAPIRoute, {
               method: 'POST',
               headers: {
                 'Accept': 'application/json',
@@ -129,7 +139,7 @@ module.exports = function(HealthEventMessage) {
               console.log(json);
               createdMessage.delivered = true;
               createdMessage.save();
-              return cb(null, { status: 'success' });
+              return cb(null, { status: 'success', apiRoute: assembledAPIRoute });
             });          
         });
       }) 
