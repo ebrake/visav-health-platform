@@ -85,10 +85,10 @@ class Login extends React.Component {
       <div className="page">
         <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
-          <div className="accounts-input-wrapper">
+          <div className="text-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} onKeyUp={this.keyPressed} />
           </div>
-          <div className="accounts-input-wrapper">
+          <div className="text-input-wrapper">
             <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
           </div>
           <button className="accounts-button" onClick={this.login}>

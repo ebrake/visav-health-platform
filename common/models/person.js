@@ -192,6 +192,22 @@ module.exports = function(Person) {
       description: "Takes in an email and role for a new user, creates their account and emails an invite to them."
     }
   );
+
+  Person.updateUser = function(req, cb) {
+    req.user.updateAttributes(req.body, cb);
+  }
+
+  Person.remoteMethod(
+    "updateUser",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } }
+      ],
+      http: { path: '/update-user', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Fuck you loopback"
+    }
+  )
 }
 
 function findPerson(email, Person) {

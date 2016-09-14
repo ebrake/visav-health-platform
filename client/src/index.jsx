@@ -23,13 +23,14 @@ import './css/base.css';
 import './css/button.css';
 import './css/colors.css';
 import './css/charts.css';
+import './css/dropdown.css';
 import './css/flex.css';
 import './css/inputs.css';
 import './css/header.css';
 import './css/media.css';
 import './css/nav.css';
 import './css/panel.css';
-import './css/Accounts.css';
+import './css/Account.css';
 import './css/Example.css';
 import './css/InviteUsers.css';
 import './css/SegmentedControl.css'
