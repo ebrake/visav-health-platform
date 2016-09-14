@@ -1,29 +1,11 @@
 {
-  "name": "HealthEventEmail",
-  "base": "PersistedModel",
+  "name": "HealthEventMessage",
+  "base": "Message",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "dismissed": {
-      "type": "boolean",
-      "default": false
-    },
-    "actionTaken": {
-      "type": "boolean",
-      "default": false
-    },
-    "date": {
-      "type": "date",
-      "required": true,
-      "default": "$now"
-    },
-    "delivered": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
     "url": {
       "type": "string",
       "required": true,
@@ -32,16 +14,6 @@
   },
   "validations": [],
   "relations": {
-    "patient": {
-      "type": "belongsTo",
-      "model": "Person",
-      "foreignKey": "patient"
-    },
-    "doctor": {
-      "type": "belongsTo",
-      "model": "Person",
-      "foreignKey": "doctor"
-    },
     "healthEvent": {
       "type": "belongsTo",
       "model": "HealthEvent",
@@ -68,6 +40,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "dismiss"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "send"
     }
   ],
   "methods": {}

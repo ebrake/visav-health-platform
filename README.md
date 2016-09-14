@@ -1,7 +1,7 @@
     ________  .__.__  .__  .__                             
     \______ \ |__|  | |  | |__| ____    ____   ___________ 
-    |    |  \|  |  | |  | |  |/    \  / ___\_/ __ \_  __ \
-    |    `   \  |  |_|  |_|  |   |  \/ /_/  >  ___/|  | \/
+    |    |   \|  |  | |  | |  |/    \  / ___\_/ __ \_  __ \
+    |    `    \  |  |_|  |_|  |   |  \/ /_/  >  ___/|  | \/
     /_______  /__|____/____/__|___|  /\___  / \___  >__|   
             \/                     \//_____/      \/       
 
@@ -138,9 +138,5 @@ Password: testtest
   Run command: 'npm run test-server'
 
 ## How to Generate Documentation.
-1. Generate client documentation:
-  Run command `npm run doc-client`
-  The docs will be generated in QA/jsdoc/client.
-2. Generate server documentation:
-  Run command `npm run doc-server`
-  The docs will be generated in QA/jsdoc/server.
+1. Run command `npm run doc`
+  The docs will be generated in QA/jsdoc/...

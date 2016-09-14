@@ -1,34 +1,37 @@
 import React from 'react';
 import Layout from './layouts/Layout';
-import Header from './modules/Header';
+import PhlexHeader from './modules/PhlexHeader';
 import Body from './modules/Body';
+import phlexColors from '../utils/phlexColors';
 import Footer from './modules/Footer';
 
 export default function HealthEventNotificationEmail(props) {
-  const { healthEventEmail, doctor, patient, healthEvent, exercise } = props;
+  const { healthEventMessage, doctor, patient, healthEvent, exercise } = props;
 
   const buttonStyle = {
     outline: 'none',
     border: 'none',
     display: 'inline-block',
-    margin: '10px auto',
-    clear: 'both',
-    width: '65%',
+    margin: '10px ',
+    width: '40%',
     height: '50px',
     cursor: 'pointer',
-    color: '#444444',
+    color: phlexColors.getFontColor('light'),
     fontSize: '15px',
     fontStyle: 'bold',
+    float: 'middle',
+    backgroundColor: phlexColors.getColor('red'),
   };
   const actionsStyle = {
-    margin: '20px 0 0 0'
+    margin: '20px 0 0 0',
+    
   };
   var whilePerformingExerciseString;
   var noteString;
   var pronoun;
   var feelsString;
-  var takeActionURL = process.env.API_ROOT + 'api/healthEventEmails/takeAction/';
-  var dismissURL = process.env.API_ROOT + 'api/healthEventEmails/dismiss/';
+  var takeActionURL = process.env.API_ROOT + 'api/healthEventMessages/takeAction/';
+  var dismissURL = process.env.API_ROOT + 'api/healthEventMessages/dismiss/';
 
   if (patient.gender == 'male') {
     pronoun = <span>he</span>;
@@ -51,26 +54,26 @@ export default function HealthEventNotificationEmail(props) {
 
   return (
     <Layout>
-      <Header color="#134ac0" />
+      <PhlexHeader />
 
-      <Body>
-        <h2 className="title">You have 1 new notification</h2>
+      <Body textColor={phlexColors.getFontColor('dark')}>
+        <h2 className="title">Dr. {doctor.lastName}, you have 1 new notification</h2>
         <div className="health-event-info">
           <p>from {patient.firstName} {patient.lastName} regarding their therapy.</p>
         </div>
         <div style={actionsStyle} className="actions">
           <form action={takeActionURL} method="get">
-            <input type="hidden" name="healthEventEmailId" value={healthEventEmail.id} />
+            <input type="hidden" name="healthEventMessageId" value={healthEventMessage.id} />
             <input style={buttonStyle} type="submit" value="View now" />
           </form>
           <form action={dismissURL} method="get">
-            <input type="hidden" name="healthEventEmailId" value={healthEventEmail.id} />
+            <input type="hidden" name="healthEventMessageId" value={healthEventMessage.id} />
             <input style={buttonStyle} type="submit" value="Remind me later" />
           </form>
         </div>
       </Body>
 
-      <Footer color="#134ac0" />
+      <Footer />
     </Layout>
   );
 
@@ -86,7 +89,7 @@ HealthEventNotificationEmail.defaultProps = {
     lastName: 'Malaise',
     gender: 'other'
   },
-  healthEventEmail: {
+  healthEventMessage: {
     id: 12315412
   },
   healthEvent: {
@@ -94,7 +97,5 @@ HealthEventNotificationEmail.defaultProps = {
     perceivedTrend: 'increasing',
     type: 'swelling'
   },
-  exercise: {
-    type: 'knee raises'
-  }
+  exercise: null
 };

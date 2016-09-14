@@ -13,25 +13,82 @@
     "lastName": {
       "type": "String",
       "default": "Goudie"
+    },
+    "phone": {
+      "type": "String"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "doctors": {
+      "type": "hasMany",
+      "model": "Person",
+      "foreignKey": "patientId",
+      "keyThrough": "doctorId",
+      "through": "DoctorPatient"
+    },
+    "patients": {
+      "type": "hasMany",
+      "model": "Person",
+      "foreignKey": "doctorId",
+      "keyThrough": "patientId",
+      "through": "DoctorPatient"
+    },
+    "caregivers": {
+      "type": "hasMany",
+      "model": "Person",
+      "foreignKey": "caregiveeId",
+      "keyThrough": "caregiverId",
+      "through": "CaregiverPatient"
+    },
+    "caregivees": {
+      "type": "hasMany",
+      "model": "Person",
+      "foreignKey": "caregiverId",
+      "keyThrough": "caregiveeId",
+      "through": "CaregiverPatient"
+    },
+    "organization": {
+      "type": "belongsTo",
+      "model": "Organization",
+      "foreignKey": "organization"
+    },
+    "roles": {
+      "type": "hasMany",
+      "model": "Role",
+      "through": "RoleMapping",
+      "foreignKey": "principalId",
+      "keyThrough": "roleId"
+    }
+  },
   "acls": [
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "ALLOW",
-      "property": "remoteLogin"
+      "property": "signin"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "ALLOW",
-      "property": "remoteCreate"
+      "property": "signup"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "invite"
     }
   ],
-  "methods": {}
+  "methods": {},
+  "scope": {
+    "include": [
+      "roles", 
+      "organization"
+    ]
+  }
 }

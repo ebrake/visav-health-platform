@@ -1,62 +1,43 @@
 var Promise = require('bluebird');
-var globalConfig = require('../../global.config');
 var path = require('path');
-
-import React from 'react';
-import Oy from 'oy-vey';
-import HealthEventNotificationEmail from '../../client/src/components/email-templates/HealthEventNotificationEmail';
+import fetch from 'node-fetch';
 
 module.exports = function(HealthEvent) {
-  var sendHealthEventEmail = function(healthEventAndExercise, person, HealthEventEmail, Email) {
+  var sendHealthEventMessage = function(healthEventAndExercise, person, HealthEventMessage, Email) {
     return new Promise(function(resolve, reject){
       var threshold = .5
         , healthEvent = healthEventAndExercise.healthEvent
         , exercise = healthEventAndExercise.exercise;
 
       if (healthEvent.intensity > threshold || healthEvent.perceivedTrend.toLowerCase() == 'increasing') {
-        HealthEventEmail.create({
-          date: new Date(),
-          dismissed: false,
-          actionTaken: "",
-          delivered: false,
-          url: 'test123',
-          patient: person.id,
-          doctor: person.id,
-          healthevent: healthEvent.id
-        }, function(err, createdEmail) {
-          if (err) return reject(err);
-          createdEmail.save(function(err){
-            if (err) return reject(err);
-            //send email here
-            Email.send({
-              to: person.email,
-              from: globalConfig.SYSTEM_EMAIL,
-              subject: globalConfig.APP_NAME + ': '+person.firstName+' '+person.lastName+' has had an adverse Health Event',
-              html: Oy.renderTemplate(
-                <HealthEventNotificationEmail healthEventEmail={createdEmail} doctor={person} patient={person} 
-                    healthEvent={healthEvent} exercise={exercise}/>, 
-                {
-                  title: 'Health Notification from '+globalConfig.APP_NAME,
-                  previewText: 'Your patient has had an adverse health event...'
-                }
-              )
-            }, function(err) {
-              if (err) return reject(err);
-              createdEmail.delivered = true;
-              createdEmail.save();
-              resolve('Email sent for HealthEvent '+healthEvent.id+'.');
-            });
-          });
-        }) 
+        var requestBody = JSON.stringify({
+            type: 'healthEvent',
+            healthEvent: healthEvent,
+            sender: person,
+            recipient: person
+        });
+        fetch(process.env.API_ROOT+'api/messages/send', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: requestBody
+        })
+        .then(function(res) {
+            return res.json();
+        }).then(function(json) {
+            console.log(json);
+        });
       } else {
         resolve('No email needing to be sent for HealthEvent '+healthEvent.id+'.');
       }
     })
   }
 
-  var generateHealthEventEmails = function(createdHealthEventsAndExercises, person, HealthEventEmail, Email) {
+  var generateHealthEventMessages = function(createdHealthEventsAndExercises, person, HealthEventMessage, Email) {
     return new Promise(function(resolve, reject){
-      HealthEventEmail.find({
+      HealthEventMessage.find({
         where: { patient: person.id },
         order: 'date DESC'
       }, function(err, healthEventEmails){
@@ -72,7 +53,7 @@ module.exports = function(HealthEvent) {
 
         //now we execute logic deciding if we send another email on only what is contained in healthEvents
         return Promise.all(healthEvents.map(function(obj){
-          return sendHealthEventEmail(obj, person, HealthEventEmail, Email);
+          return sendHealthEventMessage(obj, person, HealthEventMessage, Email);
         }))
         .then(function(results){
           return resolve(results);
@@ -161,7 +142,7 @@ module.exports = function(HealthEvent) {
 
               createdHealthEvent.save(function(err){
                 if (err) return reject(err);
-                console.log("Upserted HealthEvent: "+createdHealthEvent.id);
+                //console.log("Upserted HealthEvent: "+createdHealthEvent.id);
                 return resolve({ healthEvent: createdHealthEvent, exercise: exercises[0] });
               })
             })
@@ -171,7 +152,7 @@ module.exports = function(HealthEvent) {
               if (err) return reject(err);
               createdHealthEvent.save(function(err){
                 if (err) return reject(err);
-                console.log("Inserted HealthEvent: "+createdHealthEvent.id);
+                //console.log("Inserted HealthEvent: "+createdHealthEvent.id);
                 return resolve({ healthEvent: createdHealthEvent, exercise: exercises[0] });
               })
             });
@@ -188,7 +169,7 @@ module.exports = function(HealthEvent) {
 
     var person = req.user
       , Exercise = req.app.models.Exercise
-      , HealthEventEmail = req.app.models.HealthEventEmail
+      , HealthEventMessage = req.app.models.HealthEventMessage
       , Email = req.app.models.Email;
 
     Promise.all(data.map(function(healthEvent){
@@ -198,7 +179,7 @@ module.exports = function(HealthEvent) {
     .then(function(createdHealthEventsAndExercises){
       cb(null, { status: 'success' });
       //note the use of side effects; look into putting this cb at the end of the promise chain if strange bugs arise in this code
-      return generateHealthEventEmails(createdHealthEventsAndExercises, person, HealthEventEmail, Email);
+      return generateHealthEventMessages(createdHealthEventsAndExercises, person, HealthEventMessage, Email);
     }, function(err){
       console.log("Issue creating HealthEvent data:");
       console.log(err);

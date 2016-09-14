@@ -51,7 +51,7 @@ module.exports = function(Exercise) {
 
             createdRep.save(function(err){
               if (err) return reject(err);
-              console.log("Upserted Rep: "+createdRep.id);
+              //console.log("Upserted Rep: "+createdRep.id);
               return resolve(createdRep);
             })
           })
@@ -61,7 +61,7 @@ module.exports = function(Exercise) {
             if (err) return reject(err);
             createdRep.save(function(err){
               if (err) return reject(err);
-              console.log("Inserted Rep: "+createdRep.id);
+              //console.log("Inserted Rep: "+createdRep.id);
               return resolve(createdRep);
             })
           });
@@ -142,7 +142,7 @@ module.exports = function(Exercise) {
 
               createdExercise.save(function(err){
                 if (err) return reject(err);
-                console.log("Upserted Exercise: "+createdExercise.id);
+                //console.log("Upserted Exercise: "+createdExercise.id);
                 return resolve(saveReps(reps, person, createdExercise, Rep));
               })
             })
@@ -152,7 +152,7 @@ module.exports = function(Exercise) {
               if (err) return reject(err);
               createdExercise.save(function(err){
                 if (err) return reject(err);
-                console.log("Inserted Exercise: "+createdExercise.id);
+                //console.log("Inserted Exercise: "+createdExercise.id);
                 return resolve(saveReps(reps, person, createdExercise, Rep));
               })
             });
@@ -176,8 +176,8 @@ module.exports = function(Exercise) {
       return saveExerciseAndReps(exercise, person, HealthEvent, Rep);
     }))
     .then(function(results){
-      console.log("Results:");
-      console.log(results);
+      //console.log("Results:");
+      //console.log(results);
       return cb(null, { status: 'success' });
     })
     .catch(function(err){

@@ -24,21 +24,22 @@ class Login extends React.Component {
   }
 
   login() {
-    fetch(process.env.API_ROOT + 'api/people/login', {
+    fetch(process.env.API_ROOT + 'api/people/signin', {
       method: 'POST', 
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
-    }).then(response => response.json())
-    .then( data => {
-      if (data.token && data.token.status != 'error') {
-        AccountActions.loginUser(data);
-        //redirect
+    })
+    .then(response => response.json())
+    .then(response => {
+      if (response && response.data && response.data.status != 'error') {
+        AccountActions.loginUser(response.data);
+
         console.log('Login successful! Redirecting...');
         this.props.router.push('/me');
       } else {
         //display validation messages
         console.log('Error logging in:');
-        console.dir(data);
+        console.dir(response);
       }
     })
     .catch((err) => {
@@ -87,7 +88,7 @@ class Login extends React.Component {
           <div className="accounts-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} onKeyUp={this.keyPressed} />
           </div>
-          <div className = "accounts-input-wrapper">
+          <div className="accounts-input-wrapper">
             <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
           </div>
           <button className="accounts-button" onClick={this.login}>

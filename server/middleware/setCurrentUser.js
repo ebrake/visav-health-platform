@@ -1,3 +1,7 @@
+/**
+ * A middleware function that sets req.user when req.accessToken is passed through
+ * @module middleware/setCurrentUser
+ */
 module.exports = function() {
   return function setCurrentUser(req, res, next) {
     if (!req.accessToken) {

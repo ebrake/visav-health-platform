@@ -8,5 +8,4 @@ module.exports = function routes(app) {
   app.use(function(req, res) {
     res.sendFile(Path.join(__dirname, '../', '../', 'client', 'build', 'index.html'));
   });
-
 }
