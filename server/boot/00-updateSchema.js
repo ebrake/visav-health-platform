@@ -17,6 +17,7 @@ module.exports = function enableAuthentication(app, cb) {
   //Generate postgres schema if necessary
   var dataSource = app.datasources.psql;
   dataSource.isActual(appModels, function(err, actual) {
+    if (err) cb(err);
     //DataSource.isActual() is false if database structure is outdated WRT model files (model-config.json)
     if (!actual) {
       console.log('Database structure update is necessary... commencing autoupdate.')
@@ -25,9 +26,11 @@ module.exports = function enableAuthentication(app, cb) {
         if (err) cb(err);
         else {
           console.log('Database structure update complete');
-          cb()
+          cb();
         }
       });
+    } else {
+      cb();
     }
   }); 
 };
