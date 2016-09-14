@@ -59,11 +59,11 @@ module.exports = function(HealthEventMessage) {
   };
 
   HealthEventMessage.send = function(req, res, cb) {
-    var { patient, doctor, healthEvent, exercise, type } = req.body;
+    var { patient, doctor, healthEvent, exercise, deliveryMethod } = req.body;
 
     if( patient && doctor && healthEvent){
       HealthEventMessage.create({
-        type: type,
+        deliveryMethod: deliveryMethod,
         date: new Date(),
         dismissed: false,
         actionTaken: "",
@@ -78,7 +78,7 @@ module.exports = function(HealthEventMessage) {
           if (err) return;
           var requestBody;
           var apiRoute;
-          if (type=='text') {
+          if (deliveryMethod=='text') {
             //send text
             apiRoute = 'sendText'
             requestBody = JSON.stringify({
@@ -104,6 +104,7 @@ module.exports = function(HealthEventMessage) {
               subject: subject
             });
           }
+          
           fetch(process.env.API_ROOT + 'api/messages/' + apiRoute, {
               method: 'POST',
               headers: {

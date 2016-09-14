@@ -3,22 +3,22 @@ import plivo from 'plivo';
 
 module.exports = function(Message) {
   Message.send = function(req, res, cb) {    
-    var { type, subtype, sender, recipient } = req.body;
+    var { type, deliveryMethod, sender, recipient } = req.body;
     
-    if (!type) {
-      //find users preferred messaging type for the message's subtype
+    if (!deliveryMethod) {
+      //find users preferred messaging type for the message's deliveryMethod
       //ex. Dr. X like texts for health events
       //for now, hardcoding default
-      type='email';
+      deliveryMethod='email';
     }
-    if (type && subtype && sender && recipient) {
-      if (subtype == "healthEvent") {
+    if (type && sender && recipient) {
+      if (type == "healthEvent") {
         if (req.body.healthEvent) {
           var requestBody = JSON.stringify({
             healthEvent: req.body.healthEvent,
             doctor: recipient,
             patient: sender,
-            type: type
+            deliveryMethod: deliveryMethod
           });
           fetch(process.env.API_ROOT+'api/healthEventMessages/send', {
             method: 'POST',
@@ -41,7 +41,7 @@ module.exports = function(Message) {
       }
     }
     else{
-      //type and subtype, sender and receiver are required
+      //type, sender and receiver are required
       return;
     }
   };
@@ -80,8 +80,6 @@ module.exports = function(Message) {
       'dst' : recipient.phone || '12508883312', // Receiver's phone Number with country code
       'text' : contentString || 'Hi, this is a test message from Visav',
     };
-    console.log('sending text with params: ');
-    console.log(plivoParams);
     plivoApi.send_message(plivoParams, function (status, response) {
       console.log('Status: ', status);
       console.log('API Response:\n', response);

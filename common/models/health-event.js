@@ -11,7 +11,7 @@ module.exports = function(HealthEvent) {
 
       if (healthEvent.intensity > threshold || healthEvent.perceivedTrend.toLowerCase() == 'increasing') {
         var requestBody = JSON.stringify({
-            subtype: 'healthEvent',
+            type: 'healthEvent',
             healthEvent: healthEvent,
             sender: person,
             recipient: person
