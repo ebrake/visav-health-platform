@@ -20,7 +20,8 @@ module.exports = function(Message) {
             patient: sender,
             deliveryMethod: deliveryMethod
           });
-          fetch(process.env.API_ROOT+'api/healthEventMessages/send', {
+          var assembledAPIRoute = process.env.API_ROOT+'api/healthEventMessages/send';
+          fetch(assembledAPIRoute, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -32,7 +33,7 @@ module.exports = function(Message) {
             return res.json();
           }).then(function(json) {
             console.log(json);
-            return cb(null, { status: 'success' });
+            return cb(null, { status: 'success', apiRoute: assembledAPIRoute });
           });
         }
         else{
@@ -92,7 +93,7 @@ module.exports = function(Message) {
       if (err){
         return cb(err, { status: 'failure', message: err.message });
       }
-      return cb(null, { status: 'success' });
+      return cb(null, { status: 'success', message: 'Email successfully sent to: ' + recipient.email});
     });
   };
 
@@ -129,7 +130,7 @@ module.exports = function(Message) {
       console.log('API Response:\n', response);
       console.log('Message UUID:\n', response['message_uuid']);
       console.log('Api ID:\n', response['api_id']);
-      return cb(null, { status: 'success' });
+      return cb(null, { status: 'success', message: 'Text message successfully sent to: ' + recipient.phone });
     });
 
   };
