@@ -35,6 +35,7 @@ function createRoles(Role, cb, attempt){
     console.log('The following roles exist:');
     console.log(roles);
     cb();
+    return null;
   })
   .catch(function(err){
     createRoles(Role, cb, (attempt+1));

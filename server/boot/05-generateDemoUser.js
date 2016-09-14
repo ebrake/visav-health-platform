@@ -4,7 +4,7 @@ var testUser = {
   password: 'testtest',
   firstName: 'Brody',
   lastName: 'McLeon',
-  role: 'owner'
+  organization: 'Dev Test Org'
 };
 
 /**
@@ -14,48 +14,52 @@ var testUser = {
 module.exports = function(app, cb) {
 
   var Person = app.models.Person;
-  var Role = app.models.Role;
-  var RoleMapping = app.models.RoleMapping;
+  var Organization = app.models.Organization;
 
   var filter = {
     where: {
       email: testUser.email
     }
-  }
+  };
 
-  Person.findOrCreate(filter, testUser, function(err, person, created) {
-    if (err) console.log(err);
-    else if (created) console.log("User created: "+testUser.email)
+  return Person.findOne(filter)
+  .then(function(person){
+    if (person) {
+      return Organization.findOne({
+        where: { owner: person.id }
+      })
+      .then(function(organization){
+        if (organization) {
+          console.log(testUser.email+' is the owner of '+organization.name+'.');
+          return 'done';
+        } else {
+          return Person.destroyById(person.id);
+        }
+      })
+    } else {
+      return;
+    }
+  })
+  .then(function(result){
+    if (result == 'done')
+      return;
 
-    RoleMapping.findOne({
-      where: { principalId: person.id },
-      include: 'role'
-    }, function(err, result) {
-      if (err) {
-        return cb(err);
-
-      } if (!result) {
-        //testUser doesn't have a role
-        Role.findOne({
-          where: { name: testUser.role }
-        }, function(err, role){
-          if (err) cb(err);
-
-          role.principals.create({ 
-            principalType: RoleMapping.USER,
-            principalId: person.id
-          }, function(err, result){
-            if (err) cb(err);
-
-            cb();
-          })
-        })
-
-      } else {
-        //testUser has a role
-        cb();
+    var fakeReq = {
+      app: app,
+      body: {
+        email: testUser.email,
+        password: testUser.password, 
+        organization: testUser.organization
       }
-    })
-  });
+    };
+
+    return Person.signup(fakeReq, cb);
+  })
+  .then(function(received){
+    cb();
+  })
+  .catch(function(err){
+    cb(err);
+  })
 
 };
