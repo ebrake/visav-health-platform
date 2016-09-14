@@ -32,7 +32,6 @@ module.exports = function(Message) {
           .then(function(res) {
             return res.json();
           }).then(function(json) {
-            console.log(json);
             return cb(null, { status: 'success', apiRoute: assembledAPIRoute });
           });
         }
@@ -90,9 +89,7 @@ module.exports = function(Message) {
       subject: req.app.globalConfig.APP_NAME + subjectText,
       html: html
     }, function(err) {
-      if (err){
-        return cb(err, { status: 'failure', message: err.message });
-      }
+      if (err) return cb(err, { status: 'failure', message: err.message });
       return cb(null, { status: 'success', message: 'Email successfully sent to: ' + recipient.email});
     });
   };

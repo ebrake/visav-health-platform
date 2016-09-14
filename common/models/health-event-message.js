@@ -19,8 +19,8 @@ module.exports = function(HealthEventMessage) {
         if (err) return cb(err, { status: 'failure', message: err.message });
         if (!healthEventMessage) {
           err = new Error('Could not find HealthEventMessage with id: ' + messageId);
-          err.statusCode = 422;
-          err.code = 'HEALTH_EVENT_MESSAGE_DISSMISS_FAILED_INVALID_REQUIREMENTS';
+          err.statusCode = 404;
+          err.code = 'HEALTH_EVENT_MESSAGE_DISSMISS_FAILED_NULL_FIND';
           return cb(err, { status: 'failure', message: err.message });
         }
         else{
@@ -51,14 +51,14 @@ module.exports = function(HealthEventMessage) {
         if (err) throw err;
         if (!healthEventMessage) {
           err = new Error('Could not find HealthEventMessage with id: ' + messageId);
-          err.statusCode = 422;
-          err.code = 'HEALTH_EVENT_MESSAGE_ACTION_FAILED_INVALID_REQUIREMENTS';
+          err.statusCode = 404;
+          err.code = 'HEALTH_EVENT_MESSAGE_DISSMISS_FAILED_NULL_FIND';
           return cb(err, { status: 'failure', message: err.message });
         }
         else{
           healthEventMessage.actionTaken = true;
           healthEventMessage.save(function(err){
-            if (err) console.log(err);
+            if (err) return cb(err, { status: 'failure', message: err.message });
             else{
               return cb(null, { status: 'success', message: 'Successful action on HealthEventMessage: ' + messageId });
             }
@@ -136,7 +136,6 @@ module.exports = function(HealthEventMessage) {
             .then(function(res) {
               return res.json();
             }).then(function(json) {
-              console.log(json);
               createdMessage.delivered = true;
               createdMessage.save();
               return cb(null, { status: 'success', apiRoute: assembledAPIRoute });
