@@ -83,5 +83,17 @@
   "Message": {
     "dataSource": "psql",
     "public": true
+  },
+  "DoctorPatient": {
+    "dataSource": "psql",
+    "public": true
+  },
+  "CaregiverPatient": {
+    "dataSource": "psql",
+    "public": true
+  },
+  "Organization": {
+    "dataSource": "psql",
+    "public": true
   }
 }
