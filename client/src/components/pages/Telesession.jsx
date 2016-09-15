@@ -41,19 +41,21 @@ class Telesession extends React.Component {
 
     // Updates state->activeSession if it's changed from TelesessionStore
     // (To hide or display chat panel)
-    if (telesessionState.activeSession) {
-      if (telesessionState.activeSession != this.state.activeSession) {
-        this.setState({
-          activeSession: telesessionState.activeSession
-        });
-      }
+    if (telesessionState.activeSession != this.state.activeSession) {
+      this.setState({
+        activeSession: telesessionState.activeSession
+      });
     }
+  
   }
 
   render() {
 
     // To hide or display chat panel
-    var chatPanel = this.state.activeSession ? <ChatPanel /> : null;
+    var chatPanel = null;
+    if (this.state.activeSession) {
+      chatPanel = <ChatPanel />
+    }
 
     return (
       <div className="Telesession content-container row-gt-sm">
@@ -63,7 +65,7 @@ class Telesession extends React.Component {
           <HealthEventsChartPanel />
         </div>
         <div className="right-column">
-          <TelesessionPanel user={this.state.loggedInUser} />
+          <TelesessionPanel />
           <PatientInfoPanel user={this.state.loggedInUser} />
           { chatPanel }
         </div>
