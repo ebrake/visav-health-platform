@@ -1,37 +1,24 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import moment from 'moment';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import TelesessionActions from '../../alt/actions/TelesessionActions';
 
+@connectToStores
 class ChatPanel extends React.Component {
-  
+
+  static getStores() {
+    return [TelesessionStore];
+  }
+
+  static getPropsFromStores() {
+    return TelesessionStore.getState();
+  }
+
   constructor(props) {
     super(props);
-
-    this.state = {
-      chatEvents: null
-    }
-
-    let telesessionState = TelesessionStore.getState();
-    this.telesessionChanged = this.telesessionChanged.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-
-  }
-
-  telesessionChanged(telesessionState){
-
-    this.setState({
-      chatEvents: telesessionState.chatEvents
-    });
-
-  }
-  componentDidMount(){
-    TelesessionStore.listen(this.telesessionChanged);
-  }
-
-  componentWillUnmount(){
-    TelesessionStore.unlisten(this.telesessionChanged);
   }
 
   sendMessage(message) {
@@ -50,7 +37,7 @@ class ChatPanel extends React.Component {
 
   render() {
 
-    let chatEvents = this.state.chatEvents;
+    let chatEvents = this.props.chatEvents;
 
     /**
      * Chat Row component
