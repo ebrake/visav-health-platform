@@ -37,8 +37,8 @@ class Signup extends React.Component {
     ).then(function(response){
       return response.json();
     })
-    .then(function(data){
-      if (data.user && data.user.status != 'error') {
+    .then(function(response){
+      if (response.data.user && response.data.user.status != 'error') {
         console.log('User creation successful! Logging in...');
         self.login();
       } else {
@@ -61,8 +61,8 @@ class Signup extends React.Component {
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
     }).then(response => response.json())
-    .then(function(data){
-      AccountActions.loginUser(data);
+    .then(function(response){
+      AccountActions.loginUser(response.data);
 
       //redirect
       console.log('Login successful! Redirecting...');

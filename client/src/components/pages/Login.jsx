@@ -29,9 +29,9 @@ class Login extends React.Component {
       headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
       body: JSON.stringify({ email: this.state.email, password: this.state.password })
     }).then(response => response.json())
-    .then( data => {
-      if (data.token && data.token.status != 'error') {
-        AccountActions.loginUser(data);
+    .then( response => {
+      if (response.data.token && response.data.token.status != 'error') {
+        AccountActions.loginUser(response.data);
         //redirect
         console.log('Login successful! Redirecting...');
         this.props.router.push('/me');

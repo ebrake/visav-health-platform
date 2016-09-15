@@ -7,40 +7,48 @@ var path = require('path');
 module.exports = function(Person) {
 
   Person.createUser = function(req, cb) {
-    if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'Please provide a valid email address', status: 'error' });
-    if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'No password was provided', status: 'error' });
+    var err;
+    if(!req.body.email){
+      err = new Error('Valid email required on req.body.email');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    if(!req.body.password){
+      err = new Error('Valid password required on req.body.password');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
 
     Person.create({
       email: req.body.email.toLowerCase(),
       password: req.body.password
     }, function(err, createdUser){
-      if (err) {
-        var type = 'Issue creating account. Please try again later';
-        if (err.message.toLowerCase().indexOf('email already exists') >= 0) type = 'Email is already in use';
-        return cb(null, { error: err, type: type, status: 'error' });
-      }
+      if (err) return cb(err, { status: 'failure', message: err.message });
+      
 
       console.log("Created user "+req.body.email);
 
-      return cb(null, createdUser);
+      return cb(null, { status: 'success', message: 'Successfully created user with email: ' + req.body.email, user: createdUser });
     }) 
   }
 
   //send verification email after registration
-  Person.afterRemote('createUser', function(context, createdObject, next) {
+  Person.afterRemote('createUser', function(context, response, next) {
 
-    if (createdObject.user.status == 'error') {
+    if (response.data.status == 'failure') {
       return next();
     }
 
     // TODO: Add e-mail to database queue if sending fails
 
-    var createdUser = createdObject.user;
+    var user = response.data.user;
     Person.app.models.Email.send({
-      to: createdUser.email,
+      to: user.email,
       from: Person.app.globalConfig.SYSTEM_EMAIL,
       subject: 'Welcome to '+Person.app.globalConfig.APP_NAME,
-      html: Oy.renderTemplate(<GettingStartedEmail user={createdUser} />, {
+      html: Oy.renderTemplate(<GettingStartedEmail user={user} />, {
         title: 'Getting Started with '+Person.app.globalConfig.APP_NAME,
         previewText: 'Welcome to '+Person.app.globalConfig.APP_NAME+'...'
       })
@@ -52,21 +60,29 @@ module.exports = function(Person) {
   });
 
   Person.loginUser = function(req, cb){
-    if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
-    if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
-
+    var err;
+    if(!req.body.email){
+      err = new Error('Valid email required on req.body.email');
+      err.statusCode = 417;
+      err.code = 'PERSON_LOGIN_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    if(!req.body.password){
+      err = new Error('Valid password required on req.body.password');
+      err.statusCode = 417;
+      err.code = 'PERSON_LOGIN_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
     Person.login({
       email: req.body.email.toLowerCase(),
       password: req.body.password
     }, 'user', function(err, token){
-      if (err) {
-        return cb(null, { error: err, type: 'login', status: 'error' });
-      }
+      if (err) return cb(err, { status: 'failure', message: err.message });
 
       delete token.user.password;
       console.log("Logged in user "+req.body.email);
 
-      return cb(null, token);
+      return cb(null, { status: 'success', message: 'Successfully logged in user with email: ' + req.body.email, token:token});
     })
   }
 
@@ -77,7 +93,7 @@ module.exports = function(Person) {
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/createUser', verb: 'post' },
-      returns: { arg: 'user', type: 'object' },
+      returns: { arg: 'data', type: 'object' },
       description: "Accepts a new user's email and password, returns the created user"
     }
   );
@@ -89,7 +105,7 @@ module.exports = function(Person) {
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/loginUser', verb: 'post' },
-      returns: { arg: 'token', type: 'object' },
+      returns: { arg: 'data', type: 'object' },
       description: "Accepts a user's email and password, returns an access token"
     }
   );
