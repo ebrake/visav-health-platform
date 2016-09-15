@@ -109,16 +109,25 @@ TelesessionStore.config = {
   */
 
   onSerialize: (data) => {
-    if (data.chatEvents) data.chatEvents = CircularJSON.stringify(data.chatEvents);
-    if (data.activeSession) data.activeSession = CircularJSON.stringify(data.activeSession);
-    return data;
+    var obj = CircularJSON.parse(CircularJSON.stringify(data));
+    var serializeObjs = ["chatEvents","activeSession"];
+    serializeObjs.forEach(function(foundObj) {
+      if (data[foundObj])
+        obj[foundObj] = CircularJSON.stringify(data[foundObj]);
+    });
+    return obj;
   },
 
   onDeserialize: (data) => {
-    if (data.chatEvents) data.chatEvents = CircularJSON.parse(data.chatEvents);
-    if (data.activeSession) data.activeSession = CircularJSON.parse(data.activeSession);
-    return data;
+    var obj = CircularJSON.parse(CircularJSON.stringify(data));
+    var deserializeObjs = ["chatEvents","activeSession"];
+    deserializeObjs.forEach(function(foundObj) {
+      if (data[foundObj])
+        obj[foundObj] = CircularJSON.parse(data[foundObj]);
+    });
+    return obj;
   }
+
 }
 
 export default alt.createStore(TelesessionStore, 'TelesessionStore');
