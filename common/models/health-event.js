@@ -87,7 +87,6 @@ module.exports = function(HealthEvent) {
         err.code = 'HEALTH_EVENT_SAVE_FAILED_MISSING_REQUIREMENTS';
         return reject(err);
       }
-
       if (typeof date != 'date') {
         try {
           date = new Date(date)

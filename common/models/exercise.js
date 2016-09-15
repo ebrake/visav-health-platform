@@ -25,7 +25,7 @@ module.exports = function(Exercise) {
         }
       }
       if (!person) {
-        err = new Error('Valid person required.');
+        err = new Error('Valid Person required.');
         err.statusCode = 417;
         err.code = 'REP_CREATE_FAILED_MISSING_REQUIREMENTS';
         return cb(err, { status: 'failure', message: err.message });
