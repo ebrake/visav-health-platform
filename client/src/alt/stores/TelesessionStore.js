@@ -32,7 +32,7 @@ class TelesessionStore {
   }
 
   /**
-   * Called when an OpenTok session is initialized
+   * Called when an OpenTok session is initialized or disconnected
   */
   handleSetActiveSession(session) {
     this.activeSession = session;
@@ -109,16 +109,14 @@ TelesessionStore.config = {
   */
 
   onSerialize: (data) => {
-    data.chatEvents = CircularJSON.stringify(data.chatEvents);
-    data.activeSession = CircularJSON.stringify(data.activeSession);
+    if (data.chatEvents) data.chatEvents = CircularJSON.stringify(data.chatEvents);
+    if (data.activeSession) data.activeSession = CircularJSON.stringify(data.activeSession);
     return data;
   },
 
   onDeserialize: (data) => {
-    if (data.chatEvents) {
-      data.chatEvents = CircularJSON.parse(data.chatEvents);
-      data.activeSession = CircularJSON.parse(data.activeSession);
-    }
+    if (data.chatEvents) data.chatEvents = CircularJSON.parse(data.chatEvents);
+    if (data.activeSession) data.activeSession = CircularJSON.parse(data.activeSession);
     return data;
   }
 }
