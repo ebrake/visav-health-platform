@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import RepsChartPanel from '../panels/RepsChartPanel';
 import PatientInfoPanel from '../panels/PatientInfoPanel';
 import AccountStore from '../../alt/stores/AccountStore'
@@ -12,48 +13,33 @@ import AuthenticatedPage from './AuthenticatedPage';
 
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 
+@connectToStores
 class Telesession extends React.Component {
+
+  static getStores() {
+    return [TelesessionStore];
+  }
+
+  static getPropsFromStores() {
+    return TelesessionStore.getState();
+  }
   
   constructor(props) {
     super(props);
 
-    let telesessionState = TelesessionStore.getState();
     let accountState = AccountStore.getState();
 
-    this.telesessionChanged = this.telesessionChanged.bind(this);
-
     this.state = {
-      loggedInUser: accountState.user,
-      activeSession: null
+      loggedInUser: accountState.user
     };
 
   }
 
-  componentDidMount(){
-    TelesessionStore.listen(this.telesessionChanged);
-  }
-
-  componentWillUnmount(){
-    TelesessionStore.unlisten(this.telesessionChanged);
-  }
-
-  telesessionChanged(telesessionState) {
-
-    // Updates state->activeSession if it's changed from TelesessionStore
-    // (To hide or display chat panel)
-    if (telesessionState.activeSession != this.state.activeSession) {
-      this.setState({
-        activeSession: telesessionState.activeSession
-      });
-    }
-  
-  }
-
   render() {
 
-    // To hide or display chat panel
-    var chatPanel = null;
-    if (this.state.activeSession) {
+    var chatPanel;
+    // Display chat panel if TelesessionStore=>activeSession exists
+    if (this.props.activeSession) {
       chatPanel = <ChatPanel />
     }
 

@@ -37,15 +37,13 @@ class ChatPanel extends React.Component {
 
   render() {
 
-    let chatEvents = this.props.chatEvents;
-
     /**
      * Chat Row component
      * Loop through the list of chats and create array of Row components
     */
     var Rows = "";
-    if (chatEvents) {
-      Rows = chatEvents.map(function(event) {
+    if (this.props.chatEvents) {
+      Rows = this.props.chatEvents.map(function(event) {
         const data = JSON.parse(event.data);
         const dateString = moment(data.date).format('MMMM Do YYYY, h:mm:ss a');
         const chatRowClass = (event.fromMe ? 'ChatRowFromMe' : 'ChatRowToMe');

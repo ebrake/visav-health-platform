@@ -110,7 +110,8 @@ TelesessionStore.config = {
 
   onSerialize: (data) => {
     var obj = CircularJSON.parse(CircularJSON.stringify(data));
-    var serializeObjs = ["chatEvents","activeSession"];
+    if (obj.activeSession) delete obj.activeSession;
+    var serializeObjs = ["chatEvents"];
     serializeObjs.forEach(function(foundObj) {
       if (data[foundObj])
         obj[foundObj] = CircularJSON.stringify(data[foundObj]);
@@ -120,7 +121,8 @@ TelesessionStore.config = {
 
   onDeserialize: (data) => {
     var obj = CircularJSON.parse(CircularJSON.stringify(data));
-    var deserializeObjs = ["chatEvents","activeSession"];
+    if (obj.activeSession) delete obj.activeSession;
+    var deserializeObjs = ["chatEvents"];
     deserializeObjs.forEach(function(foundObj) {
       if (data[foundObj])
         obj[foundObj] = CircularJSON.parse(data[foundObj]);
