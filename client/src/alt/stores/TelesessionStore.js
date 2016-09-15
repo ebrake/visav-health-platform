@@ -2,6 +2,7 @@ import alt from '../alt';
 import moment from 'moment';
 import AccountStore from '../../alt/stores/AccountStore';
 import TelesessionActions from '../actions/TelesessionActions';
+import CircularJSON from 'circular-json-es6';
 
 /** Telesession Store */
 class TelesessionStore {
@@ -97,6 +98,29 @@ class TelesessionStore {
     );
   }
 
+}
+
+TelesessionStore.config = {
+
+  /*
+   * Override onSerialize/onDeserialize;
+   * Stringify objects that can't be serialized directly,
+   * use CircularJSON library
+  */
+
+  onSerialize: (data) => {
+    data.chatEvents = CircularJSON.stringify(data.chatEvents);
+    data.activeSession = CircularJSON.stringify(data.activeSession);
+    return data;
+  },
+
+  onDeserialize: (data) => {
+    if (data.chatEvents) {
+      data.chatEvents = CircularJSON.parse(data.chatEvents);
+      data.activeSession = CircularJSON.parse(data.activeSession);
+    }
+    return data;
+  }
 }
 
 export default alt.createStore(TelesessionStore, 'TelesessionStore');
