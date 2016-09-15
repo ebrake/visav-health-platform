@@ -7,21 +7,34 @@ var path = require('path');
 module.exports = function(Person) {
 
   Person.signup = function(req, cb) {
-    if (!req.body.email) 
-      return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
-    if (!req.body.password) 
-      return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
-    if (!req.body.organization) 
-      return cb(null, { error: new Error('No organization!'), type: 'organization', status: 'error' });
+    var err;
+    if(!req.body.email){
+      err = new Error('Valid email required on req.body.email');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    if(!req.body.password){
+      err = new Error('Valid password required on req.body.password');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
+    if(!req.body.organization){
+      err = new Error('Valid organization required on req.body.organization');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
+      return cb(err, { status: 'failure', message: err.message });
+    }
 
     var Role = req.app.models.Role
       , RoleMapping = req.app.models.RoleMapping
-      , Organization = req.app.models.Organization
+    var Organization = req.app.models.Organization
       , email = req.body.email
       , password = req.body.password
       , orgFilter = { name: req.body.organization };
 
-    return findPersonAndOrganization(email, Person, orgFilter, Organization)
+    return findPersonAndOrganization(req, email, orgFilter)
     .then(function(queryResult){
       if (queryResult[0]) {
         return { 
@@ -45,7 +58,7 @@ module.exports = function(Person) {
         .then(function(createdOrganization){
           console.log('Organization created: '+createdOrganization.name);
           
-          return createPersonWithRoleAndBindToOrganization(personData, 'owner', Person, createdOrganization, Role, RoleMapping);
+          return createPersonWithRoleAndBindToOrganization(req, personData, 'owner', createdOrganization);
         })
       }
     })
@@ -147,7 +160,7 @@ module.exports = function(Person) {
     var Role = req.app.models.Role;
     var RoleMapping = req.app.models.RoleMapping;
 
-    return findPersonAndOrganization(email, Person, orgFilter, Organization)
+    return findPersonAndOrganization(req, email, orgFilter)
     .then(function(queryResult){
       if (queryResult[0]) {
         return { 
@@ -169,7 +182,7 @@ module.exports = function(Person) {
         };
         var foundOrganization = queryResult[1];
 
-        return createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Person, foundOrganization, Role, RoleMapping);
+        return createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign, foundOrganization);
       }
     })
     .then(function(data){
@@ -194,26 +207,29 @@ module.exports = function(Person) {
   );
 }
 
-function findPerson(email, Person) {
+function findPerson(req, email) {
+  var Person = req.app.models.Person;
   return Person.findOne({
     where: { email: email }
   })
 }
 
-function findOrganization(whereObject, Organization) {
+function findOrganization(req, whereObject) {
+  var Organization = req.app.models.Organization;
   return Organization.findOne({
     where: whereObject
   })
 }
 
-function findPersonAndOrganization(email, Person, orgFilter, Organization) {
+function findPersonAndOrganization(req, email, orgFilter) {
   return Promise.all([
-    findPerson(email, Person),
-    findOrganization(orgFilter, Organization)
+    findPerson(req, email),
+    findOrganization(req, orgFilter)
   ])
 }
 
-function createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Person, organization, Role, RoleMapping) {
+function createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign, organization) {
+  var Person = req.app.models.Person;
   return Person.create(personData)
   .then(function(createdPerson){
     if (roleToAssign === 'owner'){
@@ -226,7 +242,7 @@ function createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Per
 
     console.log('User created: '+createdPerson.email);
 
-    return assignRole(createdPerson, roleToAssign, Role, RoleMapping)
+    return assignRole(req, createdPerson, roleToAssign)
     .then(function(updatedUser){
       return {
         user: updatedUser,
@@ -236,7 +252,7 @@ function createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Per
   })
 }
 
-function assignRole(user, roleName, Role, RoleMapping) {
+function assignRole(req, user, roleName) {
   roleName = roleName.toLowerCase();
 
   if (!user) {
@@ -244,7 +260,7 @@ function assignRole(user, roleName, Role, RoleMapping) {
   } else if (user.status == 'error') {
     return Promise.resolve(user);
   }
-
+  var Role = req.app.models.Role;
   return Role.findOne({
     where: { name: roleName }
   })
@@ -253,7 +269,7 @@ function assignRole(user, roleName, Role, RoleMapping) {
       return Promise.reject(new Error("No role with this name exists!"))
     } else {
       return role.principals.create({ 
-        principalType: RoleMapping.USER,
+        principalType: req.app.models.RoleMapping.USER,
         principalId: user.id
       })
     }
