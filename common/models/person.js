@@ -27,7 +27,9 @@ module.exports = function(Person) {
       return cb(err, { status: 'failure', message: err.message });
     }
 
-    return findPersonAndOrganization(req, req.body.email, { name: req.body.organization })
+    var orgFilter = { name: req.body.organizationName };
+
+    return findPersonAndOrganization(req, req.body.email, orgFilter)
     .then(function(queryResult){
       if (queryResult[0]) {
         err = new Error('A person with this email has already been created');
@@ -35,13 +37,14 @@ module.exports = function(Person) {
         err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENTS';
         throw err;
       } else if (queryResult[1]) {
+        console.log(queryResult[1]);
         err = new Error('An organization with this name has already been created');
         err.statusCode = 422;
         err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENTS';
         throw err;
       } else {
         var personData = {
-          email: req.body.email,
+          email: req.body.email.toLowerCase(),
           password: req.body.password
         };
         return req.app.models.Organization.create(orgFilter)
@@ -53,10 +56,8 @@ module.exports = function(Person) {
       }
     })
     .then(function(data){
-      return cb( null, {status: 'success', user: data.user, orgnaization: data.organization });
+      return cb( null, {status: 'success', user: data.user, organization: data.organization });
     }, function(err){
-      console.log('Error signing up person/organization:');
-      console.log(err);
       return cb(err, { status: 'failure', message: err.message });
     })
   }
@@ -108,9 +109,12 @@ module.exports = function(Person) {
       })
     ])
     .then(function(data){
+      console.log('Signed in user '+data[1].email);
       return cb(null, { status: 'success', token:data[0], user: data[1]})
     })
     .catch(function(err){
+      console.log('Issue signing in user:');
+      console.log(err);
       return cb(err, { status: 'failure', message: err.message });
     })
   }

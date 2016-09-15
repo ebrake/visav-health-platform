@@ -8,7 +8,7 @@ class Signup extends React.Component {
     super(props);
 
     this.state = {
-      organization: '',
+      organizationName: '',
       email: '',
       password: ''
     };
@@ -35,7 +35,7 @@ class Signup extends React.Component {
         method: 'POST', 
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          organization: this.state.organization, 
+          organizationName: this.state.organizationName, 
           email: this.state.email, 
           password: this.state.password 
         })
@@ -99,7 +99,7 @@ class Signup extends React.Component {
         <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
           <div className="accounts-input-wrapper">
-            <input placeholder="Organization Name" value={this.state.organization} onChange={this.handleChange('organization')} />
+            <input placeholder="Organization Name" value={this.state.organizationName} onChange={this.handleChange('organizationName')} />
           </div>
           <div className="accounts-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
