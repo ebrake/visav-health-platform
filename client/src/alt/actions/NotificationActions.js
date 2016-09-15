@@ -6,17 +6,15 @@ class NotificationActions {
     return function (dispatch) {
       let accountState = AccountStore.getState();
       let userId = accountState.user.id;
-        return fetch(
-        process.env.API_ROOT+'api/Telesessions/callUser', 
-        {
-          method: 'POST', 
-          headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-          body: JSON.stringify({
-            userId: userId,
-            sessionId: sessionId
-          })
-        }
-      ).then(responseObject => responseObject.json())
+      return fetch(process.env.API_ROOT+'api/Telesessions/callUser', {
+        method: 'POST', 
+        headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
+        body: JSON.stringify({
+          userId: userId,
+          sessionId: sessionId
+        })
+      })
+      .then(response => response.json())
       .then(response => {
         // do something with response if we want
       })
@@ -31,17 +29,15 @@ class NotificationActions {
   callDemoUser(sessionId){
     return function (dispatch) {
       let userId = 7;
-        return fetch(
-        process.env.API_ROOT+'api/Telesessions/callUser', 
-        {
-          method: 'POST', 
-          headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-          body: JSON.stringify({
-            userId: userId,
-            sessionId: sessionId
-          })
-        }
-      ).then(responseObject => responseObject.json())
+      return fetch(process.env.API_ROOT+'api/Telesessions/callUser', {
+        method: 'POST', 
+        headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
+        body: JSON.stringify({
+          userId: userId,
+          sessionId: sessionId
+        })
+      })
+      .then(response => response.json())
       .then(response => {
         // do something with response if we want
       })

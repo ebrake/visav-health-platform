@@ -12,19 +12,19 @@ module.exports = function(Person) {
       err = new Error('Valid email required on req.body.email');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
+      return cb(err, { status: 'failure', message: err.message, error: err });
     }
     if(!req.body.password){
       err = new Error('Valid password required on req.body.password');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
+      return cb(err, { status: 'failure', message: err.message, error: err });
     }
     if(!req.body.organizationName){
       err = new Error('Valid organization required on req.body.organizationName');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
+      return cb(err, { status: 'failure', message: err.message, error: err });
     }
 
     var orgFilter = { name: req.body.organizationName };
@@ -37,7 +37,6 @@ module.exports = function(Person) {
         err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENTS';
         throw err;
       } else if (queryResult[1]) {
-        console.log(queryResult[1]);
         err = new Error('An organization with this name has already been created');
         err.statusCode = 422;
         err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENTS';
@@ -58,7 +57,7 @@ module.exports = function(Person) {
     .then(function(data){
       return cb( null, {status: 'success', user: data.user, organization: data.organization });
     }, function(err){
-      return cb(err, { status: 'failure', message: err.message });
+      return cb(err, { status: 'failure', message: err.message, error: err });
     })
   }
 
@@ -105,12 +104,12 @@ module.exports = function(Person) {
         password: req.body.password
       }),
       Person.findOne({
-        where: { email: req.body.email }
+        where: { email: req.body.email.toLowerCase() }
       })
     ])
     .then(function(data){
       console.log('Signed in user '+data[1].email);
-      return cb(null, { status: 'success', token:data[0], user: data[1]})
+      return cb(null, { status: 'success', token: data[0], user: data[1] })
     })
     .catch(function(err){
       console.log('Issue signing in user:');
@@ -141,7 +140,7 @@ module.exports = function(Person) {
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
       return cb(err, { status: 'failure', message: err.message });
     }
-    var email = req.body.email;
+    var email = req.body.email.toLowerCase();
     var roleToAssign = req.body.role;
     var orgFilter = { id: req.user.organization.id };
 
