@@ -194,7 +194,10 @@ module.exports = function(Person) {
   );
 
   Person.updateUser = function(req, cb) {
-    req.user.updateAttributes(req.body, cb);
+    req.user.updateAttributes(req.body, function(err, updatedUser){
+      if (err) return cb(err, { status: 'failure', message: err.message });
+      else return cb(null, { status: 'success', message: 'Updated user '+req.user.email, user: updatedUser });
+    });
   }
 
   Person.remoteMethod(
@@ -205,7 +208,7 @@ module.exports = function(Person) {
       ],
       http: { path: '/update-user', verb: 'post' },
       returns: { arg: 'data', type: 'object' },
-      description: "Fuck you loopback"
+      description: "Update currently logged in user's information"
     }
   )
 }

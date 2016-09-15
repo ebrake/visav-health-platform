@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AuthenticatedPage from './AuthenticatedPage';
 import ImageButton from '../buttons/ImageButton';
 import Dropdown from 'react-dropdown';
+import AccountActions from '../../alt/actions/AccountActions';
 
 class AccountSettings extends React.Component {
   
@@ -10,7 +11,8 @@ class AccountSettings extends React.Component {
 
     this.state = {
       firstName: '',
-      lastName: ''
+      lastName: '',
+      phone: ''
     };
 
     this.update = this.update.bind(this);
@@ -30,6 +32,11 @@ class AccountSettings extends React.Component {
     console.log(this.state);
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log('Got new props:');
+    console.dir(nextProps);
+  }
+
   update() {
     fetch(
       process.env.API_ROOT + 'api/People/update-user',
@@ -38,7 +45,8 @@ class AccountSettings extends React.Component {
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
         body: JSON.stringify({ 
           firstName: this.state.firstName,
-          lastName: this.state.lastName
+          lastName: this.state.lastName,
+          phone: this.state.phone
         })
       }
     )
@@ -46,6 +54,9 @@ class AccountSettings extends React.Component {
     .then(response => {
       console.log('Updated?');
       console.dir(response);
+      if (response.data && response.data.status == 'success') {
+        AccountActions.updateUser(response.data.user);
+      }
     })
     .catch(err => {
       console.log('Error updating:');
@@ -63,6 +74,9 @@ class AccountSettings extends React.Component {
           </div>
           <div className="text-input-wrapper">
             <input placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange('lastName')} />
+          </div>
+          <div className="text-input-wrapper">
+            <input placeholder="Phone Number" value={this.state.phone} onChange={this.handleChange('phone')} />
           </div>
           <ImageButton className="accounts-button" text="Save" onClick={this.update} />
         </div>

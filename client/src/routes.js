@@ -20,6 +20,9 @@ var cacheStores = () => {
   localStorage.setItem('snapshot', snapshot);
 }
 
+//onLeave handles redirects, unload eventListener handles refreshes
+window.addEventListener('unload', cacheStores);
+
 var authCheck = (nextState, replace) => {
   let snapshot = localStorage.getItem('snapshot');
   alt.bootstrap(snapshot);
