@@ -19,6 +19,7 @@ config.set('access_token', 'I_AM_AN_ACCESS_TOKEN');
 config.set('OPENTOK_API_KEY', '45631802');
 
 //CSS imports
+import './css/alert.css';
 import './css/base.css';
 import './css/button.css';
 import './css/colors.css';

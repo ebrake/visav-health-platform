@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
+import FullscreenAlert from '../misc/FullscreenAlert';
+import RepsChartPanel from '../panels/RepsChartPanel';
 
 class Login extends React.Component {
   constructor(props) {
@@ -9,7 +11,8 @@ class Login extends React.Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      showForgotPasswordPopup: false,
     };
 
     this.login = this.login.bind(this);
@@ -17,6 +20,9 @@ class Login extends React.Component {
     this.goToSignup = this.goToSignup.bind(this);
     this.keyPressed = this.keyPressed.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.launchForgotPassword = this.launchForgotPassword.bind(this);
+    this.closeForgotPassword = this.closeForgotPassword.bind(this);
+
   }  
 
   goToSignup() {
@@ -67,6 +73,15 @@ class Login extends React.Component {
     }
   }
 
+  launchForgotPassword(){
+    this.setState({showForgotPasswordPopup: true});
+
+  }
+
+  closeForgotPassword(){
+    this.setState({showForgotPasswordPopup: false});
+  }
+
   accountChanged(state) {
     console.log("Account Store changed:");
     console.dir(state);
@@ -80,9 +95,12 @@ class Login extends React.Component {
     AccountStore.unlisten(this.accountChanged);
   }
 
+
   render() {
+
     return (
       <div className="page">
+        <FullscreenAlert active={this.state.showForgotPasswordPopup} onClose={this.closeForgotPassword} content={<RepsChartPanel />} />
         <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
           <div className="accounts-input-wrapper">
@@ -98,6 +116,7 @@ class Login extends React.Component {
             <span>Logout</span>
           </button>
           <span className="accounts-link" onClick={this.goToSignup}>{"Don't have an account? Sign up"}</span>
+          <span className="forgot-password-link" onClick={this.launchForgotPassword}>{"Forgot your password?"}</span>
         </div>
         <div className="accounts-flex-padding"></div>
       </div>

@@ -8,6 +8,7 @@ import ExercisesChartPanel from '../panels/ExercisesChartPanel';
 import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
+import FullscreenAlert from '../misc/FullscreenAlert';
 
 class Telesession extends React.Component {
   
