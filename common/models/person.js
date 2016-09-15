@@ -30,17 +30,15 @@ module.exports = function(Person) {
     return findPersonAndOrganization(req, req.body.email, { name: req.body.organization })
     .then(function(queryResult){
       if (queryResult[0]) {
-        return { 
-          error: new Error('Email already in use'), 
-          type: 'email', 
-          status: 'error' 
-        };
+        err = new Error('A person with this email has already been created');
+        err.statusCode = 422;
+        err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENTS';
+        throw err;
       } else if (queryResult[1]) {
-        return { 
-          error: new Error('An organization already exists with that name'), 
-          type: 'organization', 
-          status: 'error' 
-        };
+        err = new Error('An organization with this name has already been created');
+        err.statusCode = 422;
+        err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENTS';
+        throw err;
       } else {
         var personData = {
           email: req.body.email,
@@ -149,14 +147,13 @@ module.exports = function(Person) {
         err = new Error('A Person with this email has already been created.');
         err.statusCode = 422;
         err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENTS';
-        return cb(err, { status: 'failure', message: err.message });
+        throw err;
       } else if (!queryResult[1]){
-        //shouldn't be possible but worth handling
-        return {
-          error: new Error('No organization associated with user!'),
-          type: 'organization',
-          status: 'error'
-        }
+        //shouldn't be possible but we'll handle it anyways
+        err = new Error('This organization does not exist.');
+        err.statusCode = 422;
+        err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENTS';
+        throw err;
       } else {
         var personData = {
           email: email,
@@ -173,7 +170,6 @@ module.exports = function(Person) {
       console.log('Error inviting person to organization:');
       console.log(err);
       return cb(err, { status: 'failure', message: err.message });
-
     })
   }
 
