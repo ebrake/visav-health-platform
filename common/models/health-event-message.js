@@ -1,7 +1,6 @@
 import Oy from 'oy-vey';
 import React from 'react';
 import HealthEventNotificationEmail from '../../client/src/components/email-templates/HealthEventNotificationEmail';
-import fetch from 'node-fetch';
 
 module.exports = function(HealthEventMessage) {
   HealthEventMessage.dismiss = function(req, res, cb) {
@@ -73,8 +72,9 @@ module.exports = function(HealthEventMessage) {
     res.redirect(process.env.API_ROOT + 'telesession');
   };
 
-  HealthEventMessage.send = function(req, res, cb) {
+  HealthEventMessage.send = function(req, cb) {
     var { patient, doctor, healthEvent, exercise, deliveryMethod } = req.body;
+    var Message = req.app.models.Message;
     var err;
 
     if(!patient || !doctor || !healthEvent){
@@ -104,10 +104,10 @@ module.exports = function(HealthEventMessage) {
       if (deliveryMethod=='text') {
         //send text
         apiRoute = 'sendText'
-        requestBody = JSON.stringify({
+        requestBody = {
           recipient: doctor,
           contentString: 'New notification from ' + patient.firstName + ' ' + patient.lastName,
-        });
+        };
       }
       else {
         //send email
@@ -121,35 +121,28 @@ module.exports = function(HealthEventMessage) {
             previewText: subject
           }
         );
-        requestBody = JSON.stringify({
+        requestBody = {
           recipient: doctor,
           html: html,
           subject: subject
-        });
+        };
       }
 
       var assembledAPIRoute = process.env.API_ROOT + 'api/messages/' + apiRoute;
-      
-      return fetch(assembledAPIRoute, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+      var craftedRequest = {
         body: requestBody
-      })
-      .then(function(res) {
-        return res.json();
-      }).then(function(json) {
-        createdMessage.delivered = true;
-        createdMessage.save();
-        return assembledAPIRoute;
-      }); 
-    })
-    .then(function(assembledAPIRoute){
-      return cb(null, { status: 'success', apiRoute: assembledAPIRoute });
-    }, function(err){
-      return cb(null, { status: 'failure', message: err.message, error: err });
+      };
+
+      //call Message.sendEmail or Message.sendText
+      if (apiRoute)
+        Message[apiRoute](craftedRequest, cb);
+      else {
+        //literally can't reach here, but I feel dangerous doing the [] notation using a variable which was, once, undefined
+        err = new Error('An error occurred in health-event-message at HealthEventMessage.send');
+        err.statusCode = 422;
+        err.code = 'HEALTH_EVENT_MESSAGE_FAILED_COMPUTATIONAL_ISSUE';
+        return cb(null, { status: 'failure', message: err.message, error: err });
+      }
     })
   };
 
@@ -183,7 +176,6 @@ module.exports = function(HealthEventMessage) {
     { 
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'res', type: 'object', http: { source: 'res' } },
       ],
       http: { path: '/send', verb: 'post' },
       returns: { arg: 'data', type: 'array' },

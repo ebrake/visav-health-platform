@@ -1,8 +1,8 @@
-import fetch from 'node-fetch';
 import plivo from 'plivo';
 
 module.exports = function(Message) {
-  Message.send = function(req, res, cb) {    
+  Message.send = function(req, cb) {
+    var HealthEventMessage = req.app.models.HealthEventMessage;
     var { type, deliveryMethod, sender, recipient } = req.body;
     var err;
 
@@ -34,33 +34,20 @@ module.exports = function(Message) {
         return cb(null, { status: 'failure', message: err.message, error: err });
       }
       
-      var requestBody = JSON.stringify({
-        healthEvent: req.body.healthEvent,
-        doctor: recipient,
-        patient: sender,
-        deliveryMethod: deliveryMethod
-      });
-      var assembledAPIRoute = process.env.API_ROOT+'api/healthEventMessages/send';
+      var craftedRequest = {
+        body: {
+          healthEvent: req.body.healthEvent,
+          doctor: recipient,
+          patient: sender,
+          deliveryMethod: deliveryMethod
+        }
+      };
 
-      fetch(assembledAPIRoute, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: requestBody
-      })
-      .then(function(res) {
-        return res.json();
-      }).then(function(json) {
-        return cb(null, { status: 'success', apiRoute: assembledAPIRoute });
-      }, function(err){
-        return cb(null, { status: 'failure', message: err.message, error: err });
-      });
+      HealthEventMessage.send(craftedRequest, cb);
     }
   };
 
-  Message.sendEmail = function(req, res, cb) {
+  Message.sendEmail = function(req, cb) {
     var { recipient, html, subject } = req.body;
     var err;
     if (!recipient) {
@@ -98,7 +85,7 @@ module.exports = function(Message) {
     });
   };
 
-  Message.sendText = function(req, res, cb) {
+  Message.sendText = function(req, cb) {
     //send text
     var { recipient, contentString } = req.body;
 
@@ -138,48 +125,36 @@ module.exports = function(Message) {
 
   };
 
-  Message.remoteMethod(
-    "dismiss",
-    { 
-      accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'res', type: 'object', http: { source: 'res' } },
-      ],
-      http: { path: '/dismiss', verb: 'get' },
-      returns: { arg: 'data', type: 'array' },
-      description: "Makes note the provided message has been dismissed."
-    }
-  );
+
   Message.remoteMethod(
     "send",
     { 
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'res', type: 'object', http: { source: 'res' } },
       ],
       http: { path: '/send', verb: 'post' },
       returns: { arg: 'data', type: 'array' },
       description: "Send an email, text message or notification"
     }
   );
+
   Message.remoteMethod(
     "sendText",
     { 
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'res', type: 'object', http: { source: 'res' } },
       ],
       http: { path: '/sendText', verb: 'post' },
       returns: { arg: 'data', type: 'array' },
       description: "Send an email, text message or notification"
     }
   );
+
   Message.remoteMethod(
     "sendEmail",
     { 
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'res', type: 'object', http: { source: 'res' } },
       ],
       http: { path: '/sendEmail', verb: 'post' },
       returns: { arg: 'data', type: 'array' },

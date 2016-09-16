@@ -1,36 +1,34 @@
 var Promise = require('bluebird');
 var path = require('path');
-import fetch from 'node-fetch';
 
 module.exports = function(HealthEvent) {
-
   var sendHealthEventMessage = function(req, healthEvent, person) {
-    var requestBody = JSON.stringify({
-        type: 'healthEvent',
-        healthEvent: healthEvent,
-        sender: person,
-        recipient: person
-    });
+    var Message = req.app.models.Message;
 
-    return fetch(process.env.API_ROOT+'api/messages/send', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: requestBody
-    })
-    .then(function(res) {
-      return res.json();
-    }).then(function(json) {
-      if (json.data && json.data.status == 'success') {
-        return 'Successfully sent email request to /api/messages/send.';
-      }
-      else{
-        var err = new Error('could not send email request to /api/messages/send');
-        err.statusCode = 400;
-        throw err;
-      }
+    //this has to return a new Promise and not one of its own because the semantics of that Message.send(req, cb) are pretty crazy. Try and do the code trace if you're looking to exercise the brain! :V
+    return new Promise(function(resolve, reject){
+      var craftedRequest = {
+        body: {
+          type: 'healthEvent',
+          healthEvent: healthEvent,
+          sender: person,
+          recipient: person
+        }
+      };
+
+      Message.send(craftedRequest, function(err, data) {
+        if (err)
+          return reject(err);
+
+        if (data && data.status == 'success') {
+          return resolve('Successfully sent email request to /api/messages/send.');
+        }
+        else{
+          var err = new Error('could not send email request to /api/messages/send');
+          err.statusCode = 400;
+          return reject(err);
+        }
+      })
     })
   }
 
