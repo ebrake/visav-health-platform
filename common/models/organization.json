@@ -9,8 +9,10 @@
     "name": {
       "type": "string",
       "required": true,
-      "default": "''",
-      "index": { "unique": true } 
+      "index": {
+        "unique": true
+      },
+      "default": "''"
     },
     "address": {
       "type": "string",

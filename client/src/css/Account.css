@@ -14,23 +14,6 @@
   }
 }
 
-.accounts-input-wrapper {
-  margin-bottom: 10px;
-  border: 1px solid black;
-  padding: 5px 9px;
-  background: $lightest-grey;
-
-  input {
-    width: 100%;
-    border-width: 0;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    outline: none;
-    background: transparent;
-  }
-}
-
 .accounts-container {
   margin: 0 auto;
   width: 400px;
@@ -40,15 +23,15 @@
   border: 1px solid $color-panel-border;
   flex: 0 0 auto;
   padding: 40px 10px;
-}
 
-.accounts-link {
-  text-align: center;
-  cursor: pointer;
+  .accounts-link {
+    text-align: center;
+    cursor: pointer;
 
-  &:hover,
-  &::after {
-    text-decoration: underline;
+    &:hover,
+    &::after {
+      text-decoration: underline;
+    }
   }
 }
 

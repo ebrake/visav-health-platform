@@ -5,6 +5,12 @@
   "options": {
     "validateUpsert": true
   },
+  "scope": {
+    "include": [
+      "roles",
+      "organization"
+    ]
+  },
   "properties": {
     "firstName": {
       "type": "String",
@@ -56,8 +62,8 @@
     "roles": {
       "type": "hasMany",
       "model": "Role",
-      "through": "RoleMapping",
       "foreignKey": "principalId",
+      "through": "RoleMapping",
       "keyThrough": "roleId"
     }
   },
@@ -82,13 +88,14 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "invite"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "updateUser"
     }
   ],
-  "methods": {},
-  "scope": {
-    "include": [
-      "roles", 
-      "organization"
-    ]
-  }
+  "methods": {}
 }

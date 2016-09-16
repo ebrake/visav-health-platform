@@ -7,64 +7,60 @@ var path = require('path');
 module.exports = function(Person) {
 
   Person.signup = function(req, cb) {
-    var err;
-    if(!req.body.email){
-      err = new Error('Valid email required on req.body.email');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
-    }
-    if(!req.body.password){
-      err = new Error('Valid password required on req.body.password');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
-    }
-    if(!req.body.organizationName){
-      err = new Error('Valid organization required on req.body.organizationName');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
-    }
+    if (!req.body.email) 
+      return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
+    if (!req.body.password) 
+      return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
+    if (!req.body.organization) 
+      return cb(null, { error: new Error('No organization!'), type: 'organization', status: 'error' });
 
-    var orgFilter = { name: req.body.organizationName };
+    var Role = req.app.models.Role
+      , RoleMapping = req.app.models.RoleMapping
+      , Organization = req.app.models.Organization
+      , email = req.body.email
+      , password = req.body.password
+      , orgFilter = { name: req.body.organization };
 
-    return findPersonAndOrganization(req, req.body.email, orgFilter)
+    return findPersonAndOrganization(email, Person, orgFilter, Organization)
     .then(function(queryResult){
       if (queryResult[0]) {
-        err = new Error('A person with this email has already been created');
-        err.statusCode = 422;
-        err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENTS';
-        throw err;
+        return { 
+          error: new Error('Email already in use'), 
+          type: 'email', 
+          status: 'error' 
+        };
       } else if (queryResult[1]) {
-        console.log(queryResult[1]);
-        err = new Error('An organization with this name has already been created');
-        err.statusCode = 422;
-        err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENTS';
-        throw err;
+        return { 
+          error: new Error('An organization already exists with that name'), 
+          type: 'organization', 
+          status: 'error' 
+        };
       } else {
         var personData = {
-          email: req.body.email.toLowerCase(),
-          password: req.body.password
+          email: email,
+          password: password
         };
-        return req.app.models.Organization.create(orgFilter)
+
+        return Organization.create(orgFilter)
         .then(function(createdOrganization){
           console.log('Organization created: '+createdOrganization.name);
           
-          return createPersonWithRoleAndBindToOrganization(req, personData, 'owner', createdOrganization);
+          return createPersonWithRoleAndBindToOrganization(personData, 'owner', Person, createdOrganization, Role, RoleMapping);
         })
       }
     })
     .then(function(data){
-      return cb( null, {status: 'success', user: data.user, organization: data.organization });
+      return data;
     }, function(err){
-      return cb(err, { status: 'failure', message: err.message });
+      console.log('Error signing up person/organization:');
+      console.log(err);
+      return { error: err, type: 'general', status: 'error' };
     })
   }
 
   //send verification email after registration
   Person.afterRemote('remoteCreate', function(context, createdObject, next) {
-    if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
+    if (!createdObject || !createdObject.data || createdObject.data.status == 'error') {
       return next();
     }
 
@@ -85,20 +81,22 @@ module.exports = function(Person) {
 
   });
 
+  Person.remoteMethod(
+    "signup",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } }
+      ],
+      http: { path: '/signup', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts a new user's email and password, returns the created user"
+    }
+  );
+
   Person.signin = function(req, cb){
-    var err;
-    if(!req.body.email){
-      err = new Error('Valid email required on req.body.email');
-      err.statusCode = 417;
-      err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
-    }
-    if(!req.body.password){
-      err = new Error('Valid password required on req.body.password');
-      err.statusCode = 417;
-      err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
-    }
+    if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
+    if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
+
     return Promise.all([
       Person.login({
         email: req.body.email.toLowerCase(),
@@ -109,71 +107,15 @@ module.exports = function(Person) {
       })
     ])
     .then(function(data){
-      console.log('Signed in user '+data[1].email);
-      return cb(null, { status: 'success', token:data[0], user: data[1]})
+      data = {
+        token: data[0],
+        user: data[1]
+      };
+
+      return data;
     })
     .catch(function(err){
-      console.log('Issue signing in user:');
-      console.log(err);
-      return cb(err, { status: 'failure', message: err.message });
-    })
-  }
-
-  Person.invite = function(req, cb) {
-    var err;
-    if (!req.user.organization)
-      return cb(null, { error: new Error('No organization associated with user!'), type: 'organization', status: 'error' });
-    if(!req.body.email){
-      err = new Error('Valid email required on req.body.email');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
-    }
-    if(!req.body.role){
-      err = new Error('Valid Role required on req.body.role');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
-    }
-    if(!req.user.organization){
-      err = new Error('No organization associated with user. Valid organization required on req.user.organization.');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENTS';
-      return cb(err, { status: 'failure', message: err.message });
-    }
-    var email = req.body.email;
-    var roleToAssign = req.body.role;
-    var orgFilter = { id: req.user.organization.id };
-
-    return findPersonAndOrganization(req, email, orgFilter)
-    .then(function(queryResult){
-      if (queryResult[0]) {
-        err = new Error('A Person with this email has already been created.');
-        err.statusCode = 422;
-        err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENTS';
-        throw err;
-      } else if (!queryResult[1]){
-        //shouldn't be possible but we'll handle it anyways
-        err = new Error('This organization does not exist.');
-        err.statusCode = 422;
-        err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENTS';
-        throw err;
-      } else {
-        var personData = {
-          email: email,
-          password: 'testtest'
-        };
-        var foundOrganization = queryResult[1];
-
-        return createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign, foundOrganization);
-      }
-    })
-    .then(function(data){
-      return cb(null, { status: 'success', user: data.user, organization: data.organization });
-    }, function(err){
-      console.log('Error inviting person to organization:');
-      console.log(err);
-      return cb(err, { status: 'failure', message: err.message });
+      return { error: err, type: 'login', status: 'error' };
     })
   }
 
@@ -189,6 +131,56 @@ module.exports = function(Person) {
     }
   );
 
+  Person.invite = function(req, cb) {
+    if (!req.body.email) 
+      return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
+    if (!req.body.role) 
+      return cb(null, { error: new Error('No role!'), type: 'role', status: 'error' });
+    if (!req.user.organization)
+      return cb(null, { error: new Error('No organization associated with user!'), type: 'organization', status: 'error' });
+
+    var email = req.body.email;
+    var roleToAssign = req.body.role;
+    var orgFilter = { id: req.user.organization.id };
+    var Organization = req.app.models.Organization;
+    var Person = req.app.models.Person;
+    var Role = req.app.models.Role;
+    var RoleMapping = req.app.models.RoleMapping;
+
+    return findPersonAndOrganization(email, Person, orgFilter, Organization)
+    .then(function(queryResult){
+      if (queryResult[0]) {
+        return { 
+          error: new Error('Email already in use'), 
+          type: 'email', 
+          status: 'error' 
+        };
+      } else if (!queryResult[1]){
+        //shouldn't be possible but worth handling
+        return {
+          error: new Error('No organization associated with user!'),
+          type: 'organization',
+          status: 'error'
+        }
+      } else {
+        var personData = {
+          email: email,
+          password: 'testtest'
+        };
+        var foundOrganization = queryResult[1];
+
+        return createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Person, foundOrganization, Role, RoleMapping);
+      }
+    })
+    .then(function(data){
+      return data;
+    }, function(err){
+      console.log('Error inviting person to organization:');
+      console.log(err);
+      return { error: err, type: 'general', status: 'error' };
+    })
+  }
+
   Person.remoteMethod(
     "invite",
     {
@@ -201,42 +193,46 @@ module.exports = function(Person) {
     }
   );
 
+  Person.updateUser = function(req, cb) {
+    req.user.updateAttributes(req.body, function(err, updatedUser){
+      if (err) return cb(err, { status: 'failure', message: err.message });
+      else return cb(null, { status: 'success', message: 'Updated user '+req.user.email, user: updatedUser });
+    });
+  }
+
   Person.remoteMethod(
-    "signup",
+    "updateUser",
     {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
-      http: { path: '/signup', verb: 'post' },
+      http: { path: '/update-user', verb: 'post' },
       returns: { arg: 'data', type: 'object' },
-      description: "Accepts a new user's email and password, returns the created user"
+      description: "Update currently logged in user's information"
     }
-  );
+  )
 }
 
-function findPerson(req, email) {
-  var Person = req.app.models.Person;
+function findPerson(email, Person) {
   return Person.findOne({
     where: { email: email }
   })
 }
 
-function findOrganization(req, whereObject) {
-  var Organization = req.app.models.Organization;
+function findOrganization(whereObject, Organization) {
   return Organization.findOne({
     where: whereObject
   })
 }
 
-function findPersonAndOrganization(req, email, orgFilter) {
+function findPersonAndOrganization(email, Person, orgFilter, Organization) {
   return Promise.all([
-    findPerson(req, email),
-    findOrganization(req, orgFilter)
+    findPerson(email, Person),
+    findOrganization(orgFilter, Organization)
   ])
 }
 
-function createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign, organization) {
-  var Person = req.app.models.Person;
+function createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Person, organization, Role, RoleMapping) {
   return Person.create(personData)
   .then(function(createdPerson){
     if (roleToAssign === 'owner'){
@@ -249,7 +245,7 @@ function createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign
 
     console.log('User created: '+createdPerson.email);
 
-    return assignRole(req, createdPerson, roleToAssign)
+    return assignRole(createdPerson, roleToAssign, Role, RoleMapping)
     .then(function(updatedUser){
       return {
         user: updatedUser,
@@ -259,7 +255,7 @@ function createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign
   })
 }
 
-function assignRole(req, user, roleName) {
+function assignRole(user, roleName, Role, RoleMapping) {
   roleName = roleName.toLowerCase();
 
   if (!user) {
@@ -267,7 +263,7 @@ function assignRole(req, user, roleName) {
   } else if (user.status == 'error') {
     return Promise.resolve(user);
   }
-  var Role = req.app.models.Role;
+
   return Role.findOne({
     where: { name: roleName }
   })
@@ -276,7 +272,7 @@ function assignRole(req, user, roleName) {
       return Promise.reject(new Error("No role with this name exists!"))
     } else {
       return role.principals.create({ 
-        principalType: req.app.models.RoleMapping.USER,
+        principalType: RoleMapping.USER,
         principalId: user.id
       })
     }
@@ -284,4 +280,3 @@ function assignRole(req, user, roleName) {
     return user;
   })
 }
-

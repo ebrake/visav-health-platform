@@ -7,12 +7,13 @@ class AccountStore {
     this.role = undefined;
 
     this.bindListeners({
-      handleLogin: AccountActions.LOGIN_USER,
-      handleLogout: AccountActions.LOGOUT_USER
+      handleLoginOrUpdate: AccountActions.LOGIN_USER,
+      handleLoginOrUpdate: AccountActions.UPDATE_USER,
+      handleLogout: AccountActions.LOGOUT_USER,
     });
   }
 
-  handleLogin(user) {
+  handleLoginOrUpdate(user) {
     this.user = user;
     this.role = (user.roles && user.roles[0]) ? user.roles[0].name : undefined;
   }

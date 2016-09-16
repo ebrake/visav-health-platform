@@ -10,6 +10,10 @@ class AccountActions {
     localStorage.removeItem('accessToken');
     return true;
   }
+
+  updateUser(user){
+    return user;
+  }
 }
 
 export default alt.createActions(AccountActions);
