@@ -58,7 +58,7 @@ module.exports = function(Message) {
     }
   };
 
-  Message.sendEmail = function(req, res, cb) {
+  Message.sendEmail = function(req, cb) {
     var { recipient, html, subject } = req.body;
     var err;
     if (!recipient) {
@@ -81,12 +81,12 @@ module.exports = function(Message) {
       subjectText = ': ' + subject;
     }
 
-    var Email = req.app.models.Email;
+    var Email = Message.app.models.Email;
 
     Email.send({
       to: recipient.email,
-      from: req.app.globalConfig.SYSTEM_EMAIL,
-      subject: req.app.globalConfig.APP_NAME + subjectText,
+      from: Message.app.globalConfig.SYSTEM_EMAIL,
+      subject: Message.app.globalConfig.APP_NAME + subjectText,
       html: html
     }, function(err) {
       if (err) return cb(err, { status: 'failure', message: err.message });
@@ -173,7 +173,6 @@ module.exports = function(Message) {
     { 
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'res', type: 'object', http: { source: 'res' } },
       ],
       http: { path: '/sendEmail', verb: 'post' },
       returns: { arg: 'data', type: 'array' },

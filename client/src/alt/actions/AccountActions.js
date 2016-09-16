@@ -33,6 +33,51 @@ class AccountActions {
     return user;
   }
 
+  requestPasswordReset(data){
+    return function (dispatch) {
+      let userId = 7;
+      return fetch(process.env.API_ROOT+'api/People/requestPasswordReset', {
+        method: 'POST', 
+        headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
+        body: JSON.stringify({
+          email: data.email
+        })
+      })
+      .then(response => response.json())
+      .then(response => {
+        // do something with response if we want
+      })
+      .catch((err) => {
+        console.log('error:');
+        console.dir(err);
+        return dispatch([]);
+      })
+    };
+  }
+
+  setPassword(data){
+    return function (dispatch) {
+      let userId = 7;
+      return fetch(process.env.API_ROOT+'api/People/resetPassword', {
+        method: 'POST', 
+        headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
+        body: JSON.stringify({
+          password: data.password,
+          confirmation: data.confirmation
+        })
+      })
+      .then(response => response.json())
+      .then(response => {
+        // do something with response if we want
+      })
+      .catch((err) => {
+        console.log('error:');
+        console.dir(err);
+        return dispatch([]);
+      })
+    };
+  }
+
   createUser(data){
     return function(dispatch) {
       return fetch(process.env.API_ROOT + 'api/People/signup', {

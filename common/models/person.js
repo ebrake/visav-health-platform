@@ -224,6 +224,86 @@ module.exports = function(Person) {
       description: "Takes in an email and role for a new user, creates their account and emails an invite to them."
     }
   );
+
+  Person.requestPasswordReset = function(req, email, cb) {
+    var err;
+    if(!req.body.email){
+      err = new Error('Valid email required on req.body.email');
+      err.statusCode = 417;
+      err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_EMAIL';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    Person.resetPassword({
+      email: req.body.email
+    }, function(err) {
+      if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+    });
+
+  }
+
+  Person.on('resetPasswordRequest', function(info) {
+    var url = 'http://localhost:4000/resetPassword';
+    var html = 'Click <a href="' + url + '?access_token=' +
+        info.accessToken.id + '">here</a> to reset your password';
+
+    Person.app.models.Message.sendEmail({
+      body: {
+        recipient : { email: info.email },
+        html: html,
+        subject: 'Password Reset'
+      }
+    }, function(err) {
+      if (err) return console.log('> error sending password reset email');
+      console.log('> sending password reset email to:', info.email);
+    });
+  });
+
+  Person.remoteMethod(
+    "requestPasswordReset",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'email', type: 'string' },
+      ],
+      http: { path: '/requestPasswordReset', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Takes in an email and resets its password."
+    }
+  );
+
+  Person.doPasswordReset = function(req, res, cb) {
+    console.log('flag');
+    if (!req.accessToken) return res.sendStatus(401);
+
+    //verify passwords match
+    if (!req.body.password ||
+        !req.body.confirmation ||
+        req.body.password !== req.body.confirmation) {
+      return res.sendStatus(400, new Error('Passwords do not match'));
+    }
+
+    Person.findById(req.accessToken.userId, function(err, user) {
+      if (err) return res.sendStatus(404);
+      user.updateAttribute('password', req.body.password, function(err, user) {
+        if (err) return res.sendStatus(404);
+        console.log('> password reset processed successfully');
+      });
+    });
+  };
+
+  Person.remoteMethod(
+    "doPasswordReset",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'res', type: 'object', http: { source: 'req' } }
+
+      ],
+      http: { path: '/resetPassword', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Take in a password and confirmation, and changes password to that password if they match."
+    }
+  );
 }
 
 function findPerson(req, email) {
