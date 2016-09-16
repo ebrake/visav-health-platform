@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import AccountActions from '../../alt/actions/AccountActions';
-import AccountStore from '../../alt/stores/AccountStore';
 import FullscreenAlert from '../misc/FullscreenAlert';
 import PasswordResetPanel from '../panels/PasswordResetPanel';
 
@@ -13,6 +12,8 @@ class Login extends React.Component {
       email: '',
       password: '',
       showForgotPasswordPopup: false,
+      password: '',
+      user: undefined
     };
 
     this.login = this.login.bind(this);
@@ -30,28 +31,17 @@ class Login extends React.Component {
   }
 
   login() {
-    fetch(process.env.API_ROOT + 'api/people/signin', {
-      method: 'POST', 
-      headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ email: this.state.email, password: this.state.password })
+    AccountActions.loginUser({
+      email: this.state.email,
+      password: this.state.password
     })
-    .then(response => response.json())
-    .then(response => {
-      if (response && response.data && response.data.status != 'error') {
-        AccountActions.loginUser(response.data);
-
-        console.log('Login successful! Redirecting...');
-        this.props.router.push('/me');
+    .then(function(response){
+      if (response && response.data && response.data.status == 'success') {
+        this.props.router.push ('/me');
       } else {
-        //display validation messages
-        console.log('Error logging in:');
-        console.dir(response);
+        //validation messages
       }
-    })
-    .catch((err) => {
-      console.log('Error logging in:');
-      console.dir(err);
-    })
+    }.bind(this))
   }
 
   logout() {
@@ -81,18 +71,6 @@ class Login extends React.Component {
     this.setState({showForgotPasswordPopup: false});
   }
 
-  accountChanged(state) {
-    console.log("Account Store changed:");
-    console.dir(state);
-  }
-
-  componentDidMount(){
-    AccountStore.listen(this.accountChanged);
-  }
-
-  componentWillUnmount(){
-    AccountStore.unlisten(this.accountChanged);
-  }
 
 
   render() {

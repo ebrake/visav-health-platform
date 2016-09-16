@@ -7,6 +7,8 @@ class VisavInput extends React.Component {
     this.state = {
       isActive: false
     };
+    this.valueDidChange = this.valueDidChange.bind(this);
+
   } 
 
   componentWillReceiveProps(nextProps) {
@@ -33,8 +35,7 @@ class VisavInput extends React.Component {
     this.setState({
       isActive: (value.length > 0)
     });
-    this.props.value = value;
-    this.props.didChange(event);
+    this.props.valueDidChange(event);
   }
 
   render() {
@@ -56,8 +57,7 @@ class VisavInput extends React.Component {
 }
 
 VisavInput.propTypes = {
-  didChange: React.PropTypes.func,
-  value: React.PropTypes.string,
+  valueDidChange: React.PropTypes.func,
   label: React.PropTypes.string.isRequired
 };
 

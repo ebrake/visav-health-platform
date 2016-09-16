@@ -19,15 +19,22 @@ class AccountSettings extends React.Component {
 
     this.update = this.update.bind(this);
     this.logState = this.logState.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.firstNameDidChange = this.firstNameDidChange.bind(this);
+    this.lastNameDidChange = this.lastNameDidChange.bind(this);
+    this.phoneDidChange = this.phoneDidChange.bind(this);
+
   }
 
-  handleChange(field) {
-    return function(event) {
-      var state = {};
-      state[field] = event.target.value;
-      this.setState(state);
-    }.bind(this);
+  firstNameDidChange(event) {
+    this.setState({ firstName: event.target.value });
+  }
+
+  lastNameDidChange(event) {
+    this.setState({ lastName: event.target.value });
+  }
+
+  phoneDidChange(event) {
+    this.setState({ phone: event.target.value });
   }
 
   logState() {
@@ -68,9 +75,9 @@ class AccountSettings extends React.Component {
       <div className="InviteUsers content-container">
         <div className="AccountSettings panel">
           <h1 className="title">Account Settings</h1>
-          <VisavInput className="visav-text-field" label="First Name" value={this.state.firstName} />
-          <VisavInput className="visav-text-field" label="Last Name" value={this.state.lastName} />
-          <VisavInput className="visav-text-field" label="Phone Number" value={this.state.phone} />
+          <VisavInput className="visav-text-field" label="First Name" valueDidChange={ this.firstNameDidChange } />
+          <VisavInput className="visav-text-field" label="Last Name" valueDidChange={ this.lastNameDidChange } />
+          <VisavInput className="visav-text-field" label="Phone Number" valueDidChange={ this.phoneDidChange } />
           <ImageButton className="accounts-button" text="Save" onClick={this.update} />
         </div>
       </div>
