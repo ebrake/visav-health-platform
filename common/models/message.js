@@ -55,7 +55,7 @@ module.exports = function(Message) {
       }).then(function(json) {
         return cb(null, { status: 'success', apiRoute: assembledAPIRoute });
       }, function(err){
-        return cb(err, { status: 'failure', message: err.message, error: err });
+        return cb(null, { status: 'failure', message: err.message, error: err });
       });
     }
   };
@@ -91,7 +91,9 @@ module.exports = function(Message) {
       subject: req.app.globalConfig.APP_NAME + subjectText,
       html: html
     }, function(err) {
-      if (err) return cb(err, { status: 'failure', message: err.message });
+      if (err) 
+        return cb(null, { status: 'failure', message: err.message, error: err });
+      
       return cb(null, { status: 'success', message: 'Email successfully sent to: ' + recipient.email});
     });
   };
