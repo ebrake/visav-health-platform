@@ -11,11 +11,13 @@ class TelesessionStore {
   }
 
   handleCreateSession(response) {
-    this.createSessionResponse = response;
+    console.log("Telesession store:");
+    console.dir(response);
+    this.createSessionResponse = response.data;
 
-    if (response.session) {
-      this.sessionId = response.session.sessionId;
-      this.token = response.token;
+    if (response.data.session) {
+      this.sessionId = response.data.session.sessionId;
+      this.token = response.data.token;
     }
   }
 

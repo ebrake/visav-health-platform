@@ -36,7 +36,7 @@ module.exports = function(Installation) {
       return Installation.findById(install.id)
       .then(function(installation){
         //update the properties of this installation by what's on req.body
-        for (var attr on installation) {
+        for (var attr in installation) {
           if (req.body[attr] && ['id', 'userid'].indexOf(attr.toLowerCase()) < 0) {
             installation[attr] = req.body[attr];
           }
