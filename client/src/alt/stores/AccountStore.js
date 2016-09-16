@@ -9,7 +9,8 @@ class AccountStore {
     this.bindListeners({
       handleLogin: AccountActions.LOGIN_USER,
       handleLogout: AccountActions.LOGOUT_USER,
-      handleCreateUser: AccountActions.CREATE_USER
+      handleCreateUser: AccountActions.CREATE_USER,
+      handleUpdateUser: AccountActions.UPDATE_USER
     });
   }
 
@@ -26,6 +27,11 @@ class AccountStore {
 
   handleCreateUser(response) {
 
+  }
+
+  handleUpdateUser(user) {
+    this.user = user;
+    this.role = (user.roles && user.roles[0]) ? user.roles[0].name : undefined;
   }
 
   handleLogout() {

@@ -75,13 +75,13 @@ class Signup extends React.Component {
       <div className="page">
         <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
-          <div className="accounts-input-wrapper">
+          <div className="text-input-wrapper">
             <input placeholder="Organization Name" value={this.state.organizationName} onChange={this.handleChange('organizationName')} />
           </div>
-          <div className="accounts-input-wrapper">
+          <div className="text-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
           </div>
-          <div className="accounts-input-wrapper">
+          <div className="text-input-wrapper">
             <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
           </div>
           <button className="accounts-button" onClick={this.createUser}><span>Sign Up</span></button>

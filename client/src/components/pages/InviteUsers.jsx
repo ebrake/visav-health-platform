@@ -56,7 +56,9 @@ class InviteUsers extends React.Component {
           <div className="text-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
           </div>
-          <Dropdown options={roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
+          <div className="dropdown-container">
+            <Dropdown options={roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
+          </div>
           <ImageButton className="invite-button" text="Invite new user" onClick={this.inviteUser} />
         </div>
       </div>

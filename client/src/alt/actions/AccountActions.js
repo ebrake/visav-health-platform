@@ -29,6 +29,10 @@ class AccountActions {
     return true;
   }
 
+  updateUser(user){
+    return user;
+  }
+
   createUser(data){
     return function(dispatch) {
       return fetch(process.env.API_ROOT + 'api/People/signup', {
