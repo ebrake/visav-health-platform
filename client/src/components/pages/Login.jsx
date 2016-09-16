@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
 import FullscreenAlert from '../misc/FullscreenAlert';
-import RepsChartPanel from '../panels/RepsChartPanel';
+import PasswordResetPanel from '../panels/PasswordResetPanel';
 
 class Login extends React.Component {
   constructor(props) {
@@ -100,7 +100,7 @@ class Login extends React.Component {
 
     return (
       <div className="page">
-        <FullscreenAlert active={this.state.showForgotPasswordPopup} onClose={this.closeForgotPassword} content={<RepsChartPanel />} />
+        <FullscreenAlert active={this.state.showForgotPasswordPopup} onClose={this.closeForgotPassword} content={<PasswordResetPanel />} />
         <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
           <div className="accounts-input-wrapper">
