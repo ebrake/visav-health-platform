@@ -193,7 +193,7 @@ module.exports = function(HealthEvent) {
       return generateHealthEventMessages(req, healthEvents, person);
     }) 
     .then(function(emailResults){
-      return cb(null, { status: 'success', message: 'Successfully created HealthEvents and sent any notification emails' });;
+      return cb(null, { status: 'success', message: 'Successfully created HealthEvents and sent any notification emails' });
     }, function(err){
       return cb(null, { status: 'failure', message: err.message, error: err });
     })
