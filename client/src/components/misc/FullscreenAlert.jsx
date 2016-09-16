@@ -22,8 +22,6 @@ class FullscreenAlert extends React.Component {
   }
 
   render() {
-    var width = this.props.width ? this.props.width : 'auto';
-    var height = this.props.height ? this.props.height : 'auto';
     var alertStyle;
     var content;
     var containerStyle;
@@ -32,10 +30,6 @@ class FullscreenAlert extends React.Component {
       bgStyle = {
         'opacity' : 0.8,
         'pointerEvents' : 'auto'
-      };
-      containerStyle = {
-        'width':width,
-        'height':height
       };
       alertStyle= {
         'pointerEvents' : 'auto'
@@ -46,9 +40,6 @@ class FullscreenAlert extends React.Component {
         'opacity' : 0.0,
         'pointerEvents' : 'none'
       };
-      containerStyle = {
-        'display':'none',
-      };
       alertStyle= {
         'pointerEvents' : 'none'
       };
@@ -57,9 +48,7 @@ class FullscreenAlert extends React.Component {
     return (
       <div className="FullscreenAlert alert" style={alertStyle}>
         <div className="alert-background" onClick={this.handleBackgroundClick} style={bgStyle} />
-        <div className="alert-content-container" style={containerStyle} >
-          { content }
-        </div>
+        { content }
       </div>
     );
   }
@@ -69,8 +58,6 @@ FullscreenAlert.propTypes = {
   content: React.PropTypes.element.isRequired,
   onClickOutside: React.PropTypes.func.isRequired,
   active: React.PropTypes.bool.isRequired,
-  contentWidth: React.PropTypes.string,
-  contentHeight: React.PropTypes.string
 };
 
 export default FullscreenAlert;

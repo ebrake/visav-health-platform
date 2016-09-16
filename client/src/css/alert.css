@@ -26,9 +26,7 @@
     transition: opacity 1s ease-in-out;
   }
 
-  .alert-content-container{
-    display: flex;
-    flex-direction: column;
-    z-index: 5;
+  :nth-child(2){
+    z-index: 5
   }
 }

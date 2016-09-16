@@ -17,7 +17,8 @@ class VisavInput extends React.Component {
 
   getInitialClasses() {
     let classes = [
-      'floating-label-input'
+      'floating-label-input',
+      'VisavInput'
     ];
 
     let userClasses = this.props.className || '';
@@ -49,7 +50,7 @@ class VisavInput extends React.Component {
 
     return (
       <div className={ classes.join(' ') }>
-        <label>{ this.props.label }</label>
+        <label>{ this.state.isActive? this.props.label : null }</label>
         <input type={ type } placeholder={ this.props.label } onChange={ this.valueDidChange } />
       </div>
     );

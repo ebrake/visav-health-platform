@@ -77,7 +77,7 @@ class Login extends React.Component {
 
     return (
       <div className="page">
-        <FullscreenAlert active={this.state.showForgotPasswordPopup} onClickOutside={this.closeForgotPassword} content={<PasswordResetPanel />} />
+        <FullscreenAlert active={this.state.showForgotPasswordPopup} onClickOutside={this.closeForgotPassword}  content={<PasswordResetPanel />} />
         <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
           <div className="text-input-wrapper">
