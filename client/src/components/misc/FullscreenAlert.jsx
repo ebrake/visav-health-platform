@@ -18,7 +18,7 @@ class FullscreenAlert extends React.Component {
   }
   handleBackgroundClick(event){
     console.log(event);
-    this.props.onClose();
+    this.props.onClickOutside();
   }
 
   render() {
@@ -30,7 +30,7 @@ class FullscreenAlert extends React.Component {
     if(this.state.active){
       content = this.props.content;
       bgStyle = {
-        'opacity' : 1.0,
+        'opacity' : 0.8,
         'pointerEvents' : 'auto'
       };
       containerStyle = {
@@ -67,7 +67,7 @@ class FullscreenAlert extends React.Component {
 
 FullscreenAlert.propTypes = {
   content: React.PropTypes.element.isRequired,
-  onClose: React.PropTypes.func.isRequired,
+  onClickOutside: React.PropTypes.func.isRequired,
   active: React.PropTypes.bool.isRequired,
   contentWidth: React.PropTypes.string,
   contentHeight: React.PropTypes.string

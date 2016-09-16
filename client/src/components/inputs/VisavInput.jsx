@@ -10,11 +10,7 @@ class VisavInput extends React.Component {
   } 
 
   componentWillReceiveProps(nextProps) {
-    let value = nextProps.value;
-
-    this.setState({
-      isActive: (value.length > 0)
-    });
+    
   }
 
   getInitialClasses() {
@@ -31,6 +27,16 @@ class VisavInput extends React.Component {
     return classes;
   }
 
+  valueDidChange(event){
+    let value = event.target.value;
+
+    this.setState({
+      isActive: (value.length > 0)
+    });
+    this.props.value = value;
+    this.props.didChange(event);
+  }
+
   render() {
     let type = this.props.type || 'text';
 
@@ -43,10 +49,16 @@ class VisavInput extends React.Component {
     return (
       <div className={ classes.join(' ') }>
         <label>{ this.props.label }</label>
-        <input type={ type } placeholder={ this.props.label } onChange={ this.props.onChange } />
+        <input type={ type } placeholder={ this.props.label } onChange={ this.valueDidChange } />
       </div>
     );
   }
 }
+
+VisavInput.propTypes = {
+  didChange: React.PropTypes.func,
+  value: React.PropTypes.string,
+  label: React.PropTypes.string.isRequired
+};
 
 export default VisavInput;

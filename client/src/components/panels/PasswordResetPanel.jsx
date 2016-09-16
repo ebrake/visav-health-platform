@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import VisavInput from '../inputs/VisavInput'
 class PasswordResetPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -12,11 +12,9 @@ class PasswordResetPanel extends React.Component {
   }
 
   componentDidMount(){
-    HealthEventStore.listen(this.healthEventsChanged);
   }
 
   componentWillUnmount(){
-    HealthEventStore.unlisten(this.healthEventsChanged);
   }
 
   componentDidUpdate(){
