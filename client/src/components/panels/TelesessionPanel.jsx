@@ -1,26 +1,18 @@
 import React, { Component } from 'react';
-import { config } from 'react-loopback';
-import moment from 'moment';
 import TelesessionActions from '../../alt/actions/TelesessionActions';
 import NotificationActions from '../../alt/actions/NotificationActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
-import AccountStore from '../../alt/stores/AccountStore';
 import ImageButton from '../buttons/ImageButton';
 
 class TelesessionPanel extends React.Component {
   
+
   constructor(props) {
     super(props);
-    let telesessionState = TelesessionStore.getState();
-    let accountState = AccountStore.getState();
-    var sessionId = telesessionState.sessionId;
 
     this.state = {
-      sessionId: sessionId,
-      activeSession:null,
-      activePublisher: null,
+      connectionState: null,
       activeSubscriber: null,
-      loggedInUser: accountState.user,
       muteMic: false,
       muteSubscriber: false,
       isMousedOver: false,
@@ -40,53 +32,22 @@ class TelesessionPanel extends React.Component {
   }
 
   callSelf() {
-    NotificationActions.callDemoUser(this.state.sessionId);
+    NotificationActions.callDemoUser(TelesessionStore.getState().sessionId);
   }
 
   connectToSession() {
     var self = this;
-    if (!this.state.sessionId) {
-      console.log('No Sesison ID to connect to');
-      return;
-    }
-    const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.sessionId);
 
-    // Set the activeSession locally
-    this.setState({activeSession: session});
-
-    const publisher = OT.initPublisher(this.refs.publisherSection, {
+    const publisher = OT.initPublisher(self.refs.publisherSection, {
       insertMode:'append',
       style: {buttonDisplayMode: 'off'},
       width: '100%',
       height: '100%'
     })
-    publisher.publishAudio(!this.state.muteMic);
-    this.setState({activePublisher: publisher});
-
-    session.connect(TelesessionStore.getState().token, function (error) {
-      if (error) return console.log('There was an error connecting to the session:', error.code, error.message);
-
-      // Set the activeSession in the TelesessionStore.
-      // (I am deferring the method as TelesessionActions may not be ready yet)
-      TelesessionActions.setActiveSession.defer(function() {
-        TelesessionActions.setActiveSession(session);
-      });
-
-      // Publish video
-      session.publish(publisher);
-
-    });
-
+    publisher.publishAudio(!self.state.muteMic);
+      
+    const session = TelesessionStore.connectToSession(publisher);
     session.on({
-      connectionCreated: function (event) {
-        if (event.connection.connectionId != session.connection.connectionId) {
-          console.log('Another client connected.');
-        }
-      },
-      connectionDestroyed: function connectionDestroyedHandler(event) {
-        console.log('A client disconnected.');
-        self.disconnectFromSession();
-      },
       streamCreated: function(event) {
         const subscriber = session.subscribe(event.stream, self.refs.subscriberSection, {
           insertMode:'append',
@@ -99,43 +60,45 @@ class TelesessionPanel extends React.Component {
           activeSubscriber: subscriber
         });
         console.log('Subscribed to stream: ' + event.stream.id)
+      },
+      streamDestroyed: function(event) {
+        console.log("Stream " + event.stream.name + " ended. " + event.reason);
       }
     });
 
   }
 
   disconnectFromSession(){
-    const session = this.state.activeSession;
-    if (session) {
-      session.unpublish(this.state.activePublisher);
-      session.disconnect();
-    }
     this.setState({
-      activeSession: null,
-      activePublisher: null,
       activeSubscriber: null
     });
-    // Set the activeSession in the TelesessionStore.
-    // (I am deferring the method as TelesessionActions may not be ready yet)
-    TelesessionActions.setActiveSession.defer(function() {
-      TelesessionActions.setActiveSession(null);
-    });
+    TelesessionStore.disconnectFromSession();
   }
+
   telesessionChanged(telesessionState) {
 
-    var sessionId = telesessionState.sessionId;
-    if (!sessionId) {
-      this.createSession();
-    }
-    else{
-      // If the session Id hasn't changed, don't auto-connect.
-      if (this.state.sessionId)
-        if (this.state.sessionId==sessionId)
-          return;
-      this.setState({sessionId: sessionId});
-      this.connectToSession();
+    let connStates = TelesessionStore.connStates;
+
+    if (this.state.connectionState!=telesessionState.connectionState) {
+      switch(telesessionState.connectionState) {
+        case connStates.NO_SESSION_EXISTS:
+          this.createSession();
+          break;
+        case connStates.GOT_SESSION_ID:
+          this.connectToSession();
+          break;
+        case connStates.DISCONNECTED:
+          this.setState({
+            activeSubscriber: null
+          });
+          break;
+        default:
+          break;
+      }
+      this.setState({connectionState: telesessionState.connectionState});
     }
   }
+
   componentDidMount(){
     TelesessionStore.listen(this.telesessionChanged);
   }
@@ -148,9 +111,9 @@ class TelesessionPanel extends React.Component {
     var newVal = !this.state.muteMic;
     this.setState({muteMic: newVal});
 
-    if (this.state.activePublisher) {
+    if (TelesessionStore.getState().activePublisher) {
       //publishAudio is opposite of mute
-      this.state.activePublisher.publishAudio(!newVal);
+      TelesessionStore.getState().activePublisher.publishAudio(!newVal);
     }
     
   }
@@ -184,7 +147,7 @@ class TelesessionPanel extends React.Component {
     // }
     let isMousedOver = this.state.isMousedOver;
     let isActiveSub = (this.state.activeSubscriber != null);
-    let isActiveSession = (this.state.activeSession != null);
+    let isActiveSession = (TelesessionStore.getState().activeSession != null);
     var overlay = 
       <div className={isMousedOver ? 'overlay moused-over' : 'overlay'}>
         <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hangup.png" className="btn-cancel btn-overlay"/>

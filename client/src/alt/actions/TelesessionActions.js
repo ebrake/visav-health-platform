@@ -45,14 +45,6 @@ class TelesessionActions {
     return message;
   }
 
-  /**
-   * After you connect, save the active session to the store
-   * @param {Object} session - Initialized OpenTok session
-  */
-  setActiveSession(session){
-    return session;
-  }
-
 }
 
 export default alt.createActions(TelesessionActions);
