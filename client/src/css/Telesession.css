@@ -157,11 +157,11 @@
   }
 }
 
-#RepsChartPanel {
+.RepsChartPanel {
   margin-bottom: 10px;
 }
 
-#ExercisesChartPanel {
+.ExercisesChartPanel {
   margin-bottom: 10px;
 }
 

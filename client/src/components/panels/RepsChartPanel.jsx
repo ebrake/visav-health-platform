@@ -68,7 +68,7 @@ class RepsChartPanel extends React.Component {
 
   render() {
     return (
-      <div id="RepsChartPanel" className="graph-panel panel">
+      <div className="RepsChartPanel graph-panel panel">
         <h1 className="title">
           Range of Motion: Last Exercise
         </h1>

@@ -71,7 +71,7 @@ class HealthEventsChartPanel extends React.Component {
 
   render() {
     return (
-      <div id="HealthEventsChartPanel" className="graph-panel panel">
+      <div className="HealthEventsChartPanel graph-panel panel">
         <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
         <ChartLegend legendId="HealthEventsChartLegend" chartId={this.state.chartId} chart={this.state.chart} />
         <div className="chart-container">
