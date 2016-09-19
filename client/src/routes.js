@@ -17,6 +17,7 @@ import LiveSocket from './components/pages/LiveSocket.jsx'
 import EmailGettingStarted from './components/email-templates/GettingStartedEmail'
 import HealthEventNotificationEmail from './components/email-templates/HealthEventNotificationEmail'
 import PasswordResetEmail from './components/email-templates/PasswordResetEmail'
+import InvitedUserEmail from './components/email-templates/InvitedUserEmail';
 
 
 var cacheStores = () => {
@@ -64,7 +65,7 @@ var routes = (
     <Route path="/email-templates/GettingStarted" component={EmailGettingStarted} />
     <Route path="/email-templates/HealthEventNotification" component={HealthEventNotificationEmail} />
     <Route path="/email-templates/PasswordResetEmail" component={PasswordResetEmail} />
-
+    <Route path="/email-templates/InvitedUserEmail" component={InvitedUserEmail} />
   </Router>
 );
 

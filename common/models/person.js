@@ -2,6 +2,7 @@ import React from 'react';
 import Oy from 'oy-vey';
 import GettingStartedEmail from '../../client/src/components/email-templates/GettingStartedEmail';
 import PasswordResetEmail from '../../client/src/components/email-templates/PasswordResetEmail';
+import InvitedUserEmail from '../../client/src/components/email-templates/InvitedUserEmail';
 
 var path = require('path');
 
@@ -32,6 +33,10 @@ module.exports = function(Person) {
     }
 
     var orgFilter = { name: req.body.organizationName };
+    var personData = {
+      email: req.body.email.toLowerCase(),
+      password: req.body.password
+    };
 
     findPersonAndOrganization(req, req.body.email, orgFilter)
     .then(function(queryResult){
@@ -48,11 +53,6 @@ module.exports = function(Person) {
         throw err;
       } 
       else {
-        var personData = {
-          email: req.body.email.toLowerCase(),
-          password: req.body.password
-        };
-
         return req.app.models.Organization.create(orgFilter)
         .then(function(createdOrganization){
           console.log('Organization created: '+createdOrganization.name);
@@ -179,6 +179,10 @@ module.exports = function(Person) {
     var email = req.body.email.toLowerCase();
     var roleToAssign = req.body.role;
     var orgFilter = { id: req.user.organization.id };
+    var personData = {
+      email: email,
+      password: generatePassword(10)
+    };
 
     findPersonAndOrganization(req, email, orgFilter)
     .then(function(queryResult){
@@ -194,17 +198,13 @@ module.exports = function(Person) {
         err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_NO_ORGANIZATION';
         throw err;
       } else {
-        var personData = {
-          email: email,
-          password: 'testtest'
-        };
         var foundOrganization = queryResult[1];
 
         return createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign, foundOrganization);
       }
     })
     .then(function(data){
-      return cb(null, { status: 'success', user: data.user, organization: data.organization });
+      return cb(null, { status: 'success', user: data.user, organization: data.organization, invitedBy: req.user, password: personData.password });
     }, function(err){
       console.log('Error inviting person to organization:');
       console.log(err);
@@ -220,11 +220,15 @@ module.exports = function(Person) {
 
     // TODO: Add e-mail to database queue if sending fails
     var createdUser = createdObject.data.user;
+    var invitedBy = createdObject.data.invitedBy;
+    var password = createdObject.data.password;
+    var organizationName = createdObject.data.organization.name;
+
     Person.app.models.Email.send({
       to: createdUser.email,
       from: Person.app.globalConfig.SYSTEM_EMAIL,
       subject: 'Welcome to '+Person.app.globalConfig.APP_NAME,
-      html: Oy.renderTemplate(<GettingStartedEmail user={createdUser} />, {
+      html: Oy.renderTemplate(<InvitedUserEmail user={createdUser} invitedBy={invitedBy} password={password} organizationName={organizationName} />, {
         title: 'Getting Started with '+Person.app.globalConfig.APP_NAME,
         previewText: 'Welcome to '+Person.app.globalConfig.APP_NAME+'...'
       })
@@ -265,8 +269,6 @@ module.exports = function(Person) {
     })
   }
 
-  Person.afterRemote
-
   Person.remoteMethod(
     "updateUser",
     {
@@ -287,7 +289,7 @@ module.exports = function(Person) {
       err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    
+
     Person.resetPassword({
       email: req.body.email
     }, function(err) {
@@ -305,6 +307,7 @@ module.exports = function(Person) {
         previewText: subject
       }
     );
+
     Person.app.models.Message.sendEmail({
       body: {
         recipient : { email: info.email },
@@ -446,3 +449,14 @@ function assignRole(req, user, roleName) {
   })
 }
 
+function generatePassword(length){
+  var text = "";
+  var symbols = "!?&"
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"+symbols;
+
+  for(var i=0; i < length; i++ ) {
+    text += (i < length - 3) ? possible.charAt(Math.floor(Math.random() * possible.length)) : symbols.charAt(Math.floor(Math.random() * symbols.length));
+  }
+
+  return text;
+}
