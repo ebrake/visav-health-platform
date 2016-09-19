@@ -35,7 +35,6 @@ class AccountActions {
 
   requestPasswordReset(data){
     return function (dispatch) {
-      let userId = 7;
       return fetch(process.env.API_ROOT+'api/People/requestPasswordReset', {
         method: 'POST', 
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
@@ -57,7 +56,6 @@ class AccountActions {
 
   setPassword(data){
     return function (dispatch) {
-      let userId = 7;
       return fetch(process.env.API_ROOT+'api/People/resetPassword', {
         method: 'POST', 
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
@@ -117,8 +115,8 @@ class AccountActions {
       })
       .catch(err => {
         var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
-        dispatch(response);
-        return response;
+        dispatch(craftedResponse);
+        return craftedResponse;
       })
     }
   }

@@ -1,8 +1,9 @@
 @import 'colors.css';
 
-.alert{
+.alert {
   z-index: 100;
 }
+
 .FullscreenAlert {
   position: absolute;
   top: 0;
@@ -14,7 +15,7 @@
   align-items: center;
   flex-direction: column;
 
-  .alert-background{
+  .alert-background {
     position: absolute;
     z-index: 0;
     top: 0;
@@ -26,7 +27,7 @@
     transition: opacity 1s ease-in-out;
   }
 
-  :nth-child(2){
-    z-index: 5
+  :nth-child(2) {
+    z-index: 5;
   }
 }

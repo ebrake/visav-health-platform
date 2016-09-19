@@ -15,7 +15,7 @@ class AccountStore {
   }
 
   handleLogin(response) {
-    if (response && response.data && response.data.status == 'success') {
+    if (response && response.data && response.data.status === 'success') {
       this.user = response.data.user;
       this.role = (this.user.roles && this.user.roles[0]) ? this.user.roles[0].name : undefined;
       localStorage.setItem('accessToken', response.data.token.id);

@@ -33,10 +33,6 @@ class AccountSettings extends React.Component {
     }.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
-    //update user in here
-  }
-
   update() {
     fetch(
       process.env.API_ROOT + 'api/People/update-user',

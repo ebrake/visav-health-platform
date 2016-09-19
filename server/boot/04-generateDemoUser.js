@@ -49,11 +49,11 @@ module.exports = function(app, cb) {
       body: {
         email: testUser.email,
         password: testUser.password, 
-        organization: testUser.organization
+        organizationName: testUser.organization
       }
     };
 
-    return Person.signup(fakeReq, cb);
+    return Person.signup(fakeReq, fakeReq.email, fakeReq.password, fakeReq.organizationName, cb);
   })
   .then(function(received){
     cb();

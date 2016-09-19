@@ -52,7 +52,7 @@ class VisavInput extends React.Component {
     return (
       <div className={ classes.join(' ') }>
         <label>{ this.state.isActive ? this.props.label : null }</label>
-        <input type={ type } placeholder={ this.props.label } value={ this.props.value } onChange={ this.valueDidChange } />
+        <input type={ type } placeholder={ this.props.label } value={ this.props.value } onChange={ this.valueDidChange } {...this.props} />
       </div>
     );
   }
@@ -60,7 +60,9 @@ class VisavInput extends React.Component {
 
 VisavInput.propTypes = {
   valueDidChange: React.PropTypes.func,
-  label: React.PropTypes.string.isRequired
+  label: React.PropTypes.string.isRequired,
+  value: React.PropTypes.string,
+  onKeyUp: React.PropTypes.func
 };
 
 export default VisavInput;
