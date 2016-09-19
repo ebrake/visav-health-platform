@@ -1,6 +1,7 @@
 import React from 'react';
 import Oy from 'oy-vey';
 import GettingStartedEmail from '../../client/src/components/email-templates/GettingStartedEmail';
+import PasswordResetEmail from '../../client/src/components/email-templates/PasswordResetEmail';
 
 var path = require('path');
 
@@ -242,15 +243,19 @@ module.exports = function(Person) {
   }
 
   Person.on('resetPasswordRequest', function(info) {
-    var url = 'http://localhost:3000/resetPassword';
-    var html = 'Click <a href="' + url + '?access_token=' +
-        info.accessToken.id + '">here</a> to reset your password';
-
+    var subject = 'Password Reset';
+    var html = Oy.renderTemplate(
+      <PasswordResetEmail accessToken={info.accessToken.id}/>, 
+      {
+        title: subject,
+        previewText: subject
+      }
+    );
     Person.app.models.Message.sendEmail({
       body: {
         recipient : { email: info.email },
         html: html,
-        subject: 'Password Reset'
+        subject: subject
       }
     }, function(err) {
       if (err) return console.log('> error sending password reset email');

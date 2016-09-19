@@ -24,7 +24,6 @@ export default function HealthEventNotificationEmail(props) {
   };
   const actionsStyle = {
     margin: '20px 0 0 0',
-    
   };
   var whilePerformingExerciseString;
   var noteString;

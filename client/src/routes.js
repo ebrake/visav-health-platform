@@ -16,6 +16,8 @@ import InviteUsers from './components/pages/InviteUsers.jsx'
 import LiveSocket from './components/pages/LiveSocket.jsx'
 import EmailGettingStarted from './components/email-templates/GettingStartedEmail'
 import HealthEventNotificationEmail from './components/email-templates/HealthEventNotificationEmail'
+import PasswordResetEmail from './components/email-templates/PasswordResetEmail'
+
 
 var cacheStores = () => {
   let snapshot = alt.takeSnapshot();
@@ -61,6 +63,8 @@ var routes = (
     { /* EMAIL TEMPLATES */ }
     <Route path="/email-templates/GettingStarted" component={EmailGettingStarted} />
     <Route path="/email-templates/HealthEventNotification" component={HealthEventNotificationEmail} />
+    <Route path="/email-templates/PasswordResetEmail" component={PasswordResetEmail} />
+
   </Router>
 );
 
