@@ -83,7 +83,7 @@ module.exports = function(Person) {
   );
 
   //send verification email after registration
-  Person.afterRemote('remoteCreate', function(context, createdObject, next) {
+  Person.afterRemote('signup', function(context, createdObject, next) {
     if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
       return next();
     }
