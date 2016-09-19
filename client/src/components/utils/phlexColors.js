@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 var colors = {
     'blue' : '69, 200, 229',
@@ -37,7 +38,7 @@ export default {
   },
   getFontColor: (name) => {
     if (!name || !fontColors[name]) 
-      return toRGB(lightGrey);
+      return toRGB('lightGrey');
 
     return toRGB(fontColors[name]);
   }

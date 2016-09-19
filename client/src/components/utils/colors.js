@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 //try and keep this up to date with colors.css
 
 var brightBlue = '114, 153, 204'
