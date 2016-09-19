@@ -33,7 +33,7 @@ module.exports = function(Person) {
 
     var orgFilter = { name: req.body.organizationName };
 
-    return findPersonAndOrganization(req, req.body.email, orgFilter)
+    findPersonAndOrganization(req, req.body.email, orgFilter)
     .then(function(queryResult){
       if (queryResult[0]) {
         err = new Error('A person with this email has already been created');
@@ -121,7 +121,7 @@ module.exports = function(Person) {
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
 
-    return Promise.all([
+    Promise.all([
       Person.login({
         email: req.body.email.toLowerCase(),
         password: req.body.password
@@ -180,7 +180,7 @@ module.exports = function(Person) {
     var roleToAssign = req.body.role;
     var orgFilter = { id: req.user.organization.id };
 
-    return findPersonAndOrganization(req, email, orgFilter)
+    findPersonAndOrganization(req, email, orgFilter)
     .then(function(queryResult){
       if (queryResult[0]) {
         err = new Error('A Person with this email has already been created.');
@@ -211,6 +211,29 @@ module.exports = function(Person) {
       return cb(null, { status: 'failure', message: err.message, error: err });
     })
   }
+
+  //send invite email after invitation
+  Person.afterRemote('invite', function(context, createdObject, next) {
+    if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
+      return next();
+    }
+
+    // TODO: Add e-mail to database queue if sending fails
+    var createdUser = createdObject.data.user;
+    Person.app.models.Email.send({
+      to: createdUser.email,
+      from: Person.app.globalConfig.SYSTEM_EMAIL,
+      subject: 'Welcome to '+Person.app.globalConfig.APP_NAME,
+      html: Oy.renderTemplate(<GettingStartedEmail user={createdUser} />, {
+        title: 'Getting Started with '+Person.app.globalConfig.APP_NAME,
+        previewText: 'Welcome to '+Person.app.globalConfig.APP_NAME+'...'
+      })
+    }, function(err) {
+      if (err) return next(err);
+      next();
+    });
+
+  });
 
   Person.remoteMethod(
     "invite",
@@ -264,6 +287,7 @@ module.exports = function(Person) {
       err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
+    
     Person.resetPassword({
       email: req.body.email
     }, function(err) {

@@ -77,7 +77,7 @@ class Signup extends React.Component {
       <div className="page">
         <div className="signup-panel panel">
           <h1 className="title">Sign Up</h1>
-          <VisavInput label="Organization Name" onChange={ this.handleChange('organizationName') } />
+          <VisavInput label="Organization Name" valueDidChange={ this.handleChange('organizationName') } />
           <VisavInput label="Email" valueDidChange={ this.handleChange('email') } />
           <VisavInput label="Password" valueDidChange={ this.handleChange('password') } onKeyUp={ this.keyPressed } />
           <ImageButton text="Sign Up" onClick={ this.createUser } />
