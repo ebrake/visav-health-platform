@@ -72,8 +72,8 @@ class AccountSettings extends React.Component {
 
   render() {
     return (
-      <div className="InviteUsers content-container">
-        <div className="AccountSettings panel">
+      <div className="AccountSettings content-container">
+        <div className="AccountSettingsPanel panel">
           <h1 className="title">Account Settings</h1>
           <VisavInput className="visav-text-field" label="First Name" valueDidChange={ this.firstNameDidChange } />
           <VisavInput className="visav-text-field" label="Last Name" valueDidChange={ this.lastNameDidChange } />
