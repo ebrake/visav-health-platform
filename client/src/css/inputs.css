@@ -1,26 +1,5 @@
 @import 'colors.css';
 
-.text-input-wrapper,
-.visav-text-field {
-  margin-bottom: 10px;
-  border: 1px solid black;
-  padding: 5px 9px;
-  background: $lightest-grey;
-  box-sizing: border-box;
-
-  input {
-    font-size: 13px;
-    width: 100%;
-    border-width: 0;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    outline: none;
-    background: transparent;
-    color: $dark-text-color;
-  }
-}
-
 .VisavInput {
   overflow: hidden;
   display: flex;

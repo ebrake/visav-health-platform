@@ -3,6 +3,8 @@ import { withRouter } from 'react-router';
 import AccountActions from '../../alt/actions/AccountActions';
 import FullscreenAlert from '../misc/FullscreenAlert';
 import PasswordResetPanel from '../panels/PasswordResetPanel';
+import VisavInput from '../inputs/VisavInput';
+import ImageButton from '../buttons/ImageButton';
 
 class Login extends React.Component {
   constructor(props) {
@@ -71,31 +73,19 @@ class Login extends React.Component {
     this.setState({showForgotPasswordPopup: false});
   }
 
-
-
   render() {
 
     return (
       <div className="page">
         <FullscreenAlert active={this.state.showForgotPasswordPopup} onClickOutside={this.closeForgotPassword}  content={<PasswordResetPanel />} />
-        <div className="accounts-flex-padding"></div>
-        <div className="content-container accounts-container">
-          <div className="text-input-wrapper">
-            <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} onKeyUp={this.keyPressed} />
-          </div>
-          <div className="text-input-wrapper">
-            <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
-          </div>
-          <button className="accounts-button" onClick={this.login}>
-            <span>Login</span>
-          </button>
-          <button className="accounts-button" onClick={this.logout}>
-            <span>Logout</span>
-          </button>
-          <span className="accounts-link" onClick={this.goToSignup}>{"Don't have an account? Sign up"}</span>
-          <span className="forgot-password-link" onClick={this.launchForgotPassword}>{"Forgot your password?"}</span>
+        <div className="login-panel panel">
+          <h1 className="title">Login</h1>
+          <VisavInput label="Email" valueDidChange={ this.handleChange('email') } onKeyUp={ this.keyPressed } />
+          <VisavInput label="Password" valueDidChange={ this.handleChange('password') } onKeyUp={ this.keyPressed } />
+          <ImageButton text="Login" onClick={this.login} />
+          <span className="text-link" onClick={this.goToSignup}>{"Don't have an account? Sign up"}</span>
+          <span className="text-link" onClick={this.launchForgotPassword}>{"Forgot your password?"}</span>
         </div>
-        <div className="accounts-flex-padding"></div>
       </div>
     );
   }
