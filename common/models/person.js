@@ -224,6 +224,34 @@ module.exports = function(Person) {
       description: "Takes in an email and role for a new user, creates their account and emails an invite to them."
     }
   );
+
+  Person.updateUser = function(req, cb) {
+    if (!req.user) {
+      err = new Error('Anonymous request (no user signed in)');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_NOT_SIGNED_IN';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    req.user.updateAttributes(req.body, function(err, updatedUser){
+      if (err) 
+        return cb(null, { status: 'failure', message: err.message, error: err });
+      else
+        return cb(null, { status: 'success', message: 'Successfully updated user', user: updatedUser });
+    })
+  }
+
+  Person.remoteMethod(
+    "updateUser",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/update-user', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: 'Updates the signed in user on whatever fields are passed to it.'
+    }
+  );
 }
 
 function findPerson(req, email) {

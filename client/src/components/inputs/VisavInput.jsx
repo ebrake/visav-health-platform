@@ -5,10 +5,10 @@ class VisavInput extends React.Component {
     super(props);
 
     this.state = {
-      isActive: false
+      isActive: (this.props.value && this.props.value.length > 0) ? true : false
     };
-    this.valueDidChange = this.valueDidChange.bind(this);
 
+    this.valueDidChange = this.valueDidChange.bind(this);
   } 
 
   componentWillReceiveProps(nextProps) {
@@ -36,6 +36,7 @@ class VisavInput extends React.Component {
     this.setState({
       isActive: (value.length > 0)
     });
+
     this.props.valueDidChange(event);
   }
 
@@ -50,8 +51,8 @@ class VisavInput extends React.Component {
 
     return (
       <div className={ classes.join(' ') }>
-        <label>{ this.state.isActive? this.props.label : null }</label>
-        <input type={ type } placeholder={ this.props.label } onChange={ this.valueDidChange } />
+        <label>{ this.state.isActive ? this.props.label : null }</label>
+        <input type={ type } placeholder={ this.props.label } value={ this.props.value } onChange={ this.valueDidChange } />
       </div>
     );
   }
