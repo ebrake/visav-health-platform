@@ -69,11 +69,12 @@ class AccountActions {
       .then(response => response.json())
       .then(response => {
         // do something with response if we want
+        return response;
       })
       .catch((err) => {
         console.log('error:');
         console.dir(err);
-        return dispatch([]);
+        return err;
       })
     };
   }

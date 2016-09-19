@@ -242,7 +242,7 @@ module.exports = function(Person) {
   }
 
   Person.on('resetPasswordRequest', function(info) {
-    var url = 'http://localhost:4000/resetPassword';
+    var url = 'http://localhost:3000/resetPassword';
     var html = 'Click <a href="' + url + '?access_token=' +
         info.accessToken.id + '">here</a> to reset your password';
 
@@ -271,32 +271,42 @@ module.exports = function(Person) {
     }
   );
 
-  Person.doPasswordReset = function(req, res, cb) {
-    console.log('flag');
-    if (!req.accessToken) return res.sendStatus(401);
+  Person.doResetPassword = function(req, res, cb) {
+    var err;
+    if (!req.accessToken){
+      err = new Error('Valid accessToken required on req.accessToken');
+      err.statusCode = 417;
+      err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_ACCESS_TOKEN';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
 
     //verify passwords match
     if (!req.body.password ||
         !req.body.confirmation ||
         req.body.password !== req.body.confirmation) {
-      return res.sendStatus(400, new Error('Passwords do not match'));
+      err = new Error('Password and confirmation do not match!');
+      err.statusCode = 400;
+      err.code = 'PERSON_RESET_PASSWORD_FAILED_PASSWORD_CONFIRMATION_MISMATCH';
+      return cb(null, { status: 'failure', message: err.message, error: err });
     }
 
     Person.findById(req.accessToken.userId, function(err, user) {
-      if (err) return res.sendStatus(404);
+      if (err) return cb(null, { status: 'failure', message: err.message, error: err });
       user.updateAttribute('password', req.body.password, function(err, user) {
-        if (err) return res.sendStatus(404);
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err });
         console.log('> password reset processed successfully');
+        return cb(null, { status: 'success', message: 'Password reset successful' });
       });
     });
   };
 
   Person.remoteMethod(
-    "doPasswordReset",
+    "doResetPassword",
     {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'res', type: 'object', http: { source: 'req' } }
+        { arg: 'res', type: 'object', http: { source: 'res' } }
 
       ],
       http: { path: '/resetPassword', verb: 'post' },
