@@ -21,7 +21,8 @@ class AccountSettings extends React.Component {
       phone: user.phone || ''
     };
 
-    this.update = this.update.bind(this);
+    this.updateUser = this.updateUser.bind(this);
+    this.keyPressed = this.keyPressed.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -33,28 +34,25 @@ class AccountSettings extends React.Component {
     }.bind(this)
   }
 
-  update() {
-    fetch(
-      process.env.API_ROOT + 'api/People/update-user',
-      {
-        method: 'POST', 
-        headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ 
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          phone: this.state.phone
-        })
-      }
-    )
-    .then(response => response.json())
-    .then(response => {
-      if (response.data && response.data.status == 'success') {
-        AccountActions.updateUser(response.data.user);
-      }
+  keyPressed(ev) {
+    if (ev.keyCode == 13) {
+      ev.preventDefault();
+      this.updateUser();
+    }
+  }
+
+  updateUser() {
+    AccountActions.updateUser({
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      phone: this.state.phone
     })
-    .catch(err => {
-      console.log('Error updating:');
-      console.dir(err);
+    .then(function(response){
+      if (response && response.data && response.data.status == 'success') {
+        console.log('Successfully updated!');
+      } else {
+        console.log('Update failed!');
+      }
     })
   }
 
@@ -63,9 +61,9 @@ class AccountSettings extends React.Component {
       <div className="InviteUsers content-container">
         <div className="AccountSettings panel">
           <h1 className="title">Account Settings</h1>
-          <VisavInput className="visav-text-field" label="First Name" value={ this.state.firstName } valueDidChange={ this.handleChange('firstName') } />
-          <VisavInput className="visav-text-field" label="Last Name" value={ this.state.lastName } valueDidChange={ this.handleChange('lastName') } />
-          <VisavInput className="visav-text-field" label="Phone Number" value={ this.state.phone } valueDidChange={ this.handleChange('phone') } />
+          <VisavInput className="visav-text-field" label="First Name" value={ this.state.firstName } valueDidChange={ this.handleChange('firstName') } onKeyUp={ this.keyPressed } />
+          <VisavInput className="visav-text-field" label="Last Name" value={ this.state.lastName } valueDidChange={ this.handleChange('lastName') } onKeyUp={ this.keyPressed } />
+          <VisavInput className="visav-text-field" label="Phone Number" value={ this.state.phone } valueDidChange={ this.handleChange('phone') } onKeyUp={ this.keyPressed } />
           <ImageButton className="accounts-button" text="Save" onClick={this.update} />
         </div>
       </div>

@@ -30,7 +30,27 @@ class AccountActions {
   }
 
   updateUser(user){
-    return user;
+    return function(dispatch) {
+      return fetch(process.env.API_ROOT + 'api/People/update-user', {
+        method: 'POST', 
+        headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ 
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phone: user.phone
+        })
+      })
+      .then(response => response.json())
+      .then(response => {
+        dispatch(response);
+        return response;
+      })
+      .catch(err => {
+        var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
+        dispatch(craftedResponse);
+        return craftedResponse;
+      })
+    }
   }
 
   requestPasswordReset(data){

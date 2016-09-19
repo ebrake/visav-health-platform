@@ -11,8 +11,6 @@ class TelesessionStore {
   }
 
   handleCreateSession(response) {
-    console.log("Telesession store:");
-    console.dir(response);
     this.createSessionResponse = response.data;
 
     if (response.data.session) {

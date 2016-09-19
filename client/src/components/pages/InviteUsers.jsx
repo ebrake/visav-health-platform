@@ -4,6 +4,7 @@ import AuthenticatedPage from './AuthenticatedPage';
 import ImageButton from '../buttons/ImageButton';
 import Dropdown from 'react-dropdown';
 import Roles from '../utils/Roles';
+import VisavInput from '../inputs/VisavInput';
 
 const roles = Roles.getRoles();
 
@@ -53,9 +54,7 @@ class InviteUsers extends React.Component {
         <div className="InviteUsersPanel panel">
           <h1 className="title">Invite a new User</h1>
           <span className="description">Use the menu below to invite a new user to your organization.</span>
-          <div className="text-input-wrapper">
-            <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
-          </div>
+          <VisavInput className="visav-text-field" label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
           <div className="dropdown-container">
             <Dropdown options={roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
           </div>

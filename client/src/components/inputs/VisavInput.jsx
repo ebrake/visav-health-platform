@@ -8,12 +8,9 @@ class VisavInput extends React.Component {
       isActive: (this.props.value && this.props.value.length > 0) ? true : false
     };
 
+    this.onKeyUp = this.onKeyUp.bind(this);
     this.valueDidChange = this.valueDidChange.bind(this);
   } 
-
-  componentWillReceiveProps(nextProps) {
-    
-  }
 
   getInitialClasses() {
     let classes = [
@@ -28,6 +25,12 @@ class VisavInput extends React.Component {
     });
 
     return classes;
+  }
+
+  onKeyUp(event){
+    if (this.props.onKeyUp) {
+      this.props.onKeyUp(event);
+    }
   }
 
   valueDidChange(event){
@@ -52,7 +55,7 @@ class VisavInput extends React.Component {
     return (
       <div className={ classes.join(' ') }>
         <label>{ this.state.isActive ? this.props.label : null }</label>
-        <input type={ type } placeholder={ this.props.label } value={ this.props.value } onChange={ this.valueDidChange } {...this.props} />
+        <input type={ type } placeholder={ this.props.label } value={ this.props.value } onChange={ this.valueDidChange } onKeyUp={ this.onKeyUp } />
       </div>
     );
   }
