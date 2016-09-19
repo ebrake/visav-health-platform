@@ -24,6 +24,16 @@ body {
   color: $medium-text-color;
 }
 
+.text-link {
+  text-align: center;
+  cursor: pointer;
+
+  &:hover,
+  &::after {
+    text-decoration: underline;
+  }
+}
+
 .title-container {
   text-align: center;
 }

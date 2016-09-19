@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router'
 import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
+import VisavInput from '../inputs/VisavInput';
+import ImageButton from '../buttons/ImageButton';
 
 class Signup extends React.Component {
   constructor(props) {
@@ -73,18 +75,13 @@ class Signup extends React.Component {
   render() {
     return (
       <div className="page">
-        <div className="content-container accounts-container">
-          <div className="text-input-wrapper">
-            <input placeholder="Organization Name" value={this.state.organizationName} onChange={this.handleChange('organizationName')} />
-          </div>
-          <div className="text-input-wrapper">
-            <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
-          </div>
-          <div className="text-input-wrapper">
-            <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
-          </div>
-          <button className="accounts-button" onClick={this.createUser}><span>Sign Up</span></button>
-          <span className="accounts-link" onClick={this.goToLogin}>{"Have an account? Log in"}</span>
+        <div className="signup-panel panel">
+          <h1 className="title">Signup</h1>
+          <VisavInput label="Organization Name" onChange={this.handleChange('organizationName')} />
+          <VisavInput label="Email" valueDidChange={ this.handleChange('email') } />
+          <VisavInput label="Password" valueDidChange={ this.handleChange('password') } />
+          <ImageButton text="Sign Up" onClick={this.createUser} />
+          <span className="text-link" onClick={this.goToLogin}>{"Have an account? Log in"}</span>
         </div>
       </div>
     );

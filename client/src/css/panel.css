@@ -29,6 +29,7 @@
     margin: 10px 0px 20px 0px;
   }
 }
+
 .SetPasswordPanel{
   align-items: center;
   justify-content: center;
@@ -41,7 +42,30 @@
     margin: 10px 0px 20px 0px;
   }
 }
+.signup-panel,
+.login-panel{
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  color: $medium-text-color;
+  min-width: 15%;
+  
+  .VisavInput{
+    width: 100%;
+  }
+  
+  .ImageButton{
+    width: 100%;
+  }
 
+  .text-link{
+    margin-top: 10px;
+  }
+  
+  h1.title{
+    margin-bottom: 20px;
+  }
+}
 .PatientInfoPanel {
   overflow: hidden;
 

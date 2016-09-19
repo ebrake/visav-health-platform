@@ -73,7 +73,7 @@ class AccountSettings extends React.Component {
   render() {
     return (
       <div className="AccountSettings content-container">
-        <div className="AccountSettingsPanel panel">
+        <div className="account-settings-panel panel">
           <h1 className="title">Account Settings</h1>
           <VisavInput className="visav-text-field" label="First Name" valueDidChange={ this.firstNameDidChange } />
           <VisavInput className="visav-text-field" label="Last Name" valueDidChange={ this.lastNameDidChange } />
