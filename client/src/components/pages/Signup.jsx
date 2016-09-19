@@ -76,7 +76,7 @@ class Signup extends React.Component {
     return (
       <div className="page">
         <div className="signup-panel panel">
-          <h1 className="title">Signup</h1>
+          <h1 className="title">Sign Up</h1>
           <VisavInput label="Organization Name" onChange={this.handleChange('organizationName')} />
           <VisavInput label="Email" valueDidChange={ this.handleChange('email') } />
           <VisavInput label="Password" valueDidChange={ this.handleChange('password') } />
