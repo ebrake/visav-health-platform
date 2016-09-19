@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import VisavInput from '../inputs/VisavInput';
 import ImageButton from '../buttons/ImageButton';
+import AccountActions from '../../alt/actions/AccountActions';
 
 class PasswordResetPanel extends React.Component {
   constructor(props) {
@@ -8,11 +9,10 @@ class PasswordResetPanel extends React.Component {
 
     this.state = {
       email : '',
-      password : ''
     };
 
     this.emailDidChange = this.emailDidChange.bind(this);
-    this.passwordDidChange = this.passwordDidChange.bind(this);
+    this.attemptPasswordReset = this.attemptPasswordReset.bind(this);
 
   }
 
@@ -33,12 +33,16 @@ class PasswordResetPanel extends React.Component {
     this.setState({ password: event.target.value });
   }
 
+  attemptPasswordReset(){
+    AccountActions.requestPasswordReset({ email: this.state.email });
+  }
+
   render() {
     return (
       <div className="PasswordResetPanel panel">
         <h1 className="title">{ 'Password Reset' }</h1>
         <VisavInput label="Email" valueDidChange={ this.emailDidChange } />
-        <ImageButton text='Send' />
+        <ImageButton text='Send' onClick={ this.attemptPasswordReset.bind(this) } />
       </div>
     );
   }

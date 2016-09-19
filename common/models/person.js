@@ -1,6 +1,7 @@
 import React from 'react';
 import Oy from 'oy-vey';
 import GettingStartedEmail from '../../client/src/components/email-templates/GettingStartedEmail';
+import PasswordResetEmail from '../../client/src/components/email-templates/PasswordResetEmail';
 
 var path = require('path');
 
@@ -83,7 +84,7 @@ module.exports = function(Person) {
   );
 
   //send verification email after registration
-  Person.afterRemote('remoteCreate', function(context, createdObject, next) {
+  Person.afterRemote('signup', function(context, createdObject, next) {
     if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
       return next();
     }
@@ -241,6 +242,8 @@ module.exports = function(Person) {
     })
   }
 
+  Person.afterRemote
+
   Person.remoteMethod(
     "updateUser",
     {
@@ -250,6 +253,100 @@ module.exports = function(Person) {
       http: { path: '/update-user', verb: 'post' },
       returns: { arg: 'data', type: 'object' },
       description: 'Updates the signed in user on whatever fields are passed to it.'
+    }
+  );
+
+  Person.requestPasswordReset = function(req, email, cb) {
+    var err;
+    if(!req.body.email){
+      err = new Error('Valid email required on req.body.email');
+      err.statusCode = 417;
+      err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_EMAIL';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    Person.resetPassword({
+      email: req.body.email
+    }, function(err) {
+      if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+    });
+
+  }
+
+  Person.on('resetPasswordRequest', function(info) {
+    var subject = 'Password Reset';
+    var html = Oy.renderTemplate(
+      <PasswordResetEmail accessToken={info.accessToken.id}/>, 
+      {
+        title: subject,
+        previewText: subject
+      }
+    );
+    Person.app.models.Message.sendEmail({
+      body: {
+        recipient : { email: info.email },
+        html: html,
+        subject: subject
+      }
+    }, function(err) {
+      if (err) return console.log('> error sending password reset email');
+      console.log('> sending password reset email to:', info.email);
+    });
+  });
+
+  Person.remoteMethod(
+    "requestPasswordReset",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'email', type: 'string' },
+      ],
+      http: { path: '/requestPasswordReset', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Takes in an email and resets its password."
+    }
+  );
+
+  Person.doResetPassword = function(req, res, cb) {
+    var err;
+    if (!req.accessToken){
+      err = new Error('Valid accessToken required on req.accessToken');
+      err.statusCode = 417;
+      err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_ACCESS_TOKEN';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+
+    //verify passwords match
+    if (!req.body.password ||
+        !req.body.confirmation ||
+        req.body.password !== req.body.confirmation) {
+      err = new Error('Password and confirmation do not match!');
+      err.statusCode = 400;
+      err.code = 'PERSON_RESET_PASSWORD_FAILED_PASSWORD_CONFIRMATION_MISMATCH';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    Person.findById(req.accessToken.userId, function(err, user) {
+      if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+      user.updateAttribute('password', req.body.password, function(err, user) {
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+        console.log('> password reset processed successfully');
+        return cb(null, { status: 'success', message: 'Password reset successful' });
+      });
+    });
+  };
+
+  Person.remoteMethod(
+    "doResetPassword",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'res', type: 'object', http: { source: 'res' } }
+
+      ],
+      http: { path: '/resetPassword', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Take in a password and confirmation, and changes password to that password if they match."
     }
   );
 }

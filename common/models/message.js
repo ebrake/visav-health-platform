@@ -70,12 +70,12 @@ module.exports = function(Message) {
       subjectText = ': ' + subject;
     }
 
-    var Email = req.app.models.Email;
+    var Email = Message.app.models.Email;
 
     Email.send({
       to: recipient.email,
-      from: req.app.globalConfig.SYSTEM_EMAIL,
-      subject: req.app.globalConfig.APP_NAME + subjectText,
+      from: Message.app.globalConfig.SYSTEM_EMAIL,
+      subject: Message.app.globalConfig.APP_NAME + subjectText,
       html: html
     }, function(err) {
       if (err) 

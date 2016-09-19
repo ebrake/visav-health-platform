@@ -80,6 +80,20 @@
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "ALLOW",
+      "property": "requestPasswordReset"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "doResetPassword"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
       "property": "signup"
     },
     {
@@ -96,6 +110,7 @@
       "permission": "ALLOW",
       "property": "updateUser"
     }
+    
   ],
   "methods": {}
 }

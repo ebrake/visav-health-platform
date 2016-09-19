@@ -13,7 +13,8 @@ class MainHeader extends React.Component {
           <ul className="horizontal-nav nav" id="primary-nav">
             <NavItem title="Home" path="/me" />
             <NavItem title="Account" />
-            <NavItem title="Logout" imgSrc="logout.png" />
+            <NavItem title="Invite" />
+            <NavItem title="Logout" />
           </ul>
         </div>
       </div>
