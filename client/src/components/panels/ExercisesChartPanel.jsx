@@ -71,7 +71,7 @@ class ExercisesChartPanel extends React.Component {
 
   render() {
     return (
-      <div id="ExercisesChartPanel" className="graph-panel panel">
+      <div className="ExercisesChartPanel graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
         <ChartLegend legendId="ExercisesChartLegend" chartId={this.state.chartId} chart={this.state.chart} />
         <div className="chart-container">

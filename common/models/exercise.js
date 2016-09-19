@@ -1,233 +1,253 @@
 var Promise = require('bluebird');
 
 module.exports = function(Exercise) {
+  
   /* RECEIVE DATA */
+  var saveRep = function(req, rep, person, exercise) {
+    var Rep = req.app.models.Rep;
+    var date = rep.date;
 
-  var saveRep = function(rep, person, exercise, Rep) {
-    return new Promise(function(resolve, reject){
-      var date = rep.date;
-
-      if (typeof date != 'date') {
-        try { 
-          date = new Date(date);
-        } catch(e) { return reject(e); }
+    if (!date) {
+      err = new Error('Valid date required on rep.date');
+      err.statusCode = 417;
+      err.code = 'REP_CREATE_FAILED_MISSING_REQUIREMENTS';
+      throw err;
+    }
+    if (typeof date != 'date') {
+      try {
+        date = new Date(date)
+      } catch(e) {
+        err = new Error('Could not create Date object from rep.date for reason:\n' + e.message);
+        err.statusCode = 422;
+        err.code = 'REP_CREATE_FAILED_INVALID_REQUIREMENTS';
+        throw err;
       }
+    }
+    if (!person) {
+      err = new Error('Valid Person required.');
+      err.statusCode = 417;
+      err.code = 'REP_CREATE_FAILED_MISSING_REQUIREMENTS';
+      throw err;
+    }
+    else if (!person.id){
+      err = new Error('Valid id required on person.id');
+      err.statusCode = 422;
+      err.code = 'REP_CREATE_FAILED_INVALID_REQUIREMENTS';
+      throw err;
+    }
 
-      if (!date) {
-        //missing required info
-        return reject(new Error('Missing required field date on a rep.'));
+    return Rep.find({
+      where: { person: person.id, date: date }
+    })
+    .then(function(entries){
+      var RepObj = {
+        person: person.id,
+        exercise: exercise.id,
+        date: date,
+        duration: rep.duration || 0,
+        createdDate: new Date(),
+        note: rep.note || '',
+        isDemo: rep.isDemo || false,
+        value: rep.value,
+        unit: rep.unit
+      };
+
+      if (entries.length > 0) {
+        //upsert (manually) 
+        return Rep.findById(entries[0].id)
+        .then(function(createdRep){
+          createdRep.duration = RepObj.duration;
+          createdRep.note = RepObj.note;
+          createdRep.isDemo = RepObj.isDemo;
+          createdRep.value = RepObj.value;
+          createdRep.unit = RepObj.unit;
+          createdRep.createdDate = RepObj.date;
+
+          //console.log("Upserted Rep: "+createdRep.id);
+          return createdRep.save();
+        })
+      } else {
+        //insert
+        return Rep.create(RepObj)
+        .then(function(createdRep) {
+          return createdRep.save()
+        });
       }
-
-      Rep.find({
-        where: { person: person.id, date: date }
-      }, function(err, entries){
-        if (err) {
-          return reject(err);
-        }
-
-        var RepObj = {
-          person: person.id,
-          exercise: exercise.id,
-          date: date,
-          duration: rep.duration || 0,
-          createdDate: new Date(),
-          note: rep.note || '',
-          isDemo: rep.isDemo || false,
-          value: rep.value,
-          unit: rep.unit
-        };
-
-        if (entries.length > 0) {
-          //upsert (manually) 
-          Rep.findById(entries[0].id, function(err, createdRep){
-            if (err) return reject(err);
-
-            createdRep.duration = RepObj.duration;
-            createdRep.note = RepObj.note;
-            createdRep.isDemo = RepObj.isDemo;
-            createdRep.value = RepObj.value;
-            createdRep.unit = RepObj.unit;
-            createdRep.createdDate = RepObj.date;
-
-            createdRep.save(function(err){
-              if (err) return reject(err);
-              //console.log("Upserted Rep: "+createdRep.id);
-              return resolve(createdRep);
-            })
-          })
-        } else {
-          //insert
-          Rep.create(RepObj, function(err, createdRep) {
-            if (err) return reject(err);
-            createdRep.save(function(err){
-              if (err) return reject(err);
-              //console.log("Inserted Rep: "+createdRep.id);
-              return resolve(createdRep);
-            })
-          });
-        }
-      })
     })
   }
 
-  var saveReps = function(reps, person, exercise, Rep) {
+  var saveReps = function(req, reps, person, exercise) {
     return Promise.all(reps.map(function(rep){
-      return saveRep(rep, person, exercise, Rep);
+      return saveRep(req, rep, person, exercise);
     }))
     .then(function(reps){
       return { exercise: exercise, reps: reps };
     })
-    .catch(function(err){
-      throw err;
-    }) 
   }
 
-  var saveExerciseAndReps = function(exercise, person, HealthEvent, Rep) {
-    return new Promise(function(resolve, reject){
-      var date = exercise.date
-        , reps = exercise.reps;
+  var saveExerciseAndReps = function(req, exercise, person) {
+    var HealthEvent = req.app.models.HealthEvent;
+    var date = exercise.date
+    var reps = exercise.reps;
 
-      if (typeof date != 'date') {
-        try {
-          date = new Date(date);
-        } catch(e) { return reject(e); }
-      }    
-
-      if (!date) {
-        //we're missing required fields
-        return reject(new Error('Mising required field date on an exercise.'));
+    if (!date) {
+      err = new Error('Valid date required on exercise.date');
+      err.statusCode = 417;
+      err.code = 'EXERCISE_SAVE_FAILED_MISSING_REQUIREMENTS';
+      throw err;
+    }
+    if (typeof date != 'date') {
+      try {
+        date = new Date(date)
+      } catch(e) {
+        err = new Error('Could not create Date object from exercise.date for reason:\n' + e.message);
+        err.statusCode = 422;
+        err.code = 'EXERCISE_SAVE_FAILED_INVALID_REQUIREMENTS';
+        throw err;
       }
+    }
 
-      HealthEvent.find({
-        where: { person: person.id, exerciseDate: date }
-      }, function(err, healthevents){
-        if (err) {
-          return reject(err);
+    return HealthEvent.find({
+      where: { person: person.id, exerciseDate: date }
+    })
+    .then(function(healthevents){
+      var healtheventId = healthevents[0] ? healthevents[0].id : false;
+
+      return Exercise.find({
+        where: { person: person.id, date: date }
+      })
+      .then(function(entries){
+        var exerciseObj = {
+          person: person.id,
+          healthevent: healtheventId ? healtheventId : undefined,
+          date: date,
+          duration: exercise.duration || 0,
+          createdDate: new Date(),
+          type: exercise.type,
+          note: exercise.note || '',
+          isDemo: exercise.isDemo || false
+        };
+
+        if (entries.length > 0) {
+          //upsert (manually)
+          return Exercise.findById(entries[0].id)
+          .then(function(exercise){
+            exercise.duration = exerciseObj.duration;
+            exercise.type = exerciseObj.type;
+            exercise.note = exerciseObj.note;
+            exercise.isDemo = exerciseObj.isDemo;
+            exercise.createdDate = exerciseObj.createdDate;
+
+            if (!exercise.healthevent) {
+              exercise.healthevent = exerciseObj.healthevent;
+            }
+
+            return exercise.save();
+          })
+          .then(function(exercise){
+            //console.log("Upserted Exercise: "+exercise.id);
+            return saveReps(req, reps, person, exercise);
+          })
+        } else {
+          //insert
+          return Exercise.create(exerciseObj)
+          .then(function(exercise) {
+            return exercise.save();
+          })
+          .then(function(exercise){
+            //console.log("Inserted Exercise: "+exercise.id);
+            return saveReps(req, reps, person, exercise);
+          })
         }
-
-        var healtheventId = healthevents[0] ? healthevents[0].id : false;
-
-        Exercise.find({
-          where: { person: person.id, date: date }
-        }, function(err, entries){
-          if (err) {
-            return reject(err);
-          }
-
-          var ExerciseObj = {
-            person: person.id,
-            healthevent: healtheventId ? healtheventId : undefined,
-            date: date,
-            duration: exercise.duration || 0,
-            createdDate: new Date(),
-            type: exercise.type,
-            note: exercise.note || '',
-            isDemo: exercise.isDemo || false
-          };
-
-          if (entries.length > 0) {
-            //upsert (manually)
-            Exercise.findById(entries[0].id, function(err, createdExercise){
-              if (err) return reject(err);
-
-              createdExercise.duration = ExerciseObj.duration;
-              createdExercise.type = ExerciseObj.type;
-              createdExercise.note = ExerciseObj.note;
-              createdExercise.isDemo = ExerciseObj.isDemo;
-              createdExercise.createdDate = ExerciseObj.createdDate;
-
-              if (!createdExercise.healthevent) {
-                createdExercise.healthevent = ExerciseObj.healthevent;
-              }
-
-              createdExercise.save(function(err){
-                if (err) return reject(err);
-                //console.log("Upserted Exercise: "+createdExercise.id);
-                return resolve(saveReps(reps, person, createdExercise, Rep));
-              })
-            })
-          } else {
-            //insert
-            Exercise.create(ExerciseObj, function(err, createdExercise) {
-              if (err) return reject(err);
-              createdExercise.save(function(err){
-                if (err) return reject(err);
-                //console.log("Inserted Exercise: "+createdExercise.id);
-                return resolve(saveReps(reps, person, createdExercise, Rep));
-              })
-            });
-          }
-        })
       })
     })
   }
 
-  Exercise.receiveData = function(req, data, cb) {
-    if (!req.user) {
-      return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
-    } 
+  Exercise.receiveData = function(req, cb) {
+    var err;
+    var person = req.user;
+    var exercises = req.body.data;
 
-    var person = req.user
-      , Rep = req.app.models.Rep
-      , HealthEvent = req.app.models.HealthEvent;
+    if (!person) {
+      err = new Error('Valid person required.');
+      err.statusCode = 417;
+      err.code = 'EXERCISE_CREATE_FAILED_MISSING_REQUIREMENTS';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    else if (!person.id){
+      err = new Error('Valid id required on person.id');
+      err.statusCode = 422;
+      err.code = 'EXERCISE_CREATE_FAILED_INVALID_REQUIREMENTS';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
 
-    Promise.all(data.map(function(exercise){
-      //We don't actually have the Rep model anywhere except on the request, so we need to pass it down the chain
-      return saveExerciseAndReps(exercise, person, HealthEvent, Rep);
+    if (!exercises || !exercises.length) {
+      err = new Error('Valid exercises required.');
+      err.statusCode = 417;
+      err.code = 'EXERCISES_CREATE_FAILED_MISSING_REQUIREMENTS';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    Promise.all(exercises.map(function(exercise){
+      //We don't actually have the Exercise model anywhere except on the request, so we need to pass it down the chain
+      return saveExerciseAndReps(req, exercise, person);
     }))
-    .then(function(results){
-      //console.log("Results:");
-      //console.log(results);
-      return cb(null, { status: 'success' });
+    .then(function(exercisesAndReps){
+      return cb(null, { status: 'success', message: 'Successfully saved ' + exercisesAndReps.length + ' exercises' });;
+    }, function(err){
+      return cb(null, { status: 'failure', message: err.message, error: err });
     })
-    .catch(function(err){
-      console.log("Issue creating exercise data:");
-      console.log(err);
-      return cb(null, { status: 'failure', message: err.message });
-    }) 
+  }
+
+  /* RETRIEVE DATA */
+
+  var retrieveLimit = 1000;
+
+  Exercise.retrieveData = function(req, cb) {
+    var limit = req.body.limit || retrieveLimit;
+    var person = req.user;
+
+    if (!person) {
+      err = new Error('Valid person required.');
+      err.statusCode = 417;
+      err.code = 'EXERCISE_GET_FAILED_MISSING_REQUIREMENTS';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    else if (!person.id){
+      err = new Error('Valid id required on person.id');
+      err.statusCode = 422;
+      err.code = 'EXERCISE_GET_FAILED_INVALID_REQUIREMENTS';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    Exercise.find({
+      where: { person: person.id },
+      include: 'reps',
+      order: "date ASC",
+      limit: limit,
+    }, function(err, data){ 
+      if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'success', exercises: data });
+    });
   }
 
   Exercise.remoteMethod(
     "receiveData",
     {
       accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'data', type: 'object' }
+        { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/create', verb: 'put' },
-      returns: { arg: 'result', type: 'object' },
+      returns: { arg: 'data', type: 'object' },
       description: "Accepts an array of exercises (with reps), persists them to the data source"
     }
   );
-
-  /* RETRIEVE DATA */
-
-  var retrieveLimit = 1000;
-
-  Exercise.retrieveData = function(req, limit, cb) {
-    if (!req.user) {
-      return cb(null, { status: 'failure', message: 'Anonymous request (no user to attach to)' });
-    } 
-
-    var person = req.user;
-
-    Exercise.find({
-      where: { person: person.id },
-      include: 'reps',
-      order: "date ASC",
-      limit: limit || retrieveLimit
-    }, function(err, data){ 
-      if (err) return cb(null, { status: 'failure', message: err.message });
-      return cb(null, { status: 'success', exercises: data });
-    });
-  }
 
   Exercise.remoteMethod(
     "retrieveData",
     { 
       accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } },
-        { arg: 'limit', type: 'number' }
+        { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/get', verb: 'get' },
       returns: { arg: 'data', type: 'array' },

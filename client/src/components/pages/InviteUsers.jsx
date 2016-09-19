@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AccountActions from '../../alt/actions/AccountActions';
 import AuthenticatedPage from './AuthenticatedPage';
 import ImageButton from '../buttons/ImageButton';
 import Dropdown from 'react-dropdown';
@@ -30,19 +31,13 @@ class InviteUsers extends React.Component {
   }
 
   inviteUser() {
-    fetch(process.env.API_ROOT + 'api/people/invite', {
-      method: 'POST', 
-      headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ email: this.state.email, role: this.state.role.value })
+    AccountActions.inviteUser({
+      email: this.state.email,
+      role: this.state.role
     })
-    .then(response => response.json())
-    .then(response => {
-      console.log('Maybe succeeded at inviting user:');
+    .then(function(response){
+      console.log("Potentially invited user:");
       console.dir(response);
-    })
-    .catch((err) => {
-      console.log('Error inviting new user:');
-      console.dir(err);
     })
   }
 
@@ -61,7 +56,9 @@ class InviteUsers extends React.Component {
           <div className="text-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
           </div>
-          <Dropdown options={roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
+          <div className="dropdown-container">
+            <Dropdown options={roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
+          </div>
           <ImageButton className="invite-button" text="Invite new user" onClick={this.inviteUser} />
         </div>
       </div>

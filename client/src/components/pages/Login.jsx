@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import AccountActions from '../../alt/actions/AccountActions';
-import AccountStore from '../../alt/stores/AccountStore';
+import FullscreenAlert from '../misc/FullscreenAlert';
+import PasswordResetPanel from '../panels/PasswordResetPanel';
 
 class Login extends React.Component {
   constructor(props) {
@@ -9,7 +10,10 @@ class Login extends React.Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      showForgotPasswordPopup: false,
+      password: '',
+      user: undefined
     };
 
     this.login = this.login.bind(this);
@@ -17,6 +21,9 @@ class Login extends React.Component {
     this.goToSignup = this.goToSignup.bind(this);
     this.keyPressed = this.keyPressed.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.launchForgotPassword = this.launchForgotPassword.bind(this);
+    this.closeForgotPassword = this.closeForgotPassword.bind(this);
+
   }  
 
   goToSignup() {
@@ -24,28 +31,17 @@ class Login extends React.Component {
   }
 
   login() {
-    fetch(process.env.API_ROOT + 'api/people/signin', {
-      method: 'POST', 
-      headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ email: this.state.email, password: this.state.password })
+    AccountActions.loginUser({
+      email: this.state.email,
+      password: this.state.password
     })
-    .then(response => response.json())
-    .then(response => {
-      if (response && response.data && response.data.status != 'error') {
-        AccountActions.loginUser(response.data);
-
-        console.log('Login successful! Redirecting...');
-        this.props.router.push('/me');
+    .then(function(response){
+      if (response && response.data && response.data.status == 'success') {
+        this.props.router.push ('/me');
       } else {
-        //display validation messages
-        console.log('Error logging in:');
-        console.dir(response);
+        //validation messages
       }
-    })
-    .catch((err) => {
-      console.log('Error logging in:');
-      console.dir(err);
-    })
+    }.bind(this))
   }
 
   logout() {
@@ -67,28 +63,27 @@ class Login extends React.Component {
     }
   }
 
-  accountChanged(state) {
-    console.log("Account Store changed:");
-    console.dir(state);
+  launchForgotPassword(){
+    this.setState({showForgotPasswordPopup: true});
   }
 
-  componentDidMount(){
-    AccountStore.listen(this.accountChanged);
+  closeForgotPassword(){
+    this.setState({showForgotPasswordPopup: false});
   }
 
-  componentWillUnmount(){
-    AccountStore.unlisten(this.accountChanged);
-  }
+
 
   render() {
+
     return (
       <div className="page">
+        <FullscreenAlert active={this.state.showForgotPasswordPopup} onClickOutside={this.closeForgotPassword}  content={<PasswordResetPanel />} />
         <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
-          <div className="accounts-input-wrapper">
+          <div className="text-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} onKeyUp={this.keyPressed} />
           </div>
-          <div className="accounts-input-wrapper">
+          <div className="text-input-wrapper">
             <input placeholder="Password" value={this.state.password} onChange={this.handleChange('password')} onKeyUp={this.keyPressed} />
           </div>
           <button className="accounts-button" onClick={this.login}>
@@ -98,6 +93,7 @@ class Login extends React.Component {
             <span>Logout</span>
           </button>
           <span className="accounts-link" onClick={this.goToSignup}>{"Don't have an account? Sign up"}</span>
+          <span className="forgot-password-link" onClick={this.launchForgotPassword}>{"Forgot your password?"}</span>
         </div>
         <div className="accounts-flex-padding"></div>
       </div>

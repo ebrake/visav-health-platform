@@ -6,61 +6,85 @@ var path = require('path');
 
 module.exports = function(Person) {
 
-  Person.signup = function(req, cb) {
-    if (!req.body.email) 
-      return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
-    if (!req.body.password) 
-      return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
-    if (!req.body.organization) 
-      return cb(null, { error: new Error('No organization!'), type: 'organization', status: 'error' });
+  Person.signup = function(req, email, password, organizationName, cb) {
+    var err;
 
-    var Role = req.app.models.Role
-      , RoleMapping = req.app.models.RoleMapping
-      , Organization = req.app.models.Organization
-      , email = req.body.email
-      , password = req.body.password
-      , orgFilter = { name: req.body.organization };
+    if(!req.body.email){
+      err = new Error('Valid email required on req.body.email');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
 
-    return findPersonAndOrganization(email, Person, orgFilter, Organization)
+    if(!req.body.password){
+      err = new Error('Valid password required on req.body.password');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_PASSWORD';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    if(!req.body.organizationName){
+      err = new Error('Valid organization required on req.body.organizationName');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_ORGANIZATIONNAME';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    var orgFilter = { name: req.body.organizationName };
+
+    return findPersonAndOrganization(req, req.body.email, orgFilter)
     .then(function(queryResult){
       if (queryResult[0]) {
-        return { 
-          error: new Error('Email already in use'), 
-          type: 'email', 
-          status: 'error' 
-        };
-      } else if (queryResult[1]) {
-        return { 
-          error: new Error('An organization already exists with that name'), 
-          type: 'organization', 
-          status: 'error' 
-        };
-      } else {
+        err = new Error('A person with this email has already been created');
+        err.statusCode = 422;
+        err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENT_DUPLICATE_EMAIL';
+        throw err;
+      } 
+      else if (queryResult[1]) {
+        err = new Error('An organization with this name has already been created');
+        err.statusCode = 422;
+        err.code = 'PERSON_CREATE_FAILED_INVALID_REQUIREMENT_DUPLICATE_ORGANIZATIONNAME';
+        throw err;
+      } 
+      else {
         var personData = {
-          email: email,
-          password: password
+          email: req.body.email.toLowerCase(),
+          password: req.body.password
         };
 
-        return Organization.create(orgFilter)
+        return req.app.models.Organization.create(orgFilter)
         .then(function(createdOrganization){
           console.log('Organization created: '+createdOrganization.name);
           
-          return createPersonWithRoleAndBindToOrganization(personData, 'owner', Person, createdOrganization, Role, RoleMapping);
+          return createPersonWithRoleAndBindToOrganization(req, personData, 'owner', createdOrganization);
         })
       }
     })
     .then(function(data){
-      return data;
+      return cb(null, {status: 'success', user: data.user, organization: data.organization });
     }, function(err){
-      console.log('Error signing up person/organization:');
-      console.log(err);
-      return { error: err, type: 'general', status: 'error' };
+      return cb(null, { status: 'failure', message: err.message, error: err });
     })
   }
 
+  Person.remoteMethod(
+    "signup",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'email', type: 'string' },
+        { arg: 'password', type: 'string' },
+        { arg: 'organizationName', type: 'string' }
+      ],
+      http: { path: '/signup', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts a new user's email and password, returns the created user"
+    }
+  );
+
   //send verification email after registration
-  Person.afterRemote('remoteCreate', function(context, createdObject, next) {
-    if (!createdObject || !createdObject.data || createdObject.data.status == 'error') {
+  Person.afterRemote('signup', function(context, createdObject, next) {
+    if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
       return next();
     }
 
@@ -81,21 +105,20 @@ module.exports = function(Person) {
 
   });
 
-  Person.remoteMethod(
-    "signup",
-    {
-      accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } }
-      ],
-      http: { path: '/signup', verb: 'post' },
-      returns: { arg: 'data', type: 'object' },
-      description: "Accepts a new user's email and password, returns the created user"
+  Person.signin = function(req, email, password, cb){
+    var err;
+    if(!req.body.email){
+      err = new Error('Valid email required on req.body.email');
+      err.statusCode = 417;
+      err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENT_EMAIL';
+      return cb(null, { status: 'failure', message: err.message, error: err });
     }
-  );
-
-  Person.signin = function(req, cb){
-    if (!req.body.email) return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
-    if (!req.body.password) return cb(null, { error: new Error('No password!'), type: 'password', status: 'error' });
+    if(!req.body.password){
+      err = new Error('Valid password required on req.body.password');
+      err.statusCode = 417;
+      err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENT_PASSWORD';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
 
     return Promise.all([
       Person.login({
@@ -103,19 +126,17 @@ module.exports = function(Person) {
         password: req.body.password
       }),
       Person.findOne({
-        where: { email: req.body.email }
+        where: { email: req.body.email.toLowerCase() }
       })
     ])
     .then(function(data){
-      data = {
-        token: data[0],
-        user: data[1]
-      };
-
-      return data;
+      var message = 'Signed in user with email '+data[1].email
+      console.log(message);
+      return cb(null, { status: 'success', token: data[0], user: data[1], message: message })
     })
     .catch(function(err){
-      return { error: err, type: 'login', status: 'error' };
+      console.log('Issue signing in user: '+err.message);
+      return cb(null, { status: 'failure', message: err.message, error: err });
     })
   }
 
@@ -123,7 +144,9 @@ module.exports = function(Person) {
     "signin",
     {
       accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } }
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'email', type: 'string' },
+        { arg: 'password', type: 'string' }
       ],
       http: { path: '/signin', verb: 'post' },
       returns: { arg: 'data', type: 'object' },
@@ -131,37 +154,44 @@ module.exports = function(Person) {
     }
   );
 
-  Person.invite = function(req, cb) {
-    if (!req.body.email) 
-      return cb(null, { error: new Error('No email!'), type: 'email', status: 'error' });
-    if (!req.body.role) 
-      return cb(null, { error: new Error('No role!'), type: 'role', status: 'error' });
-    if (!req.user.organization)
-      return cb(null, { error: new Error('No organization associated with user!'), type: 'organization', status: 'error' });
+  Person.invite = function(req, email, role, cb) {
+    var err;
+    if(!req.body.email){
+      err = new Error('Valid email required on req.body.email');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(!req.body.role){
+      err = new Error('Valid Role required on req.body.role');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(!req.user.organization){
+      err = new Error('No organization associated with user. Valid organization required on req.user.organization.');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_NO_ORGANIZATION';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
 
-    var email = req.body.email;
+    var email = req.body.email.toLowerCase();
     var roleToAssign = req.body.role;
     var orgFilter = { id: req.user.organization.id };
-    var Organization = req.app.models.Organization;
-    var Person = req.app.models.Person;
-    var Role = req.app.models.Role;
-    var RoleMapping = req.app.models.RoleMapping;
 
-    return findPersonAndOrganization(email, Person, orgFilter, Organization)
+    return findPersonAndOrganization(req, email, orgFilter)
     .then(function(queryResult){
       if (queryResult[0]) {
-        return { 
-          error: new Error('Email already in use'), 
-          type: 'email', 
-          status: 'error' 
-        };
+        err = new Error('A Person with this email has already been created.');
+        err.statusCode = 422;
+        err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_DUPLICATE_EMAIL';
+        throw err;
       } else if (!queryResult[1]){
-        //shouldn't be possible but worth handling
-        return {
-          error: new Error('No organization associated with user!'),
-          type: 'organization',
-          status: 'error'
-        }
+        //shouldn't be possible but we'll handle it anyways
+        err = new Error('This organization does not exist.');
+        err.statusCode = 422;
+        err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_NO_ORGANIZATION';
+        throw err;
       } else {
         var personData = {
           email: email,
@@ -169,15 +199,15 @@ module.exports = function(Person) {
         };
         var foundOrganization = queryResult[1];
 
-        return createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Person, foundOrganization, Role, RoleMapping);
+        return createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign, foundOrganization);
       }
     })
     .then(function(data){
-      return data;
+      return cb(null, { status: 'success', user: data.user, organization: data.organization });
     }, function(err){
       console.log('Error inviting person to organization:');
       console.log(err);
-      return { error: err, type: 'general', status: 'error' };
+      return cb(null, { status: 'failure', message: err.message, error: err });
     })
   }
 
@@ -185,7 +215,9 @@ module.exports = function(Person) {
     "invite",
     {
       accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } }
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+        { arg: 'email', type: 'string' },
+        { arg: 'role', type: 'string' }
       ],
       http: { path: '/invite', verb: 'post' },
       returns: { arg: 'data', type: 'object' },
@@ -194,26 +226,29 @@ module.exports = function(Person) {
   );
 }
 
-function findPerson(email, Person) {
+function findPerson(req, email) {
+  var Person = req.app.models.Person;
   return Person.findOne({
     where: { email: email }
   })
 }
 
-function findOrganization(whereObject, Organization) {
+function findOrganization(req, whereObject) {
+  var Organization = req.app.models.Organization;
   return Organization.findOne({
     where: whereObject
   })
 }
 
-function findPersonAndOrganization(email, Person, orgFilter, Organization) {
+function findPersonAndOrganization(req, email, orgFilter) {
   return Promise.all([
-    findPerson(email, Person),
-    findOrganization(orgFilter, Organization)
+    findPerson(req, email),
+    findOrganization(req, orgFilter)
   ])
 }
 
-function createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Person, organization, Role, RoleMapping) {
+function createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign, organization) {
+  var Person = req.app.models.Person;
   return Person.create(personData)
   .then(function(createdPerson){
     if (roleToAssign === 'owner'){
@@ -226,7 +261,7 @@ function createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Per
 
     console.log('User created: '+createdPerson.email);
 
-    return assignRole(createdPerson, roleToAssign, Role, RoleMapping)
+    return assignRole(req, createdPerson, roleToAssign)
     .then(function(updatedUser){
       return {
         user: updatedUser,
@@ -236,7 +271,7 @@ function createPersonWithRoleAndBindToOrganization(personData, roleToAssign, Per
   })
 }
 
-function assignRole(user, roleName, Role, RoleMapping) {
+function assignRole(req, user, roleName) {
   roleName = roleName.toLowerCase();
 
   if (!user) {
@@ -244,7 +279,7 @@ function assignRole(user, roleName, Role, RoleMapping) {
   } else if (user.status == 'error') {
     return Promise.resolve(user);
   }
-
+  var Role = req.app.models.Role;
   return Role.findOne({
     where: { name: roleName }
   })
@@ -253,7 +288,7 @@ function assignRole(user, roleName, Role, RoleMapping) {
       return Promise.reject(new Error("No role with this name exists!"))
     } else {
       return role.principals.create({ 
-        principalType: RoleMapping.USER,
+        principalType: req.app.models.RoleMapping.USER,
         principalId: user.id
       })
     }
@@ -261,3 +296,4 @@ function assignRole(user, roleName, Role, RoleMapping) {
     return user;
   })
 }
+
