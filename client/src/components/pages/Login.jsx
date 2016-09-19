@@ -78,7 +78,6 @@ class Login extends React.Component {
     return (
       <div className="page">
         <FullscreenAlert active={this.state.showForgotPasswordPopup} onClickOutside={this.closeForgotPassword}  content={<PasswordResetPanel />} />
-        <div className="accounts-flex-padding"></div>
         <div className="content-container accounts-container">
           <div className="text-input-wrapper">
             <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} onKeyUp={this.keyPressed} />
@@ -95,7 +94,6 @@ class Login extends React.Component {
           <span className="accounts-link" onClick={this.goToSignup}>{"Don't have an account? Sign up"}</span>
           <span className="forgot-password-link" onClick={this.launchForgotPassword}>{"Forgot your password?"}</span>
         </div>
-        <div className="accounts-flex-padding"></div>
       </div>
     );
   }
