@@ -37,6 +37,13 @@ var authCheck = (nextState, replace) => {
     console.log('Not logged in... redirecting...');
     replace('/login');
   }
+  else{
+    AccountActions.getPeople()
+    .then(function(response){
+      console.log('RESPONSE:');
+      console.dir(response);
+    });
+  }
 }
 
 var logout = (nextState, replace) => {
