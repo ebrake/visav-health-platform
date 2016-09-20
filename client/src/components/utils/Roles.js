@@ -1,9 +1,9 @@
 let roles = [
-  { value: 'doctor', label: 'Doctor' },
-  { value: 'patient', label: 'Patient' },
-  { value: 'caregiver', label: 'Caregiver' },
-  { value: 'owner', label: 'Owner' },
-  { value: 'admin', label: 'Admin' },
+  'doctor',
+  'patient',
+  'caregiver',
+  'owner',
+  'admin'
 ];
 
 export default {
@@ -12,6 +12,6 @@ export default {
   },
 
   getAssignableRoles: function() {
-    return roles.filter((role) => { return role.value !== 'owner'; });
+    return roles.filter((role) => { return role !== 'owner'; });
   }
 }
