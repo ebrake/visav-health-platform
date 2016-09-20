@@ -32,7 +32,7 @@ class AccountStore {
 
   handleUpdateUser(user) {
     this.user = user;
-    this.role = (user.role) ? user.roles.name : undefined;
+    this.role = user.role ? user.role.name : undefined;
   }
 
   handleLogout() {

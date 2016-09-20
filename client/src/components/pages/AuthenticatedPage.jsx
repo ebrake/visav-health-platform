@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import AccountStore from '../../alt/stores/AccountStore';
 import MainHeader from '../headers/MainHeader';
+import Roles from '../utils/Roles';
+
+function determineAllowedRoles(arrayOfAllowedRoles) {
+  if (!arrayOfAllowedRoles || arrayOfAllowedRoles.length == 0) 
+    return Roles.getRoles();
+
+  return arrayOfAllowedRoles;
+}
 
 export default (ComposedComponent) => {
-  return class AuthenticatedPage extends React.Component {
+  class AuthenticatedPage extends React.Component {
     constructor(props) {
       super(props);
 
@@ -39,4 +47,8 @@ export default (ComposedComponent) => {
       );
     }
   }
+
+  AuthenticatedPage.isAllowed = determineAllowedRoles(ComposedComponent.isAllowed);
+
+  return AuthenticatedPage;
 };
