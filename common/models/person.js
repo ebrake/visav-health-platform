@@ -430,24 +430,22 @@ function assignRole(req, user, roleName) {
   roleName = roleName.toLowerCase();
 
   if (!user) {
-    return Promise.reject(new Error("Issue creating user"));
-  } else if (user.status == 'error') {
-    return Promise.resolve(user);
-  }
+    throw new Error("Issue creating user");
+  } 
+
   var Role = req.app.models.Role;
   return Role.findOne({
     where: { name: roleName }
   })
   .then(function(role){
     if (!role) {
-      return Promise.reject(new Error("No role with this name exists!"))
+      throw new Error("No role with this name exists!");
     } else {
-      return role.principals.create({ 
-        principalType: req.app.models.RoleMapping.USER,
-        principalId: user.id
-      })
+      user.role = role.id;
+      return user.save();
     }
-  }).then(function(principal){
+  })
+  .then(function(user){
     return user;
   })
 }

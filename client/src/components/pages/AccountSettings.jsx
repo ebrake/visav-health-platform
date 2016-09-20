@@ -64,7 +64,7 @@ class AccountSettings extends React.Component {
           <VisavInput label="First Name" value={ this.state.firstName } valueDidChange={ this.handleChange('firstName') } onKeyUp={ this.keyPressed } />
           <VisavInput label="Last Name" value={ this.state.lastName } valueDidChange={ this.handleChange('lastName') } onKeyUp={ this.keyPressed } />
           <VisavInput label="Phone Number" value={ this.state.phone } valueDidChange={ this.handleChange('phone') } onKeyUp={ this.keyPressed } />
-          <ImageButton className="accounts-button" text="Save" onClick={this.update} />
+          <ImageButton className="accounts-button" text="Save" onClick={this.updateUser} />
         </div>
       </div>
     );

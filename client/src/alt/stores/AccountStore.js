@@ -17,12 +17,13 @@ class AccountStore {
   handleLogin(response) {
     if (response && response.data && response.data.status === 'success') {
       this.user = response.data.user;
-      this.role = (this.user.roles && this.user.roles[0]) ? this.user.roles[0].name : undefined;
+      this.role = this.user.role ? this.user.role.name : undefined;
       localStorage.setItem('accessToken', response.data.token.id);
     } else {
       this.user = undefined;
       this.role = undefined;
     }
+    console.log(this);
   }
 
   handleCreateUser(response) {
@@ -31,7 +32,7 @@ class AccountStore {
 
   handleUpdateUser(user) {
     this.user = user;
-    this.role = (user.roles && user.roles[0]) ? user.roles[0].name : undefined;
+    this.role = (user.role) ? user.roles.name : undefined;
   }
 
   handleLogout() {
