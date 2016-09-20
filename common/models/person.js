@@ -293,7 +293,10 @@ module.exports = function(Person) {
     Person.resetPassword({
       email: req.body.email
     }, function(err) {
-      if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+      if (err) 
+        return cb(null, { status: 'failure', message: err.message, error: err });
+      else
+        return cb(null, { status: 'success', message: 'Password request event triggered.' });
     });
 
   }

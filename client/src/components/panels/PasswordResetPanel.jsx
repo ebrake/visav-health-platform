@@ -34,7 +34,11 @@ class PasswordResetPanel extends React.Component {
   }
 
   attemptPasswordReset(){
-    AccountActions.requestPasswordReset({ email: this.state.email });
+    AccountActions.requestPasswordReset({ email: this.state.email })
+    .then(function(response){
+      if (response && response.data)
+        console.log(response.data.message);
+    });
   }
 
   render() {

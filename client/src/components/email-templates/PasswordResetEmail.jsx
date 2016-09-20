@@ -20,11 +20,13 @@ export default function PasswordResetEmail(props) {
     float: 'middle',
     backgroundColor: phlexColors.getColor('red'),
   };
-  const actionsStyle = {
-    margin: '20px 0 0 0',
 
+  const actionsStyle = {
+    margin: '20px 0 0 0'
   };
+
   const { accessToken } = props;
+  
   var takeActionURL = process.env.API_ROOT + 'resetPassword';
 
   return (

@@ -9,11 +9,11 @@
   border: 1px solid black;
   background: $lightest-grey;
   box-sizing: border-box;
+  padding: 0 10px;
 
   label {
     display: block;
     font-size: 60%;
-    margin: 0;
     transform: translateY(-50%);
     opacity: 0;
     color: $dark-text-color;
@@ -28,24 +28,23 @@
     width: 100%;
     border-width: 0;
     padding: 0;
-    margin: 0;
     width: 100%;
     outline: none;
     background: transparent;
     color: $dark-text-color;
-    margin: 12px 8px;
+    margin: 12px 0;
   }
 
   &.is-active {
     label {
       transform: translateY(0);
       opacity: 1;
-      margin: 5px 2px 0 10px;
+      margin: 5px 0 0;
     }
 
     input {
       font-size: 14px;
-      margin: 0 10px 10px;
+      margin: 0 0 10px;
       transform: translateY(20%);
     }
   }

@@ -54,7 +54,7 @@ class InviteUsers extends React.Component {
         <div className="InviteUsersPanel panel">
           <h1 className="title">Invite a new User</h1>
           <span className="description">Use the menu below to invite a new user to your organization.</span>
-          <VisavInput className="VisavInput" label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
+          <VisavInput label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
           <div className="dropdown-container">
             <Dropdown options={roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
           </div>
