@@ -6,7 +6,9 @@ import Dropdown from 'react-dropdown';
 import Roles from '../utils/Roles';
 import VisavInput from '../inputs/VisavInput';
 
-const roles = Roles.getRoles();
+const roles = Roles.getAssignableRoles().map(function(role){
+  return { value: role, label: role.charAt(0).toUpperCase()+role.slice(1) }
+});
 
 class InviteUsers extends React.Component {
   

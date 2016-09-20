@@ -7,7 +7,7 @@
   },
   "scope": {
     "include": [
-      "roles",
+      "role",
       "organization"
     ]
   },
@@ -59,12 +59,10 @@
       "model": "Organization",
       "foreignKey": "organization"
     },
-    "roles": {
-      "type": "hasMany",
+    "role": {
+      "type": "belongsTo",
       "model": "Role",
-      "foreignKey": "principalId",
-      "through": "RoleMapping",
-      "keyThrough": "roleId"
+      "foreignKey": "role"
     }
   },
   "acls": [
