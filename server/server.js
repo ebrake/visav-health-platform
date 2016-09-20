@@ -1,4 +1,8 @@
 /** @server */
+if (process.env.NODE_ENV ==='production') {
+  // Add production application monitoring support with New Relic
+  require('newrelic');
+}
 import loopback from 'loopback';
 import boot from 'loopback-boot';
 import { EventEmitter } from 'events';

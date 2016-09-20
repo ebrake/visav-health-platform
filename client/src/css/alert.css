@@ -1,0 +1,33 @@
+@import 'colors.css';
+
+.alert {
+  z-index: 100;
+}
+
+.FullscreenAlert {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .alert-background {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: black;
+    opacity: 0.5;
+    transition: opacity 1s ease-in-out;
+  }
+
+  :nth-child(2) {
+    z-index: 5;
+  }
+}

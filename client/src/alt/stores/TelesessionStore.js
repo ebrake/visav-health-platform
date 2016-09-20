@@ -38,11 +38,12 @@ class TelesessionStore {
    * @param {Object} response VISAV Session response
   */
   handleCreateSession(response) {
-    this.createSessionResponse = response;
 
-    if (response.session) {
-      this.sessionId = response.session.sessionId;
-      this.token = response.token;
+    this.createSessionResponse = response.data;
+
+    if (response.data.session) {
+      this.sessionId = response.data.session.sessionId;
+      this.token = response.data.token;
       this.connectionState=TelesessionStore.connStates.GOT_SESSION_ID;
     }
   }

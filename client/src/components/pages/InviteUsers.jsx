@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import AccountActions from '../../alt/actions/AccountActions';
 import AuthenticatedPage from './AuthenticatedPage';
 import ImageButton from '../buttons/ImageButton';
 import Dropdown from 'react-dropdown';
 import Roles from '../utils/Roles';
+import VisavInput from '../inputs/VisavInput';
 
 const roles = Roles.getRoles();
 
@@ -30,19 +32,13 @@ class InviteUsers extends React.Component {
   }
 
   inviteUser() {
-    fetch(process.env.API_ROOT + 'api/people/invite', {
-      method: 'POST', 
-      headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ email: this.state.email, role: this.state.role.value })
+    AccountActions.inviteUser({
+      email: this.state.email,
+      role: this.state.role
     })
-    .then(response => response.json())
-    .then(response => {
-      console.log('Maybe succeeded at inviting user:');
+    .then(function(response){
+      console.log("Potentially invited user:");
       console.dir(response);
-    })
-    .catch((err) => {
-      console.log('Error inviting new user:');
-      console.dir(err);
     })
   }
 
@@ -58,10 +54,10 @@ class InviteUsers extends React.Component {
         <div className="InviteUsersPanel panel">
           <h1 className="title">Invite a new User</h1>
           <span className="description">Use the menu below to invite a new user to your organization.</span>
-          <div className="text-input-wrapper">
-            <input placeholder="Email" value={this.state.email} onChange={this.handleChange('email')} />
+          <VisavInput label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
+          <div className="dropdown-container">
+            <Dropdown options={roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
           </div>
-          <Dropdown options={roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
           <ImageButton className="invite-button" text="Invite new user" onClick={this.inviteUser} />
         </div>
       </div>
