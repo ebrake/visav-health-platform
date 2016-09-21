@@ -20,7 +20,7 @@ class PeopleList extends React.Component {
     else if (accountState.user.role.name == 'caregiver'){
       this.allowedPeopleLists = ['doctors', 'patients'];
     }
-    else if (accountState.user.role.name == 'owner' || accountState.user.role == 'admin'){
+    else if (accountState.user.role.name == 'owner' || accountState.user.role.name == 'admin'){
       this.allowedPeopleLists = ['doctors', 'patients', 'caregivers', 'admins'];
     }
 
