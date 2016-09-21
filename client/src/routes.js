@@ -32,8 +32,8 @@ var authCheck = (nextState, replace) => {
   let snapshot = localStorage.getItem('snapshot');
   alt.bootstrap(snapshot);
 
-  let state = AccountStore.getState();
-  if (!state.user) {
+  let user = AccountStore.getUser();
+  if (!user) {
     console.log('Not logged in... redirecting...');
     replace('/login');
   }

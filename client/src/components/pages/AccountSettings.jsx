@@ -11,8 +11,7 @@ class AccountSettings extends React.Component {
   constructor(props) {
     super(props);
 
-    let accountState = AccountStore.getState();
-    let user = accountState.user;
+    let user = AccountStore.getUser();
 
     //TODO: set this to the current values
     this.state = {
