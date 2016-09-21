@@ -32,6 +32,7 @@ module.exports = function(Person) {
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
 
+
     var orgFilter = { name: req.body.organizationName };
     var personData = {
       email: req.body.email.toLowerCase(),
@@ -185,7 +186,7 @@ module.exports = function(Person) {
 
     var email = req.body.email.toLowerCase();
     var roleToAssign = req.body.role;
-    var orgFilter = { id: req.user.organization.id };
+    var orgFilter = { id: req.user.toJSON().organization.id };
     var personData = {
       email: email,
       password: generatePassword(10)
@@ -386,6 +387,93 @@ module.exports = function(Person) {
       description: "Take in a password and confirmation, and changes password to that password if they match."
     }
   );
+
+  Person.getRelatedPeople = function (req, cb) {
+    var err;
+    var user = req.user.toJSON();
+    var role = user.role.name;
+    if (role == 'owner' || role == 'admin'){
+      Person.find({where: { organization : user.organization.id } }, function(err, people){ 
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
+      });
+    }
+    else if (role == 'doctor'){
+      Person.findOne({where: { id : user.id }, include: [{ patients: 'caregivers' }]}, function(err, self){
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+
+        var people = [];
+        for( patientIndex in self.patients ){
+          var patient = self.patients[patientIndex];
+          people.push(patient);
+          for( caregiverIndex in patient.caregivers ){
+            var caregiver = patient.caregivers[caregiverIndex];
+            people.push(caregiver);
+          }
+        }
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
+
+      });
+    }
+    else if (role == 'patient'){
+      Person.findOne({where: { id : user.id }, include: [ 'doctors', 'caregivers' ]}, function(err, self){
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err }); 
+
+        var people = [];
+        for( doctorIndex in self.doctors ){
+          var doctor = self.doctors[doctorIndex];
+          people.push(doctor);
+        }
+
+        for( caregiverIndex in self.caregivers ){
+          var caregiver = self.caregivers[caregiverIndex];
+          people.push(caregiver);
+        }
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
+      });
+    }
+    else if (role == 'caregiver'){
+      Person.findOne({where: { id : user.id }, include: [{ caregivees: ['doctors', 'caregivers'] }]}, function(err, self){
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+
+        var people = [];
+
+        for( caregiveeIndex in self.caregivees ){
+          var caregivee = self.caregivers[caregiveeIndex];
+          people.push(caregivee);
+          for( caregiverIndex in caregivee.caregivers ){
+            var caregiver = caregivee.caregivers[caregiverIndex];
+            people.push(caregiver);
+          }
+          for( doctorIndex in caregivee.doctors ){
+            var doctor = caregivee.doctors[doctorIndex];
+            people.push(doctor);
+          }
+        }
+        return cb(null, { status: 'success', message: 'Related people successfull retrieved', people: people });
+      });
+    }
+    else{
+      err = new Error('Valid role required on req.user.role');
+      err.statusCode = 422;
+      err.code = 'GET_RELATED_PEOPLE_FAILED_INVALID_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+  }
+
+  Person.remoteMethod(
+    "getRelatedPeople",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/getRelatedPeople', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Returns all related people for the requesting user."
+    }
+  );
 }
 
 function findPerson(req, email) {
@@ -393,6 +481,14 @@ function findPerson(req, email) {
   return Person.findOne({
     where: { email: email }
   })
+}
+
+function findPeople(req, filterObj) {
+  var Person = req.app.models.Person;
+  return Person.findOne({
+    where: filterObj
+  })
+
 }
 
 function findOrganization(req, whereObject) {

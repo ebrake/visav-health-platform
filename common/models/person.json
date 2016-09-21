@@ -114,6 +114,13 @@
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "invite"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getRelatedPeople"
     }
   ],
   "methods": {}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavItem from '../nav/NavItem'
+import NavItem from '../list-items/NavItem'
 class MainHeader extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +13,7 @@ class MainHeader extends React.Component {
           <ul className="horizontal-nav nav" id="primary-nav">
             <NavItem title="Home" path="/me" />
             <NavItem title="Account" />
+            <NavItem title="People" />
             <NavItem title="Invite" />
             <NavItem title="Logout" />
           </ul>
