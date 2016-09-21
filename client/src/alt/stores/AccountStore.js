@@ -26,8 +26,10 @@ class AccountStore {
 
   }
 
-  handleUpdateUser(user) {
-    this.user = user;
+  handleUpdateUser(response) {
+    if (response && response.data && response.data.status === 'success') {
+      this.user = response.data.user;
+    }
   }
 
   handleLogout() {

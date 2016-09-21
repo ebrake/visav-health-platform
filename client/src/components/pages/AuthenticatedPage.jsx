@@ -29,6 +29,8 @@ export default (ComposedComponent) => {
       let user = accountState.user;
 
       if (!userIsAuthenticatedForComponent(user, ComposedComponent)) {
+        console.log("User is unauthenticated");
+        console.dir(user);
         this.props.router.goBack();
       }
 
