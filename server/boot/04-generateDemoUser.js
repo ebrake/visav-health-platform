@@ -22,7 +22,7 @@ module.exports = function(app, cb) {
     }
   };
 
-  return Person.findOne(filter)
+  Person.findOne(filter)
   .then(function(person){
     if (person) {
       return Organization.findOne({
@@ -53,13 +53,13 @@ module.exports = function(app, cb) {
       }
     };
 
-    return Person.signup(fakeReq, fakeReq.email, fakeReq.password, fakeReq.organizationName, cb);
-  })
-  .then(function(received){
-    cb();
-  })
-  .catch(function(err){
-    cb(err);
+    return Person.signup(fakeReq, fakeReq.email, fakeReq.password, fakeReq.organizationName, function(alwaysNull, data){
+      //alwaysNull due to our conventions surrounding usage of the loopback-provided callback
+      if (data.status == 'failure') {
+        console.log(data.message);
+      }
+      return cb();
+    });
   })
 
 };
