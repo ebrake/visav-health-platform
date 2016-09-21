@@ -20,8 +20,6 @@ import HealthEventNotificationEmail from './components/email-templates/HealthEve
 import PasswordResetEmail from './components/email-templates/PasswordResetEmail'
 import InvitedUserEmail from './components/email-templates/InvitedUserEmail';
 
-import Roles from './components/utils/Roles';
-
 
 var cacheStores = () => {
   let snapshot = alt.takeSnapshot();
@@ -30,17 +28,6 @@ var cacheStores = () => {
 
 //onLeave handles redirects, unload eventListener handles refreshes
 window.addEventListener('unload', cacheStores);
-
-var getNextStateRoles = (nextState) => {
-  console.dir(nextState);
-
-  let nextRoute = nextState.routes[0];
-  if (!nextRoute || !nextRoute.isAllowed) {
-    return Roles.getRoles();
-  } else {
-    return nextRoute.isAllowed;
-  }
-}
 
 var authCheck = (nextState, replace) => {
   let snapshot = localStorage.getItem('snapshot');
@@ -54,15 +41,10 @@ var authCheck = (nextState, replace) => {
   else{
     AccountActions.getPeople()
     .then(function(response){
-      console.log('RESPONSE:');
+      console.log('RESPONSE: ');
       console.dir(response);
     });
   }
-
-  let role = state.user.role ? state.user.role.name : undefined;
-  let rolesForNextState = getNextStateRoles(nextState);
-  console.log('Allowed roles for next state:')
-  console.dir(rolesForNextState);
 }
 
 var logout = (nextState, replace) => {

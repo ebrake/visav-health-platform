@@ -67,4 +67,6 @@ class InviteUsers extends React.Component {
   }
 }
 
+InviteUsers.isAllowed = ['owner', 'admin'];
+
 export default AuthenticatedPage(InviteUsers);

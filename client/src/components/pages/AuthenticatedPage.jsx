@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import AccountStore from '../../alt/stores/AccountStore';
 import MainHeader from '../headers/MainHeader';
 import Roles from '../utils/Roles';
 
-function determineAllowedRoles(arrayOfAllowedRoles) {
-  if (!arrayOfAllowedRoles || arrayOfAllowedRoles.length == 0) 
-    return Roles.getRoles();
+function userIsAuthenticatedForComponent(user, ComposedComponent) {
+  if (!ComposedComponent) {
+    return true;
+  }
 
-  return arrayOfAllowedRoles;
+  if (!user || !user.role || !user.role.name) {
+    return false;
+  }
+
+  let roles = Roles.getRoles();
+  if (ComposedComponent.isAllowed)
+    roles = ComposedComponent.isAllowed;
+
+  return roles.indexOf(user.role.name) >= 0;
 }
 
 export default (ComposedComponent) => {
@@ -15,9 +25,16 @@ export default (ComposedComponent) => {
     constructor(props) {
       super(props);
 
-      this.state = {
-        user: AccountStore.getState() ? AccountStore.getState().user : undefined
+      let accountState = AccountStore.getState();
+      let user = accountState.user;
+
+      if (!userIsAuthenticatedForComponent(user, ComposedComponent)) {
+        this.props.router.goBack();
       }
+
+      this.state = {
+        user: user
+      };
 
       this.accountChanged = this.accountChanged.bind(this);
     }
@@ -48,7 +65,13 @@ export default (ComposedComponent) => {
     }
   }
 
-  AuthenticatedPage.isAllowed = determineAllowedRoles(ComposedComponent.isAllowed);
+  AuthenticatedPage.propTypes = {
+    router: React.PropTypes.shape({
+      push: React.PropTypes.func.isRequired
+    }).isRequired
+  }
+
+  AuthenticatedPage = withRouter(AuthenticatedPage);
 
   return AuthenticatedPage;
 };

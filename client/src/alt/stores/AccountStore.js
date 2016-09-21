@@ -26,7 +26,6 @@ class AccountStore {
     } else {
       this.user = undefined;
     }
-    console.log(this);
   }
 
   handleCreateUser(response) {
@@ -45,6 +44,7 @@ class AccountStore {
     this.doctors = [];
     this.caregivers = [];
     this.patients = [];
+    this.admins = [];
     this.people = [];
 
     if (response.data.people) {
@@ -61,6 +61,9 @@ class AccountStore {
         }
         else if ( person.role.name == 'patient') {
           this.patients.push(person);
+        }
+        else if ( person.role.name == 'admin') {
+          this.admins.push(person);
         }
       }
     }
