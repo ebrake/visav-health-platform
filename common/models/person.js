@@ -8,7 +8,7 @@ var path = require('path');
 
 module.exports = function(Person) {
 
-  Person.signup = function(req, email, password, organizationName, cb) {
+  Person.signup = function(req, email, password, firstName, lastName, organizationName, cb) {
     var err;
 
     if(!req.body.email){
@@ -17,14 +17,24 @@ module.exports = function(Person) {
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-
     if(!req.body.password){
       err = new Error('Valid password required on req.body.password');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_PASSWORD';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-
+    if(!req.body.firstName){
+      err = new Error('Valid first name required on req.body.firstName');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(!req.body.lastName){
+      err = new Error('Valid last name required on req.body.lastName');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_LASTNAME';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
     if(!req.body.organizationName){
       err = new Error('Valid organization required on req.body.organizationName');
       err.statusCode = 417;
@@ -36,7 +46,9 @@ module.exports = function(Person) {
     var orgFilter = { name: req.body.organizationName };
     var personData = {
       email: req.body.email.toLowerCase(),
-      password: req.body.password
+      password: req.body.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName
     };
 
     findPersonAndOrganization(req, req.body.email, orgFilter)
@@ -76,6 +88,8 @@ module.exports = function(Person) {
         { arg: 'req', type: 'object', http: { source: 'req' } },
         { arg: 'email', type: 'string' },
         { arg: 'password', type: 'string' },
+        { arg: 'firstName', type: 'string' },
+        { arg: 'lastName', type: 'string' },
         { arg: 'organizationName', type: 'string' }
       ],
       http: { path: '/signup', verb: 'post' },
@@ -156,7 +170,7 @@ module.exports = function(Person) {
     }
   );
 
-  Person.invite = function(req, email, role, cb) {
+  Person.invite = function(req, email, firstName, lastName, role, cb) {
     var err;
     var readableUser = req.user.toJSON();
     if(!req.body.email){
@@ -169,6 +183,18 @@ module.exports = function(Person) {
       err = new Error('Valid Role required on req.body.role');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(!req.body.firstName){
+      err = new Error('Valid first name required on req.body.firstName');
+      err.statusCode = 417;
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(!req.body.lastName){
+      err = new Error('Valid last name required on req.body.lastName');
+      err.statusCode = 417;
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_LASTNAME';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
     if(!req.user.organization){
@@ -189,7 +215,9 @@ module.exports = function(Person) {
     var orgFilter = { id: req.user.toJSON().organization.id };
     var personData = {
       email: email,
-      password: generatePassword(10)
+      password: generatePassword(10),
+      firstName: firstName,
+      lastName: lastName
     };
 
     findPersonAndOrganization(req, email, orgFilter)
@@ -253,6 +281,8 @@ module.exports = function(Person) {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } },
         { arg: 'email', type: 'string' },
+        { arg: 'firstName', type: 'string' },
+        { arg: 'lastName', type: 'string' },
         { arg: 'role', type: 'string' }
       ],
       http: { path: '/invite', verb: 'post' },

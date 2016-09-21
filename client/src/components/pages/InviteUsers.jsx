@@ -16,6 +16,8 @@ class InviteUsers extends React.Component {
 
     this.state = {
       email: '',
+      firstName: '',
+      lastName: '',
       role: undefined,
       //format assignable roles for Dropdown
       roles: Roles.getAssignableRoles(user).map(function(role){
@@ -39,7 +41,9 @@ class InviteUsers extends React.Component {
   inviteUser() {
     AccountActions.inviteUser({
       email: this.state.email,
-      role: this.state.role
+      role: this.state.role,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName
     })
     .then(function(response){
       console.log("Potentially invited user:");
@@ -60,6 +64,8 @@ class InviteUsers extends React.Component {
           <h1 className="title">Invite a new User</h1>
           <span className="description">Use the menu below to invite a new user to your organization.</span>
           <VisavInput label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
+          <VisavInput label="First Name" value={this.state.firstName} valueDidChange={this.handleChange('firstName')} />
+          <VisavInput label="Last Name" value={this.state.lastName} valueDidChange={this.handleChange('lastName')} />
           <div className="dropdown-container">
             <Dropdown options={this.state.roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
           </div>

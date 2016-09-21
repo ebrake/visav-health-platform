@@ -49,11 +49,13 @@ module.exports = function(app, cb) {
       body: {
         email: testUser.email,
         password: testUser.password, 
+        firstName: 'Demo',
+        lastName: 'Owner',
         organizationName: testUser.organization
       }
     };
 
-    return Person.signup(fakeReq, fakeReq.email, fakeReq.password, fakeReq.organizationName, function(alwaysNull, data){
+    return Person.signup(fakeReq, fakeReq.email, fakeReq.password, fakeReq.firstName, fakeReq.lastName, fakeReq.organizationName, function(alwaysNull, data){
       //alwaysNull due to our conventions surrounding usage of the loopback-provided callback
       if (data.status == 'failure') {
         console.log(data.message);

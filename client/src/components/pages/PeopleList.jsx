@@ -7,24 +7,22 @@ import AuthenticatedPage from './AuthenticatedPage';
 class PeopleList extends React.Component {
   
   constructor(props) {
-
     super(props);
-    let accountState = AccountStore.getState();
 
-    if (accountState.user.role.name == 'doctor'){
+    let user = AccountStore.getUser();
+
+    if (user.role.name == 'doctor'){
       this.allowedPeopleLists = ['patients', 'caregivers'];
     }
-    else if (accountState.user.role.name == 'patient'){
+    else if (user.role.name == 'patient'){
       this.allowedPeopleLists = ['doctors', 'caregivers'];
     }
-    else if (accountState.user.role.name == 'caregiver'){
+    else if (user.role.name == 'caregiver'){
       this.allowedPeopleLists = ['doctors', 'patients'];
     }
-    else if (accountState.user.role.name == 'owner' || accountState.user.role == 'admin'){
+    else if (user.role.name == 'owner' || user.role.name == 'admin'){
       this.allowedPeopleLists = ['doctors', 'patients', 'caregivers', 'admins'];
     }
-
-
   }
 
   render() {

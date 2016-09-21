@@ -106,7 +106,9 @@ class AccountActions {
         body: JSON.stringify({ 
           organizationName: data.organizationName, 
           email: data.email, 
-          password: data.password 
+          password: data.password,
+          firstName: data.firstName,
+          lastName: data.lastName
         })
       })
       .then(response => response.json())
@@ -127,7 +129,12 @@ class AccountActions {
       return fetch(process.env.API_ROOT + 'api/people/invite', {
         method: 'POST', 
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ email: data.email, role: data.role.value })
+        body: JSON.stringify({ 
+          email: data.email, 
+          firstName: data.firstName,
+          lastName: data.lastName,
+          role: data.role.value 
+        })
       })
       .then(response => response.json())
       .then(response => {
