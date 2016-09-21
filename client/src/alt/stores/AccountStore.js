@@ -56,23 +56,22 @@ class AccountStore {
 
     if (response.data.people) {
       var people = response.data.people;
-      for( peopleIndex in people ){
-        var person = people[peopleIndex];
+      people.forEach(function(person){
         this.people.push(person);
         
-        if ( person.role.name == 'doctor') {
+        if (person.role.name === 'doctor') {
           this.doctors.push(person);
         }
-        else if ( person.role.name == 'caregiver') {
+        else if (person.role.name === 'caregiver') {
           this.caregivers.push(person);
         }
-        else if ( person.role.name == 'patient') {
+        else if (person.role.name === 'patient') {
           this.patients.push(person);
         }
-        else if ( person.role.name == 'admin') {
+        else if (person.role.name === 'admin') {
           this.admins.push(person);
         }
-      }
+      }.bind(this))
     }
 
     console.log('got related people:');
