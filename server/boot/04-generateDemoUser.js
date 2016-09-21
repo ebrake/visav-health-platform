@@ -42,7 +42,7 @@ module.exports = function(app, cb) {
   })
   .then(function(result){
     if (result == 'done')
-      return;
+      return cb();
 
     var fakeReq = {
       app: app,

@@ -1,4 +1,5 @@
 import alt from '../alt'
+import responseUtil from '../../components/utils/responseUtil';
 
 class AccountActions {
   loginUser(data){
@@ -17,7 +18,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
+        var craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
@@ -46,7 +47,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
+        var craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
@@ -114,7 +115,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
+        var craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
@@ -134,7 +135,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
+        var craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })

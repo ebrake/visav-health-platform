@@ -157,22 +157,29 @@ module.exports = function(Person) {
 
   Person.invite = function(req, email, role, cb) {
     var err;
+    var readableUser = req.user.toJSON();
     if(!req.body.email){
       err = new Error('Valid email required on req.body.email');
       err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
     if(!req.body.role){
       err = new Error('Valid Role required on req.body.role');
       err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_ROLE';
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_ROLE';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
     if(!req.user.organization){
       err = new Error('No organization associated with user. Valid organization required on req.user.organization.');
       err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_NO_ORGANIZATION';
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_NO_ORGANIZATION';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(readableUser.role.name == 'owner' && role != 'admin') {
+      err = new Error('Owners are not allowed to invite non-admin staff.');
+      err.statusCode = 422;
+      err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_UNASSIGNABLE_ROLE';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
 
