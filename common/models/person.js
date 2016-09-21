@@ -385,7 +385,7 @@ module.exports = function(Person) {
     var err;
     var user = req.user.toJSON();
     var role = user.role.name;
-    if (role == 'owner' ){
+    if (role == 'owner' || role == 'admin'){
       Person.find({where: { organization : user.organization.id } }, function(err, people){ 
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
@@ -405,34 +405,8 @@ module.exports = function(Person) {
             people.push(caregiver);
           }
         }
-
-        for( adminIndex in self.admins ){
-          var admin = self.admins[adminIndex];
-          people.push(admin);
-        } 
-
         return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
 
-      });
-    }
-    else if (role == 'admin'){
-      Person.findOne({where: { id : user.id }, include: [ { doctors: { patients: 'caregivers' } } ]}, function(err, self){ 
-        if (err) return cb(null, { status: 'failure', message: err.message, error: err });
-
-        var people = [];
-        for( doctorIndex in self.doctors ){
-          var doctor = self.doctors[doctorIndex];
-          people.push(doctor);
-          for( patientIndex in doctor.patients ){
-            var patient = doctor.patients[patientIndex];
-            people.push(patient);
-            for( caregiverIndex in patient.caregivers ){
-              var caregiver = patient.caregivers[caregiverIndex];
-              people.push(caregiver)
-            }
-          }
-        }
-        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
     else if (role == 'patient'){
