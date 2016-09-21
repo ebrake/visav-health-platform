@@ -530,6 +530,8 @@ function assignRole(req, user, roleName) {
   } 
 
   var Role = req.app.models.Role;
+  var RoleMapping = req.app.models.RoleMapping;
+
   return Role.findOne({
     where: { name: roleName }
   })
@@ -538,7 +540,14 @@ function assignRole(req, user, roleName) {
       throw new Error("No role with this name exists!");
     } else {
       user.role = role.id;
-      return user.save();
+
+      return role.principals.create({
+        principalType: RoleMapping.USER,
+        principalId: user.id
+      })
+      .then(function(principal){
+        return user.save();
+      })
     }
   })
   .then(function(user){

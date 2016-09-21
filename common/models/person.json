@@ -99,7 +99,21 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
+      "property": "updateUser"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "owner",
+      "permission": "ALLOW",
       "property": "invite"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "invite",
     },
     {
       "accessType": "EXECUTE",
@@ -107,15 +121,7 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "getRelatedPeople"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "updateUser"
     }
-    
   ],
   "methods": {}
 }
