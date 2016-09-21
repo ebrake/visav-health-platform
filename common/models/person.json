@@ -113,7 +113,7 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW",
-      "property": "invite",
+      "property": "invite"
     },
     {
       "accessType": "EXECUTE",
