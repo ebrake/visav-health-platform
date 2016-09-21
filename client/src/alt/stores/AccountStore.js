@@ -11,8 +11,13 @@ class AccountStore {
       handleCreateUser: AccountActions.CREATE_USER,
       handleUpdateUser: AccountActions.UPDATE_USER
     });
+
+    this.exportPublicMethods({
+      getUser: this.getUser
+    })
   }
 
+  /* ACTION HANDLERS */
   handleLogin(response) {
     if (response && response.data && response.data.status === 'success') {
       this.user = response.data.user;
@@ -34,6 +39,11 @@ class AccountStore {
 
   handleLogout() {
     this.user = undefined;
+  }
+
+  /* PUBLIC METHODS */
+  getUser() {
+    return this.state.user;
   }
 }
 
