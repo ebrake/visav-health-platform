@@ -1,55 +1,51 @@
 import React, { Component } from 'react';
-import VisavInput from '../inputs/VisavInput';
-import ImageButton from '../buttons/ImageButton';
-import AccountActions from '../../alt/actions/AccountActions';
+import PeopleListItem from '../list-items/PeopleListItem';
+import AccountStore from '../../alt/stores/AccountStore'
 
-class PasswordResetPanel extends React.Component {
+class PeopleListPanel extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email : '',
     };
 
-    this.emailDidChange = this.emailDidChange.bind(this);
-    this.attemptPasswordReset = this.attemptPasswordReset.bind(this);
+    let accountState = AccountStore.getState();
 
-  }
+    console.log(this.props.displayedRole);
 
-  componentDidMount(){
-  }
-
-  componentWillUnmount(){
-  }
-
-  componentDidUpdate(){
-
-  }
-
-  emailDidChange(event){
-    this.setState({ email: event.target.value });
-  }
-  passwordDidChange(event){
-    this.setState({ password: event.target.value });
-  }
-
-  attemptPasswordReset(){
-    AccountActions.requestPasswordReset({ email: this.state.email })
-    .then(function(response){
-      if (response && response.data)
-        console.log(response.data.message);
-    });
+    if (this.props.displayedRole == 'doctors') {
+      this.displayedPeople = accountState.doctors;
+    }
+    else if (this.props.displayedRole == 'patients') {
+      this.displayedPeople = accountState.patients;
+    }
+    else if (this.props.displayedRole == 'caregivers') {
+      this.displayedPeople = accountState.caregivers;
+    }
+    else if (this.props.displayedRole == 'admins') {
+      this.displayedPeople = accountState.admins;
+    }
+    if (!this.displayedPeople) {
+      this.displayedPeople = [];
+    }
   }
 
   render() {
     return (
-      <div className="PasswordResetPanel panel">
-        <h1 className="title">{ 'Password Reset' }</h1>
-        <VisavInput label="Email" valueDidChange={ this.emailDidChange } />
-        <ImageButton text='Send' onClick={ this.attemptPasswordReset.bind(this) } />
+      <div className="PeopleListPanel panel">
+        <h1 className="title">{ this.props.displayedRole }</h1>
+        {
+          this.displayedPeople.map(function(person, i){
+            return <PeopleListItem person={person} key={i}/>
+          })
+        }
       </div>
     );
   }
 };
 
-export default PasswordResetPanel;
+PeopleListPanel.propTypes = {
+  displayedRole: React.PropTypes.string.isRequired
+};
+
+export default PeopleListPanel;

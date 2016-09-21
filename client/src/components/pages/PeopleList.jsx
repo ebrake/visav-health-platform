@@ -1,32 +1,29 @@
 import React, { Component } from 'react';
-import RepsChartPanel from '../panels/RepsChartPanel';
-import PatientInfoPanel from '../panels/PatientInfoPanel';
+import PeopleListPanel from '../panels/PeopleListPanel';
 import AccountStore from '../../alt/stores/AccountStore'
-import TelesessionPanel from '../panels/TelesessionPanel';
 
-import ExercisesChartPanel from '../panels/ExercisesChartPanel';
-import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
-import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
 
 class PeopleList extends React.Component {
   
   constructor(props) {
+
     super(props);
     let accountState = AccountStore.getState();
-    this.userRole = accountState.role;
-    if(accountState.role == 'doctor'){
-      this.allowedPeopleLists = ['doctors', 'patients', 'caregivers', 'owners', 'admins'];
+
+    if (accountState.user.role.name == 'doctor'){
+      this.allowedPeopleLists = ['patients', 'caregivers'];
     }
-    else if (accountState.role == 'patient'){
-      this.allowedPeopleLists = ['admins', 'doctors', 'caregivers'];
+    else if (accountState.user.role.name == 'patient'){
+      this.allowedPeopleLists = ['doctors', 'caregivers'];
     }
-    else if (accountState.roll == 'owner'){
-      this.allowedPeopleLists = ['doctors', 'patients', 'caregivers', 'owners', 'admins'];
+    else if (accountState.user.role.name == 'caregiver'){
+      this.allowedPeopleLists = ['doctors', 'patients'];
     }
-    else if (accountState.roll == 'admin'){
-      this.allowedPeopleLists = ['doctors', 'patients', 'caregivers', 'owners', 'admins'];
+    else if (accountState.user.role.name == 'owner' || accountState.user.role == 'admin'){
+      this.allowedPeopleLists = ['doctors', 'patients', 'caregivers', 'admins'];
     }
+
 
   }
 
@@ -34,8 +31,8 @@ class PeopleList extends React.Component {
     return (
       <div className="PeopleList content-container row-gt-sm">
         {
-          return this.allowedPeopleLists.map(function(role){
-            return <PeopleListPanel userRole={this.userRole} displayedRole={role} />
+          this.allowedPeopleLists.map(function(role, i){
+            return <PeopleListPanel displayedRole={role}  key={i}/>
           })
         }
       </div>
