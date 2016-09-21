@@ -20,7 +20,6 @@ class AccountStore {
     } else {
       this.user = undefined;
     }
-    console.log(this);
   }
 
   handleCreateUser(response) {
