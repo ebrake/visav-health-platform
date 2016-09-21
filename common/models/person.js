@@ -32,6 +32,7 @@ module.exports = function(Person) {
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
 
+
     var orgFilter = { name: req.body.organizationName };
     var personData = {
       email: req.body.email.toLowerCase(),
@@ -382,16 +383,17 @@ module.exports = function(Person) {
 
   Person.getRelatedPeople = function (req, cb) {
     var err;
-    var role = req.user.toJSON().role.name;
+    var user = req.user.toJSON();
+    var role = user.role.name;
     if (role == 'owner' ){
-      Person.find({where: { organization : req.user.organization } }, function(err, people){ 
+      Person.find({where: { organization : user.organization.id } }, function(err, people){ 
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
-        return cb(null, { status: 'success', message: 'Related people successfull retrieved', people: people });
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
     else if (role == 'doctor'){
-      Person.findOne({where: { id : req.user.id }, include: [{ patients: 'caregivers' }]}, function(err, self){
+      Person.findOne({where: { id : user.id }, include: [{ patients: 'caregivers' }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
         var people = [];
@@ -409,12 +411,12 @@ module.exports = function(Person) {
           people.push(admin);
         } 
 
-        return cb(null, { status: 'success', message: 'Related people successfull retrieved', people: people });
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
 
       });
     }
     else if (role == 'admin'){
-      Person.findOne({where: { id : req.user.id }, include: [ { doctors: { patients: 'caregivers' } } ]}, function(err, self){ 
+      Person.findOne({where: { id : user.id }, include: [ { doctors: { patients: 'caregivers' } } ]}, function(err, self){ 
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
         var people = [];
@@ -430,11 +432,11 @@ module.exports = function(Person) {
             }
           }
         }
-        return cb(null, { status: 'success', message: 'Related people successfull retrieved', people: people });
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
     else if (role == 'patient'){
-      Person.findOne({where: { id : req.user.id }, include: [ 'doctors', 'caregivers' ]}, function(err, self){
+      Person.findOne({where: { id : user.id }, include: [ 'doctors', 'caregivers' ]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err }); 
 
         var people = [];
@@ -447,11 +449,11 @@ module.exports = function(Person) {
           var caregiver = self.caregivers[caregiverIndex];
           people.push(caregiver);
         }
-        return cb(null, { status: 'success', message: 'Related people successfull retrieved', people: people });
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
     else if (role == 'caregiver'){
-      Person.findOne({where: { id : req.user.id }, include: [{ caregivees: ['doctors', 'caregivers'] }]}, function(err, self){
+      Person.findOne({where: { id : user.id }, include: [{ caregivees: ['doctors', 'caregivers'] }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
         var people = [];
@@ -506,7 +508,6 @@ function findPeople(req, filterObj) {
     where: filterObj
   })
 
-  
 }
 
 function findOrganization(req, whereObject) {
