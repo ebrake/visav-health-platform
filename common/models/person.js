@@ -212,7 +212,7 @@ module.exports = function(Person) {
 
     var email = req.body.email.toLowerCase();
     var roleToAssign = req.body.role;
-    var orgFilter = { id: req.user.toJSON().organization.id };
+    var orgFilter = { id: readableUser.organization.id };
     var personData = {
       email: email,
       password: generatePassword(10),
