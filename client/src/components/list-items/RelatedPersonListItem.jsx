@@ -22,7 +22,7 @@ class RelatedPersonListItem extends React.Component {
     return (
       <li className="RelatedPersonListItem" >
         <span onClick={ this.handleClick }>{ this.props.person.firstName + ' ' + this.props.person.lastName }</span>
-        <ImageButton className='remove-button' onClick={ this.handleClickRemove } text='Remove' />
+        <ImageButton className='remove-button destructive' onClick={ this.handleClickRemove } text='Remove' />
       </li>
     );
   }

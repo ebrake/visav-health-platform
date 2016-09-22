@@ -46,11 +46,13 @@ class AddNewRelatedPersonListItem extends React.Component {
   }
 
   render() {
-    var addButton = <ImageButton text='Add' onClick={ this.addNewRelation } />
+    var addButton = this.state.foundPerson ?
+    <ImageButton text='Add' onClick={ this.addNewRelation } />:
+    <ImageButton className='disabled' text='Not Found' />
     return (
       <li className="AddNewRelatedPersonListItem" >
         <VisavInput label={'Add new ' + this.props.relation + ' relation'} valueDidChange={ this.inputValueChanged } />
-        <span className="found-indicator">{ this.state.foundPerson ? addButton : 'Not Found' }</span>
+        {addButton}
       </li>
     );
   }
