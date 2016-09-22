@@ -38,11 +38,13 @@ class PeopleListPanel extends React.Component {
     return (
       <div className="PeopleListPanel panel">
         <h1 className="title">{ this.props.displayedRole }</h1>
-        {
-          this.displayedPeople.map(function(person, i){
-            return <PeopleListItem person={person} key={i} onClick={ this.didSelectPerson.bind(this) }/>
-          }.bind(this))
-        }
+        <ul className="people-list">
+          {
+            this.displayedPeople.map(function(person, i){
+              return <PeopleListItem person={person} key={i} onClick={ this.didSelectPerson.bind(this) }/>
+            }.bind(this))
+          }
+        </ul>
       </div>
     );
   }

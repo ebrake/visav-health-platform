@@ -6,7 +6,7 @@ import AccountStore from '../../alt/stores/AccountStore'
 import FullscreenAlert from '../misc/FullscreenAlert';
 import AuthenticatedPage from './AuthenticatedPage';
 
-class PeopleList extends React.Component {
+class People extends React.Component {
   
   constructor(props) {
 
@@ -47,7 +47,7 @@ class PeopleList extends React.Component {
   }
   render() {
     return (
-      <div className="PeopleList content-container row-gt-sm">
+      <div className="People content-container row-gt-sm">
         <FullscreenAlert active={ this.state.showPersonPopup } onClickOutside={ this.closePersonPopup.bind(this) }  content={<PersonPanel person={ this.state.displayedPerson } />} />
 
         {
@@ -60,4 +60,4 @@ class PeopleList extends React.Component {
   }
 }
 
-export default AuthenticatedPage(PeopleList);
+export default AuthenticatedPage(People);
