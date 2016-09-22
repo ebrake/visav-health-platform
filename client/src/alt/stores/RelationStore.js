@@ -11,6 +11,7 @@ class RelationStore {
 
     this.bindListeners({
       handleGetViewablePeople: RelationActions.GET_VIEWABLE_PEOPLE,
+      handleGetRelatedPeople: RelationActions.GET_RELATED_PEOPLE,
       handleMakeDoctorPatientRelationship: RelationActions.MAKE_DOCTOR_PATIENT_RELATIONSHIP,
       handleMakeCaregiverPatientRelationship: RelationActions.MAKE_CAREGIVER_PATIENT_RELATIONSHIP
     });
@@ -43,6 +44,10 @@ class RelationStore {
         }
       }.bind(this))
     }
+  }
+
+  handleGetRelatedPeople(response) {
+
   }
 
   handleMakeDoctorPatientRelationship(response) {

@@ -3,31 +3,53 @@ import RelatedPersonListItem from '../list-items/RelatedPersonListItem';
 import AddNewRelatedPersonListItem from '../list-items/AddNewRelatedPersonListItem';
 
 import RelationActions from '../../alt/actions/RelationActions';
-import AccountStore from '../../alt/stores/AccountStore'
+import RelationStore from '../../alt/stores/RelationStore'
 
 class PersonPanel extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      patients: [],
+      doctors: [],
+      caregivers: []
+    };
 
     this.listForRelation = this.listForRelation.bind(this);
     this.didClickAddNewRelation = this.didClickAddNewRelation.bind(this);
   }
 
+  componentDidMount() {
+    RelationActions.getRelatedPeople(this.props.person)
+    .then(function(response){
+      let newState = {};
+      if (response.data.patients)
+        newState.patients = response.data.patients;
+      if (response.data.doctors)
+        newState.doctors = response.data.doctors;
+      if (response.data.caregivers)
+        newState.caregivers = response.data.caregivers;
+
+      this.setState(newState);
+    }.bind(this))
+    .catch(err => {
+      console.log('Error getting related people:');
+      console.dir(err);
+    })
+  }
+
   listForRelation(relation){
     var list;
     var people;
-    let accountState = AccountStore.getState();
 
     if (relation === 'patient') {
-      people = accountState.patients;
+      people = this.state.patients;
     }
     else if (relation === 'doctor') {
-      people = accountState.doctors;
+      people = this.state.doctors;
     }
     else if (relation === 'caregiver') {
-      people = accountState.caregivers;
+      people = this.state.caregivers;
     }
 
     list =
@@ -48,17 +70,45 @@ class PersonPanel extends React.Component {
 
   didClickAddNewRelation(event, relation, person) {
     if (relation === 'doctor') {
-      RelationActions.makeDoctorPatientRelationship(person, this.props.person);
+      RelationActions.makeDoctorPatientRelationship(person, this.props.person)
+      .then(function(response){
+        if (response.data.status === 'success') {
+          this.setState({
+            doctors: this.state.doctors.concat([person])
+          })
+        }
+      }.bind(this));
     }
     else if (relation === 'caregiver') {
-      RelationActions.makeCaregiverPatientRelationship(person, this.props.person);
+      RelationActions.makeCaregiverPatientRelationship(person, this.props.person)
+      .then(function(response){
+        if (response.data.status === 'success') {
+          this.setState({
+            caregivers: this.state.caregivers.concat([person])
+          })
+        }
+      }.bind(this));
     } 
     else if (relation === 'patient') {
       if (this.props.person.role && this.props.person.role.name == 'doctor') {
-        RelationActions.makeDoctorPatientRelationship(this.props.person, person);
+        RelationActions.makeDoctorPatientRelationship(this.props.person, person)
+        .then(function(response){
+          if (response.data.status === 'success') {
+            this.setState({
+              patients: this.state.patients.concat([person])
+            })
+          }
+        }.bind(this));
       }
       if (this.props.person.role && this.props.person.role.name == 'caregiver') {
-        RelationActions.makeCaregiverPatientRelationship(this.props.person, person);
+        RelationActions.makeCaregiverPatientRelationship(this.props.person, person)
+        .then(function(respopatientsnse){
+          if (response.data.status === 'success') {
+            this.setState({
+              patients: this.state.patients.concat([person])
+            })
+          }
+        }.bind(this));
       }
     }
   }
