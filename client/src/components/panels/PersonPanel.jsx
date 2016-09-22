@@ -49,8 +49,8 @@ class PersonPanel extends React.Component {
     return list;
   }
 
-  addNewRelationInputValueChanged(event, label){
-    console.log(label);
+  addNewRelationInputValueChanged(event, relation){
+    console.log(relation);
     console.log(event.target.value);
   }
 

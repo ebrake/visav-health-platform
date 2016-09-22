@@ -10,6 +10,7 @@ class AddNewRelatedPersonListItem extends React.Component {
       foundPerson: null
     };
     this.inputValueChanged = this.inputValueChanged.bind(this);
+    this.addNewRelation = this.addNewRelation.bind(this);
 
   }  
 
@@ -39,11 +40,17 @@ class AddNewRelatedPersonListItem extends React.Component {
     this.props.valueDidChange(event, this.props.relation);
   }
 
+  addNewRelation(event){
+    var person = this.state.foundPerson
+    console.log('Attempting to add ' + person.firstName + ' ' + person.lastName);
+  }
+
   render() {
+    var addButton = <ImageButton text='Add' onClick={ this.addNewRelation } />
     return (
       <li className="AddNewRelatedPersonListItem" >
         <VisavInput label={'Add new ' + this.props.relation + ' relation'} valueDidChange={ this.inputValueChanged } />
-        <span className="found-indicator">{ this.state.foundPerson ? 'Found' : 'Not Found' }</span>
+        <span className="found-indicator">{ this.state.foundPerson ? addButton : 'Not Found' }</span>
       </li>
     );
   }
