@@ -7,6 +7,7 @@
   height: 50px;
   background: $button-color;
   color: $light-text-color;
+  cursor: pointer;
   border: $button-border-color;
   &:focus {
     outline: 0 solid $button-hover-color;

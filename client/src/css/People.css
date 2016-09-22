@@ -32,6 +32,10 @@
   justify-content: space-between;
 }
 
+.PeopleListItem {
+  cursor: pointer;
+}
+
 .RelatedPersonListItem {
   .remove-button {
     margin-left: 10px;
