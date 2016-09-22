@@ -121,6 +121,13 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "getRelatedPeople"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "makeDoctorPatientRelation"
     }
   ],
   "methods": {}

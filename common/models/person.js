@@ -504,6 +504,65 @@ module.exports = function(Person) {
       description: "Returns all related people for the requesting user."
     }
   );
+
+  Person.makeDoctorPatientRelation = function(req, cb) {
+    var err;
+    var readableUser = req.user.toJSON();
+    if (!readableUser.role || readableUser.role.name != 'admin') {
+      err = new Error('Non-admin staff may not create doctor<->patient relationships.');
+      err.statusCode = 422;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.doctor) {
+      err = new Error('No doctor provided!');
+      err.statusCode = 417;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_DOCTOR';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient) {
+      err = new Error('No patient provided!');
+      err.statusCode = 417;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_PATIENT';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.doctor.role || req.body.doctor.role.name != 'doctor') {
+      err = new Error('Invalid role for doctor!');
+      err.statusCode = 422;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_DOCTOR_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient.role || req.body.patient.role.name != 'patient') {
+      err = new Error('Invalid role for patient!');
+      err.statusCode = 422;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_PATIENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    var DoctorPatient = Person.app.models.DoctorPatient;
+
+    DoctorPatient.create({
+      doctorId: req.body.doctor.id,
+      patientId: req.body.patient.id
+    })
+    .then(function(relation){
+      return cb(null, { status: 'success', message: 'Successfully created doctor-patient relation', relation: relation });
+    }, function(err){
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    })
+  }
+
+  Person.remoteMethod(
+    "makeDoctorPatientRelation",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/bindDoctorPatient', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts a doctor and a patient, creates a relationship."
+    }
+  );
 }
 
 function findPerson(req, email) {
@@ -511,14 +570,6 @@ function findPerson(req, email) {
   return Person.findOne({
     where: { email: email }
   })
-}
-
-function findPeople(req, filterObj) {
-  var Person = req.app.models.Person;
-  return Person.findOne({
-    where: filterObj
-  })
-
 }
 
 function findOrganization(req, whereObject) {

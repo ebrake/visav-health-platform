@@ -49,8 +49,12 @@ module.exports = function(app, cb) {
   //signup owner
   Person.signup(fakeReq, fakeReq.body.email, fakeReq.body.password, fakeReq.body.firstName, fakeReq.body.lastName, fakeReq.organizationName, function(alwaysNull, data){
     if (data.status == 'failure') {
-      console.log('Demo organization creation unsuccessful:');
-      console.log(data.message);
+      if (data.message != 'A person with this email has already been created') {
+        console.log('Demo organization creation unexpectedly stopped: ');
+        console.log(data.err);
+      } else {
+        console.log('Demo organization already exists');
+      }
       return cb();
     }
     
