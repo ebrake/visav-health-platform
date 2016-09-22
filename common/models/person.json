@@ -120,7 +120,7 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
-      "property": "getRelatedPeople"
+      "property": "getViewablePeople"
     },
     {
       "accessType": "EXECUTE",

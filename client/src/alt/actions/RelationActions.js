@@ -2,9 +2,9 @@ import alt from '../alt'
 import responseUtil from '../../components/utils/responseUtil';
 
 class RelationActions {
-  getPeople(){
+  getViewablePeople(){
     return function(dispatch) {
-      return fetch(process.env.API_ROOT + 'api/people/getRelatedPeople', {
+      return fetch(process.env.API_ROOT + 'api/people/getViewablePeople', {
         method: 'POST', 
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
         body: JSON.stringify({})

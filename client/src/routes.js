@@ -40,7 +40,7 @@ var authCheck = (nextState, replace) => {
     replace('/login');
   }
   else{
-    RelationActions.getPeople()
+    RelationActions.getViewablePeople()
     .then(function(response){
       console.log('RESPONSE: ');
       console.dir(response);

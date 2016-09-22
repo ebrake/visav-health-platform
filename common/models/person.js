@@ -418,73 +418,158 @@ module.exports = function(Person) {
     }
   );
 
-  Person.getRelatedPeople = function (req, cb) {
+  Person.getViewablePeople = function (req, cb) {
     var err;
     var user = req.user.toJSON();
     var role = user.role.name;
-    if (role == 'owner' || role == 'admin'){
+    if (role == 'owner' || role == 'admin') {
       Person.find({where: { organization : user.organization.id } }, function(err, people){ 
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
         return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
-    else if (role == 'doctor'){
+    else if (role == 'doctor') {
       Person.findOne({where: { id : user.id }, include: [{ patients: 'caregivers' }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
         var people = [];
-        for( patientIndex in self.patients ){
-          var patient = self.patients[patientIndex];
-          people.push(patient);
-          for( caregiverIndex in patient.caregivers ){
-            var caregiver = patient.caregivers[caregiverIndex];
-            people.push(caregiver);
-          }
-        }
-        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
 
+        self.patients.forEach(function(patient){
+          people.push(patient);
+          patient.caregivers.forEach(function(caregiver){
+            people.push(caregiver);
+          })
+        })
+
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
-    else if (role == 'patient'){
+    else if (role == 'patient') {
       Person.findOne({where: { id : user.id }, include: [ 'doctors', 'caregivers' ]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err }); 
 
         var people = [];
-        for( doctorIndex in self.doctors ){
-          var doctor = self.doctors[doctorIndex];
-          people.push(doctor);
-        }
 
-        for( caregiverIndex in self.caregivers ){
-          var caregiver = self.caregivers[caregiverIndex];
+        self.doctors.forEach(function(doctor){
+          people.push(doctor);
+        })
+
+        self.caregivers.forEach(function(caregiver){
           people.push(caregiver);
-        }
+        })
+
         return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
-    else if (role == 'caregiver'){
+    else if (role == 'caregiver') {
       Person.findOne({where: { id : user.id }, include: [{ caregivees: ['doctors', 'caregivers'] }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
         var people = [];
 
-        for( caregiveeIndex in self.caregivees ){
-          var caregivee = self.caregivers[caregiveeIndex];
+        self.caregivees.forEach(function(caregivee){
           people.push(caregivee);
-          for( caregiverIndex in caregivee.caregivers ){
-            var caregiver = caregivee.caregivers[caregiverIndex];
+
+          caregivee.caregivers.forEach(function(caregiver){
             people.push(caregiver);
-          }
-          for( doctorIndex in caregivee.doctors ){
-            var doctor = caregivee.doctors[doctorIndex];
+          })
+
+          caregivee.doctors.forEach(function(doctor){
             people.push(doctor);
-          }
-        }
+          })
+        })
+
         return cb(null, { status: 'success', message: 'Related people successfull retrieved', people: people });
       });
     }
-    else{
+    else {
+      err = new Error('Valid role required on req.user.role');
+      err.statusCode = 422;
+      err.code = 'GET_RELATED_PEOPLE_FAILED_INVALID_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+  }
+
+  Person.remoteMethod(
+    "getViewablePeople",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/getViewablePeople', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Returns all related people for the requesting user."
+    }
+  );
+
+  Person.getRelatedPeople = function (req, cb) {
+    var err;
+    var user = req.user.toJSON();
+    var role = user.role.name;
+    if (role == 'owner' || role == 'admin') {
+      Person.find({where: { organization : user.organization.id } }, function(err, people){ 
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
+      });
+    }
+    else if (role == 'doctor') {
+      Person.findOne({where: { id : user.id }, include: [{ patients: 'caregivers' }]}, function(err, self){
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+
+        var people = [];
+
+        self.patients.forEach(function(patient){
+          people.push(patient);
+          patient.caregivers.forEach(function(caregiver){
+            people.push(caregiver);
+          })
+        })
+
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
+      });
+    }
+    else if (role == 'patient') {
+      Person.findOne({where: { id : user.id }, include: [ 'doctors', 'caregivers' ]}, function(err, self){
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err }); 
+
+        var people = [];
+
+        self.doctors.forEach(function(doctor){
+          people.push(doctor);
+        })
+
+        self.caregivers.forEach(function(caregiver){
+          people.push(caregiver);
+        })
+
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
+      });
+    }
+    else if (role == 'caregiver') {
+      Person.findOne({where: { id : user.id }, include: [{ caregivees: ['doctors', 'caregivers'] }]}, function(err, self){
+        if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+
+        var people = [];
+
+        self.caregivees.forEach(function(caregivee){
+          people.push(caregivee);
+
+          caregivee.caregivers.forEach(function(caregiver){
+            people.push(caregiver);
+          })
+
+          caregivee.doctors.forEach(function(doctor){
+            people.push(doctor);
+          })
+        })
+
+        return cb(null, { status: 'success', message: 'Related people successfull retrieved', people: people });
+      });
+    }
+    else {
       err = new Error('Valid role required on req.user.role');
       err.statusCode = 422;
       err.code = 'GET_RELATED_PEOPLE_FAILED_INVALID_REQUIREMENT_ROLE';

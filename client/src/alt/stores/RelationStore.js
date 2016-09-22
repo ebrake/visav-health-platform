@@ -10,14 +10,14 @@ class RelationStore {
     this.people = [];
 
     this.bindListeners({
-      handleGetPeople: RelationActions.GET_PEOPLE,
+      handleGetViewablePeople: RelationActions.GET_VIEWABLE_PEOPLE,
       handleMakeDoctorPatientRelationship: RelationActions.MAKE_DOCTOR_PATIENT_RELATIONSHIP,
       handleMakeCaregiverPatientRelationship: RelationActions.MAKE_CAREGIVER_PATIENT_RELATIONSHIP
     });
   }
 
   /* ACTION HANDLERS */
-  handleGetPeople(response) {
+  handleGetViewablePeople(response) {
     this.doctors = [];
     this.caregivers = [];
     this.patients = [];
