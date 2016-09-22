@@ -35,8 +35,8 @@ class PersonPanel extends React.Component {
 
     list =
       <div className='relation-list'>
-        <h3>{relation + 's'}</h3>
-        <ul>
+        <h3>{ this.props.person.firstName + '\'s ' +  relation + 's'}</h3>
+        <ul className='people-list'>
           {
             people.map(function(person, i){
               return <RelatedPersonListItem person={person} key={i} onClick={ this.didSelectRelatedPerson.bind(this) }/>
