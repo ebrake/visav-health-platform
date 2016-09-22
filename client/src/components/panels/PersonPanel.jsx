@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RelatedPersonListItem from '../list-items/RelatedPersonListItem';
 import AddNewRelatedPersonListItem from '../list-items/AddNewRelatedPersonListItem';
 
-
+import RelationActions from '../../alt/actions/RelationActions';
 import AccountStore from '../../alt/stores/AccountStore'
 
 class PersonPanel extends React.Component {
@@ -47,7 +47,20 @@ class PersonPanel extends React.Component {
   }
 
   didClickAddNewRelation(event, relation, person) {
-    
+    if (relation === 'doctor') {
+      RelationActions.makeDoctorPatientRelationship(person, this.props.person);
+    }
+    else if (relation === 'caregiver') {
+      RelationActions.makeCaregiverPatientRelationship(person, this.props.person);
+    } 
+    else if (relation === 'patient') {
+      if (this.props.person.role && this.props.person.role.name == 'doctor') {
+        RelationActions.makeDoctorPatientRelationship(this.props.person, person);
+      }
+      if (this.props.person.role && this.props.person.role.name == 'caregiver') {
+        RelationActions.makeCaregiverPatientRelationship(this.props.person, person);
+      }
+    }
   }
 
   addNewRelationInputValueChanged(event, relation){

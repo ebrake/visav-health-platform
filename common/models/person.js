@@ -558,9 +558,68 @@ module.exports = function(Person) {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } },
       ],
-      http: { path: '/bindDoctorPatient', verb: 'post' },
+      http: { path: '/bindDoctorAndPatient', verb: 'post' },
       returns: { arg: 'data', type: 'object' },
       description: "Accepts a doctor and a patient, creates a relationship."
+    }
+  );
+
+  Person.makeCaregiverPatientRelation = function(req, cb) {
+    var err;
+    var readableUser = req.user.toJSON();
+    if (!readableUser.role || readableUser.role.name != 'admin') {
+      err = new Error('Non-admin staff may not create caregiver<->patient relationships.');
+      err.statusCode = 422;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.caregiver) {
+      err = new Error('No caregiver provided!');
+      err.statusCode = 417;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_CAREGIVER';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient) {
+      err = new Error('No patient provided!');
+      err.statusCode = 417;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_PATIENT';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.caregiver.role || req.body.caregiver.role.name != 'caregiver') {
+      err = new Error('Invalid role for caregiver!');
+      err.statusCode = 422;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_CAREGIVER_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient.role || req.body.patient.role.name != 'patient') {
+      err = new Error('Invalid role for patient!');
+      err.statusCode = 422;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_PATIENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    var CaregiverPatient = Person.app.models.DoctorPatient;
+
+    CaregiverPatient.create({
+      caregiverId: req.body.caregiver.id,
+      patientId: req.body.patient.id
+    })
+    .then(function(relation){
+      return cb(null, { status: 'success', message: 'Successfully created caregiver-patient relation', relation: relation });
+    }, function(err){
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    })
+  }
+
+  Person.remoteMethod(
+    "makeCaregiverPatientRelation",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/bindCaregiverAndPatient', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts a caregiver and a patient, creates a relationship."
     }
   );
 }

@@ -10,12 +10,14 @@ class RelationStore {
     this.people = [];
 
     this.bindListeners({
-      handleGetPeople: RelationActions.GET_PEOPLE
+      handleGetPeople: RelationActions.GET_PEOPLE,
+      handleMakeDoctorPatientRelationship: RelationActions.MAKE_DOCTOR_PATIENT_RELATIONSHIP,
+      handleMakeCaregiverPatientRelationship: RelationActions.MAKE_CAREGIVER_PATIENT_RELATIONSHIP
     });
   }
 
   /* ACTION HANDLERS */
-  handleGetPeople(response){
+  handleGetPeople(response) {
     this.doctors = [];
     this.caregivers = [];
     this.patients = [];
@@ -41,6 +43,16 @@ class RelationStore {
         }
       }.bind(this))
     }
+  }
+
+  handleMakeDoctorPatientRelationship(response) {
+    console.log('Made doctor patient relationship:');
+    console.dir(response);
+  }
+
+  handleMakeCaregiverPatientRelationship(response) {
+    console.log('Made doctor patient relationship:');
+    console.dir(response);
   }
 }
 

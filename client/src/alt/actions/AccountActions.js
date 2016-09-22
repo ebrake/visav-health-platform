@@ -18,7 +18,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = responseUtil.craftErrorResponse(err);
+        let craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
@@ -47,7 +47,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = responseUtil.craftErrorResponse(err);
+        let craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
@@ -117,7 +117,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = responseUtil.craftErrorResponse(err);
+        let craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
@@ -142,7 +142,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = responseUtil.craftErrorResponse(err);
+        let craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
