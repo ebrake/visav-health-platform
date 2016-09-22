@@ -36,6 +36,8 @@ import './css/Example.css';
 import './css/InviteUsers.css';
 import './css/SegmentedControl.css'
 import './css/Telesession.css';
+import './css/People.css';
+
 //import main app component
 import App from './components/App.jsx';
 

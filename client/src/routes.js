@@ -11,7 +11,7 @@ import DoctorProfile from './components/pages/doctor/DoctorProfile'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
 import SetPassword from './components/pages/SetPassword.jsx'
-import PeopleList from './components/pages/PeopleList.jsx'
+import People from './components/pages/People.jsx'
 
 import Account from './components/pages/Account.jsx'
 import InviteUsers from './components/pages/InviteUsers.jsx'
@@ -69,7 +69,7 @@ var routes = (
     <Route path="/doctor" component={DoctorProfile} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/account" component={Account} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/invite" component={InviteUsers} onEnter={authCheck} onLeave={cacheStores} />
-    <Route path="/people" component={PeopleList} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/people" component={People} onEnter={authCheck} onLeave={cacheStores} />
 
     <Route path="/liveSocket" component={LiveSocket} onEnter={authCheck} onLeave={cacheStores} />
     { /* EMAIL TEMPLATES */ }

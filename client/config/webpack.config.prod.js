@@ -3,6 +3,8 @@ var autoprefixer = require('autoprefixer');
 var precss = require('precss');
 var postcssEasyImport = require('postcss-easy-import');
 var postcssStripInlineComment = require('postcss-strip-inline-comments');
+var postcssSelectorNot = require('postcss-selector-not');
+
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -105,6 +107,7 @@ module.exports = {
     return [
             postcssEasyImport,
             postcssStripInlineComment,
+            postcssSelectorNot,
             autoprefixer, 
             precss,
             customMedia
