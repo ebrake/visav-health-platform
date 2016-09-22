@@ -67,9 +67,6 @@ class AccountStore {
         }
       }
     }
-
-    console.log('got related people:');
-    console.dir(this.people);
   }
 }
 

@@ -30,14 +30,18 @@ class PeopleListPanel extends React.Component {
     }
   }
 
+  didSelectPerson(event, person){
+    this.props.onSelectPerson(event, person);
+  }
+
   render() {
     return (
       <div className="PeopleListPanel panel">
         <h1 className="title">{ this.props.displayedRole }</h1>
         {
           this.displayedPeople.map(function(person, i){
-            return <PeopleListItem person={person} key={i}/>
-          })
+            return <PeopleListItem person={person} key={i} onClick={ this.didSelectPerson.bind(this) }/>
+          }.bind(this))
         }
       </div>
     );
@@ -45,7 +49,8 @@ class PeopleListPanel extends React.Component {
 };
 
 PeopleListPanel.propTypes = {
-  displayedRole: React.PropTypes.string.isRequired
+  displayedRole: React.PropTypes.string.isRequired,
+  onSelectPerson: React.PropTypes.func
 };
 
 export default PeopleListPanel;

@@ -40,7 +40,7 @@ class VisavInput extends React.Component {
       isActive: (value.length > 0)
     });
 
-    this.props.valueDidChange(event);
+    this.props.valueDidChange(event, this.props.label);
   }
 
   render() {

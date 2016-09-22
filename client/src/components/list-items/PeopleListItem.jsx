@@ -8,8 +8,8 @@ class PeopleListItem extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }  
 
-  handleClick(){
-
+  handleClick(event){
+    this.props.onClick(event, this.props.person);
   }
 
   render() {
@@ -22,7 +22,8 @@ class PeopleListItem extends React.Component {
 };
 
 PeopleListItem.propTypes = {
-  person: React.PropTypes.object.isRequired
+  person: React.PropTypes.object.isRequired,
+  onClick: React.PropTypes.func
 };
 
 export default PeopleListItem;
