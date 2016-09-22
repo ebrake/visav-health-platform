@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PeopleListItem from '../list-items/PeopleListItem';
-import AccountStore from '../../alt/stores/AccountStore'
+import RelationStore from '../../alt/stores/RelationStore'
 
 class PeopleListPanel extends React.Component {
   constructor(props) {
@@ -9,25 +9,29 @@ class PeopleListPanel extends React.Component {
     this.state = {
     };
 
-    let accountState = AccountStore.getState();
+    let relationState = RelationStore.getState();
 
     console.log(this.props.displayedRole);
 
     if (this.props.displayedRole == 'doctors') {
-      this.displayedPeople = accountState.doctors;
+      this.displayedPeople = relationState.doctors;
     }
     else if (this.props.displayedRole == 'patients') {
-      this.displayedPeople = accountState.patients;
+      this.displayedPeople = relationState.patients;
     }
     else if (this.props.displayedRole == 'caregivers') {
-      this.displayedPeople = accountState.caregivers;
+      this.displayedPeople = relationState.caregivers;
     }
     else if (this.props.displayedRole == 'admins') {
-      this.displayedPeople = accountState.admins;
+      this.displayedPeople = relationState.admins;
     }
     if (!this.displayedPeople) {
       this.displayedPeople = [];
     }
+  }
+
+  didSelectPerson(event, person){
+    this.props.onSelectPerson(event, person);
   }
 
   render() {
@@ -36,8 +40,8 @@ class PeopleListPanel extends React.Component {
         <h1 className="title">{ this.props.displayedRole }</h1>
         {
           this.displayedPeople.map(function(person, i){
-            return <PeopleListItem person={person} key={i}/>
-          })
+            return <PeopleListItem person={person} key={i} onClick={ this.didSelectPerson.bind(this) }/>
+          }.bind(this))
         }
       </div>
     );
@@ -45,7 +49,8 @@ class PeopleListPanel extends React.Component {
 };
 
 PeopleListPanel.propTypes = {
-  displayedRole: React.PropTypes.string.isRequired
+  displayedRole: React.PropTypes.string.isRequired,
+  onSelectPerson: React.PropTypes.func
 };
 
 export default PeopleListPanel;

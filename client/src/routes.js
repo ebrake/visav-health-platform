@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, browserHistory } from 'react-router'
 import AccountStore from './alt/stores/AccountStore';
 import AccountActions from './alt/actions/AccountActions';
+import RelationActions from './alt/actions/RelationActions';
 import alt from './alt/alt';
 
 import Telesession from './components/pages/Telesession.jsx'
@@ -39,7 +40,7 @@ var authCheck = (nextState, replace) => {
     replace('/login');
   }
   else{
-    AccountActions.getPeople()
+    RelationActions.getPeople()
     .then(function(response){
       console.log('RESPONSE: ');
       console.dir(response);

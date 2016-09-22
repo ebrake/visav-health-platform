@@ -4,18 +4,12 @@ import AccountActions from '../actions/AccountActions';
 class AccountStore {
   constructor() {
     this.user = undefined;
-    this.role = undefined;
-    this.doctors = [];
-    this.caregivers = [];
-    this.patients = [];
-    this.people = [];
 
     this.bindListeners({
       handleLogin: AccountActions.LOGIN_USER,
       handleLogout: AccountActions.LOGOUT_USER,
       handleCreateUser: AccountActions.CREATE_USER,
-      handleUpdateUser: AccountActions.UPDATE_USER,
-      handleGetPeople: AccountActions.GET_PEOPLE
+      handleUpdateUser: AccountActions.UPDATE_USER
     });
 
     this.exportPublicMethods({
@@ -45,37 +39,6 @@ class AccountStore {
 
   handleLogout() {
     this.user = undefined;
-  }
-
-  handleGetPeople(response){
-    this.doctors = [];
-    this.caregivers = [];
-    this.patients = [];
-    this.admins = [];
-    this.people = [];
-
-    if (response.data.people) {
-      var people = response.data.people;
-      people.forEach(function(person){
-        this.people.push(person);
-        
-        if (person.role.name === 'doctor') {
-          this.doctors.push(person);
-        }
-        else if (person.role.name === 'caregiver') {
-          this.caregivers.push(person);
-        }
-        else if (person.role.name === 'patient') {
-          this.patients.push(person);
-        }
-        else if (person.role.name === 'admin') {
-          this.admins.push(person);
-        }
-      }.bind(this))
-    }
-
-    console.log('got related people:');
-    console.dir(this.people);
   }
 
   /* PUBLIC METHODS */
