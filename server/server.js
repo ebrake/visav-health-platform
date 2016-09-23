@@ -75,7 +75,6 @@ class StartServer {
   }
 }
 
-export function startServer(isMainModule) {
+export default function startServer(isMainModule) {
   new StartServer(isMainModule);
 }
-export { startServer };
