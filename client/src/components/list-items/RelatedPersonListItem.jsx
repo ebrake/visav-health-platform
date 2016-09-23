@@ -6,16 +6,16 @@ class RelatedPersonListItem extends React.Component {
     super(props);
     this.state = {};
     this.handleClick = this.handleClick.bind(this);
-    this.handleClickDelete = this.handleClickDelete.bind(this);
+    this.handleClickRemove = this.handleClickRemove.bind(this);
 
   }  
 
   handleClick(event){
-    this.props.onClick(event, this.props.person);
+    this.props.onClickValue(event, this.props.person);
   }
 
-  handleClickDelete(event){
-    this.props.handleClickRemove(event, this.props.person);
+  handleClickRemove(event){
+    this.props.onClickRemove(event, this.props.relation, this.props.person);
   }
 
   render() {
@@ -30,8 +30,9 @@ class RelatedPersonListItem extends React.Component {
 
 RelatedPersonListItem.propTypes = {
   person: React.PropTypes.object.isRequired,
-  onClick: React.PropTypes.func,
-  handleClickRemove: React.PropTypes.func
+  relation: React.PropTypes.string.isRequired,
+  onClickValue: React.PropTypes.func,
+  onClickRemove: React.PropTypes.func
 };
 
 export default RelatedPersonListItem;

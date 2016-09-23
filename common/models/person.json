@@ -14,11 +14,11 @@
   "properties": {
     "firstName": {
       "type": "String",
-      "default": "Kristopher"
+      "default": "''"
     },
     "lastName": {
       "type": "String",
-      "default": "Goudie"
+      "default": "''"
     },
     "phone": {
       "type": "String"
@@ -141,7 +141,21 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW",
+      "property": "destroyDoctorPatientRelation"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
       "property": "makeCaregiverPatientRelation"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "destroyCaregiverPatientRelation"
     }
   ],
   "methods": {}
