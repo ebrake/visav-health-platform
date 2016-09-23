@@ -28,6 +28,7 @@ class RelationStore {
     if (response.data.people) {
       var people = response.data.people;
       people.forEach(function(person){
+        person.fullName = person.firstName + ' ' + person.lastName;
         this.people.push(person);
         
         if (person.role.name === 'doctor') {

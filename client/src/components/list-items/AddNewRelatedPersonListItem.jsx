@@ -9,15 +9,21 @@ class AddNewRelatedPersonListItem extends React.Component {
     this.state = {
       foundPerson: null
     };
-    this.inputValueChanged = this.inputValueChanged.bind(this);
+    this.autocompleteDidSelect = this.autocompleteDidSelect.bind(this);
     this.addNewRelation = this.addNewRelation.bind(this);
 
   }  
 
-  inputValueChanged(event){
-    var searchString = event.target.value;
-    var relation = this.props.relation;
+  autocompleteDidSelect(item){
+    console.log('setting autocomplete did select');
+    console.dir(item);
+    this.setState({ foundPerson: item });
+  }
+
+  peopleForRelation(){
     let relationState = RelationStore.getState();
+    var relation = this.props.relation;
+
     var people;
     if (relation === 'patient') {
       people = relationState.patients;
@@ -28,16 +34,7 @@ class AddNewRelatedPersonListItem extends React.Component {
     else if (relation === 'caregiver') {
       people = relationState.caregivers;
     }
-    var foundPerson;
-    people.forEach(function(person) {
-      var fullName = person.firstName + ' ' + person.lastName;
-      if (searchString === fullName) {
-        foundPerson = person;
-      }
-    });
-    this.setState({ foundPerson: foundPerson });
-
-    this.props.valueDidChange(event, this.props.relation);
+    return people;
   }
 
   addNewRelation(event){
@@ -50,7 +47,13 @@ class AddNewRelatedPersonListItem extends React.Component {
     <ImageButton className='disabled' text='Not Found' />
     return (
       <li className="AddNewRelatedPersonListItem" >
-        <VisavInput label={'Add new ' + this.props.relation + ' relation'} valueDidChange={ this.inputValueChanged } />
+        <VisavInput 
+          autocompleteObjects={ this.peopleForRelation() }
+          autocompleteKeys={['fullName', 'firstName', 'lastName', 'email']}
+          label={'Add new ' + this.props.relation + ' relation'} 
+          autocompleteDidSelect={ this.autocompleteDidSelect }
+          valueDidChange = { this.props.valueDidChange }  
+        />
         {addButton}
       </li>
     );
