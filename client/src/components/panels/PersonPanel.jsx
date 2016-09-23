@@ -17,6 +17,7 @@ class PersonPanel extends React.Component {
 
     this.listForRelation = this.listForRelation.bind(this);
     this.didClickAddNewRelation = this.didClickAddNewRelation.bind(this);
+    this.didClickRemoveRelation = this.didClickRemoveRelation.bind(this);
   }
 
   componentDidMount() {
@@ -58,7 +59,7 @@ class PersonPanel extends React.Component {
         <ul className='people-list'>
           {
             people.map(function(person, i){
-              return <RelatedPersonListItem person={person} key={i} onClick={ this.didSelectRelatedPerson.bind(this) }/>
+              return <RelatedPersonListItem person={person} relation={relation} key={i} onClickValue={ this.didSelectRelatedPerson.bind(this) } onClickRemove={ this.didClickRemoveRelation }/>
             }.bind(this))
           }
           <AddNewRelatedPersonListItem relation={relation} valueDidChange={ this.addNewRelationInputValueChanged } onAddNewRelation={ this.didClickAddNewRelation } />
@@ -68,47 +69,70 @@ class PersonPanel extends React.Component {
     return list;
   }
 
+  updateStateWithRemovedRelation(relation, personToRemove) {
+    let field = relation+'s';
+
+    return function(response){
+      if (response.data.status === 'success') {
+        let newState = {};
+        newState[field] = this.state[field].filter(person => {
+          return person.id !== personToRemove.id;
+        });
+        this.setState(newState);
+      }
+    }
+  }
+
+  didClickRemoveRelation(event, relation, person) {
+    if (relation === 'doctor') {
+      RelationActions.destroyDoctorPatientRelationship(person, this.props.person)
+      .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
+    }
+    else if (relation === 'caregiver') {
+      RelationActions.destroyCaregiverPatientRelationship(person, this.props.person)
+      .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
+    } 
+    else if (relation === 'patient') {
+      if (this.props.person.role && this.props.person.role.name == 'doctor') {
+        RelationActions.destroyDoctorPatientRelationship(this.props.person, person)
+        .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
+      }
+      else if (this.props.person.role && this.props.person.role.name == 'caregiver') {
+        RelationActions.destroyCaregiverPatientRelationship(this.props.person, person)
+        .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
+      }
+    }
+  }
+
+  updateStateWithNewRelation(relation, person) {
+    let field = relation+'s';
+
+    return function(response){
+      if (response.data.status === 'success') {
+        let newState = {};
+        newState[field] = this.state[field].concat([person]);
+        this.setState(newState);
+      }
+    }
+  }
+
   didClickAddNewRelation(event, relation, person) {
     if (relation === 'doctor') {
       RelationActions.makeDoctorPatientRelationship(person, this.props.person)
-      .then(function(response){
-        if (response.data.status === 'success') {
-          this.setState({
-            doctors: this.state.doctors.concat([person])
-          })
-        }
-      }.bind(this));
+      .then(this.updateStateWithNewRelation(relation, person).bind(this));
     }
     else if (relation === 'caregiver') {
       RelationActions.makeCaregiverPatientRelationship(person, this.props.person)
-      .then(function(response){
-        if (response.data.status === 'success') {
-          this.setState({
-            caregivers: this.state.caregivers.concat([person])
-          })
-        }
-      }.bind(this));
+      .then(this.updateStateWithNewRelation(relation, person).bind(this));
     } 
     else if (relation === 'patient') {
       if (this.props.person.role && this.props.person.role.name == 'doctor') {
         RelationActions.makeDoctorPatientRelationship(this.props.person, person)
-        .then(function(response){
-          if (response.data.status === 'success') {
-            this.setState({
-              patients: this.state.patients.concat([person])
-            })
-          }
-        }.bind(this));
+        .then(this.updateStateWithNewRelation(relation, person).bind(this));
       }
-      if (this.props.person.role && this.props.person.role.name == 'caregiver') {
+      else if (this.props.person.role && this.props.person.role.name == 'caregiver') {
         RelationActions.makeCaregiverPatientRelationship(this.props.person, person)
-        .then(function(respopatientsnse){
-          if (response.data.status === 'success') {
-            this.setState({
-              patients: this.state.patients.concat([person])
-            })
-          }
-        }.bind(this));
+        .then(this.updateStateWithNewRelation(relation, person).bind(this));
       }
     }
   }

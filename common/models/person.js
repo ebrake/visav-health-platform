@@ -585,51 +585,24 @@ module.exports = function(Person) {
     }
   );
 
+  Person.destroyDoctorPatientRelation = function(req, cb) {
+    modifyDoctorPatientRelation(req, true, cb);
+  }
+
+  Person.remoteMethod(
+    "destroyDoctorPatientRelation",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/unbindDoctorAndPatient', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts a doctor and a patient, destroys their relationship."
+    }
+  )
+
   Person.makeDoctorPatientRelation = function(req, cb) {
-    var err;
-    var readableUser = req.user.toJSON();
-    if (!readableUser.role || readableUser.role.name !== 'admin') {
-      err = new Error('Non-admin staff may not create doctor<->patient relationships.');
-      err.statusCode = 422;
-      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_ROLE';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-    if (!req.body.doctor) {
-      err = new Error('No doctor provided!');
-      err.statusCode = 417;
-      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_DOCTOR';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-    if (!req.body.patient) {
-      err = new Error('No patient provided!');
-      err.statusCode = 417;
-      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_PATIENT';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-    if (!req.body.doctor.role || req.body.doctor.role.name !== 'doctor') {
-      err = new Error('Invalid role for doctor!');
-      err.statusCode = 422;
-      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_DOCTOR_ROLE';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-    if (!req.body.patient.role || req.body.patient.role.name !== 'patient') {
-      err = new Error('Invalid role for patient!');
-      err.statusCode = 422;
-      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_PATIENT_ROLE';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-
-    var DoctorPatient = Person.app.models.DoctorPatient;
-
-    DoctorPatient.create({
-      doctorId: req.body.doctor.id,
-      patientId: req.body.patient.id
-    })
-    .then(function(relation){
-      return cb(null, { status: 'success', message: 'Successfully created doctor-patient relation', relation: relation });
-    }, function(err){
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    })
+    modifyDoctorPatientRelation(req, false, cb);
   }
 
   Person.remoteMethod(
@@ -640,55 +613,109 @@ module.exports = function(Person) {
       ],
       http: { path: '/bindDoctorAndPatient', verb: 'post' },
       returns: { arg: 'data', type: 'object' },
-      description: "Accepts a doctor and a patient, creates a relationship."
+      description: "Accepts a doctor and a patient, destroys their relationship."
     }
-  );
+  )
 
-  Person.makeCaregiverPatientRelation = function(req, cb) {
+  function modifyDoctorPatientRelation(req, destroy, cb) {
     var err;
     var readableUser = req.user.toJSON();
     if (!readableUser.role || readableUser.role.name !== 'admin') {
-      err = new Error('Non-admin staff may not create caregiver<->patient relationships.');
+      err = new Error('Non-admin staff may not create doctor<->patient relationships.');
       err.statusCode = 422;
-      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_ROLE';
+      err.code = 'MODIFY_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_ROLE';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if (!req.body.caregiver) {
-      err = new Error('No caregiver provided!');
+    if (!req.body.doctor) {
+      err = new Error('No doctor provided!');
       err.statusCode = 417;
-      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_CAREGIVER';
+      err.code = 'MODIFY_DOCTOR_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_DOCTOR';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
     if (!req.body.patient) {
       err = new Error('No patient provided!');
       err.statusCode = 417;
-      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_PATIENT';
+      err.code = 'MODIFY_DOCTOR_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_PATIENT';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if (!req.body.caregiver.role || req.body.caregiver.role.name !== 'caregiver') {
-      err = new Error('Invalid role for caregiver!');
+    if (!req.body.doctor.role || req.body.doctor.role.name !== 'doctor') {
+      err = new Error('Invalid role for doctor!');
       err.statusCode = 422;
-      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_CAREGIVER_ROLE';
+      err.code = 'MODIFY_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_DOCTOR_ROLE';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
     if (!req.body.patient.role || req.body.patient.role.name !== 'patient') {
       err = new Error('Invalid role for patient!');
       err.statusCode = 422;
-      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_PATIENT_ROLE';
+      err.code = 'MODIFY_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_PATIENT_ROLE';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
 
-    var CaregiverPatient = Person.app.models.CaregiverPatient;
+    var DoctorPatient = Person.app.models.DoctorPatient;
 
-    CaregiverPatient.create({
-      caregiverId: req.body.caregiver.id,
+    DoctorPatient.findOne({
+      doctorId: req.body.doctor.id,
       patientId: req.body.patient.id
     })
     .then(function(relation){
-      return cb(null, { status: 'success', message: 'Successfully created caregiver-patient relation', relation: relation });
+      if (destroy) {
+        if (!relation) {
+          err = new Error('Relationship did not exist, nothing to destroy');
+          err.statusCode = 422;
+          err.code = 'MODIFY_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENTS_RELATION';
+          return { status: 'failure', message: err.message, error: err };
+        }
+        else {
+          return DoctorPatient.destroyById(relation.id)
+          .then(function(result){
+            console.log('What is the form of this feedback?');
+            return { status: 'success', message: 'Relation successfully removed' };
+          })
+        }
+      }
+      else {
+        if (relation) {
+          err = new Error('Relationship already existed, will not create duplicate');
+          err.statusCode = 422;
+          err.code = 'MODIFY_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENTS_DUPLICATE';
+          return { status: 'failure', message: 'Relation already existed', relation: relation };
+        }
+        else {
+          return DoctorPatient.create({
+            doctorId: req.body.doctor.id,
+            patientId: req.body.patient.id
+          })
+          .then(function(relation){
+            return { status: 'success', message: 'Relation successfully created', relation: relation };
+          })
+        }
+      }
+    })
+    .then(function(data){
+      return cb(null, data);
     }, function(err){
       return cb(null, { status: 'failure', message: err.message, error: err });
     })
+  }
+
+  Person.destroyCaregiverPatientRelation = function(req, cb) {
+    modifyCaregiverPatientRelation(req, true, cb);
+  }
+
+  Person.remoteMethod(
+    "destroyCaregiverPatientRelation",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/unbindCaregiverAndPatient', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts a caregiver and a patient, destroys relationship."
+    }
+  );
+
+  Person.makeCaregiverPatientRelation = function(req, cb) {
+    modifyCaregiverPatientRelation(req, false, cb);
   }
 
   Person.remoteMethod(
@@ -702,6 +729,87 @@ module.exports = function(Person) {
       description: "Accepts a caregiver and a patient, creates a relationship."
     }
   );
+
+  function modifyCaregiverPatientRelation(req, destroy, cb) {
+    var err;
+    var readableUser = req.user.toJSON();
+    if (!readableUser.role || readableUser.role.name !== 'admin') {
+      err = new Error('Non-admin staff may not create caregiver<->patient relationships.');
+      err.statusCode = 422;
+      err.code = 'MODIFY_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.caregiver) {
+      err = new Error('No caregiver provided!');
+      err.statusCode = 417;
+      err.code = 'MODIFY_CAREGIVER_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_CAREGIVER';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient) {
+      err = new Error('No patient provided!');
+      err.statusCode = 417;
+      err.code = 'MODIFY_CAREGIVER_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_PATIENT';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.caregiver.role || req.body.caregiver.role.name !== 'caregiver') {
+      err = new Error('Invalid role for caregiver!');
+      err.statusCode = 422;
+      err.code = 'MODIFY_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_CAREGIVER_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient.role || req.body.patient.role.name !== 'patient') {
+      err = new Error('Invalid role for patient!');
+      err.statusCode = 422;
+      err.code = 'MODIFY_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_PATIENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    var CaregiverPatient = Person.app.models.CaregiverPatient;
+
+    CaregiverPatient.findOne({
+      caregiverId: req.body.caregiver.id,
+      patientId: req.body.patient.id
+    })
+    .then(function(relation){
+      if (destroy) {
+        if (!relation) {
+          err = new Error('Relationship did not exist, nothing to destroy');
+          err.statusCode = 422;
+          err.code = 'MODIFY_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENTS_RELATION';
+          return { status: 'failure', message: err.message, error: err };
+        }
+        else {
+          return CaregiverPatient.destroyById(relation.id)
+          .then(function(result){
+            console.log('What is the form of this feedback?');
+            return { status: 'success', message: 'Relation successfully removed' };
+          })
+        }
+      }
+      else {
+        if (relation) {
+          err = new Error('Relationship already existed, will not create duplicate');
+          err.statusCode = 422;
+          err.code = 'MODIFY_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENTS_DUPLICATE';
+          return { status: 'failure', message: 'Relation already existed', relation: relation };
+        }
+        else {
+          return CaregiverPatient.create({
+            caregiverId: req.body.caregiver.id,
+            patientId: req.body.patient.id
+          })
+          .then(function(relation){
+            return { status: 'success', message: 'Relation successfully created', relation: relation };
+          })
+        }
+      }
+    })
+    .then(function(data){
+      return cb(null, data);
+    }, function(err){
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    })
+  }
 }
 
 function findPerson(req, email) {

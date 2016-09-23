@@ -44,8 +44,16 @@ class RelationActions {
   }
 
   makeDoctorPatientRelationship(doctor, patient) {
+    return this.modifyDoctorPatientRelationship(doctor, patient, 'api/people/bindDoctorAndPatient')
+  }
+
+  destroyDoctorPatientRelationship(doctor, patient) {
+    return this.modifyDoctorPatientRelationship(doctor, patient, 'api/people/unbindDoctorAndPatient');
+  }
+
+  modifyDoctorPatientRelationship(doctor, patient, api_route) {
     return function(dispatch) {
-      return fetch(process.env.API_ROOT + 'api/people/bindDoctorAndPatient', {
+      return fetch(process.env.API_ROOT+''+api_route, {
         method: 'POST',
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
         body: JSON.stringify({
@@ -67,8 +75,20 @@ class RelationActions {
   }
 
   makeCaregiverPatientRelationship(caregiver, patient) {
+    return this.modifyCaregiverPatientRelationship(caregiver, patient, 'api/people/bindCaregiverAndPatient');
+  }
+
+  destroyCaregiverPatientRelationship(caregiver, patient) {
+    return this.modifyCaregiverPatientRelationship(caregiver, patient, 'api/people/unbindCaregiverAndPatient');
+  }
+
+  modifyCaregiverPatientRelationship(caregiver, patient, api_route) {
+    console.log("Caregiver?");
+    console.log(caregiver);
+    console.log('Patient');
+    console.log(patient);
     return function(dispatch) {
-      return fetch(process.env.API_ROOT + 'api/people/bindCaregiverAndPatient', {
+      return fetch(process.env.API_ROOT+''+api_route, {
         method: 'POST',
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
         body: JSON.stringify({
