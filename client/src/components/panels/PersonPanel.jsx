@@ -21,6 +21,8 @@ class PersonPanel extends React.Component {
   }
 
   componentDidMount() {
+    console.log('Mounted:');
+    console.dir(this.props.person);
     RelationActions.getRelatedPeople(this.props.person)
     .then(function(response){
       let newState = {};

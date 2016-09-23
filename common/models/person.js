@@ -11,31 +11,31 @@ module.exports = function(Person) {
   Person.signup = function(req, email, password, firstName, lastName, organizationName, cb) {
     var err;
 
-    if(!req.body.email){
+    if (!req.body.email){
       err = new Error('Valid email required on req.body.email');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(!req.body.password){
+    if (!req.body.password){
       err = new Error('Valid password required on req.body.password');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_PASSWORD';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(!req.body.firstName){
+    if (!req.body.firstName){
       err = new Error('Valid first name required on req.body.firstName');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(!req.body.lastName){
+    if (!req.body.lastName){
       err = new Error('Valid last name required on req.body.lastName');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_LASTNAME';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(!req.body.organizationName){
+    if (!req.body.organizationName){
       err = new Error('Valid organization required on req.body.organizationName');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_ORGANIZATIONNAME';
@@ -123,13 +123,13 @@ module.exports = function(Person) {
 
   Person.signin = function(req, email, password, cb){
     var err;
-    if(!req.body.email){
+    if (!req.body.email) {
       err = new Error('Valid email required on req.body.email');
       err.statusCode = 417;
       err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(!req.body.password){
+    if (!req.body.password) {
       err = new Error('Valid password required on req.body.password');
       err.statusCode = 417;
       err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENT_PASSWORD';
@@ -173,37 +173,37 @@ module.exports = function(Person) {
   Person.invite = function(req, email, firstName, lastName, role, cb) {
     var err;
     var readableUser = req.user.toJSON();
-    if(!req.body.email){
+    if (!req.body.email) {
       err = new Error('Valid email required on req.body.email');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(!req.body.role){
+    if (!req.body.role) {
       err = new Error('Valid Role required on req.body.role');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_ROLE';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(!req.body.firstName){
+    if (!req.body.firstName) {
       err = new Error('Valid first name required on req.body.firstName');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(!req.body.lastName){
+    if (!req.body.lastName) {
       err = new Error('Valid last name required on req.body.lastName');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_LASTNAME';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(!req.user.organization){
+    if (!req.user.organization) {
       err = new Error('No organization associated with user. Valid organization required on req.user.organization.');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_NO_ORGANIZATION';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    if(readableUser.role.name == 'owner' && role !== 'admin') {
+    if (readableUser.role.name == 'owner' && role !== 'admin') {
       err = new Error('Owners are not allowed to invite non-admin staff.');
       err.statusCode = 422;
       err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_UNASSIGNABLE_ROLE';
@@ -321,7 +321,7 @@ module.exports = function(Person) {
 
   Person.requestPasswordReset = function(req, email, cb) {
     var err;
-    if(!req.body.email){
+    if (!req.body.email){
       err = new Error('Valid email required on req.body.email');
       err.statusCode = 417;
       err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_EMAIL';
@@ -376,14 +376,12 @@ module.exports = function(Person) {
 
   Person.doResetPassword = function(req, res, cb) {
     var err;
-    if (!req.accessToken){
+    if (!req.accessToken) {
       err = new Error('Valid accessToken required on req.accessToken');
       err.statusCode = 417;
       err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_ACCESS_TOKEN';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-
-
     //verify passwords match
     if (!req.body.password || !req.body.confirmation || req.body.password !== req.body.confirmation) {
       err = new Error('Password and confirmation do not match!');
@@ -668,7 +666,6 @@ module.exports = function(Person) {
         else {
           return DoctorPatient.destroyById(relation.id)
           .then(function(result){
-            console.log('What is the form of this feedback?');
             return { status: 'success', message: 'Relation successfully removed' };
           })
         }
@@ -837,7 +834,7 @@ function createPersonWithRoleAndBindToOrganization(req, personData, roleToAssign
   var Person = req.app.models.Person;
   return Person.create(personData)
   .then(function(createdPerson){
-    if (roleToAssign === 'owner'){
+    if (roleToAssign === 'owner') {
       organization.owner = createdPerson.id;
       organization.save();
     }
