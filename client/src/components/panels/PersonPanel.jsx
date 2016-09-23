@@ -21,17 +21,14 @@ class PersonPanel extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Mounted:');
-    console.dir(this.props.person);
     RelationActions.getRelatedPeople(this.props.person)
     .then(function(response){
       let newState = {};
-      if (response.data.patients)
-        newState.patients = response.data.patients;
-      if (response.data.doctors)
-        newState.doctors = response.data.doctors;
-      if (response.data.caregivers)
-        newState.caregivers = response.data.caregivers;
+
+      ['patients', 'doctors', 'caregivers'].forEach(function(field){
+        if (response.data[field])
+          newState[field] = response.data[field];
+      })
 
       this.setState(newState);
     }.bind(this))
@@ -77,9 +74,11 @@ class PersonPanel extends React.Component {
     return function(response){
       if (response.data.status === 'success') {
         let newState = {};
+
         newState[field] = this.state[field].filter(person => {
           return person.id !== personToRemove.id;
         });
+
         this.setState(newState);
       }
     }
@@ -112,7 +111,9 @@ class PersonPanel extends React.Component {
     return function(response){
       if (response.data.status === 'success') {
         let newState = {};
+
         newState[field] = this.state[field].concat([person]);
+
         this.setState(newState);
       }
     }
