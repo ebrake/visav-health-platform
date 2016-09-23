@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ImageButton from '../buttons/ImageButton';
 import VisavInput from '../inputs/VisavInput';
-import AccountStore from '../../alt/stores/AccountStore'
+import RelationStore from '../../alt/stores/RelationStore'
 
 class AddNewRelatedPersonListItem extends React.Component {
   constructor(props) {
@@ -17,16 +17,16 @@ class AddNewRelatedPersonListItem extends React.Component {
   inputValueChanged(event){
     var searchString = event.target.value;
     var relation = this.props.relation;
-    let accountState = AccountStore.getState();
+    let relationState = RelationStore.getState();
     var people;
     if (relation === 'patient') {
-      people = accountState.patients;
+      people = relationState.patients;
     }
     else if (relation === 'doctor') {
-      people = accountState.doctors;
+      people = relationState.doctors;
     }
     else if (relation === 'caregiver') {
-      people = accountState.caregivers;
+      people = relationState.caregivers;
     }
     var foundPerson;
     people.forEach(function(person) {
@@ -41,8 +41,7 @@ class AddNewRelatedPersonListItem extends React.Component {
   }
 
   addNewRelation(event){
-    var person = this.state.foundPerson
-    console.log('Attempting to add ' + person.firstName + ' ' + person.lastName);
+    this.props.onAddNewRelation(event, this.props.relation, this.state.foundPerson);
   }
 
   render() {
@@ -60,7 +59,8 @@ class AddNewRelatedPersonListItem extends React.Component {
 
 AddNewRelatedPersonListItem.propTypes = {
   relation: React.PropTypes.string.isRequired,
-  valueDidChange: React.PropTypes.func
+  valueDidChange: React.PropTypes.func,
+  onAddNewRelation: React.PropTypes.func
 };
 
 export default AddNewRelatedPersonListItem;

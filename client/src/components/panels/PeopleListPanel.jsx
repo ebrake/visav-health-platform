@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PeopleListItem from '../list-items/PeopleListItem';
-import AccountStore from '../../alt/stores/AccountStore'
+import RelationStore from '../../alt/stores/RelationStore'
 
 class PeopleListPanel extends React.Component {
   constructor(props) {
@@ -9,21 +9,21 @@ class PeopleListPanel extends React.Component {
     this.state = {
     };
 
-    let accountState = AccountStore.getState();
+    let relationState = RelationStore.getState();
 
     console.log(this.props.displayedRole);
 
     if (this.props.displayedRole == 'doctors') {
-      this.displayedPeople = accountState.doctors;
+      this.displayedPeople = relationState.doctors;
     }
     else if (this.props.displayedRole == 'patients') {
-      this.displayedPeople = accountState.patients;
+      this.displayedPeople = relationState.patients;
     }
     else if (this.props.displayedRole == 'caregivers') {
-      this.displayedPeople = accountState.caregivers;
+      this.displayedPeople = relationState.caregivers;
     }
     else if (this.props.displayedRole == 'admins') {
-      this.displayedPeople = accountState.admins;
+      this.displayedPeople = relationState.admins;
     }
     if (!this.displayedPeople) {
       this.displayedPeople = [];

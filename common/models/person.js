@@ -8,7 +8,7 @@ var path = require('path');
 
 module.exports = function(Person) {
 
-  Person.signup = function(req, email, password, organizationName, cb) {
+  Person.signup = function(req, email, password, firstName, lastName, organizationName, cb) {
     var err;
 
     if(!req.body.email){
@@ -17,14 +17,24 @@ module.exports = function(Person) {
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-
     if(!req.body.password){
       err = new Error('Valid password required on req.body.password');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_PASSWORD';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-
+    if(!req.body.firstName){
+      err = new Error('Valid first name required on req.body.firstName');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(!req.body.lastName){
+      err = new Error('Valid last name required on req.body.lastName');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_LASTNAME';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
     if(!req.body.organizationName){
       err = new Error('Valid organization required on req.body.organizationName');
       err.statusCode = 417;
@@ -36,7 +46,9 @@ module.exports = function(Person) {
     var orgFilter = { name: req.body.organizationName };
     var personData = {
       email: req.body.email.toLowerCase(),
-      password: req.body.password
+      password: req.body.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName
     };
 
     findPersonAndOrganization(req, req.body.email, orgFilter)
@@ -76,6 +88,8 @@ module.exports = function(Person) {
         { arg: 'req', type: 'object', http: { source: 'req' } },
         { arg: 'email', type: 'string' },
         { arg: 'password', type: 'string' },
+        { arg: 'firstName', type: 'string' },
+        { arg: 'lastName', type: 'string' },
         { arg: 'organizationName', type: 'string' }
       ],
       http: { path: '/signup', verb: 'post' },
@@ -156,33 +170,54 @@ module.exports = function(Person) {
     }
   );
 
-  Person.invite = function(req, email, role, cb) {
+  Person.invite = function(req, email, firstName, lastName, role, cb) {
     var err;
+    var readableUser = req.user.toJSON();
     if(!req.body.email){
       err = new Error('Valid email required on req.body.email');
       err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
     if(!req.body.role){
       err = new Error('Valid Role required on req.body.role');
       err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_ROLE';
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(!req.body.firstName){
+      err = new Error('Valid first name required on req.body.firstName');
+      err.statusCode = 417;
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(!req.body.lastName){
+      err = new Error('Valid last name required on req.body.lastName');
+      err.statusCode = 417;
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_LASTNAME';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
     if(!req.user.organization){
       err = new Error('No organization associated with user. Valid organization required on req.user.organization.');
       err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_NO_ORGANIZATION';
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_NO_ORGANIZATION';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if(readableUser.role.name == 'owner' && role !== 'admin') {
+      err = new Error('Owners are not allowed to invite non-admin staff.');
+      err.statusCode = 422;
+      err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_UNASSIGNABLE_ROLE';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
 
     var email = req.body.email.toLowerCase();
     var roleToAssign = req.body.role;
-    var orgFilter = { id: req.user.toJSON().organization.id };
+    var orgFilter = { id: readableUser.organization.id };
     var personData = {
       email: email,
-      password: generatePassword(10)
+      password: generatePassword(10),
+      firstName: firstName,
+      lastName: lastName
     };
 
     findPersonAndOrganization(req, email, orgFilter)
@@ -246,6 +281,8 @@ module.exports = function(Person) {
       accepts: [
         { arg: 'req', type: 'object', http: { source: 'req' } },
         { arg: 'email', type: 'string' },
+        { arg: 'firstName', type: 'string' },
+        { arg: 'lastName', type: 'string' },
         { arg: 'role', type: 'string' }
       ],
       http: { path: '/invite', verb: 'post' },
@@ -348,9 +385,7 @@ module.exports = function(Person) {
 
 
     //verify passwords match
-    if (!req.body.password ||
-        !req.body.confirmation ||
-        req.body.password !== req.body.confirmation) {
+    if (!req.body.password || !req.body.confirmation || req.body.password !== req.body.confirmation) {
       err = new Error('Password and confirmation do not match!');
       err.statusCode = 400;
       err.code = 'PERSON_RESET_PASSWORD_FAILED_PASSWORD_CONFIRMATION_MISMATCH';
@@ -381,79 +416,161 @@ module.exports = function(Person) {
     }
   );
 
-  Person.getRelatedPeople = function (req, cb) {
+  Person.getViewablePeople = function (req, cb) {
     var err;
-    var user = req.user.toJSON();
-    var role = user.role.name;
-    if (role == 'owner' || role == 'admin'){
-      Person.find({where: { organization : user.organization.id } }, function(err, people){ 
+    var readableUser = req.user.toJSON();
+    var role = readableUser.role.name;
+    if (role == 'owner' || role == 'admin') {
+      Person.find({where: { organization : readableUser.organization.id } }, function(err, people){ 
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
         return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
-    else if (role == 'doctor'){
-      Person.findOne({where: { id : user.id }, include: [{ patients: 'caregivers' }]}, function(err, self){
+    else if (role == 'doctor') {
+      Person.findOne({where: { id : readableUser.id }, include: [{ patients: 'caregivers' }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
         var people = [];
-        for( patientIndex in self.patients ){
-          var patient = self.patients[patientIndex];
-          people.push(patient);
-          for( caregiverIndex in patient.caregivers ){
-            var caregiver = patient.caregivers[caregiverIndex];
-            people.push(caregiver);
-          }
-        }
-        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
 
+        self.patients.forEach(function(patient){
+          people.push(patient);
+          patient.caregivers.forEach(function(caregiver){
+            people.push(caregiver);
+          })
+        })
+
+        return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
-    else if (role == 'patient'){
-      Person.findOne({where: { id : user.id }, include: [ 'doctors', 'caregivers' ]}, function(err, self){
+    else if (role == 'patient') {
+      Person.findOne({where: { id : readableUser.id }, include: [ 'doctors', 'caregivers' ]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err }); 
 
         var people = [];
-        for( doctorIndex in self.doctors ){
-          var doctor = self.doctors[doctorIndex];
-          people.push(doctor);
-        }
 
-        for( caregiverIndex in self.caregivers ){
-          var caregiver = self.caregivers[caregiverIndex];
+        self.doctors.forEach(function(doctor){
+          people.push(doctor);
+        })
+
+        self.caregivers.forEach(function(caregiver){
           people.push(caregiver);
-        }
+        })
+
         return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
       });
     }
-    else if (role == 'caregiver'){
-      Person.findOne({where: { id : user.id }, include: [{ caregivees: ['doctors', 'caregivers'] }]}, function(err, self){
+    else if (role == 'caregiver') {
+      Person.findOne({where: { id : readableUser.id }, include: [{ caregivees: ['doctors', 'caregivers'] }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
         var people = [];
 
-        for( caregiveeIndex in self.caregivees ){
-          var caregivee = self.caregivers[caregiveeIndex];
+        self.caregivees.forEach(function(caregivee){
           people.push(caregivee);
-          for( caregiverIndex in caregivee.caregivers ){
-            var caregiver = caregivee.caregivers[caregiverIndex];
+
+          caregivee.caregivers.forEach(function(caregiver){
             people.push(caregiver);
-          }
-          for( doctorIndex in caregivee.doctors ){
-            var doctor = caregivee.doctors[doctorIndex];
+          })
+
+          caregivee.doctors.forEach(function(doctor){
             people.push(doctor);
-          }
-        }
+          })
+        })
+
         return cb(null, { status: 'success', message: 'Related people successfull retrieved', people: people });
       });
     }
-    else{
+    else {
       err = new Error('Valid role required on req.user.role');
+      err.statusCode = 422;
+      err.code = 'GET_VIEWABLE_PEOPLE_FAILED_INVALID_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+  }
+
+  Person.remoteMethod(
+    "getViewablePeople",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/getViewablePeople', verb: 'get' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Returns all related people for the requesting user."
+    }
+  );
+
+  Person.getRelatedPeople = function (req, cb) {
+    var err;
+    var readableUser = req.user.toJSON();
+
+    if (!req.body.person) {
+      err = new Error("No user to get related people for!");
+      err.statusCode = 417;
+      err.code = 'GET_RELATED_PEOPLE_FAILED_MISSING_REQUIREMENT_USER';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.person.organization || req.body.person.organization.id !== readableUser.organization.id) {
+      err = new Error("Organization does not match for requesting user and requested user!");
+      err.statusCode = 422;
+      err.code = 'GET_RELATED_PEOPLE_FAILED_INVALID_REQUIREMENT_ORGANIZATION'
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    if (req.body.person.role.name == 'admin' || req.body.person.role.name == 'owner') {
+      return cb(null, { status: 'success', message: 'No related people' });
+    }
+    else if (req.body.person.role.name == 'doctor') {
+      Person.findOne({ where: { id: req.body.person.id }, include: 'patients' }, function(err, person){
+        if (err) 
+          return cb(null, { status: 'failure', message: err.message, error: err });
+
+        person = person.toJSON();
+
+        return cb(null, { 
+          status: 'success', 
+          message: 'Successfully got patients for doctor', 
+          patients: person.patients 
+        });
+      })
+    }
+    else if (req.body.person.role.name == 'caregiver') {
+      Person.findOne({ where: { id: req.body.person.id }, include: 'caregivees' }, function(err, person){
+        if (err) 
+          return cb(null, { status: 'failure', message: err.message, error: err });
+
+        person = person.toJSON();
+
+        return cb(null, { 
+          status: 'success', 
+          message: 'Successfully got patients for caregiver', 
+          patients: person.caregivees 
+        });
+      })
+    }
+    else if (req.body.person.role.name == 'patient') {
+      Person.findOne({ where: { id: req.body.person.id }, include: ['doctors', 'caregivers'] }, function(err, person){
+        if (err) 
+          return cb(null, { status: 'failure', message: err.message, error: err });
+
+        person = person.toJSON();
+
+        return cb(null, { 
+          status: 'success', 
+          message: 'Successfully got patients for patient', 
+          doctors: person.doctors, 
+          caregivers: person.caregivers 
+        });
+      })
+    }
+    else {
+      err = new Error("No role for requested person!");
       err.statusCode = 422;
       err.code = 'GET_RELATED_PEOPLE_FAILED_INVALID_REQUIREMENT_ROLE';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-
   }
 
   Person.remoteMethod(
@@ -467,6 +584,124 @@ module.exports = function(Person) {
       description: "Returns all related people for the requesting user."
     }
   );
+
+  Person.makeDoctorPatientRelation = function(req, cb) {
+    var err;
+    var readableUser = req.user.toJSON();
+    if (!readableUser.role || readableUser.role.name !== 'admin') {
+      err = new Error('Non-admin staff may not create doctor<->patient relationships.');
+      err.statusCode = 422;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.doctor) {
+      err = new Error('No doctor provided!');
+      err.statusCode = 417;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_DOCTOR';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient) {
+      err = new Error('No patient provided!');
+      err.statusCode = 417;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_PATIENT';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.doctor.role || req.body.doctor.role.name !== 'doctor') {
+      err = new Error('Invalid role for doctor!');
+      err.statusCode = 422;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_DOCTOR_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient.role || req.body.patient.role.name !== 'patient') {
+      err = new Error('Invalid role for patient!');
+      err.statusCode = 422;
+      err.code = 'MAKE_DOCTOR_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_PATIENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    var DoctorPatient = Person.app.models.DoctorPatient;
+
+    DoctorPatient.create({
+      doctorId: req.body.doctor.id,
+      patientId: req.body.patient.id
+    })
+    .then(function(relation){
+      return cb(null, { status: 'success', message: 'Successfully created doctor-patient relation', relation: relation });
+    }, function(err){
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    })
+  }
+
+  Person.remoteMethod(
+    "makeDoctorPatientRelation",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/bindDoctorAndPatient', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts a doctor and a patient, creates a relationship."
+    }
+  );
+
+  Person.makeCaregiverPatientRelation = function(req, cb) {
+    var err;
+    var readableUser = req.user.toJSON();
+    if (!readableUser.role || readableUser.role.name !== 'admin') {
+      err = new Error('Non-admin staff may not create caregiver<->patient relationships.');
+      err.statusCode = 422;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.caregiver) {
+      err = new Error('No caregiver provided!');
+      err.statusCode = 417;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_CAREGIVER';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient) {
+      err = new Error('No patient provided!');
+      err.statusCode = 417;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_MISSING_REQUIREMENT_PATIENT';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.caregiver.role || req.body.caregiver.role.name !== 'caregiver') {
+      err = new Error('Invalid role for caregiver!');
+      err.statusCode = 422;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_CAREGIVER_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.patient.role || req.body.patient.role.name !== 'patient') {
+      err = new Error('Invalid role for patient!');
+      err.statusCode = 422;
+      err.code = 'MAKE_CAREGIVER_PATIENT_RELATION_FAILED_INVALID_REQUIREMENT_PATIENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    var CaregiverPatient = Person.app.models.CaregiverPatient;
+
+    CaregiverPatient.create({
+      caregiverId: req.body.caregiver.id,
+      patientId: req.body.patient.id
+    })
+    .then(function(relation){
+      return cb(null, { status: 'success', message: 'Successfully created caregiver-patient relation', relation: relation });
+    }, function(err){
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    })
+  }
+
+  Person.remoteMethod(
+    "makeCaregiverPatientRelation",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/bindCaregiverAndPatient', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts a caregiver and a patient, creates a relationship."
+    }
+  );
 }
 
 function findPerson(req, email) {
@@ -474,14 +709,6 @@ function findPerson(req, email) {
   return Person.findOne({
     where: { email: email }
   })
-}
-
-function findPeople(req, filterObj) {
-  var Person = req.app.models.Person;
-  return Person.findOne({
-    where: filterObj
-  })
-
 }
 
 function findOrganization(req, whereObject) {

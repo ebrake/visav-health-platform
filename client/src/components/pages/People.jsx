@@ -9,20 +9,20 @@ import AuthenticatedPage from './AuthenticatedPage';
 class People extends React.Component {
   
   constructor(props) {
-
     super(props);
-    let accountState = AccountStore.getState();
 
-    if (accountState.user.role.name == 'doctor'){
+    let user = AccountStore.getUser();
+
+    if (user.role.name == 'doctor'){
       this.allowedPeopleLists = ['patients', 'caregivers'];
     }
-    else if (accountState.user.role.name == 'patient'){
+    else if (user.role.name == 'patient'){
       this.allowedPeopleLists = ['doctors', 'caregivers'];
     }
-    else if (accountState.user.role.name == 'caregiver'){
+    else if (user.role.name == 'caregiver'){
       this.allowedPeopleLists = ['doctors', 'patients'];
     }
-    else if (accountState.user.role.name == 'owner' || accountState.user.role.name == 'admin'){
+    else if (user.role.name == 'owner' || user.role.name == 'admin'){
       this.allowedPeopleLists = ['doctors', 'patients', 'caregivers', 'admins'];
     }
 
@@ -34,17 +34,13 @@ class People extends React.Component {
 
   didSelectPerson(event, person){
     console.dir(person);
-    this.setState({ displayedPerson: person });
-    this.launchPersonPopup();
+    this.setState({ showPersonPopup: true, displayedPerson: person });
   }
 
   closePersonPopup(){
     this.setState({ showPersonPopup: false,  displayedPerson: null });
   }
 
-  launchPersonPopup(){
-    this.setState({ showPersonPopup: true });
-  }
   render() {
     return (
       <div className="People content-container row-gt-sm">

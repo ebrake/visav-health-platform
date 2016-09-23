@@ -6,13 +6,12 @@ import ImageButton from '../buttons/ImageButton';
 import Dropdown from 'react-dropdown';
 import VisavInput from '../inputs/VisavInput';
 
-class AccountSettings extends React.Component {
+class Account extends React.Component {
   
   constructor(props) {
     super(props);
 
-    let accountState = AccountStore.getState();
-    let user = accountState.user;
+    let user = AccountStore.getUser();
 
     //TODO: set this to the current values
     this.state = {
@@ -58,7 +57,7 @@ class AccountSettings extends React.Component {
 
   render() {
     return (
-      <div className="AccountSettings content-container">
+      <div className="Account content-container">
         <div className="account-settings-panel panel">
           <h1 className="title">Account Settings</h1>
           <VisavInput label="First Name" value={ this.state.firstName } valueDidChange={ this.handleChange('firstName') } onKeyUp={ this.keyPressed } />
@@ -71,4 +70,4 @@ class AccountSettings extends React.Component {
   }
 }
 
-export default AuthenticatedPage(AccountSettings);
+export default AuthenticatedPage(Account);

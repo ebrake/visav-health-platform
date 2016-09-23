@@ -25,10 +25,11 @@ export default (ComposedComponent) => {
     constructor(props) {
       super(props);
 
-      let accountState = AccountStore.getState();
-      let user = accountState.user;
+      let user = AccountStore.getUser();
 
       if (!userIsAuthenticatedForComponent(user, ComposedComponent)) {
+        console.log("User is unauthenticated");
+        console.dir(user);
         this.props.router.goBack();
       }
 

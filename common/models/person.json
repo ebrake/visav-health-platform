@@ -43,7 +43,7 @@
     "caregivers": {
       "type": "hasMany",
       "model": "Person",
-      "foreignKey": "caregiveeId",
+      "foreignKey": "patientId",
       "keyThrough": "caregiverId",
       "through": "CaregiverPatient"
     },
@@ -51,7 +51,7 @@
       "type": "hasMany",
       "model": "Person",
       "foreignKey": "caregiverId",
-      "keyThrough": "caregiveeId",
+      "keyThrough": "patientId",
       "through": "CaregiverPatient"
     },
     "organization": {
@@ -120,7 +120,28 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
+      "property": "getViewablePeople"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
       "property": "getRelatedPeople"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "makeDoctorPatientRelation"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "makeCaregiverPatientRelation"
     }
   ],
   "methods": {}
