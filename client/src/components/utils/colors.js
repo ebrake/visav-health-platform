@@ -4,29 +4,32 @@
 
 var brightBlue = '114, 153, 204'
   , lightBlue = '150, 156, 180'
+  , backgroundBlue = '53, 72, 94'
   , purple = '167, 146, 224'
-  , mediumDarkGrey = '69, 69, 69'
-  , lightGrey = '170, 170, 170'
-  , lightestGrey = '221, 221, 221'
   , orange = '237, 165, 57'
-  , red = '244, 87, 87'
-  , green = '227, 227, 4'
+  , red = '241, 114, 146'
+  , green = '126, 196, 126'
   , white = '255, 255, 255'
+  , darkGrey = '68, 76, 90'
+  , grey = '114, 129, 150'
+  , lightGrey = '230, 230, 230'
   , graphColors = [
       brightBlue,
       purple,
-      orange,
+      green,
       red,
-      green
+      orange,
     ]
   , fontColors = {
-      'dark': mediumDarkGrey,
-      'medium': lightGrey,
-      'light': lightestGrey,
+      'dark': grey,
+      'light': lightGrey,
       'secondary': lightBlue,
       'highlight': brightBlue,
-      'faded': mediumDarkGrey,
-    };
+      'faded': darkGrey,
+    }
+  , colors = {
+      'background': backgroundBlue
+    }
 
 var toRGB = (color) => {
   return 'rgb('+color+')';
@@ -50,4 +53,11 @@ export default {
 
     return toRGB(fontColors[name]);
   },
+
+  getColor: (name) => {
+    if (!name || !colors[name])
+      return toRGB(white);
+
+    return toRGB(colors[name]);
+  }
 }

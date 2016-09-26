@@ -435,9 +435,11 @@ module.exports = function(Person) {
 
         self.patients.forEach(function(patient){
           people.push(patient);
-          patient.caregivers.forEach(function(caregiver){
-            people.push(caregiver);
-          })
+          if (patient.caregivers) {
+            patient.caregivers.forEach(function(caregiver){
+              people.push(caregiver);
+            })
+          }
         })
 
         return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
