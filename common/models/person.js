@@ -429,6 +429,8 @@ module.exports = function(Person) {
       Person.findOne({where: { id : readableUser.id }, include: [{ patients: 'caregivers' }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
+        self = self.toJSON();
+
         var people = [];
 
         self.patients.forEach(function(patient){
@@ -444,6 +446,8 @@ module.exports = function(Person) {
     else if (role == 'patient') {
       Person.findOne({where: { id : readableUser.id }, include: [ 'doctors', 'caregivers' ]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err }); 
+
+        self = self.toJSON();
 
         var people = [];
 
@@ -462,6 +466,8 @@ module.exports = function(Person) {
       Person.findOne({where: { id : readableUser.id }, include: [{ caregivees: ['doctors', 'caregivers'] }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
+        self = self.toJSON();
+        
         var people = [];
 
         self.caregivees.forEach(function(caregivee){

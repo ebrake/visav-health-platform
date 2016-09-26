@@ -125,7 +125,7 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
-      "principalId": "admin",
+      "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "getRelatedPeople"
     },
