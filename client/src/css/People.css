@@ -71,6 +71,11 @@
     text-align: center;
   }
 
+  .goto-telesession-button {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+
   .relation-lists {
     display: flex;
     flex-direction: row;

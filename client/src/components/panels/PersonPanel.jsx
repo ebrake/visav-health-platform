@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+
 import RelatedPersonListItem from '../list-items/RelatedPersonListItem';
 import AddNewRelatedPersonListItem from '../list-items/AddNewRelatedPersonListItem';
+import ImageButton from '../buttons/ImageButton';
 
 import OrganizationActions from '../../alt/actions/OrganizationActions';
 import OrganizationStore from '../../alt/stores/OrganizationStore'
@@ -16,6 +19,7 @@ class PersonPanel extends React.Component {
     };
 
     this.listForRelation = this.listForRelation.bind(this);
+    this.gotoTelesession = this.gotoTelesession.bind(this);
     this.didClickAddNewRelation = this.didClickAddNewRelation.bind(this);
     this.didClickRemoveRelation = this.didClickRemoveRelation.bind(this);
   }
@@ -150,11 +154,17 @@ class PersonPanel extends React.Component {
     console.dir(person);
   }
 
+  gotoTelesession() {
+    this.props.router.push('/telesession?patient='+this.props.person.id+'');
+  }
+
   render() {
     var person = this.props.person;
     var relationLists;
+    var telesessionButton;
     if ( person.role.name === 'doctor' || person.role.name === 'caregiver' ) {
       var patientList = this.listForRelation('patient');
+
       relationLists = 
       <div className='relation-lists'>
         { patientList }
@@ -169,12 +179,16 @@ class PersonPanel extends React.Component {
         { doctorList }
         { caregiverList }
       </div>;
+
+      telesessionButton = 
+      <ImageButton className="goto-telesession-button" text={"Open Telesession Lobby With "+person.firstName+' '+person.lastName} onClick={ this.gotoTelesession } />
     }
 
     return (
       <div className="PersonPanel panel">
         <h1 className="title">{ person.firstName + ' ' + person.lastName }</h1>
         <h2 className="role-label">{ person.role.name }</h2>
+        { telesessionButton }
         { relationLists }
       </div>
     );
@@ -182,7 +196,10 @@ class PersonPanel extends React.Component {
 };
 
 PersonPanel.propTypes = {
-  person: React.PropTypes.object
+  person: React.PropTypes.object,
+  router: React.PropTypes.shape({
+    push: React.PropTypes.func.isRequired
+  }).isRequired
 };
 
-export default PersonPanel;
+export default withRouter(PersonPanel);

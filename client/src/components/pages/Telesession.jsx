@@ -26,15 +26,12 @@ class Telesession extends React.Component {
   }
 
   componentDidMount() {
-    OrganizationActions.getPatient(this.props.location.query.patient)
+    OrganizationActions.getPatient(this.state.patientId)
     .then(function(response){
       if (response.data && response.data.status === 'success') {
         this.setState({
           patient: response.data.patient
         })
-      } else {
-        console.log('Failed to get patient:');
-        console.dir(response);
       }
     }.bind(this))
   }
