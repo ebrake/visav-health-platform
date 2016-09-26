@@ -61,3 +61,10 @@ $button-selected-color: $bright-blue;
 $button-selected-text-color: $dark-text-color;
 $button-hover-color: $bright-blue;
 $button-hover-text-color: $dark-text-color;
+
+$button-disabled-hover-color: $medium-light-grey;
+$button-disabled-text-color: $medium-text-color;
+$button-disabled-hover-text-color: $light-text-color;
+
+$button-destructive-hover-color: $red;
+$button-destructive-hover-text-color: $light-text-color;

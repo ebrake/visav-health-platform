@@ -35,6 +35,10 @@
   justify-content: space-between;
 }
 
+.PeopleListItem {
+  cursor: pointer;
+}
+
 .RelatedPersonListItem {
   .remove-button {
     margin-left: 10px;
@@ -72,7 +76,7 @@
     flex-direction: row;
 
     .relation-list {
-      flex: 1 0 auto;
+      flex: 1 0 1px;
 
       h3 {
         text-transform: capitalize;

@@ -7,6 +7,7 @@
   height: 50px;
   background: $button-color;
   color: $light-text-color;
+  cursor: pointer;
   border: $button-border-color;
 
   &:focus {
@@ -16,6 +17,23 @@
   &:hover {
     background: $button-hover-color;
     color: $button-hover-text-color;
+  }
+
+  &.disabled {
+    color: $medium-text-color;
+    cursor: not-allowed;
+
+    &:hover {
+      background: $button-disabled-hover-color;
+      color: $button-disabled-hover-text-color;
+    }
+  }
+
+  &.destructive {
+    &:hover {
+      background: $button-destructive-hover-color;
+      color: $button-destructive-hover-text-color;
+    }
   }
 
   > span {
