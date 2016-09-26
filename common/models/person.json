@@ -156,6 +156,13 @@
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "destroyCaregiverPatientRelation"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getPatient"
     }
   ],
   "methods": {}

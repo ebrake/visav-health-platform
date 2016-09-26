@@ -1,14 +1,12 @@
 import alt from '../alt'
 
 class HealthEventActions {
-  getHealthEvents(){
+  getHealthEvents(id){
     return function (dispatch) {
-      return fetch(
-        process.env.API_ROOT+'api/healthevents/get', 
-        {
-          headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' })
-        }
-      ).then(responseObject => responseObject.json())
+      return fetch(process.env.API_ROOT+'api/healthevents/get?person='+id+'', {
+        headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' })
+      })
+      .then(response => response.json())
       .then(response => {
         if (response.data.status === 'success') {
           return dispatch(response.data.healthEvents);

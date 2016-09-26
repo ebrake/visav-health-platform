@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import RelatedPersonListItem from '../list-items/RelatedPersonListItem';
 import AddNewRelatedPersonListItem from '../list-items/AddNewRelatedPersonListItem';
 
-import RelationActions from '../../alt/actions/RelationActions';
-import RelationStore from '../../alt/stores/RelationStore'
+import OrganizationActions from '../../alt/actions/OrganizationActions';
+import OrganizationStore from '../../alt/stores/OrganizationStore'
 
 class PersonPanel extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class PersonPanel extends React.Component {
   }
 
   componentDidMount() {
-    RelationActions.getRelatedPeople(this.props.person)
+    OrganizationActions.getRelatedPeople(this.props.person)
     .then(function(response){
       let newState = {};
 
@@ -86,20 +86,20 @@ class PersonPanel extends React.Component {
 
   didClickRemoveRelation(event, relation, person) {
     if (relation === 'doctor') {
-      RelationActions.destroyDoctorPatientRelationship(person, this.props.person)
+      OrganizationActions.destroyDoctorPatientRelationship(person, this.props.person)
       .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
     }
     else if (relation === 'caregiver') {
-      RelationActions.destroyCaregiverPatientRelationship(person, this.props.person)
+      OrganizationActions.destroyCaregiverPatientRelationship(person, this.props.person)
       .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
     } 
     else if (relation === 'patient') {
       if (this.props.person.role && this.props.person.role.name == 'doctor') {
-        RelationActions.destroyDoctorPatientRelationship(this.props.person, person)
+        OrganizationActions.destroyDoctorPatientRelationship(this.props.person, person)
         .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
       }
       else if (this.props.person.role && this.props.person.role.name == 'caregiver') {
-        RelationActions.destroyCaregiverPatientRelationship(this.props.person, person)
+        OrganizationActions.destroyCaregiverPatientRelationship(this.props.person, person)
         .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
       }
     }
@@ -121,20 +121,20 @@ class PersonPanel extends React.Component {
 
   didClickAddNewRelation(event, relation, person) {
     if (relation === 'doctor') {
-      RelationActions.makeDoctorPatientRelationship(person, this.props.person)
+      OrganizationActions.makeDoctorPatientRelationship(person, this.props.person)
       .then(this.updateStateWithNewRelation(relation, person).bind(this));
     }
     else if (relation === 'caregiver') {
-      RelationActions.makeCaregiverPatientRelationship(person, this.props.person)
+      OrganizationActions.makeCaregiverPatientRelationship(person, this.props.person)
       .then(this.updateStateWithNewRelation(relation, person).bind(this));
     } 
     else if (relation === 'patient') {
       if (this.props.person.role && this.props.person.role.name == 'doctor') {
-        RelationActions.makeDoctorPatientRelationship(this.props.person, person)
+        OrganizationActions.makeDoctorPatientRelationship(this.props.person, person)
         .then(this.updateStateWithNewRelation(relation, person).bind(this));
       }
       else if (this.props.person.role && this.props.person.role.name == 'caregiver') {
-        RelationActions.makeCaregiverPatientRelationship(this.props.person, person)
+        OrganizationActions.makeCaregiverPatientRelationship(this.props.person, person)
         .then(this.updateStateWithNewRelation(relation, person).bind(this));
       }
     }

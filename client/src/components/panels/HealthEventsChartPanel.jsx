@@ -17,7 +17,7 @@ class HealthEventsChartPanel extends React.Component {
       chartId: 'HealthEventsChartIdentifierForGlobalChartLegendDatasetToggle'
     };
 
-    HealthEventActions.getHealthEvents();
+    HealthEventActions.getHealthEvents(this.props.patientId);
 
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
   }

@@ -17,7 +17,7 @@ class ExercisesChartPanel extends React.Component {
       chartId: 'ExercisesChartIdentifierForGlobalChartLegendDatasetToggle'
     };
 
-    ExerciseActions.getExercises();
+    ExerciseActions.getExercises(this.props.patientId);
 
     this.exercisesChanged = this.exercisesChanged.bind(this);
   }

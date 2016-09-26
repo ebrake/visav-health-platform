@@ -1,7 +1,7 @@
 import alt from '../alt'
-import RelationActions from '../actions/RelationActions';
+import OrganizationActions from '../actions/OrganizationActions';
 
-class RelationStore {
+class OrganizationStore {
   constructor() {
     this.doctors = [];
     this.caregivers = [];
@@ -10,10 +10,10 @@ class RelationStore {
     this.people = [];
 
     this.bindListeners({
-      handleGetViewablePeople: RelationActions.GET_VIEWABLE_PEOPLE,
-      handleGetRelatedPeople: RelationActions.GET_RELATED_PEOPLE,
-      handleMakeDoctorPatientRelationship: RelationActions.MAKE_DOCTOR_PATIENT_RELATIONSHIP,
-      handleMakeCaregiverPatientRelationship: RelationActions.MAKE_CAREGIVER_PATIENT_RELATIONSHIP
+      handleGetViewablePeople: OrganizationActions.GET_VIEWABLE_PEOPLE,
+      handleGetRelatedPeople: OrganizationActions.GET_RELATED_PEOPLE,
+      handleMakeDoctorPatientRelationship: OrganizationActions.MAKE_DOCTOR_PATIENT_RELATIONSHIP,
+      handleMakeCaregiverPatientRelationship: OrganizationActions.MAKE_CAREGIVER_PATIENT_RELATIONSHIP
     });
   }
 
@@ -61,4 +61,4 @@ class RelationStore {
   }
 }
 
-export default alt.createStore(RelationStore, 'RelationStore');
+export default alt.createStore(OrganizationStore, 'OrganizationStore');
