@@ -34,7 +34,7 @@
 
 2. Add the following line to ~/.bash_profile: `export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin`
 
-3. Login to postgres as a superuser: `sudo -u postgres psql postgres`
+3. Login to postgres as a superuser: `sudo psql`
 
 4. Run the following lines in the Postgres CLI:
  `CREATE USER dillinger WITH PASSWORD 'dillinger';`
