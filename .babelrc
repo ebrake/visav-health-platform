@@ -1,4 +1,4 @@
 {
-  "presets": ["node6","react", "es2015"],
-  "plugins": ["add-module-exports","babel-plugin-transform-decorators-legacy","transform-remove-strict-mode"]
+  "presets": ["airbnb"],
+  "plugins": ["add-module-exports","babel-plugin-transform-decorators-legacy"]
 }
