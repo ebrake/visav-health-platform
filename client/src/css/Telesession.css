@@ -25,6 +25,7 @@
     }
   }
 }
+
 .TelesessionPanels {
   display: flex;
   flex-direction: row;
@@ -37,6 +38,16 @@
   flex-direction: column;
   flex: 0 0 auto;
   margin-left: 10px;
+  padding: 10px;
+
+  .ImageButton {
+    width: 50px;
+    background: transparent;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
 }
 
 .telesession-panel {
@@ -66,7 +77,6 @@
         border-radius: $panel-border-radius;
       }
     }
-    
 
     .publisher-container {
       section {
@@ -124,9 +134,8 @@
   .graph-panel {
     flex: 1 0 auto;
 
-    &:not(:last-child){
+    &:not(:last-child) {
       margin-bottom: 10px;
     }
   }
 }
-

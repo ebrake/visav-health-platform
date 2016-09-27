@@ -7,6 +7,7 @@ $panel-border-radius: 10px;
   padding: 25px 3%;
   background: $color-panel-bg;
   border-radius: $panel-border-radius;
+  border: 1px solid $color-panel-border;
   overflow: hidden;
   display: flex;
   flex-direction: column;

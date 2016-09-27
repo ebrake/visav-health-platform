@@ -4,6 +4,7 @@ var precss = require('precss');
 var postcssEasyImport = require('postcss-easy-import');
 var postcssStripInlineComment = require('postcss-strip-inline-comments');
 var postcssSelectorNot = require('postcss-selector-not');
+var postCssColorFunction = require('postcss-color-function');
 
 var StyleLintPlugin = require('stylelint-webpack-plugin');//css linter
 var customMedia = require("postcss-custom-media")
@@ -110,7 +111,8 @@ module.exports = {
             postcssSelectorNot,
             autoprefixer, 
             precss,
-            customMedia
+            customMedia,
+            postCssColorFunction
             ];
   },
   plugins: [

@@ -4,6 +4,7 @@ var precss = require('precss');
 var postcssEasyImport = require('postcss-easy-import');
 var postcssStripInlineComment = require('postcss-strip-inline-comments');
 var postcssSelectorNot = require('postcss-selector-not');
+var postCssColorFunction = require('postcss-color-function');
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var webpack = require('webpack');
@@ -111,6 +112,7 @@ module.exports = {
             autoprefixer, 
             precss,
             customMedia
+            postCssColorFunction
             ];
   },
   plugins: [

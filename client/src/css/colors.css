@@ -23,7 +23,7 @@ $green: #7ec47e;
 $color-bg: $background-blue;
 $color-header-bg: $foreground-blue;
 $color-panel-bg: $foreground-blue;
-$color-panel-border: black;
+$color-panel-border: color($foreground-blue w(-3%) a(90%));
 $color-panel-light-bg: $dark-grey;
 
 $dark-text-color: $grey;
