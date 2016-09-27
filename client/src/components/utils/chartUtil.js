@@ -54,8 +54,8 @@ function makeHealthEventChartData(healthEvents) {
   //configure datasets to have correct labels and colors
   datasets = datasets.map((d, i) => {
     d.label = 'Intensity ('+d.label+')';
-    d.borderColor = colors.getGraphColor(i, 1);
-    d.backgroundColor = colors.getGraphColor(i, 0.3);
+    d.borderColor = colors.getGraphColor(i);
+    d.backgroundColor = colors.getGraphColor(i, 'faded');
     return d;
   });
 
@@ -117,8 +117,8 @@ function makeExerciseChartData(exercises) {
   //configure datasets to have correct labels and colors, add extra information
   datasets = datasets.map((d, i) => {
     d.label = 'Degrees ('+d.label+')';
-    d.borderColor = colors.getGraphColor(i, 1);
-    d.backgroundColor = colors.getGraphColor(i, 0.3);
+    d.borderColor = colors.getGraphColor(i);
+    d.backgroundColor = colors.getGraphColor(i, 'faded');
     return d;
   });
 
@@ -146,8 +146,8 @@ function makeRepChartData(exercise) {
   //configure datasets to have correct labels and colors
   datasets = datasets.map((d, i) => {
     d.label = 'Degrees ('+d.label+')';
-    d.borderColor = colors.getGraphColor(i, 1);
-    d.backgroundColor = colors.getGraphColor(i, 0.3);
+    d.borderColor = colors.getGraphColor(i);
+    d.backgroundColor = colors.getGraphColor(i, 'faded');
     return d;
   });
 
