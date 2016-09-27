@@ -1,0 +1,41 @@
+@import 'colors.css';
+
+.visav-logo {
+  .logo-letter-container {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 20px;
+
+    &:not(:last-child) {
+      margin-right: 2px;
+    }
+
+    .logo-letter {
+      display: inline-block;
+      padding-top: 4px;
+    }
+
+    &.dark-blue {
+      background-color: $foreground-blue;
+    }
+
+    &.light-blue {
+      background-color: $bright-blue;
+    }
+
+    &.purple {
+      background-color: $purple;
+    }
+
+    &.orange {
+      background-color: $orange;
+    }
+
+    &.red {
+      background-color: $red;
+    }
+  }
+}

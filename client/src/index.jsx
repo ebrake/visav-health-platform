@@ -35,6 +35,7 @@ import './css/Account.css';
 import './css/Example.css';
 import './css/InviteUsers.css';
 import './css/LeftNav.css';
+import './css/Logo.css';
 import './css/SegmentedControl.css'
 import './css/Telesession.css';
 import './css/People.css';

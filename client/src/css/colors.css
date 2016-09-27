@@ -1,8 +1,6 @@
 /* colors */
 $bright-blue: #7299cc;
 $light-blue: #969cb4;
-$medium-blue: #3c3e4a;
-$dark-blue: #2b2e35;
 
 $purple: #a792e0;
 
@@ -26,6 +24,7 @@ $color-panel-bg: $foreground-blue;
 $color-panel-border: black;
 $color-panel-light-bg: $dark-grey;
 
+$header-text-color: $foreground-blue;
 $dark-text-color: $grey;
 $light-text-color: $light-grey;
 $secondary-text-color: $light-blue;
@@ -49,11 +48,11 @@ $divider-color: $dark-text-color;
 /* NAVIGATION */
 
 $nav-item-bg: transparent;
-$nav-item-text: $light-text-color;
-$nav-item-bg-selected: $bright-blue;
-$nav-item-text-selected: $dark-text-color;
-$nav-item-bg-hover: $bright-blue;
-$nav-item-text-hover: $dark-text-color;
+$nav-item-text: $header-text-color;
+$nav-item-bg-selected: $orange;
+$nav-item-text-selected: $header-text-color;
+$nav-item-bg-hover: $purple;
+$nav-item-text-hover: $header-text-color;
 
 /* BUTTONS */
 
@@ -62,7 +61,7 @@ $button-border-color: black;
 $button-text-color: $light-text-color;
 $button-selected-color: $bright-blue;
 $button-selected-text-color: $dark-text-color;
-$button-hover-color: $bright-blue;
+$button-hover-color: $purple;
 $button-hover-text-color: $light-text-color;
 
 $button-disabled-hover-color: $dark-grey;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NavItem from '../list-items/NavItem'
 import AccountStore from '../../alt/stores/AccountStore';
+import VISAV from '../misc/VISAV';
 
 class MainHeader extends React.Component {
   constructor(props) {
@@ -19,9 +20,9 @@ class MainHeader extends React.Component {
     return (
       <div className="MainHeader header">
         <div className="header-row">
-          <h1 className="title">Visav</h1>
+          <VISAV />
           <ul className="horizontal-nav nav">
-            <NavItem title="Account" />
+            <NavItem title={this.state.user ? this.state.user.firstName+' '+this.state.user.lastName : 'Account' } path="/account" />
           </ul>
         </div>
       </div>
