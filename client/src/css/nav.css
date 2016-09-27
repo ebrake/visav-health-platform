@@ -41,6 +41,8 @@
   justify-content: center;
 
   span {
+    font-weight: 500;
+    white-space: nowrap;
     color: $nav-item-text;
   }
 

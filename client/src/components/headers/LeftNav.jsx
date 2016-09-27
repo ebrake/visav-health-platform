@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import NavItem from '../list-items/NavItem'
 import AccountStore from '../../alt/stores/AccountStore';
-import VISAV from '../misc/VISAV';
 
-class MainHeader extends React.Component {
+class LeftNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,16 +17,16 @@ class MainHeader extends React.Component {
     }
 
     return (
-      <div className="MainHeader header">
-        <div className="header-row">
-          <VISAV />
-          <ul className="horizontal-nav nav">
-            <NavItem title={this.state.user ? this.state.user.firstName+' '+this.state.user.lastName : 'Account' } path="/account" />
-          </ul>
+      <div className="LeftNav nav panel flex-column">
+        <div className="vertical-nav" id="left-nav">
+          <NavItem title="Home" path="/me" />
+          <NavItem title="People" />
+          {InviteNavItem}
+          <NavItem title="Logout" />
         </div>
       </div>
     );
   }
 };
 
-export default MainHeader;
+export default LeftNav;
