@@ -21,7 +21,7 @@ class Telesession extends React.Component {
     this.state = {
       user: user,
       patient: undefined,
-      patientId: this.props.location.query.patient || ''
+      patientId: this.props.location.query.patient || 2
     };
   }
 
@@ -37,6 +37,7 @@ class Telesession extends React.Component {
   }
 
   render() {
+
     return (
       <div className="Telesession content-container row-gt-sm">
         <div className="left-column charts-container">

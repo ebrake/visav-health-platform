@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PeopleListItem from '../list-items/PeopleListItem';
+import PeopleListItem from '../lists/PeopleListItem';
 import OrganizationStore from '../../alt/stores/OrganizationStore'
 
 class PeopleListPanel extends React.Component {

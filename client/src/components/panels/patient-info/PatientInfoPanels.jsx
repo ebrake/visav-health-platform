@@ -39,6 +39,7 @@ class PatientInfoPanels extends React.Component {
 
   didSelectSubsection(subsection){
     var self = this;
+    var patient = this.props.patient;
     return function(event){
       var content;
       if( subsection === 'main'){
@@ -63,7 +64,6 @@ class PatientInfoPanels extends React.Component {
   }
 
   render() {
-
     return (
       <div className="PatientInfoPanels">
         <div className='displayed-content-container'>

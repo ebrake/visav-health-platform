@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 
-import RelatedPersonListItem from '../list-items/RelatedPersonListItem';
-import AddNewRelatedPersonListItem from '../list-items/AddNewRelatedPersonListItem';
+import RelatedPersonListItem from '../lists/RelatedPersonListItem';
+import AddNewRelatedPersonListItem from '../lists/AddNewRelatedPersonListItem';
 import ImageButton from '../buttons/ImageButton';
 
 import OrganizationActions from '../../alt/actions/OrganizationActions';
