@@ -14,7 +14,7 @@
     align-items: center;
 
     .NavItem {
-      span {
+      .btn-text-content {
         color: $header-text-color;
       }
     }

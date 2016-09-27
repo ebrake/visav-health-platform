@@ -14,11 +14,11 @@ var brightBlue = '114, 153, 204'
   , grey = '114, 129, 150'
   , lightGrey = '230, 230, 230'
   , graphColors = [
-      brightBlue,
-      purple,
-      green,
       red,
       orange,
+      brightBlue,
+      green, 
+      purple,
     ]
   , fontColors = {
       'dark': grey,

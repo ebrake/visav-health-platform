@@ -112,14 +112,12 @@ class ImageButton extends React.Component {
     'ImageButton';
     
     return (
-      <button onClick={this.props.onClick} className={classNames} onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
-        <span>
-          <div className="btn-image-content" style={imageContentStyle}/>
-          <div className="btn-text-content" style={textContentStyle}>
-            {this.props.text}
-          </div>
-        </span>
-      </button>
+      <div onClick={this.props.onClick} className={classNames} onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+        <div className="btn-image-content" style={imageContentStyle}></div>
+        <div className="btn-text-content" style={textContentStyle}>
+          {this.props.text}
+        </div>
+      </div>
     );
   }
 };

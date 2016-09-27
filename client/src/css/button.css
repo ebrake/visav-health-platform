@@ -9,6 +9,11 @@
   color: $light-text-color;
   cursor: pointer;
   border: $button-border-color;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
   &:focus {
     outline: 0 solid $button-hover-color;
@@ -36,26 +41,17 @@
     }
   }
 
-  > span {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  .btn-image-content {
+    flex: 1 0 30%;
     height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+  }
 
-    .btn-image-content {
-      flex: 1 0 30%;
-      height: 100%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-color: transparent;
-      background-position: center;
-    }
-
-    .btn-text-content {
-      flex: 1 0 70%;
-      font-size: 16px;
-    }
+  .btn-text-content {
+    flex: 1 0 70%;
+    font-size: 16px;
   }
 }

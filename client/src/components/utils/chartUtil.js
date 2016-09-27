@@ -215,6 +215,9 @@ var axes = {
     position: 'bottom',
     ticks: {
       fontColor: colors.getFontColor('light')
+    },
+    gridLines: {
+      display: false
     }
   }],
 
@@ -223,12 +226,18 @@ var axes = {
     position: 'bottom',
     ticks: {
       fontColor: colors.getFontColor('light')
+    },
+    gridLines: {
+      display: false
     }
   }],
 
   defaultYAxes: [{
     ticks: {
       fontColor: colors.getFontColor('light')
+    },
+    gridLines: {
+      display: false
     }
   }]
 }

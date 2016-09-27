@@ -18,6 +18,7 @@
     .logo-letter {
       font-size: 16px;
       padding-top: 4px;
+      color: white;
     }
 
     &.dark-blue {
