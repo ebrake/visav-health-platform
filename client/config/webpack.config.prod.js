@@ -111,7 +111,7 @@ module.exports = {
             postcssSelectorNot,
             autoprefixer, 
             precss,
-            customMedia
+            customMedia,
             postCssColorFunction
             ];
   },

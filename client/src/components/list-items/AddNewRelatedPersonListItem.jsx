@@ -21,7 +21,6 @@ class AddNewRelatedPersonListItem extends React.Component {
   }
 
   peopleForRelation(){
-    let relationState = RelationStore.getState();
     var relation = this.props.relation;
     let organizationState = OrganizationStore.getState();
     var people;

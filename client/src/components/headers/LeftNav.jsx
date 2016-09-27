@@ -13,16 +13,16 @@ class LeftNav extends React.Component {
   render () {
     let InviteNavItem = null;
     if (["owner", "admin"].indexOf(this.state.user.role.name) >= 0) {
-      InviteNavItem = (<NavItem title="Invite" />);
+      InviteNavItem = (<NavItem imgSrc="circle.png" path="/invite" />);
     }
 
     return (
-      <div className="LeftNav nav panel flex-column">
+      <div className="LeftNav nav flex-column">
         <div className="vertical-nav" id="left-nav">
-          <NavItem title="Home" path="/me" />
-          <NavItem title="People" />
+          <NavItem imgSrc="circle.png" path="/me" />
+          <NavItem imgSrc="circle.png" path="/people" />
           {InviteNavItem}
-          <NavItem title="Logout" />
+          <NavItem imgSrc="circle.png" path="/logout" />
         </div>
       </div>
     );

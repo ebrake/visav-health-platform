@@ -14,11 +14,11 @@ var brightBlue = '114, 153, 204'
   , grey = '114, 129, 150'
   , lightGrey = '230, 230, 230'
   , graphColors = [
-      brightBlue,
-      purple,
-      green,
-      red,
-      orange,
+      { color: red, opacity: 0.2 },
+      { color: orange, opacity: 0.2 },
+      { color: brightBlue, opacity: 0.4 },
+      { color: green,  opacity: 0.3 },
+      { color: purple, opacity: 0.3 },
     ]
   , fontColors = {
       'dark': grey,
@@ -41,10 +41,10 @@ var toRGBA = (color, opacity) => {
 }
 
 export default {
-  getGraphColor: (i, opacity) => {
+  getGraphColor: (i, faded) => {
     if (i > graphColors.length) return toRGBA(white);
     if (typeof opacity !== 'number') opacity = 1;
-    return toRGBA(graphColors[i], opacity);
+    return toRGBA(graphColors[i].color, faded ? graphColors[i].opacity : 1);
   },
 
   getFontColor: (name) => {

@@ -26,7 +26,7 @@ class ExercisesChartPanel extends React.Component {
     return {
       scales: {
         xAxes: chartUtil.axes.timeXAxes,
-        yAxes: chartUtil.axes.defaultYAxes
+        yAxes: chartUtil.axes.defaultYAxes,
       },
       tooltips: {
         callbacks: {
