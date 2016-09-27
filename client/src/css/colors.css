@@ -21,7 +21,7 @@ $green: #7ec47e;
 /* ALIASES */
 
 $color-bg: $background-blue;
-$color-header-bg: $foreground-blue;
+$color-header-bg: white;
 $color-panel-bg: $foreground-blue;
 $color-panel-border: black;
 $color-panel-light-bg: $dark-grey;

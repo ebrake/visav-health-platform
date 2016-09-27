@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import AccountStore from '../../alt/stores/AccountStore';
 import MainHeader from '../headers/MainHeader';
+import LeftNav from '../headers/LeftNav';
 import Roles from '../utils/Roles';
 
 function userIsAuthenticatedForComponent(user, ComposedComponent) {
@@ -58,9 +59,12 @@ export default (ComposedComponent) => {
       return (
       <div className="page">
         <MainHeader />
-        <ComposedComponent
-          {...this.props}
-          user={this.state.user} />
+        <div className="flex-row body-container">
+          <LeftNav />
+          <ComposedComponent
+            {...this.props}
+            user={this.state.user} />
+        </div>
       </div>
       );
     }
