@@ -1,0 +1,71 @@
+@import 'colors.css';
+
+
+.PatientInfoPanels{
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+
+  .displayed-content{
+    flex: 1 0 auto;
+    margin-right: 10px;
+  }
+  .control-panel{
+    flex: 0 0 auto;
+    margin-left: 10px;
+
+    .ImageButton{
+      width: 50px;
+
+    }
+  }
+}
+
+.PatientInfoPanel {
+  overflow: hidden;
+  flex: 1 0 50%;
+  
+  @media (--lt-md) {
+    flex: 1 0 auto;
+  }
+  .columns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: scroll;
+  }
+
+  .right-column,
+  .left-column {
+    flex: 1 0 290px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+
+    ul {
+      padding-left: 17px;
+
+      @media (--gt-xs) {
+        padding-right: 10px;
+      }
+
+      > li {
+        margin-bottom: 10px;
+      }
+
+      > li > ul {
+        margin-top: 5px;
+
+        > li {
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+
+  > .right-column {
+    @media (--gt-xs) {
+      margin-left: 20px;
+    }
+  }
+}

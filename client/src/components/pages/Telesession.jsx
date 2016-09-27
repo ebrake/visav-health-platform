@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import RepsChartPanel from '../panels/RepsChartPanel';
-import PatientInfoPanel from '../panels/PatientInfoPanel';
+import PatientInfoPanels from '../panels/patient-info/PatientInfoPanels';
 import TelesessionPanels from '../panels/TelesessionPanels';
 
 import ExercisesChartPanel from '../panels/ExercisesChartPanel';
@@ -46,7 +46,7 @@ class Telesession extends React.Component {
         </div>
         <div className="right-column">
           <TelesessionPanels patient={this.state.patient} />
-          <PatientInfoPanel patient={this.state.patient} />
+          <PatientInfoPanels patient={this.state.patient} />
         </div>
       </div>
     );

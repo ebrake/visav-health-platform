@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import LocalizedStrings from 'react-localization';
-import SegmentedControl from 'react-segmented-control'
-import HealthEventStore from '../../alt/stores/HealthEventStore';
-import ExerciseStore from '../../alt/stores/ExerciseStore';
+import HealthEventStore from '../../../alt/stores/HealthEventStore';
+import ExerciseStore from '../../../alt/stores/ExerciseStore';
 
 class PatientInfoPanel extends React.Component {
   

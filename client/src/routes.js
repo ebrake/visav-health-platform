@@ -6,8 +6,6 @@ import OrganizationActions from './alt/actions/OrganizationActions';
 import alt from './alt/alt';
 
 import Telesession from './components/pages/Telesession.jsx'
-import PatientProfile from './components/pages/patient/PatientProfile'
-import DoctorProfile from './components/pages/doctor/DoctorProfile'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
 import SetPassword from './components/pages/SetPassword.jsx'
@@ -61,8 +59,6 @@ var routes = (
     { /* AUTHENTICATED PAGES */ }
     <Route path="/me" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/telesession" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
-    <Route path="/patient" component={PatientProfile} onEnter={authCheck} onLeave={cacheStores} />
-    <Route path="/doctor" component={DoctorProfile} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/account" component={Account} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/invite" component={InviteUsers} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/people" component={People} onEnter={authCheck} onLeave={cacheStores} />

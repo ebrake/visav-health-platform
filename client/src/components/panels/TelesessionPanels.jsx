@@ -188,7 +188,7 @@ class TelesessionPanels extends React.Component {
           <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber btn-overlay" />
         </div>
         :
-        <div className="telesession-control-panel panel">
+        <div className="vertical-control-panel panel">
           <ImageButton onClick={this.createSession.bind(this)} imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
         </div>;
 

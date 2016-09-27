@@ -39,6 +39,7 @@ import './css/Logo.css';
 import './css/SegmentedControl.css'
 import './css/Telesession.css';
 import './css/People.css';
+import './css/PatientInfoPanels.css';
 
 //import main app component
 import App from './components/App.jsx';
