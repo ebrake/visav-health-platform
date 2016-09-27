@@ -212,18 +212,31 @@ var axes = {
       },
       unit: 'day'
     },
-    position: 'bottom'
+    position: 'bottom',
+    ticks: {
+      fontColor: colors.getFontColor('light')
+    }
   }],
 
   categoryXAxes: [{
     type: 'category',
-    position: 'bottom'
+    position: 'bottom',
+    ticks: {
+      fontColor: colors.getFontColor('light')
+    }
+  }],
+
+  defaultYAxes: [{
+    ticks: {
+      fontColor: colors.getFontColor('light')
+    }
   }]
 }
 
 var tooltips = {
   titleFontColor: colors.getFontColor('light'),
-  bodyFontColor: colors.getFontColor('light')
+  bodyFontColor: colors.getFontColor('light'),
+  backgroundColor: colors.getColor('background')
 }
 
 export default {

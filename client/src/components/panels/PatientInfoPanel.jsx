@@ -58,11 +58,11 @@ class PatientInfoPanel extends React.Component {
           <div className="left-column">
             <h2 className="title">Medical Information</h2>
             <ul id="patient-info-list">
-              <li>Name: Kristopher Goudie</li>
-              <li>Date of Birth: 26/07/1973 (43 years old)</li>
+              <li>Name: {this.props.patient ? this.props.patient.firstName+' '+this.props.patient.lastName : ''}</li>
+              <li>Date of Birth: 23/04/1976 (40 years old)</li>
               <li>Gender: Male</li>
-              <li>{"Height: 6'0\""}</li>
-              <li>Weight: 180lbs</li>
+              <li>{"Height: 6'11\""}</li>
+              <li>Weight: 284lbs</li>
               <li>ID: 12313513221</li>
               <li>Known conditions:
                 <ul>
@@ -73,12 +73,12 @@ class PatientInfoPanel extends React.Component {
               </li>
               <li>Caregivers:
                 <ul>
-                  <li>Kate Goudie (Spouse)</li>
+                  <li>Jane Doe (Spouse)</li>
                 </ul>
               </li>
               <li>Doctors:
                 <ul>
-                  <li>Dr. Frank Eagen (Primary Physician)</li>
+                  <li>Dr. John Johnson (Primary Physician)</li>
                 </ul>
               </li>
             </ul>
@@ -108,7 +108,7 @@ class PatientInfoPanel extends React.Component {
 };
 
 PatientInfoPanel.propTypes = {
-  user: React.PropTypes.object.isRequired
+  patient: React.PropTypes.object
 };
 
 export default PatientInfoPanel;

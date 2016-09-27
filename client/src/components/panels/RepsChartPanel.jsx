@@ -17,7 +17,7 @@ class RepsChartPanel extends React.Component {
       chartId: 'RepsChartIdentifierForGlobalChartLegendDatasetToggle'
     };
 
-    ExerciseActions.getExercises();
+    ExerciseActions.getExercises(this.props.patientId);
 
     this.exercisesChanged = this.exercisesChanged.bind(this);
   }
@@ -25,11 +25,13 @@ class RepsChartPanel extends React.Component {
   chartOptions(){
     return {
       scales: {
-        xAxes: chartUtil.axes.categoryXAxes
+        xAxes: chartUtil.axes.categoryXAxes,
+        yAxes: chartUtil.axes.defaultYAxes
       },
       tooltips: {
         titleFontColor: chartUtil.tooltips.titleFontColor,
-        bodyFontColor: chartUtil.tooltips.bodyFontColor
+        bodyFontColor: chartUtil.tooltips.bodyFontColor,
+        backgroundColor: chartUtil.tooltips.backgroundColor
       },
       legend: chartUtil.legends.defaultLegend,
       responsive: true,

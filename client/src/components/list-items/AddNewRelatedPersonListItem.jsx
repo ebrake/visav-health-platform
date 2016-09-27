@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ImageButton from '../buttons/ImageButton';
 import VisavInput from '../inputs/VisavInput';
-import RelationStore from '../../alt/stores/RelationStore'
+import OrganizationStore from '../../alt/stores/OrganizationStore'
 
 class AddNewRelatedPersonListItem extends React.Component {
   constructor(props) {
@@ -23,16 +23,16 @@ class AddNewRelatedPersonListItem extends React.Component {
   peopleForRelation(){
     let relationState = RelationStore.getState();
     var relation = this.props.relation;
-
+    let organizationState = OrganizationStore.getState();
     var people;
     if (relation === 'patient') {
-      people = relationState.patients;
+      people = organizationState.patients;
     }
     else if (relation === 'doctor') {
-      people = relationState.doctors;
+      people = organizationState.doctors;
     }
     else if (relation === 'caregiver') {
-      people = relationState.caregivers;
+      people = organizationState.caregivers;
     }
     return people;
   }

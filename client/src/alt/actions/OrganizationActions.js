@@ -1,7 +1,7 @@
 import alt from '../alt'
 import responseUtil from '../../components/utils/responseUtil';
 
-class RelationActions {
+class OrganizationActions {
   getViewablePeople() {
     return function(dispatch) {
       return fetch(process.env.API_ROOT + 'api/people/getViewablePeople', {
@@ -29,6 +29,25 @@ class RelationActions {
         body: JSON.stringify({
           person: person
         })
+      })
+      .then(response => response.json())
+      .then(response => {
+        dispatch(response);
+        return response;
+      })
+      .catch(err => {
+        let craftedResponse = responseUtil.craftErrorResponse(err);
+        dispatch(craftedResponse);
+        return craftedResponse;
+      })
+    }
+  }
+
+  getPatient(id) {
+    return function(dispatch) {
+      return fetch(process.env.API_ROOT + 'api/people/getPatient?id='+id+'', {
+        method: 'GET',
+        headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' })
       })
       .then(response => response.json())
       .then(response => {
@@ -110,4 +129,4 @@ class RelationActions {
   }
 }
 
-export default alt.createActions(RelationActions);
+export default alt.createActions(OrganizationActions);

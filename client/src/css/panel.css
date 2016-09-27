@@ -4,7 +4,7 @@
 .panel {
   padding: 25px 3%;
   background: $color-panel-bg;
-  border: 1px solid $color-panel-border;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
 
@@ -13,7 +13,7 @@
     margin: 0 0 10px;
     flex: 0 0 auto;
     font-size: 24px;
-    color: $medium-text-color;
+    color: $light-text-color;
     width: 100%;
   }
 
@@ -50,7 +50,7 @@
   align-self: center;
   align-items: center;
   justify-content: center;
-  color: $medium-text-color;
+  color: $light-text-color;
   min-width: 15%;
 
   .VisavInput {

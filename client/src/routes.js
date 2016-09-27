@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route, browserHistory } from 'react-router'
 import AccountStore from './alt/stores/AccountStore';
 import AccountActions from './alt/actions/AccountActions';
-import RelationActions from './alt/actions/RelationActions';
+import OrganizationActions from './alt/actions/OrganizationActions';
 import alt from './alt/alt';
 
 import Telesession from './components/pages/Telesession.jsx'
@@ -39,12 +39,8 @@ var authCheck = (nextState, replace) => {
     console.log('Not logged in... redirecting...');
     replace('/login');
   }
-  else{
-    RelationActions.getViewablePeople()
-    .then(function(response){
-      console.log('RESPONSE: ');
-      console.dir(response);
-    });
+  else {
+    OrganizationActions.getViewablePeople();
   }
 }
 

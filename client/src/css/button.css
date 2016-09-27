@@ -9,30 +9,32 @@
   color: $light-text-color;
   cursor: pointer;
   border: $button-border-color;
+
   &:focus {
     outline: 0 solid $button-hover-color;
   }
+
   &:hover {
     background: $button-hover-color;
     color: $button-hover-text-color;
   }
-  
-  &.disabled{
+
+  &.disabled {
     color: $medium-text-color;
-    cursor:not-allowed;
+    cursor: not-allowed;
+
     &:hover {
       background: $button-disabled-hover-color;
       color: $button-disabled-hover-text-color;
     }
   }
 
-  &.destructive{
+  &.destructive {
     &:hover {
       background: $button-destructive-hover-color;
       color: $button-destructive-hover-text-color;
     }
   }
-  
 
   > span {
     display: flex;

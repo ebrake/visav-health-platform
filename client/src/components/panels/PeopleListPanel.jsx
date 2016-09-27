@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PeopleListItem from '../list-items/PeopleListItem';
-import RelationStore from '../../alt/stores/RelationStore'
+import OrganizationStore from '../../alt/stores/OrganizationStore'
 
 class PeopleListPanel extends React.Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class PeopleListPanel extends React.Component {
     this.state = {
     };
 
-    let relationState = RelationStore.getState();
+    let relationState = OrganizationStore.getState();
 
     console.log(this.props.displayedRole);
 

@@ -97,6 +97,4 @@ Login.propTypes = {
   }).isRequired
 }
 
-Login = withRouter(Login);
-
-export default Login;
+export default withRouter(Login);

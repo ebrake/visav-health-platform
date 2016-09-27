@@ -8,10 +8,6 @@
     margin-bottom: 10px;
   }
 
-  .visav-text-field {
-    width: 250px;
-  }
-
   .dropdown-container {
     width: 250px;
     margin-bottom: 10px;
@@ -23,6 +19,11 @@
   }
 
   .VisavInput {
+    width: 250px;
+    margin-bottom: 10px;
+  }
+
+  .invite-button {
     width: 250px;
   }
 }

@@ -429,13 +429,17 @@ module.exports = function(Person) {
       Person.findOne({where: { id : readableUser.id }, include: [{ patients: 'caregivers' }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
+        self = self.toJSON();
+
         var people = [];
 
         self.patients.forEach(function(patient){
           people.push(patient);
-          patient.caregivers.forEach(function(caregiver){
-            people.push(caregiver);
-          })
+          if (patient.caregivers) {
+            patient.caregivers.forEach(function(caregiver){
+              people.push(caregiver);
+            })
+          }
         })
 
         return cb(null, { status: 'success', message: 'Related people successfully retrieved', people: people });
@@ -444,6 +448,8 @@ module.exports = function(Person) {
     else if (role == 'patient') {
       Person.findOne({where: { id : readableUser.id }, include: [ 'doctors', 'caregivers' ]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err }); 
+
+        self = self.toJSON();
 
         var people = [];
 
@@ -462,6 +468,8 @@ module.exports = function(Person) {
       Person.findOne({where: { id : readableUser.id }, include: [{ caregivees: ['doctors', 'caregivers'] }]}, function(err, self){
         if (err) return cb(null, { status: 'failure', message: err.message, error: err });
 
+        self = self.toJSON();
+        
         var people = [];
 
         self.caregivees.forEach(function(caregivee){
@@ -580,6 +588,47 @@ module.exports = function(Person) {
       http: { path: '/getRelatedPeople', verb: 'post' },
       returns: { arg: 'data', type: 'object' },
       description: "Returns all related people for the requesting user."
+    }
+  );
+
+  Person.getPatient = function(req, cb) {
+    var err;
+    var readableUser = req.user.toJSON();
+    if (!req.query.id) {
+      err = new Error("No ID provided to query!");
+      err.statusCode = 417;
+      err.code = 'GET_PATIENT_FAILED_MISSING_REQUIREMENT_ID';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    
+    Person.findById(req.query.id)
+    .then(function(patient){
+      var readablePatient = patient ? patient.toJSON() : undefined;
+      if (!readablePatient || readableUser.organization.id != readablePatient.organization.id) {
+        err = new Error("This patient id does not correspond to a patient within the organization");
+        err.statusCode = 422;
+        err.code = 'GET_PATIENT_FAILED_INVALID_REQUIREMENT_ID';
+        throw err;
+      } else {
+        return patient;
+      }
+    })
+    .then(function(patient){
+      return cb(null, { status: 'success', message: 'Found patient', patient: patient });
+    }, function(err){
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    })
+  }
+
+  Person.remoteMethod(
+    "getPatient",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/getPatient', verb: 'get' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Returns the person object of the patient with the id provided in query"
     }
   );
 

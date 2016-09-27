@@ -9,7 +9,7 @@
 
     .title {
       text-transform: capitalize;
-      border-bottom: 1px solid $medium-light-grey;
+      border-bottom: 1px solid $divider-color;
       padding-bottom: 20px;
       margin-bottom: 0;
     }
@@ -27,7 +27,7 @@
 .PeopleListItem {
   width: 100%;
   padding: 0;
-  border-bottom: 1px solid $medium-dark-grey;
+  border-bottom: 1px solid $divider-color;
   padding: 20px 0;
   display: flex;
   align-items: center;
@@ -64,24 +64,30 @@
 
   .role-label {
     text-transform: capitalize;
-    border-bottom: 1px solid $medium-light-grey;
+    border-bottom: 1px solid $divider-color;
     padding-bottom: 20px;
     margin-bottom: 50px;
     width: 100%;
     text-align: center;
   }
 
+  .goto-telesession-button {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+
   .relation-lists {
     display: flex;
     flex-direction: row;
-    .relation-list{
+
+    .relation-list {
       flex: 1 0 1px;
-      
-      h3{
+
+      h3 {
         text-transform: capitalize;
         margin: 0;
         padding-bottom: 10px;
-        border-bottom: 1px solid $medium-dark-grey;
+        border-bottom: 1px solid $divider-color;
       }
 
       &:not(:first-child) {

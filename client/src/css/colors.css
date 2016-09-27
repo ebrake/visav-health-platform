@@ -6,33 +6,35 @@ $dark-blue: #2b2e35;
 
 $purple: #a792e0;
 
-$darkest-grey: #111;
-$dark-grey: #252525;
-$medium-dark-grey: #454545;
-$medium-light-grey: #777;
-$light-grey: #aaa;
-$lightest-grey: #eceef1;
+$background-blue: #35485e;
+$foreground-blue: #2d3e52;
+$dark-grey: #444c5a;
+$grey: #728196;
+$light-grey: #e6e6e6;
 
 $orange: #eda539;
 
-$red: #f45757;
+$red: #f17292;
 
-$green: #e3e304;
+$green: #7ec47e;
 
 /* ALIASES */
 
-$color-bg: $darkest-grey;
-$color-header-bg: $dark-grey;
-$color-panel-bg: $dark-grey;
+$color-bg: $background-blue;
+$color-header-bg: $foreground-blue;
+$color-panel-bg: $foreground-blue;
 $color-panel-border: black;
-$color-panel-light-bg: $medium-dark-grey;
+$color-panel-light-bg: $dark-grey;
 
-$dark-text-color: $medium-dark-grey;
-$medium-text-color: $light-grey;
-$light-text-color: $lightest-grey;
+$dark-text-color: $grey;
+$light-text-color: $light-grey;
 $secondary-text-color: $light-blue;
 $highlight-text-color: $bright-blue;
-$faded-text-color: $medium-dark-grey;
+$faded-text-color: $dark-grey;
+
+/* INPUTS */
+
+$input-border-color: $grey;
 
 /* HEADER */
 
@@ -42,11 +44,12 @@ $header-text: $medium-text-color;
 
 $selectedColor: $bright-blue;
 $primary-graph-color: $bright-blue;
+$divider-color: $dark-text-color;
 
 /* NAVIGATION */
 
 $nav-item-bg: transparent;
-$nav-item-text: $medium-text-color;
+$nav-item-text: $light-text-color;
 $nav-item-bg-selected: $bright-blue;
 $nav-item-text-selected: $dark-text-color;
 $nav-item-bg-hover: $bright-blue;
@@ -54,16 +57,16 @@ $nav-item-text-hover: $dark-text-color;
 
 /* BUTTONS */
 
-$button-color: $medium-dark-grey;
+$button-color: $grey;
 $button-border-color: black;
 $button-text-color: $light-text-color;
 $button-selected-color: $bright-blue;
 $button-selected-text-color: $dark-text-color;
 $button-hover-color: $bright-blue;
-$button-hover-text-color: $dark-text-color;
+$button-hover-text-color: $light-text-color;
 
-$button-disabled-hover-color: $medium-light-grey;
-$button-disabled-text-color: $medium-text-color;
+$button-disabled-hover-color: $dark-grey;
+$button-disabled-text-color: $light-text-color;
 $button-disabled-hover-text-color: $light-text-color;
 
 $button-destructive-hover-color: $red;

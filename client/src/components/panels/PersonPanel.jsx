@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+
 import RelatedPersonListItem from '../list-items/RelatedPersonListItem';
 import AddNewRelatedPersonListItem from '../list-items/AddNewRelatedPersonListItem';
+import ImageButton from '../buttons/ImageButton';
 
-import RelationActions from '../../alt/actions/RelationActions';
-import RelationStore from '../../alt/stores/RelationStore'
+import OrganizationActions from '../../alt/actions/OrganizationActions';
+import OrganizationStore from '../../alt/stores/OrganizationStore'
 
 class PersonPanel extends React.Component {
   constructor(props) {
@@ -16,12 +19,13 @@ class PersonPanel extends React.Component {
     };
 
     this.listForRelation = this.listForRelation.bind(this);
+    this.gotoTelesession = this.gotoTelesession.bind(this);
     this.didClickAddNewRelation = this.didClickAddNewRelation.bind(this);
     this.didClickRemoveRelation = this.didClickRemoveRelation.bind(this);
   }
 
   componentDidMount() {
-    RelationActions.getRelatedPeople(this.props.person)
+    OrganizationActions.getRelatedPeople(this.props.person)
     .then(function(response){
       let newState = {};
 
@@ -86,20 +90,20 @@ class PersonPanel extends React.Component {
 
   didClickRemoveRelation(event, relation, person) {
     if (relation === 'doctor') {
-      RelationActions.destroyDoctorPatientRelationship(person, this.props.person)
+      OrganizationActions.destroyDoctorPatientRelationship(person, this.props.person)
       .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
     }
     else if (relation === 'caregiver') {
-      RelationActions.destroyCaregiverPatientRelationship(person, this.props.person)
+      OrganizationActions.destroyCaregiverPatientRelationship(person, this.props.person)
       .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
     } 
     else if (relation === 'patient') {
       if (this.props.person.role && this.props.person.role.name == 'doctor') {
-        RelationActions.destroyDoctorPatientRelationship(this.props.person, person)
+        OrganizationActions.destroyDoctorPatientRelationship(this.props.person, person)
         .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
       }
       else if (this.props.person.role && this.props.person.role.name == 'caregiver') {
-        RelationActions.destroyCaregiverPatientRelationship(this.props.person, person)
+        OrganizationActions.destroyCaregiverPatientRelationship(this.props.person, person)
         .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
       }
     }
@@ -121,20 +125,20 @@ class PersonPanel extends React.Component {
 
   didClickAddNewRelation(event, relation, person) {
     if (relation === 'doctor') {
-      RelationActions.makeDoctorPatientRelationship(person, this.props.person)
+      OrganizationActions.makeDoctorPatientRelationship(person, this.props.person)
       .then(this.updateStateWithNewRelation(relation, person).bind(this));
     }
     else if (relation === 'caregiver') {
-      RelationActions.makeCaregiverPatientRelationship(person, this.props.person)
+      OrganizationActions.makeCaregiverPatientRelationship(person, this.props.person)
       .then(this.updateStateWithNewRelation(relation, person).bind(this));
     } 
     else if (relation === 'patient') {
       if (this.props.person.role && this.props.person.role.name == 'doctor') {
-        RelationActions.makeDoctorPatientRelationship(this.props.person, person)
+        OrganizationActions.makeDoctorPatientRelationship(this.props.person, person)
         .then(this.updateStateWithNewRelation(relation, person).bind(this));
       }
       else if (this.props.person.role && this.props.person.role.name == 'caregiver') {
-        RelationActions.makeCaregiverPatientRelationship(this.props.person, person)
+        OrganizationActions.makeCaregiverPatientRelationship(this.props.person, person)
         .then(this.updateStateWithNewRelation(relation, person).bind(this));
       }
     }
@@ -150,11 +154,17 @@ class PersonPanel extends React.Component {
     console.dir(person);
   }
 
+  gotoTelesession() {
+    this.props.router.push('/telesession?patient='+this.props.person.id+'');
+  }
+
   render() {
     var person = this.props.person;
     var relationLists;
+    var telesessionButton;
     if ( person.role.name === 'doctor' || person.role.name === 'caregiver' ) {
       var patientList = this.listForRelation('patient');
+
       relationLists = 
       <div className='relation-lists'>
         { patientList }
@@ -169,12 +179,16 @@ class PersonPanel extends React.Component {
         { doctorList }
         { caregiverList }
       </div>;
+
+      telesessionButton = 
+      <ImageButton className="goto-telesession-button" text={"Open Telesession Lobby With "+person.firstName+' '+person.lastName} onClick={ this.gotoTelesession } />
     }
 
     return (
       <div className="PersonPanel panel">
         <h1 className="title">{ person.firstName + ' ' + person.lastName }</h1>
         <h2 className="role-label">{ person.role.name }</h2>
+        { telesessionButton }
         { relationLists }
       </div>
     );
@@ -182,7 +196,10 @@ class PersonPanel extends React.Component {
 };
 
 PersonPanel.propTypes = {
-  person: React.PropTypes.object
+  person: React.PropTypes.object,
+  router: React.PropTypes.shape({
+    push: React.PropTypes.func.isRequired
+  }).isRequired
 };
 
-export default PersonPanel;
+export default withRouter(PersonPanel);

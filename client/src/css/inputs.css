@@ -5,8 +5,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid black;
-  background: $lightest-grey;
+  border: 1px solid $input-border-color;
   box-sizing: border-box;
   padding: 0 10px;
   height: 50px;
@@ -31,8 +30,12 @@
     width: 100%;
     outline: none;
     background: transparent;
-    color: $dark-text-color;
+    color: $light-text-color;
     margin: 12px 0;
+
+    &::placeholder {
+      color: $dark-text-color;
+    }
   }
 
   &.is-active {
