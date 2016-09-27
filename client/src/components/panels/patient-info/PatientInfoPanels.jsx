@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import HealthEventStore from '../../../alt/stores/HealthEventStore';
 import ExerciseStore from '../../../alt/stores/ExerciseStore';
-import PatientInfoPanel from './PatientInfoPanel';
+import PatientInfoPersonalPanel from './PatientInfoPersonalPanel';
+import PatientInfoExercisePanel from './PatientInfoExercisePanel';
+
 import ImageButton from '../../buttons/ImageButton';
 
 class PatientInfoPanels extends React.Component {
@@ -36,37 +38,43 @@ class PatientInfoPanels extends React.Component {
   }
 
   didSelectSubsection(subsection){
-    var content;
-    if( subsection === 'main'){
+    var self = this;
+    return function(event){
+      var content;
+      if( subsection === 'main'){
+        content = <PatientInfoPersonalPanel patient={ this.props.patient } />
+      }
+      else if( subsection === 'appointments'){
+
+      }
+      else if( subsection === 'medications'){
+
+      }
+      else if( subsection === 'exercises'){
+        content = <PatientInfoExercisePanel patient={ this.props.patient } />
+      }
+      else if( subsection === 'reports'){
+
+      }
+      self.setState({ displayedContent: content });
 
     }
-    else if( subsection === 'appointments'){
 
-    }
-    else if( subsection === 'medications'){
-
-    }
-    else if( subsection === 'exercises'){
-
-    }
-    else if( subsection === 'reports'){
-
-    }
   }
 
   render() {
 
     return (
       <div className="PatientInfoPanels">
-        <div className='displayed-content panel'>
+        <div className='displayed-content-container'>
           { this.state.displayedContent }
         </div>
         <div className='vertical-control-panel panel'>
-          <ImageButton text='M' onClick={ this.didSelectSubsection('main') }/>
-          <ImageButton text='A' onClick={ this.didSelectSubsection('appointments') }/>
-          <ImageButton text='M' onClick={ this.didSelectSubsection('medications') }/>
-          <ImageButton text='X' onClick={ this.didSelectSubsection('exercises') }/>
-          <ImageButton text='R' onClick={ this.didSelectSubsection('reports') }/>
+          <ImageButton text='M' onClick={ this.didSelectSubsection('main').bind(this) }/>
+          <ImageButton text='A' onClick={ this.didSelectSubsection('appointments').bind(this) }/>
+          <ImageButton text='M' onClick={ this.didSelectSubsection('medications').bind(this) }/>
+          <ImageButton text='X' onClick={ this.didSelectSubsection('exercises').bind(this) }/>
+          <ImageButton text='R' onClick={ this.didSelectSubsection('reports').bind(this) }/>
         </div>
       </div>
     );
