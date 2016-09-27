@@ -17,12 +17,14 @@ class MainHeader extends React.Component {
       InviteNavItem = (<NavItem title="Invite" />);
     }
 
+    let path = this.props.location.pathname;
+
     return (
       <div className="MainHeader header">
         <div className="header-row">
           <VISAV />
           <ul className="horizontal-nav nav">
-            <NavItem title={this.state.user ? this.state.user.firstName+' '+this.state.user.lastName : 'Account' } path="/account" />
+            <NavItem title={this.state.user ? this.state.user.firstName+' '+this.state.user.lastName : 'Account' } path="/account" className={path=="/account" ? "selected" : ""} />
           </ul>
         </div>
       </div>

@@ -58,9 +58,9 @@ export default (ComposedComponent) => {
     render() {
       return (
       <div className="page">
-        <MainHeader />
+        <MainHeader {...this.props} />
         <div className="flex-row body-container">
-          <LeftNav />
+          <LeftNav {...this.props} />
           <ComposedComponent
             {...this.props}
             user={this.state.user} />
@@ -76,7 +76,5 @@ export default (ComposedComponent) => {
     }).isRequired
   }
 
-  AuthenticatedPage = withRouter(AuthenticatedPage);
-
-  return AuthenticatedPage;
+  return withRouter(AuthenticatedPage);
 };

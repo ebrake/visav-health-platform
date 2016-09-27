@@ -43,7 +43,6 @@ var toRGBA = (color, opacity) => {
 export default {
   getGraphColor: (i, faded) => {
     if (i > graphColors.length) return toRGBA(white);
-    if (typeof opacity !== 'number') opacity = 1;
     return toRGBA(graphColors[i].color, faded ? graphColors[i].opacity : 1);
   },
 
