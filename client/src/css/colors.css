@@ -48,7 +48,7 @@ $divider-color: $dark-text-color;
 /* NAVIGATION */
 
 $nav-item-bg: transparent;
-$nav-item-text: $header-text-color;
+$nav-item-text: $light-text-color;
 $nav-item-bg-selected: $orange;
 $nav-item-text-selected: $header-text-color;
 $nav-item-bg-hover: $purple;

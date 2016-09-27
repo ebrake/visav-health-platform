@@ -12,6 +12,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .NavItem {
+      span {
+        color: $header-text-color;
+      }
+    }
   }
 
   .title {
