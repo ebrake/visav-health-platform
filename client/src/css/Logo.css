@@ -4,17 +4,18 @@
   .logo-letter-container {
     display: inline-block;
     color: white;
-    text-align: center;
     width: 24px;
     height: 24px;
     border-radius: 20px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
 
     &:not(:last-child) {
       margin-right: 2px;
     }
 
     .logo-letter {
-      display: inline-block;
       padding-top: 4px;
     }
 
