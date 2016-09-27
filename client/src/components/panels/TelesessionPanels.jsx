@@ -80,21 +80,19 @@ class TelesessionPanels extends React.Component {
         console.log('A client disconnected.');
         self.disconnectFromSession();
       },
-
-    });
-
-    session.on("streamCreated", function (event) {
-      const subscriber = session.subscribe(event.stream, self.refs.subscriberSection, {
-        insertMode:'append',
-        style: {buttonDisplayMode: 'off'},
-        width: '100%',
-        height: '100%'
-      })
-      subscriber.subscribeToAudio(!self.state.muteSubscriber);
-      self.setState({
-        activeSubscriber: subscriber
-      });
-      console.log('Subscribed to stream: ' + event.stream.id)
+      streamCreated: function (event) {
+        const subscriber = session.subscribe(event.stream, self.refs.subscriberSection, {
+          insertMode:'append',
+          style: {buttonDisplayMode: 'off'},
+          width: '100%',
+          height: '100%'
+        })
+        subscriber.subscribeToAudio(!self.state.muteSubscriber);
+        self.setState({
+          activeSubscriber: subscriber
+        });
+        console.log('Subscribed to stream: ' + event.stream.id)
+      }
     });
 
   }
@@ -145,7 +143,6 @@ class TelesessionPanels extends React.Component {
       //publishAudio is opposite of mute
       this.state.activePublisher.publishAudio(!newVal);
     }
-    
   }
 
   toggleMuteSubscriber(){
@@ -170,7 +167,7 @@ class TelesessionPanels extends React.Component {
     let isMousedOver = this.state.isMousedOver;
     let isActiveSub = (this.state.activeSubscriber != null);
     let isActiveSession = (this.state.activeSession != null);
-    console.log(isActiveSession);
+
     if (this.state.opentokScriptLoaded!=true){
       return (
         <div className="TelesessionPanels">
@@ -182,15 +179,6 @@ class TelesessionPanels extends React.Component {
       )
     }
     else{
-      var vidContainer = 
-        <div className="video-container">
-          <div className={isActiveSub ? 'publisher-container thumb':'publisher-container full'} >
-            <section ref="publisherSection"  />
-          </div>
-          <div className={isActiveSub ? 'subscriber-container full':'subscriber-subscriber hidden'}>
-            <section ref="subscriberSection"  />
-          </div>
-        </div>;
 
       var controlPanel = isActiveSession ?
         <div className="telesession-control-panel panel">
@@ -201,14 +189,20 @@ class TelesessionPanels extends React.Component {
         </div>
         :
         <div className="telesession-control-panel panel">
-          <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
-        </div>
-        ;
+          <ImageButton onClick={this.createSession.bind(this)} imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
+        </div>;
 
       return (
         <div className="TelesessionPanels">
           <div className="telesession-panel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
-            { vidContainer }
+            <div className="video-container">
+              <div className={isActiveSub ? 'publisher-container thumb':'publisher-container full'} >
+                <section ref="publisherSection"  />
+              </div>
+              <div className={isActiveSub ? 'subscriber-container full':'subscriber-subscriber hidden'}>
+                <section ref="subscriberSection"  />
+              </div>
+            </div>
           </div>
           { controlPanel }
         </div>
