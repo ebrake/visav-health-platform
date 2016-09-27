@@ -1,10 +1,13 @@
 @import 'media.css';
 @import 'colors.css';
 
+$panel-border-radius: 10px;
+
 .panel {
   padding: 25px 3%;
   background: $color-panel-bg;
-  border-radius: 5px;
+  border-radius: $panel-border-radius;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 
