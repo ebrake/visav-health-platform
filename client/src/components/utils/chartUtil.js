@@ -130,7 +130,8 @@ function formatDatasets(datasets, addToLabel) {
     d.borderColor = colors.getGraphColor(i);
     d.backgroundColor = colors.getGraphColor(i, 'faded');
     d.pointRadius = 4;
-    d.pointHoverRadius = 8;
+    d.pointHoverRadius = 6;
+    d.pointBackgroundColor = colors.getGraphColor(i);
 
     return d;
   })
@@ -150,39 +151,6 @@ var legends = {
     display: false
   }
 }
-
-//need to pass it an ID so we know which chart to read off the window
-var legendCallback = (chartId) => {
-  return function(chart) {
-    var datasets = chart.data.datasets
-    , legend = chart.legend
-    , generatedHTML = '<ul>';
-
-    legend.legendItems.forEach((item, i) => {
-      generatedHTML += 
-      '<li id="'+chartId+i+'" onClick="globalChartLegendDatasetToggle(event, '+i+', \''+chartId+'\', '+chartId+i+')">'+
-        '<div class="legend-point" style="background-color:'+datasets[i].backgroundColor+';border:3px solid '+datasets[i].borderColor+';"></div>'+
-        '<span>'+item.text+'</span>'+
-      '</li>';
-    })
-
-    generatedHTML += '</ul>';
-
-    return generatedHTML;
-  }
-}
-
-globalChartLegendDatasetToggle = function(e, datasetIndex, chartId, listElement) {
-  var ci = e.view[chartId];
-  var meta = ci.getDatasetMeta(datasetIndex);
-
-  meta.hidden = meta.hidden === null? !ci.data.datasets[datasetIndex].hidden : null;
-
-  ci.update();
-
-  if (meta.hidden) listElement.className = 'toggled';
-  else listElement.className = '';
-};
 
 var axes = {
   timeXAxes: [{

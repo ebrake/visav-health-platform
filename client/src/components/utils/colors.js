@@ -42,7 +42,7 @@ var toRGBA = (color, opacity) => {
 
 export default {
   getGraphColor: (i, faded) => {
-    return toRGBA(white, (faded ? 0.2 : 0.9));
+    return toRGBA(white, (faded ? 0.1 : 0.9));
   },
 
   getFontColor: (name) => {

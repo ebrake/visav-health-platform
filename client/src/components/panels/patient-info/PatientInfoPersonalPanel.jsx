@@ -34,7 +34,7 @@ class PatientInfoPersonalPanel extends React.Component {
 };
 
 PatientInfoPersonalPanel.propTypes = {
-  patient: React.PropTypes.object.isRequired
+  patient: React.PropTypes.object
 };
 
 export default PatientInfoPersonalPanel;
