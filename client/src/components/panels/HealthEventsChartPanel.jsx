@@ -55,7 +55,7 @@ class HealthEventsChartPanel extends React.Component {
       <div className="HealthEventsChartPanel graph-panel panel">
         <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
         <div className="chart-container">
-          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
+          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>
       </div>
     );

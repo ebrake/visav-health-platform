@@ -97,8 +97,7 @@ class ExercisesChartPanel extends React.Component {
       <div className="ExercisesChartPanel graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
         <div className="chart-container">
-          <VisavDropdown options={this.state.dropdownOptions} onChange={this.onExerciseTypeSelected} value={this.state.exercise} placeholder="Select an exercise type..." />
-          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
+          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>
       </div>
     );
