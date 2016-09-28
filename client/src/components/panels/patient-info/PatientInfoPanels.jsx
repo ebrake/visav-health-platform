@@ -3,6 +3,10 @@ import HealthEventStore from '../../../alt/stores/HealthEventStore';
 import ExerciseStore from '../../../alt/stores/ExerciseStore';
 import PatientInfoPersonalPanel from './PatientInfoPersonalPanel';
 import PatientInfoExercisePanel from './PatientInfoExercisePanel';
+import PatientInfoAppointmentPanel from './PatientInfoAppointmentPanel';
+import PatientInfoMedicationPanel from './PatientInfoMedicationPanel';
+import PatientInfoReportPanel from './PatientInfoReportPanel';
+import PatientInfoChatPanel from './PatientInfoChatPanel';
 
 import ImageButton from '../../buttons/ImageButton';
 
@@ -12,8 +16,9 @@ class PatientInfoPanels extends React.Component {
     super(props);
     let healthEventState = HealthEventStore.getState();
     let exerciseState = ExerciseStore.getState();
+
     this.state = {
-      displayedContent: null
+      displayedContent: <PatientInfoPersonalPanel patient={ this.props.patient } />
     };
 
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
@@ -45,16 +50,23 @@ class PatientInfoPanels extends React.Component {
       if( subsection === 'main'){
         content = <PatientInfoPersonalPanel patient={ this.props.patient } />
       }
-      else if( subsection === 'appointments'){
+      else if( subsection === 'appointment'){
+        content = <PatientInfoAppointmentPanel patient={ this.props.patient } />
 
       }
-      else if( subsection === 'medications'){
+      else if( subsection === 'medication'){
+        content = <PatientInfoMedicationPanel patient={ this.props.patient } />
 
       }
-      else if( subsection === 'exercises'){
+      else if( subsection === 'exercise'){
         content = <PatientInfoExercisePanel patient={ this.props.patient } />
       }
-      else if( subsection === 'reports'){
+      else if( subsection === 'report'){
+        content = <PatientInfoReportPanel patient={ this.props.patient } />
+
+      }
+      else if( subsection === 'chat'){
+        content = <PatientInfoChatPanel patient={ this.props.patient } />
 
       }
       self.setState({ displayedContent: content });
@@ -71,10 +83,12 @@ class PatientInfoPanels extends React.Component {
         </div>
         <div className='vertical-control-panel panel'>
           <ImageButton text='M' onClick={ this.didSelectSubsection('main').bind(this) }/>
-          <ImageButton text='A' onClick={ this.didSelectSubsection('appointments').bind(this) }/>
-          <ImageButton text='M' onClick={ this.didSelectSubsection('medications').bind(this) }/>
-          <ImageButton text='X' onClick={ this.didSelectSubsection('exercises').bind(this) }/>
-          <ImageButton text='R' onClick={ this.didSelectSubsection('reports').bind(this) }/>
+          <ImageButton text='A' onClick={ this.didSelectSubsection('appointment').bind(this) }/>
+          <ImageButton text='M' onClick={ this.didSelectSubsection('medication').bind(this) }/>
+          <ImageButton text='X' onClick={ this.didSelectSubsection('exercise').bind(this) }/>
+          <ImageButton text='R' onClick={ this.didSelectSubsection('report').bind(this) }/>
+          <ImageButton text='C' onClick={ this.didSelectSubsection('chat').bind(this) }/>
+
         </div>
       </div>
     );
