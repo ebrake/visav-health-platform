@@ -23,19 +23,14 @@ class HealthEventsChartPanel extends React.Component {
   }
 
   chartOptions(){
+    let tooltips = Object.assign({ callbacks: { title: chartUtil.callbacks.makeTitleIntoDate } }, chartUtil.tooltips);
+
     return {
       scales: {
         xAxes: chartUtil.axes.timeXAxes,
         yAxes: chartUtil.axes.defaultYAxes
       },
-      tooltips: {
-        callbacks: {
-          title: chartUtil.callbacks.makeTitleIntoDate
-        },
-        titleFontColor: chartUtil.tooltips.titleFontColor,
-        bodyFontColor: chartUtil.tooltips.bodyFontColor,
-        backgroundColor: chartUtil.tooltips.backgroundColor
-      },
+      tooltips: tooltips,
       legend: chartUtil.legends.defaultLegend,
       responsive: true,
       maintainAspectRatio: false,

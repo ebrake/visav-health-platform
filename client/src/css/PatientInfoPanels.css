@@ -1,12 +1,12 @@
 @import 'colors.css';
 @import 'media.css';
 
-.PatientInfoPanels{
+.PatientInfoPanels {
   display: flex;
   flex-direction: row;
   flex: 1 1 auto;
 
-  .displayed-content-container{
+  .displayed-content-container {
     flex: 1 0 auto;
     margin-right: 10px;
     display: flex;
@@ -16,13 +16,13 @@
       overflow: scroll;
     }
   }
-  .control-panel{
+
+  .control-panel {
     flex: 0 0 auto;
     margin-left: 10px;
 
-    .ImageButton{
+    .ImageButton {
       width: 50px;
-
     }
   }
 }
@@ -30,10 +30,11 @@
 .PatientInfoPanel {
   overflow: hidden;
   flex: 1 0 50%;
-  
+
   @media (--lt-md) {
     flex: 1 0 auto;
   }
+
   .columns {
     display: flex;
     flex-direction: row;
