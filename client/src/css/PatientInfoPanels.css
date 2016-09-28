@@ -1,27 +1,21 @@
 @import 'colors.css';
 @import 'media.css';
 
-.PatientInfoPanels{
+.PatientInfoPanels {
   display: flex;
   flex-direction: row;
   flex: 1 1 auto;
   width: 100%;
 
-  .displayed-content-container{
+  .panel:first-of-type {
     flex: 1 1 auto;
-    margin-right: 10px;
-    display: flex;
-
-    .panel {
-      flex: 1 1 auto;
-      overflow: scroll;
-    }
+    overflow: scroll;
   }
-  .control-panel{
+  .vertical-control-panel {
     flex: 0 0 auto;
     margin-left: 10px;
 
-    .ImageButton{
+    .ImageButton {
       width: 50px;
 
     }

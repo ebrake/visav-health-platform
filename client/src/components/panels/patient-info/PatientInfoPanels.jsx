@@ -78,9 +78,7 @@ class PatientInfoPanels extends React.Component {
   render() {
     return (
       <div className="PatientInfoPanels">
-        <div className='displayed-content-container'>
-          { this.state.displayedContent }
-        </div>
+        { this.state.displayedContent }
         <div className='vertical-control-panel panel'>
           <ImageButton text='M' onClick={ this.didSelectSubsection('main').bind(this) }/>
           <ImageButton text='A' onClick={ this.didSelectSubsection('appointment').bind(this) }/>

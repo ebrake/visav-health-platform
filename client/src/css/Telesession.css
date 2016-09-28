@@ -17,7 +17,7 @@
   > .right-column {
     display: flex;
     flex-direction: column;
-    flex: 0 1 auto;
+    flex: 0 1 1px;
 
     @media (--gt-sm) {
       margin-left: 10px;
