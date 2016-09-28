@@ -12,9 +12,7 @@ class HealthEventsChartPanel extends React.Component {
     this.state = {
       healthEvents: [],
       chartData: { datasets: [] },
-      chart: undefined,
-      currentLegend: '',
-      chartId: 'HealthEventsChartIdentifierForGlobalChartLegendDatasetToggle'
+      dropdownOptions: []
     };
 
     HealthEventActions.getHealthEvents(this.props.patientId);
@@ -33,19 +31,14 @@ class HealthEventsChartPanel extends React.Component {
       tooltips: tooltips,
       legend: chartUtil.legends.defaultLegend,
       responsive: true,
-      maintainAspectRatio: false,
-      legendCallback: chartUtil.legendCallback(this.state.chartId)
+      maintainAspectRatio: false
     }
-  }
-
-  calculateChartData(healthEvents){
-    return chartUtil.makeHealthEventChartData(healthEvents);
   }
 
   healthEventsChanged(healthEventState){
     this.setState({
       healthEvents: healthEventState.healthEvents,
-      chartData: this.calculateChartData(healthEventState.healthEvents)
+      chartData: chartUtil.makeHealthEventChartData(healthEventState.healthEvents)
     });
   }
 
@@ -57,20 +50,10 @@ class HealthEventsChartPanel extends React.Component {
     HealthEventStore.unlisten(this.healthEventsChanged);
   }
 
-  componentDidUpdate(){
-    if (this.refs.chart.chart_instance.generateLegend().toString() != this.state.currentLegend){
-      this.setState({
-        chart: this.refs.chart.chart_instance,
-        currentLegend: this.refs.chart.chart_instance.generateLegend().toString()
-      })
-    }
-  }
-
   render() {
     return (
       <div className="HealthEventsChartPanel graph-panel panel">
         <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
-        <ChartLegend legendId="HealthEventsChartLegend" chartId={this.state.chartId} chart={this.state.chart} />
         <div className="chart-container">
           <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
         </div>
