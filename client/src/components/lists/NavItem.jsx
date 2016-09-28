@@ -18,8 +18,12 @@ class NavItem extends React.Component {
     }
   }
   render() {
+    let className="NavItem";
+    if (this.props.className)
+      className += ' '+this.props.className;
+
     return (
-      <div className="NavItem">
+      <div className={className}>
         <ImageButton onClick={this.handleClick} imgUrl={this.props.imgSrc} text={this.props.title} />
       </div>
     );

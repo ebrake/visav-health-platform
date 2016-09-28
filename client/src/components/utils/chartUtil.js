@@ -1,21 +1,8 @@
 import colors from './colors.js';
 
-function toMilliseconds(date) {
-  date = new Date(date);
-  return date.getTime();
-}
+/* DATASET FORMATTERS */
 
-function findNewestDate(array) {
-  var retDate = new Date(0);
-  array.forEach(item => {
-    if (new Date(item.date) > retDate) {
-      retDate = new Date(item.date);
-    }
-  })
-
-  return retDate;
-}
-
+/* HEALTHEVENT */
 function makeHealthEventChartData(healthEvents) {
   //compute data
   let twoWeeksAgo = new Date(findNewestDate(healthEvents) - (1000*60*60*24*15))
@@ -51,19 +38,12 @@ function makeHealthEventChartData(healthEvents) {
     }
   }  
 
-  //configure datasets to have correct labels and colors
-  datasets = datasets.map((d, i) => {
-    d.label = 'Intensity ('+d.label+')';
-    d.borderColor = colors.getGraphColor(i);
-    d.backgroundColor = colors.getGraphColor(i, 'faded');
-    return d;
-  });
-
   return {
-    datasets: datasets
+    datasets: formatDatasets(datasets, 'Intensity')
   };
 }
 
+/* EXERCISE */
 function avgValueForExercise(exercise) {
   if (exercise.reps.length > 0) {
     let avg = 0;
@@ -114,19 +94,12 @@ function makeExerciseChartData(exercises) {
     }
   }
 
-  //configure datasets to have correct labels and colors, add extra information
-  datasets = datasets.map((d, i) => {
-    d.label = 'Degrees ('+d.label+')';
-    d.borderColor = colors.getGraphColor(i);
-    d.backgroundColor = colors.getGraphColor(i, 'faded');
-    return d;
-  });
-
   return {
-    datasets: datasets
+    datasets: formatDatasets(datasets, 'Degrees')
   };
 }
 
+/* REPS */
 function makeRepChartData(exercise) {
   //compute data
   let datasets = [{ data: [], label: '' }]
@@ -143,19 +116,26 @@ function makeRepChartData(exercise) {
     }
   }
 
-  //configure datasets to have correct labels and colors
-  datasets = datasets.map((d, i) => {
-    d.label = 'Degrees ('+d.label+')';
-    d.borderColor = colors.getGraphColor(i);
-    d.backgroundColor = colors.getGraphColor(i, 'faded');
-    return d;
-  });
-
   return {
     labels: labels,
-    datasets: datasets
+    datasets: formatDatasets(datasets, 'Degrees')
   };
 }
+
+/* DATASET FORMATTER */
+function formatDatasets(datasets, addToLabel) {
+  return datasets.map((d, i) => {
+    d.label = addToLabel ? addToLabel+' ('+d.label+')' : d.label;
+    d.borderColor = colors.getGraphColor(i);
+    d.backgroundColor = colors.getGraphColor(i, 'faded');
+    d.pointRadius = 4;
+    d.pointHoverRadius = 8;
+
+    return d;
+  })
+}
+
+/* CHART OPTIONS */
 
 var callbacks = {
   makeTitleIntoDate: (arr, data) => {
@@ -234,7 +214,8 @@ var axes = {
 
   defaultYAxes: [{
     ticks: {
-      fontColor: colors.getFontColor('light')
+      fontColor: colors.getFontColor('light'),
+      maxTicksLimit: 4
     },
     gridLines: {
       display: false
@@ -245,8 +226,33 @@ var axes = {
 var tooltips = {
   titleFontColor: colors.getFontColor('light'),
   bodyFontColor: colors.getFontColor('light'),
-  backgroundColor: colors.getColor('background')
+  backgroundColor: colors.getColor('purple'),
+  xPadding: 10,
+  yPadding: 10,
+  titleMarginBottom: 10,
+  titleFontSize: 16,
+  bodyFontSize: 14
 }
+
+/* UTILITY FUNCTIONS */
+
+function toMilliseconds(date) {
+  date = new Date(date);
+  return date.getTime();
+}
+
+function findNewestDate(array) {
+  var retDate = new Date(0);
+  array.forEach(item => {
+    if (new Date(item.date) > retDate) {
+      retDate = new Date(item.date);
+    }
+  })
+
+  return retDate;
+}
+
+/* CHART UTIL */
 
 export default {
   makeHealthEventChartData: (healthEvents) => {

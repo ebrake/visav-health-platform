@@ -28,7 +28,7 @@ var brightBlue = '114, 153, 204'
       'faded': darkGrey,
     }
   , colors = {
-      'background': backgroundBlue
+      purple: purple
     }
 
 var toRGB = (color) => {
@@ -42,9 +42,7 @@ var toRGBA = (color, opacity) => {
 
 export default {
   getGraphColor: (i, faded) => {
-    if (i > graphColors.length) return toRGBA(white);
-    if (typeof opacity !== 'number') opacity = 1;
-    return toRGBA(graphColors[i].color, faded ? graphColors[i].opacity : 1);
+    return toRGBA(white, (faded ? 0.2 : 0.9));
   },
 
   getFontColor: (name) => {
