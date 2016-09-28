@@ -68,7 +68,7 @@ module.exports = {
         loader: 'babel',
         exclude: /node_modules/,
         query: {
-          presets: ['es2016', 'react']
+          presets: ['airbnb']
         }
       },
       {
