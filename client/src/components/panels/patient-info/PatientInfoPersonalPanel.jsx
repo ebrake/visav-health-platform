@@ -15,10 +15,19 @@ class PatientInfoPersonalPanel extends React.Component {
       'Gender': 'Male',
       'Date of Birth': '23/04/1976 (40 years old)'
     }
+
+    var healthInfoDict = {
+      'Medical Conditions': 'Asthma, Arthritis, High Blood Pressure',
+      'Medications': 'Advair, Xeljanz, Diuretics, Aerius',
+      'Allergies': 'Seasonal, Penicilin'
+    }
     return (
       <div className="PatientInfoPersonalPanel panel">
-        <h1 className="title">Patient Information</h1>
+        <h2 className="subsection-title">Patient Information</h2>
         <InfoList infoDict={ infoDict } />
+
+        <h2 className="subsection-title">Health Information</h2>
+        <InfoList infoDict={ healthInfoDict } />
       </div>
     );
   }
