@@ -240,6 +240,5 @@ export default {
   legends: legends,
   axes: axes,
   tooltips: tooltips,
-  legendCallback: legendCallback,
   chartHeight: 270
 }
