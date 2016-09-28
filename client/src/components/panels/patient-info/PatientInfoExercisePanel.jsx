@@ -40,7 +40,6 @@ class PatientInfoExercisePanel extends React.Component {
   }
 
   render() {
-    var healthEventIsDemo;
     
     var healthEventInfoDict = {
       'Type': this.state.lastHealthEvent.type,
@@ -50,7 +49,6 @@ class PatientInfoExercisePanel extends React.Component {
 
     if (this.state.lastHealthEvent && this.state.lastHealthEvent.isDemo) {
       healthEventInfoDict['Demo'] = 'This health event was generated pseudo-randomly. It is not real.';
-
     }
 
     var exerciseInfoDict = {
