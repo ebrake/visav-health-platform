@@ -18,7 +18,7 @@ class PatientInfoPersonalPanel extends React.Component {
 
     var healthInfoDict = {
       'Medical Conditions': 'Asthma, Arthritis, High Blood Pressure',
-      'Medications': 'Advair, Xeljanz, Diuretics, Aerius',
+      'Medications': 'Advair, Aerius, Microzide, Xeljanz',
       'Allergies': 'Seasonal, Penicilin'
     }
     return (
