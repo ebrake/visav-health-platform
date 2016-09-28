@@ -4,6 +4,7 @@ import ChartLegend from './ChartLegend';
 import HealthEventStore from '../../alt/stores/HealthEventStore';
 import HealthEventActions from '../../alt/actions/HealthEventActions';
 import chartUtil from '../utils/chartUtil';
+import VisavDropdown from '../inputs/VisavDropdown';
 
 class HealthEventsChartPanel extends React.Component {
   constructor(props) {
@@ -11,13 +12,24 @@ class HealthEventsChartPanel extends React.Component {
 
     this.state = {
       healthEvents: [],
+      healthEvent: undefined,
       chartData: { datasets: [] },
-      dropdownOptions: []
+      dropdownOptions: [],
     };
 
     HealthEventActions.getHealthEvents(this.props.patientId);
 
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
+    this.onHealthEventTypeSelected = this.onHealthEventTypeSelected.bind(this);
+    this.pickHealthEventIfNoneSelected = this.pickHealthEventIfNoneSelected.bind(this);
+  }
+
+  componentDidMount(){
+    HealthEventStore.listen(this.healthEventsChanged);
+  }
+
+  componentWillUnmount(){
+    HealthEventStore.unlisten(this.healthEventsChanged);
   }
 
   chartOptions(){
@@ -36,25 +48,56 @@ class HealthEventsChartPanel extends React.Component {
   }
 
   healthEventsChanged(healthEventState){
+    let chartData = chartUtil.makeHealthEventChartData(healthEventState.healthEvents);
+    let dropdownOptions = chartData.datasets.map(ds => { return ds.exposedName });
+
     this.setState({
       healthEvents: healthEventState.healthEvents,
-      chartData: chartUtil.makeHealthEventChartData(healthEventState.healthEvents)
+      chartData: chartData,
+      dropdownOptions: dropdownOptions
     });
+
+    this.pickHealthEventIfNoneSelected();
   }
 
-  componentDidMount(){
-    HealthEventStore.listen(this.healthEventsChanged);
+  onHealthEventTypeSelected(selected) {
+    let selectedHealthEvent = selected.value;
+    let chartData = this.state.chartData;
+
+    this.setState({
+      healthEvent: selectedHealthEvent
+    });
+
+    if (this.refs && this.refs.chart && this.refs.chart.chart_instance){
+      let ci = this.refs.chart.chart_instance;
+      chartData.datasets.forEach((ds, i) => {
+        if (ds.exposedName == selectedHealthEvent) {
+          ci.getDatasetMeta(i).hidden = false;
+        } else {
+          ci.getDatasetMeta(i).hidden = true;
+        }
+      })
+      ci.update();
+    }
   }
 
-  componentWillUnmount(){
-    HealthEventStore.unlisten(this.healthEventsChanged);
+  pickHealthEventIfNoneSelected() {
+    if (this.state.healthEvent)
+      return;
+
+    let chartData = this.state.chartData;
+    if (!chartData || !chartData.datasets || chartData.datasets.length < 1)
+      return;
+
+    this.onHealthEventTypeSelected({ value: chartData.datasets[0].exposedName });
   }
 
   render() {
     return (
       <div className="HealthEventsChartPanel graph-panel panel">
         <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
-        <div className="chart-container">
+        <VisavDropdown options={this.state.dropdownOptions} onChange={this.onHealthEventTypeSelected} value={this.state.healthEvent} placeholder="Select type..." />
+        <div className="chart-container account-for-dropdown">
           <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>
       </div>

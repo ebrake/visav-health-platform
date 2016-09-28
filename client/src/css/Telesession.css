@@ -113,6 +113,11 @@
   .graph-panel {
     flex: 1 1 1px;
 
+    .VisavDropdown {
+      margin: 0 auto 20px;
+      width: 250px;
+    }
+
     &:not(:last-child) {
       margin-bottom: 10px;
     }
@@ -124,8 +129,7 @@
   flex: 1 1 1px;
   height: calc(100% - 40px);
 
-  .VisavDropdown {
-    margin: 0 auto;
-    width: 250px;
+  &.account-for-dropdown {
+    height: calc(100% - 93px);
   }
 }

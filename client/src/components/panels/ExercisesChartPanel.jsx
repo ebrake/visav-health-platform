@@ -12,9 +12,9 @@ class ExercisesChartPanel extends React.Component {
 
     this.state = {
       exercises: [],
+      exercise: undefined,
       chartData: { datasets: [] },
       dropdownOptions: [],
-      exercise: undefined
     };
 
     ExerciseActions.getExercises(this.props.patientId);
@@ -22,6 +22,14 @@ class ExercisesChartPanel extends React.Component {
     this.exercisesChanged = this.exercisesChanged.bind(this);
     this.onExerciseTypeSelected = this.onExerciseTypeSelected.bind(this);
     this.pickExerciseIfNoneSelected = this.pickExerciseIfNoneSelected.bind(this);
+  }
+
+  componentDidMount(){
+    ExerciseStore.listen(this.exercisesChanged);
+  }
+
+  componentWillUnmount(){
+    ExerciseStore.unlisten(this.exercisesChanged);
   }
 
   chartOptions(){
@@ -84,19 +92,12 @@ class ExercisesChartPanel extends React.Component {
     this.onExerciseTypeSelected({ value: chartData.datasets[0].exposedName });
   }
 
-  componentDidMount(){
-    ExerciseStore.listen(this.exercisesChanged);
-  }
-
-  componentWillUnmount(){
-    ExerciseStore.unlisten(this.exercisesChanged);
-  }
-
   render() {
     return (
       <div className="ExercisesChartPanel graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
-        <div className="chart-container">
+        <VisavDropdown options={this.state.dropdownOptions} onChange={this.onExerciseTypeSelected} value={this.state.exercise} placeholder="Select an exercise type..." />
+        <div className="chart-container account-for-dropdown">
           <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>
       </div>
