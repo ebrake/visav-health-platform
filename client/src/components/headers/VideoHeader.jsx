@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LocalizedStrings from 'react-localization';
 import SegmentedControl from 'react-segmented-control'
-import NavItem from '../list-items/NavItem'
+import NavItem from '../lists/NavItem'
 class VideoHeader extends React.Component {
   constructor(props) {
     super(props);

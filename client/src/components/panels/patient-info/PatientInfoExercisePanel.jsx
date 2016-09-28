@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import HealthEventStore from '../../../alt/stores/HealthEventStore';
 import ExerciseStore from '../../../alt/stores/ExerciseStore';
+import InfoList from '../../lists/InfoList'
 
 class PatientInfoExercisePanel extends React.Component {
   
@@ -39,35 +40,35 @@ class PatientInfoExercisePanel extends React.Component {
   }
 
   render() {
-    var healthEventIsDemo;
+    
+    var healthEventInfoDict = {
+      'Type': this.state.lastHealthEvent.type,
+      'Date': (new Date(this.state.lastExercise.date)).toLocaleString(),
+      'Perceived Trend': this.state.lastHealthEvent.perceivedTrend
+    }
+
     if (this.state.lastHealthEvent && this.state.lastHealthEvent.isDemo) {
-      healthEventIsDemo = 
-      <li>This health event was generated pseudo-randomly. It is not real.</li>
+      healthEventInfoDict['Demo'] = 'This health event was generated pseudo-randomly. It is not real.';
     }
-    var exerciseIsDemo;
+
+    var exerciseInfoDict = {
+      'Type': this.state.lastExercise.type,
+      'Date': (new Date(this.state.lastExercise.date)).toLocaleString(),
+      'Exercise Length': (Number(this.state.lastExercise.duration)/1000).toFixed(1) + ' seconds'
+    }
     if (this.state.lastExercise && this.state.lastExercise.isDemo) {
-      exerciseIsDemo = 
-      <li>This exercise was generated pseudo-randomly. It is not real.</li>
+      exerciseInfoDict['Demo'] = 'This exercise was generated pseudo-randomly. It is not real.';
     }
+
     return (
       <div className="PatientInfoExercisePanel panel">
         
         <h2 className="title">Last Exercise</h2>
-        <ul id="exercise-info-list">
-          <li>Type: {this.state.lastExercise.type}</li>
-          <li>Date: {(new Date(this.state.lastExercise.date)).toLocaleString()}</li>
-          <li>Exercise length: {(Number(this.state.lastExercise.duration)/1000).toFixed(1)} seconds</li>
-          {exerciseIsDemo}
-        </ul>
+        <InfoList infoDict={ exerciseInfoDict } />
 
         <h2 className="title">Last Health Event</h2>
-        <ul id="health-event-info-list">
-          <li>Type: {this.state.lastHealthEvent.type}</li>
-          <li>Intensity: {(this.state.lastHealthEvent.intensity*10).toFixed(1)}</li>
-          <li>Perceived Trend: {this.state.lastHealthEvent.perceivedTrend}</li>
-          <li>Date: {(new Date(this.state.lastExercise.date)).toLocaleString()}</li>
-          {healthEventIsDemo}
-        </ul>
+        <InfoList infoDict={ healthEventInfoDict } />
+
 
       </div>
     );

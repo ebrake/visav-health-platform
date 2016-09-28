@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavItem from '../list-items/NavItem'
+import NavItem from '../lists/NavItem'
 import AccountStore from '../../alt/stores/AccountStore';
 
 class LeftNav extends React.Component {

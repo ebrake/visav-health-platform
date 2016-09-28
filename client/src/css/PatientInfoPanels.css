@@ -5,14 +5,15 @@
   display: flex;
   flex-direction: row;
   flex: 1 1 auto;
+  width: 100%;
 
   .displayed-content-container {
-    flex: 1 0 auto;
+    flex: 1 1 auto;
     margin-right: 10px;
     display: flex;
 
     .panel {
-      flex: 1 0 auto;
+      flex: 1 1 auto;
       overflow: scroll;
     }
   }
