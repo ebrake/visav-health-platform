@@ -118,3 +118,10 @@
     }
   }
 }
+
+.chart-container {
+  .VisavDropdown {
+    margin: 0 auto;
+    width: 250px;
+  }
+}

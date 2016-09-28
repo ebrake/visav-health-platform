@@ -125,6 +125,7 @@ function makeRepChartData(exercise) {
 /* DATASET FORMATTER */
 function formatDatasets(datasets, addToLabel) {
   return datasets.map((d, i) => {
+    d.exposedName = d.label;
     d.label = addToLabel ? addToLabel+' ('+d.label+')' : d.label;
     d.borderColor = colors.getGraphColor(i);
     d.backgroundColor = colors.getGraphColor(i, 'faded');
@@ -215,7 +216,7 @@ var axes = {
   defaultYAxes: [{
     ticks: {
       fontColor: colors.getFontColor('light'),
-      maxTicksLimit: 4
+      maxTicksLimit: 3
     },
     gridLines: {
       display: false
