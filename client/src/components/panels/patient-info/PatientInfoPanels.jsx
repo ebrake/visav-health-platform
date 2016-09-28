@@ -7,7 +7,6 @@ import PatientInfoAppointmentPanel from './PatientInfoAppointmentPanel';
 import PatientInfoMedicationPanel from './PatientInfoMedicationPanel';
 import PatientInfoReportPanel from './PatientInfoReportPanel';
 import PatientInfoChatPanel from './PatientInfoChatPanel';
-
 import ImageButton from '../../buttons/ImageButton';
 
 class PatientInfoPanels extends React.Component {

@@ -73,7 +73,6 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: srcPath,
         // Disable autoprefixer in css-loader itself:
         // https://github.com/webpack/css-loader/issues/281
         // We already have it thanks to postcss.
@@ -82,7 +81,7 @@ module.exports = {
       {
         test:   /\.style.js$/,
         include: srcPath,
-        loader: "style-loader!css-loader!postcss-loader?parser=postcss-js!babel"
+        loader: "style!css!postcss?parser=postcss-js!babel"
       },
       {
         test: /\.json$/,
@@ -95,6 +94,26 @@ module.exports = {
       {
         test: /\.(mp4|webm)$/,
         loader: 'url?limit=10000'
+      },
+      {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, 
+      {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, 
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/octet-stream"
+      }, 
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "file"
+      }, 
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=image/svg+xml"
       }
     ]
   },
