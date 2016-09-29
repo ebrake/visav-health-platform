@@ -54,7 +54,8 @@
 
     &.selected,
     &:hover {
-      background-color: $nav-item-bg;6
+      background-color: $nav-item-bg;
+
       span {
         color: $header-text-color;
       }
