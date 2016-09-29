@@ -8,7 +8,7 @@ $background-blue: #35485e;
 $foreground-blue: #2d3e52;
 $dark-grey: #444c5a;
 $grey: #728196;
-$light-grey: #e6e6e6;
+$light-grey: #c7c7c7;
 
 $orange: #eda539;
 
@@ -50,23 +50,23 @@ $divider-color: $dark-text-color;
 $nav-item-bg: transparent;
 $nav-item-text: $light-text-color;
 $nav-item-bg-selected: $orange;
-$nav-item-text-selected: $header-text-color;
+$nav-item-text-selected: white;
 $nav-item-bg-hover: $purple;
-$nav-item-text-hover: $header-text-color;
+$nav-item-text-hover: white;
 
 /* BUTTONS */
 
 $button-color: $grey;
-$button-border-color: black;
-$button-text-color: $light-text-color;
+$button-border-color: $color-panel-border;
+$button-text-color: white;
 $button-selected-color: $bright-blue;
-$button-selected-text-color: $dark-text-color;
+$button-selected-text-color: white;
 $button-hover-color: $purple;
-$button-hover-text-color: $light-text-color;
+$button-hover-text-color: white;
 
 $button-disabled-hover-color: $dark-grey;
 $button-disabled-text-color: $light-text-color;
 $button-disabled-hover-text-color: $light-text-color;
 
 $button-destructive-hover-color: $red;
-$button-destructive-hover-text-color: $light-text-color;
+$button-destructive-hover-text-color: white;

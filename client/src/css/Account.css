@@ -3,9 +3,7 @@
 .accounts-button {
   height: 40px;
   width: 100%;
-  background: $button-color;
   border: none;
-  color: $light-text-color;
   margin: 0 auto 10px;
 
   &:hover {
@@ -40,6 +38,8 @@
 }
 
 .Account {
+  align-items: center;
+  justify-content: center;
   .VisavInput {
     margin-bottom: 10px;
   }
