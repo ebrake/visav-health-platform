@@ -34,11 +34,14 @@ class HealthEventsChartPanel extends React.Component {
 
   chartOptions(){
     let tooltips = Object.assign({ callbacks: { title: chartUtil.callbacks.makeTitleIntoDate } }, chartUtil.tooltips);
+    let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));
+    yAxes[0].ticks.suggestedMin = 0;
+    yAxes[0].ticks.suggestedMax = 10;
 
     return {
       scales: {
         xAxes: chartUtil.axes.timeXAxes,
-        yAxes: chartUtil.axes.defaultYAxes
+        yAxes: yAxes
       },
       tooltips: tooltips,
       legend: chartUtil.legends.defaultLegend,
