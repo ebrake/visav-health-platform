@@ -57,16 +57,16 @@ $nav-item-text-hover: white;
 /* BUTTONS */
 
 $button-color: $grey;
-$button-border-color: black;
-$button-text-color: $light-text-color;
+$button-border-color: $color-panel-border;
+$button-text-color: white;
 $button-selected-color: $bright-blue;
-$button-selected-text-color: $dark-text-color;
+$button-selected-text-color: white;
 $button-hover-color: $purple;
-$button-hover-text-color: $light-text-color;
+$button-hover-text-color: white;
 
 $button-disabled-hover-color: $dark-grey;
 $button-disabled-text-color: $light-text-color;
 $button-disabled-hover-text-color: $light-text-color;
 
 $button-destructive-hover-color: $red;
-$button-destructive-hover-text-color: $light-text-color;
+$button-destructive-hover-text-color: white;
