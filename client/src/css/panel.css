@@ -78,7 +78,8 @@ $panel-border-radius: 10px;
   display: flex;
   flex-direction: column;
   flex: 0 0 auto;
-  padding: 10px 0;
+  padding: 0;
+  overflow: hidden;
 
   .VisavIcon {
     width: 60px;

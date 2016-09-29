@@ -67,17 +67,22 @@ class VisavIcon extends React.Component {
     else if (this.props.type === 'logout' ) {
       content = <FontAwesome name='sign-out' />
     }
+    else {
+      content = <FontAwesome name={this.props.type} />
+    }
+
     return content;
   }
-
 
   render () {
     var classNames = this.props.type + ' VisavIcon';
     if (this.props.selected)
       classNames += ' selected';
+    if (this.props.className) 
+      classNames += ' '+this.props.className;
 
     return (
-      <div className={ classNames } onClick={this.props.onClick} >
+      <div {...this.props} className={ classNames } onClick={this.props.onClick} >
         { this.icon() }
       </div>
     );

@@ -129,9 +129,11 @@ function formatDatasets(datasets, addToLabel) {
     d.label = addToLabel ? addToLabel+' ('+d.label+')' : d.label;
     d.borderColor = colors.getGraphColor(i);
     d.backgroundColor = colors.getGraphColor(i, 'faded');
-    d.pointRadius = 4;
-    d.pointHoverRadius = 6;
+    d.pointRadius = 6;
+    d.pointHoverRadius = 10;
     d.pointBackgroundColor = colors.getGraphColor(i);
+    d.pointBorderColor = colors.getColor('blue');
+    d.pointBorderWidth = 4;
 
     return d;
   })
@@ -193,11 +195,11 @@ var axes = {
 }
 
 var tooltips = {
-  titleFontColor: colors.getFontColor('light'),
-  bodyFontColor: colors.getFontColor('light'),
+  titleFontColor: colors.getFontColor('white'),
+  bodyFontColor: colors.getFontColor('white'),
   backgroundColor: colors.getColor('purple'),
-  xPadding: 10,
-  yPadding: 10,
+  xPadding: 15,
+  yPadding: 15,
   titleMarginBottom: 10,
   titleFontSize: 16,
   bodyFontSize: 14
