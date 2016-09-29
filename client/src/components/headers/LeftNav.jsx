@@ -24,6 +24,7 @@ class LeftNav extends React.Component {
           <NavIcon type="telesession" path="/telesession" selected={ path === "/telesession" } />
           <NavIcon type="organization" path="/people" selected={ path === "/people" } />
           {InviteNavIcon}
+          <NavIcon type="account-settings" path="/account" selected={ path === "/account" } />
           <NavIcon type="logout" path="/logout" selected={ path === "/logout" } />
         </div>
       </div>
