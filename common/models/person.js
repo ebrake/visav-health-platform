@@ -827,7 +827,6 @@ module.exports = function(Person) {
         else {
           return CaregiverPatient.destroyById(relation.id)
           .then(function(result){
-            console.log('What is the form of this feedback?');
             return { status: 'success', message: 'Relation successfully removed' };
           })
         }
