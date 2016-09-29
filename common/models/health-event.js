@@ -197,25 +197,32 @@ module.exports = function(HealthEvent) {
     })
   }
 
+  HealthEvent.remoteMethod(
+    "receiveData",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } }
+      ],
+      http: { path: '/create', verb: 'put' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts an array of HealthEvents and persists them to the data source"
+    }
+  );
+
   HealthEvent.retreiveData = function(req, cb) {
-    var person = req.user;
-    if (!person) {
+    var id = req.query.person ? req.query.person : req.user.toJSON().id;
+    if (!id) {
       err = new Error('Valid person required.');
       err.statusCode = 417;
       err.code = 'HEALTH_EVENT_GET_FAILED_MISSING_REQUIREMENTS';
       return cb(null, { status: 'failure', message: err.message, error: err });
     }
-    else if (!person.id){
-      err = new Error('Valid id required on person.id');
-      err.statusCode = 422;
-      err.code = 'HEALTH_EVENT_GET_FAILED_INVALID_REQUIREMENTS';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
+
     HealthEvent.find({
-      where: { person: person.id },
+      where: { person: id },
       include: 'exercise',
       order: "date ASC",
-      limit: req.body.limit || 1000
+      limit: 1000
     }, function(err, data){ 
       if (err) return cb(null, { status: 'failure', message: err.message, error: err });
       return cb(null, { status: 'success', healthEvents: data });
@@ -230,19 +237,7 @@ module.exports = function(HealthEvent) {
       ],
       http: { path: '/get', verb: 'get' },
       returns: { arg: 'data', type: 'array' },
-      description: "Retrieves HealthEvents for this user, up to the last <req.body.limit> or 1000 instances."
-    }
-  );
-
-  HealthEvent.remoteMethod(
-    "receiveData",
-    {
-      accepts: [
-        { arg: 'req', type: 'object', http: { source: 'req' } }
-      ],
-      http: { path: '/create', verb: 'put' },
-      returns: { arg: 'data', type: 'object' },
-      description: "Accepts an array of HealthEvents and persists them to the data source"
+      description: "Retrieves HealthEvents for this user."
     }
   );
 };

@@ -34,8 +34,14 @@ import './css/panel.css';
 import './css/Account.css';
 import './css/Example.css';
 import './css/InviteUsers.css';
+import './css/Logo.css';
 import './css/SegmentedControl.css'
 import './css/Telesession.css';
+import './css/People.css';
+import './css/PatientInfoPanels.css';
+import './css/InfoList.css';
+import 'font-awesome/css/font-awesome.css';
+
 //import main app component
 import App from './components/App.jsx';
 

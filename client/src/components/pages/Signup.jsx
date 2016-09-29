@@ -12,7 +12,9 @@ class Signup extends React.Component {
     this.state = {
       organizationName: '',
       email: '',
-      password: ''
+      password: '',
+      firstName: '',
+      lastName: '',
     };
 
     this.login = this.login.bind(this);
@@ -30,6 +32,8 @@ class Signup extends React.Component {
     AccountActions.createUser({
       email: this.state.email,
       password: this.state.password,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
       organizationName: this.state.organizationName
     })
     .then(function(response){
@@ -80,6 +84,8 @@ class Signup extends React.Component {
           <VisavInput label="Organization Name" valueDidChange={ this.handleChange('organizationName') } />
           <VisavInput label="Email" valueDidChange={ this.handleChange('email') } />
           <VisavInput label="Password" valueDidChange={ this.handleChange('password') } onKeyUp={ this.keyPressed } />
+          <VisavInput label="First Name" valueDidChange={ this.handleChange('firstName') } onKeyUp={ this.keyPressed } />
+          <VisavInput label="Last Name" valueDidChange={ this.handleChange('lastName') } onKeyUp={ this.keyPressed } />
           <ImageButton text="Sign Up" onClick={ this.createUser } />
           <span className="text-link" onClick={ this.goToLogin }>{"Have an account? Log in"}</span>
         </div>

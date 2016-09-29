@@ -1,10 +1,14 @@
 @import 'media.css';
 @import 'colors.css';
 
+$panel-border-radius: 10px;
+
 .panel {
   padding: 25px 3%;
   background: $color-panel-bg;
+  border-radius: $panel-border-radius;
   border: 1px solid $color-panel-border;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 
@@ -13,7 +17,7 @@
     margin: 0 0 10px;
     flex: 0 0 auto;
     font-size: 24px;
-    color: $medium-text-color;
+    color: $light-text-color;
     width: 100%;
   }
 
@@ -50,11 +54,12 @@
   align-self: center;
   align-items: center;
   justify-content: center;
-  color: $medium-text-color;
+  color: $light-text-color;
   min-width: 15%;
 
   .VisavInput {
     width: 100%;
+    margin-bottom: 10px;
   }
 
   .ImageButton {
@@ -70,47 +75,18 @@
   }
 }
 
-.PatientInfoPanel {
-  overflow: hidden;
+.vertical-control-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  padding: 10px;
 
-  .columns {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    overflow: scroll;
-  }
+  .ImageButton {
+    width: 50px;
+    background: transparent;
 
-  .right-column,
-  .left-column {
-    flex: 1 0 290px;
-    display: flex;
-    flex-direction: column;
-    max-width: 100%;
-
-    ul {
-      padding-left: 17px;
-
-      @media (--gt-xs) {
-        padding-right: 10px;
-      }
-
-      > li {
-        margin-bottom: 10px;
-      }
-
-      > li > ul {
-        margin-top: 5px;
-
-        > li {
-          margin-bottom: 5px;
-        }
-      }
-    }
-  }
-
-  > .right-column {
-    @media (--gt-xs) {
-      margin-left: 20px;
+    &:not(:last-child) {
+      margin-bottom: 10px;
     }
   }
 }

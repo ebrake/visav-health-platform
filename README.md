@@ -34,7 +34,7 @@
 
 2. Add the following line to ~/.bash_profile: `export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin`
 
-3. Login to postgres as a superuser: `sudo -u postgres psql postgres`
+3. Login to postgres as a superuser: `sudo psql`
 
 4. Run the following lines in the Postgres CLI:
  `CREATE USER dillinger WITH PASSWORD 'dillinger';`
@@ -117,10 +117,10 @@ Everything will automatically build on Heroku. Just run `git push heroku master`
 
 ## How to Login
 
-There is a predefined test user with following credentials:
+There is a predefined test organization with an account for each role in ['owner', 'admin', 'doctor', 'patient', 'caregiver']:
 
 ```
-Username: dev@test.user
+Username: dev+<role>@krisandbrake.com
 Password: testtest
 ```
 
@@ -139,4 +139,4 @@ Password: testtest
 
 ## How to Generate Documentation.
 1. Run command `npm run doc`
-  The docs will be generated in QA/jsdoc/...
+  The docs will be generated in documentation/...

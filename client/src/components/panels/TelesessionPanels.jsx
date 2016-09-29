@@ -4,7 +4,7 @@ import NotificationActions from '../../alt/actions/NotificationActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import ImageButton from '../buttons/ImageButton';
 
-class TelesessionPanel extends React.Component {
+class TelesessionPanels extends React.Component {
   
 
   constructor(props) {
@@ -13,6 +13,7 @@ class TelesessionPanel extends React.Component {
     this.state = {
       connectionState: null,
       activeSubscriber: null,
+      opentokScriptLoaded: true,
       muteMic: false,
       muteSubscriber: false,
       isMousedOver: false,
@@ -138,46 +139,52 @@ class TelesessionPanel extends React.Component {
   }
 
   render() {
-    // if (!this.state.opentokInitialized){
-    //   return (
-    //     <div className="TelesessionPanel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
-    //       <p>Initializing Video...</p>
-    //     </div>
-    //   )
-    // }
     let isMousedOver = this.state.isMousedOver;
     let isActiveSub = (this.state.activeSubscriber != null);
     let isActiveSession = (TelesessionStore.getState().activeSession != null);
-    var overlay = 
-      <div className={isMousedOver ? 'overlay moused-over' : 'overlay'}>
-        <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hangup.png" className="btn-cancel btn-overlay"/>
-        <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call btn-overlay"/>
-        <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic btn-overlay" />
-        <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber btn-overlay" />
-      </div>
 
-    var createButton =
-      <ImageButton onClick={this.createSession.bind(this)} text="Create New Session" imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
-    var overlayOrCreate = (!isActiveSession)?createButton:overlay;
+    if (this.state.opentokScriptLoaded!=true){
+      return (
+        <div className="TelesessionPanels">
+          <div className="telesession-panel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+            <p>Loading Opentok...</p>
+          </div>
+          <div className="telesession-control-panel panel" />
+        </div>
+      )
+    }
+    else{
 
-    var vidContainer = 
-      <div className="video-container">
-        {overlayOrCreate}
-        <div className={isActiveSub ? 'publisher-container thumb':'publisher-container full'} >
-          <section ref="publisherSection"  />
+      var controlPanel = isActiveSession ?
+        <div className="vertical-control-panel panel">
+          <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hangup.png" className="btn-cancel btn-overlay"/>
+          <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call btn-overlay"/>
+          <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic btn-overlay" />
+          <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber btn-overlay" />
         </div>
-        <div className={isActiveSub ? 'subscriber-container full':'subscriber-subscriber hidden'}>
-          <section ref="subscriberSection"  />
+        :
+        <div className="vertical-control-panel panel">
+          <ImageButton onClick={this.createSession.bind(this)} imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
+        </div>;
+
+      return (
+        <div className="TelesessionPanels">
+          <div className="telesession-panel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+            <div className="video-container">
+              <div className={isActiveSub ? 'publisher-container thumb':'publisher-container full'} >
+                <section ref="publisherSection"  />
+              </div>
+              <div className={isActiveSub ? 'subscriber-container full':'subscriber-subscriber hidden'}>
+                <section ref="subscriberSection"  />
+              </div>
+            </div>
+          </div>
+          { controlPanel }
         </div>
-      </div>
-    
-    return (
-      <div className="TelesessionPanel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
-        {vidContainer}
-      </div>
-    );
+      );
+    }
   }
 };
 
-export default TelesessionPanel;
+export default TelesessionPanels;
 

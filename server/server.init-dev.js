@@ -1,2 +1,2 @@
 require('babel-register');
-require('./server').startServer(require.main === module);
+require('./server')(require.main === module);

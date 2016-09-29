@@ -5,7 +5,6 @@ import moment from 'moment';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import TelesessionActions from '../../alt/actions/TelesessionActions';
 
-@connectToStores
 class ChatPanel extends React.Component {
 
   static getStores() {
@@ -61,12 +60,12 @@ class ChatPanel extends React.Component {
     return (
       <div className="ChatPanel panel">
         <div className="ChatMessageBox">
-          {Rows}
           <textarea className="ChatInputBox" ref="chatTextRef" onKeyPress={this.handleKeyPress} placeholder="Type your message. Press shift + Enter to send" />
+          {Rows}
         </div>
       </div>
     );
   }
 };
 
-export default ChatPanel;
+export default connectToStores(ChatPanel);

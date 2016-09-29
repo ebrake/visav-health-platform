@@ -4,6 +4,7 @@ import ChartLegend from './ChartLegend';
 import HealthEventStore from '../../alt/stores/HealthEventStore';
 import HealthEventActions from '../../alt/actions/HealthEventActions';
 import chartUtil from '../utils/chartUtil';
+import VisavDropdown from '../inputs/VisavDropdown';
 
 class HealthEventsChartPanel extends React.Component {
   constructor(props) {
@@ -11,45 +12,16 @@ class HealthEventsChartPanel extends React.Component {
 
     this.state = {
       healthEvents: [],
+      healthEvent: undefined,
       chartData: { datasets: [] },
-      chart: undefined,
-      currentLegend: '',
-      chartId: 'HealthEventsChartIdentifierForGlobalChartLegendDatasetToggle'
+      dropdownOptions: [],
     };
 
-    HealthEventActions.getHealthEvents();
+    HealthEventActions.getHealthEvents(this.props.patientId);
 
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
-  }
-
-  chartOptions(){
-    return {
-      scales: {
-        xAxes: chartUtil.axes.timeXAxes
-      },
-      tooltips: {
-        callbacks: {
-          title: chartUtil.callbacks.makeTitleIntoDate
-        },
-        titleFontColor: chartUtil.tooltips.titleFontColor,
-        bodyFontColor: chartUtil.tooltips.bodyFontColor
-      },
-      legend: chartUtil.legends.defaultLegend,
-      responsive: true,
-      maintainAspectRatio: false,
-      legendCallback: chartUtil.legendCallback(this.state.chartId)
-    }
-  }
-
-  calculateChartData(healthEvents){
-    return chartUtil.makeHealthEventChartData(healthEvents);
-  }
-
-  healthEventsChanged(healthEventState){
-    this.setState({
-      healthEvents: healthEventState.healthEvents,
-      chartData: this.calculateChartData(healthEventState.healthEvents)
-    });
+    this.onHealthEventTypeSelected = this.onHealthEventTypeSelected.bind(this);
+    this.pickHealthEventIfNoneSelected = this.pickHealthEventIfNoneSelected.bind(this);
   }
 
   componentDidMount(){
@@ -60,22 +32,76 @@ class HealthEventsChartPanel extends React.Component {
     HealthEventStore.unlisten(this.healthEventsChanged);
   }
 
-  componentDidUpdate(){
-    if (this.refs.chart.chart_instance.generateLegend().toString() != this.state.currentLegend){
-      this.setState({
-        chart: this.refs.chart.chart_instance,
-        currentLegend: this.refs.chart.chart_instance.generateLegend().toString()
-      })
+  chartOptions(){
+    let tooltips = Object.assign({ callbacks: { title: chartUtil.callbacks.makeTitleIntoDate } }, chartUtil.tooltips);
+    let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));
+    yAxes[0].ticks.suggestedMin = 0;
+    yAxes[0].ticks.suggestedMax = 10;
+
+    return {
+      scales: {
+        xAxes: chartUtil.axes.timeXAxes,
+        yAxes: yAxes
+      },
+      tooltips: tooltips,
+      legend: chartUtil.legends.defaultLegend,
+      responsive: true,
+      maintainAspectRatio: false
     }
+  }
+
+  healthEventsChanged(healthEventState){
+    let chartData = chartUtil.makeHealthEventChartData(healthEventState.healthEvents);
+    let dropdownOptions = chartData.datasets.map(ds => { return ds.exposedName });
+
+    this.setState({
+      healthEvents: healthEventState.healthEvents,
+      chartData: chartData,
+      dropdownOptions: dropdownOptions
+    });
+
+    this.pickHealthEventIfNoneSelected();
+  }
+
+  onHealthEventTypeSelected(selected) {
+    let selectedHealthEvent = selected.value;
+    let chartData = this.state.chartData;
+
+    this.setState({
+      healthEvent: selectedHealthEvent
+    });
+
+    if (this.refs && this.refs.chart && this.refs.chart.chart_instance){
+      let ci = this.refs.chart.chart_instance;
+      chartData.datasets.forEach((ds, i) => {
+        if (ds.exposedName == selectedHealthEvent) {
+          ci.getDatasetMeta(i).hidden = false;
+        } else {
+          ci.getDatasetMeta(i).hidden = true;
+        }
+      })
+      ci.update();
+    }
+  }
+
+  pickHealthEventIfNoneSelected() {
+    if (this.state.healthEvent)
+      return;
+
+    let chartData = this.state.chartData;
+    if (!chartData || !chartData.datasets || chartData.datasets.length < 1)
+      return;
+
+    this.onHealthEventTypeSelected({ value: chartData.datasets[0].exposedName });
   }
 
   render() {
     return (
       <div className="HealthEventsChartPanel graph-panel panel">
         <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
-        <ChartLegend legendId="HealthEventsChartLegend" chartId={this.state.chartId} chart={this.state.chart} />
-        <div className="chart-container">
-          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
+        <VisavDropdown options={this.state.dropdownOptions} onChange={this.onHealthEventTypeSelected} value={this.state.healthEvent} placeholder="Select type..." />
+        <div className="chart-container account-for-dropdown">
+          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>
       </div>
     );

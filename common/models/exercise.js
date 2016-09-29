@@ -199,38 +199,6 @@ module.exports = function(Exercise) {
     })
   }
 
-  /* RETRIEVE DATA */
-
-  var retrieveLimit = 1000;
-
-  Exercise.retrieveData = function(req, cb) {
-    var limit = req.body.limit || retrieveLimit;
-    var person = req.user;
-
-    if (!person) {
-      err = new Error('Valid person required.');
-      err.statusCode = 417;
-      err.code = 'EXERCISE_GET_FAILED_MISSING_REQUIREMENTS';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-    else if (!person.id){
-      err = new Error('Valid id required on person.id');
-      err.statusCode = 422;
-      err.code = 'EXERCISE_GET_FAILED_INVALID_REQUIREMENTS';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-
-    Exercise.find({
-      where: { person: person.id },
-      include: 'reps',
-      order: "date ASC",
-      limit: limit,
-    }, function(err, data){ 
-      if (err) return cb(null, { status: 'failure', message: err.message, error: err });
-      return cb(null, { status: 'success', exercises: data });
-    });
-  }
-
   Exercise.remoteMethod(
     "receiveData",
     {
@@ -243,6 +211,28 @@ module.exports = function(Exercise) {
     }
   );
 
+  /* RETRIEVE DATA */
+
+  Exercise.retrieveData = function(req, cb) {
+    var id = req.query.person ? req.query.person : req.user.toJSON().id;
+    if (!id) {
+      err = new Error('Valid person required.');
+      err.statusCode = 417;
+      err.code = 'HEALTH_EVENT_GET_FAILED_MISSING_REQUIREMENTS';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    Exercise.find({
+      where: { person: id },
+      include: 'reps',
+      order: "date ASC",
+      limit: 1000,
+    }, function(err, data){ 
+      if (err) return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'success', exercises: data });
+    });
+  }
+
   Exercise.remoteMethod(
     "retrieveData",
     { 
@@ -251,7 +241,7 @@ module.exports = function(Exercise) {
       ],
       http: { path: '/get', verb: 'get' },
       returns: { arg: 'data', type: 'array' },
-      description: "Retrieves Exercises for this user, up to the last <limit> or "+retrieveLimit+" instances."
+      description: "Retrieves Exercises for this user."
     }
   )
 };

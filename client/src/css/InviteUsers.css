@@ -8,21 +8,17 @@
     margin-bottom: 10px;
   }
 
-  .visav-text-field {
-    width: 250px;
-  }
-
-  .dropdown-container {
+  .VisavDropdown {
     width: 250px;
     margin-bottom: 10px;
-
-    & > .Dropdown-root {
-      width: 100%;
-      height: 100%;
-    }
   }
 
   .VisavInput {
+    width: 250px;
+    margin-bottom: 10px;
+  }
+
+  .invite-button {
     width: 250px;
   }
 }

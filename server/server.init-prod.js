@@ -1,2 +1,2 @@
-import { startServer } from './server';
-startServer((require.main === module));
+import server from './server';
+server((require.main === module));

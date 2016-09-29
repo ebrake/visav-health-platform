@@ -36,25 +36,16 @@
   flex: 1 0 1px;
   cursor: pointer;
   background-color: $nav-item-bg;
-  padding: 10px;
   align-items: center;
   justify-content: center;
 
-  span {
-    color: $nav-item-text;
-  }
+  .ImageButton {
+    background-color: $nav-item-bg;
 
-  .img-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30px;
-    width: 30px;
-    margin-right: 10px;
-
-    img {
-      height: 100%;
-      width: 100%;
+    .btn-text-content {
+      font-weight: 500;
+      color: $nav-item-text;
+      white-space: nowrap;
     }
   }
 
@@ -73,4 +64,14 @@
       color: $nav-item-text-hover;
     }
   }
+}
+
+.LeftNav {
+  margin-bottom: 10px;
+  padding: 0;
+  padding: 10px 0 0;
+  border-radius: 0 10px 10px 0;
+  border: 1px solid $color-panel-border;
+  background-color: $color-panel-bg;
+  width: 50px;
 }

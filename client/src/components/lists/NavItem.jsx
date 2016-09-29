@@ -18,8 +18,14 @@ class NavItem extends React.Component {
     }
   }
   render() {
+    let className="NavItem";
+    if (this.props.className)
+      className += ' '+this.props.className;
+
     return (
-      <ImageButton className="NavItem" onClick={this.handleClick} imgUrl={this.props.imgSrc} text={this.props.title} />
+      <div className={className}>
+        <ImageButton onClick={this.handleClick} imgUrl={this.props.imgSrc} text={this.props.title} />
+      </div>
     );
   }
 };
@@ -27,7 +33,7 @@ class NavItem extends React.Component {
 NavItem.propTypes = {
   imgSrc: React.PropTypes.string,
   path: React.PropTypes.string,
-  title: React.PropTypes.string.isRequired,
+  title: React.PropTypes.string,
   router: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired
   }).isRequired

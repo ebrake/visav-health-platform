@@ -19,26 +19,18 @@ function createRole(Role, roleName) {
   })
 }
 
-function createRoles(Role, cb, attempt){
-  attempt = attempt || 0;
+function createRoles(Role, cb){
+  var roles = ['doctor', 'patient', 'caregiver', 'owner', 'admin'];
 
-  var roles = ['doctor', 'patient', 'caregiver', 'owner', 'admin']
-    , threshold = 2;
-
-  if (attempt >= threshold) 
-    return cb(new Error("Issue building roles on boot in server/boot/roles.js."));
-
-  Promise.all(roles.map(function(roleName){
+  return Promise.all(roles.map(function(roleName){
     return createRole(Role, roleName);
   }))
   .then(function(result){
     console.log('The following roles exist:');
     console.log(roles);
-    cb();
-    return null;
-  })
-  .catch(function(err){
-    createRoles(Role, cb, (attempt+1));
+    return cb();
+  }, function(err){
+    return cb(err);
   })
 }
 
@@ -51,5 +43,5 @@ module.exports = function(app, cb) {
    * for more info.
    */
 
-  createRoles(app.models.Role, cb);
+  return createRoles(app.models.Role, cb);
 };

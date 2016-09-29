@@ -3,6 +3,9 @@ var autoprefixer = require('autoprefixer');
 var precss = require('precss');
 var postcssEasyImport = require('postcss-easy-import');
 var postcssStripInlineComment = require('postcss-strip-inline-comments');
+var postcssSelectorNot = require('postcss-selector-not');
+var postCssColorFunction = require('postcss-color-function');
+
 var StyleLintPlugin = require('stylelint-webpack-plugin');//css linter
 var customMedia = require("postcss-custom-media")
 
@@ -70,18 +73,17 @@ module.exports = {
         loader: 'babel',
         exclude: /node_modules/,
         query: {
-          presets: ['es2016', 'react']
+          presets: ['airbnb']
         }
       },
       {
         test: /\.css$/,
-        include: srcPath,
         loader: 'style!css!postcss'
       },
       {
         test:   /\.style.js$/,
         include: srcPath,
-        loader: "style-loader!css-loader!postcss-loader?parser=postcss-js!babel"
+        loader: "style!css!postcss?parser=postcss-js!babel"
       },
       {
         test: /\.json$/,
@@ -94,6 +96,26 @@ module.exports = {
       {
         test: /\.(mp4|webm)$/,
         loader: 'url?limit=10000'
+      },
+      {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, 
+      {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, 
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/octet-stream"
+      }, 
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "file"
+      }, 
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=image/svg+xml"
       }
     ]
   },
@@ -105,9 +127,11 @@ module.exports = {
     return [
             postcssEasyImport,
             postcssStripInlineComment,
+            postcssSelectorNot,
             autoprefixer, 
             precss,
-            customMedia
+            customMedia,
+            postCssColorFunction
             ];
   },
   plugins: [

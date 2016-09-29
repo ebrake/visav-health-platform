@@ -12,12 +12,10 @@ class RepsChartPanel extends React.Component {
     this.state = {
       exercise: undefined,
       chartData: { labels: [], datasets: [] },
-      chart: undefined,
-      currentLegend: '',
-      chartId: 'RepsChartIdentifierForGlobalChartLegendDatasetToggle'
+      dropdownOptions: []
     };
 
-    ExerciseActions.getExercises();
+    ExerciseActions.getExercises(this.props.patientId);
 
     this.exercisesChanged = this.exercisesChanged.bind(this);
   }
@@ -25,37 +23,21 @@ class RepsChartPanel extends React.Component {
   chartOptions(){
     return {
       scales: {
-        xAxes: chartUtil.axes.categoryXAxes
+        xAxes: chartUtil.axes.categoryXAxes,
+        yAxes: chartUtil.axes.defaultYAxes
       },
-      tooltips: {
-        titleFontColor: chartUtil.tooltips.titleFontColor,
-        bodyFontColor: chartUtil.tooltips.bodyFontColor
-      },
+      tooltips: chartUtil.tooltips,
       legend: chartUtil.legends.defaultLegend,
       responsive: true,
-      maintainAspectRatio: false,
-      legendCallback: chartUtil.legendCallback(this.state.chartId)
+      maintainAspectRatio: false
     }
-  }
-
-  calculateChartData(){
-    return chartUtil.makeRepChartData(this.state.exercise);
   }
 
   exercisesChanged(exerciseState){
     this.setState({
       exercise: exerciseState.displayedExercise,
-      chartData: this.calculateChartData(exerciseState.displayedExercise)
+      chartData: chartUtil.makeRepChartData(exerciseState.displayedExercise)
     })
-  }
-
-  componentDidUpdate(){
-    if (this.refs.chart.chart_instance.generateLegend().toString() != this.state.currentLegend){
-      this.setState({
-        chart: this.refs.chart.chart_instance,
-        currentLegend: this.refs.chart.chart_instance.generateLegend().toString()
-      })
-    }
   }
 
   componentDidMount(){
@@ -72,9 +54,8 @@ class RepsChartPanel extends React.Component {
         <h1 className="title">
           Range of Motion: Last Exercise
         </h1>
-        <ChartLegend legendId="RepsChartLegend" chartId={this.state.chartId} chart={this.state.chart} />
         <div className="chart-container">
-          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
+          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>
       </div>
     );

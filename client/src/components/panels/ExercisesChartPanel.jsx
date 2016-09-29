@@ -4,6 +4,7 @@ import ChartLegend from './ChartLegend';
 import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import chartUtil from '../utils/chartUtil';
+import VisavDropdown from '../inputs/VisavDropdown';
 
 class ExercisesChartPanel extends React.Component {
   constructor(props) {
@@ -11,45 +12,16 @@ class ExercisesChartPanel extends React.Component {
 
     this.state = {
       exercises: [],
+      exercise: undefined,
       chartData: { datasets: [] },
-      chart: undefined,
-      currentLegend: '',
-      chartId: 'ExercisesChartIdentifierForGlobalChartLegendDatasetToggle'
+      dropdownOptions: [],
     };
 
-    ExerciseActions.getExercises();
+    ExerciseActions.getExercises(this.props.patientId);
 
     this.exercisesChanged = this.exercisesChanged.bind(this);
-  }
-
-  chartOptions(){
-    return {
-      scales: {
-        xAxes: chartUtil.axes.timeXAxes
-      },
-      tooltips: {
-        callbacks: {
-          title: chartUtil.callbacks.makeTitleIntoDate
-        },
-        titleFontColor: chartUtil.tooltips.titleFontColor,
-        bodyFontColor: chartUtil.tooltips.bodyFontColor
-      },
-      legend: chartUtil.legends.defaultLegend,
-      responsive: true,
-      maintainAspectRatio: false,
-      legendCallback: chartUtil.legendCallback(this.state.chartId)
-    }
-  }
-
-  calculateChartData(exercises){
-    return chartUtil.makeExerciseChartData(exercises);
-  }
-
-  exercisesChanged(exerciseState){
-    this.setState({
-      exercises: exerciseState.exercises,
-      chartData: this.calculateChartData(exerciseState.exercises)
-    });
+    this.onExerciseTypeSelected = this.onExerciseTypeSelected.bind(this);
+    this.pickExerciseIfNoneSelected = this.pickExerciseIfNoneSelected.bind(this);
   }
 
   componentDidMount(){
@@ -60,22 +32,76 @@ class ExercisesChartPanel extends React.Component {
     ExerciseStore.unlisten(this.exercisesChanged);
   }
 
-  componentDidUpdate(){
-    if (this.refs.chart.chart_instance.generateLegend().toString() != this.state.currentLegend){
-      this.setState({
-        chart: this.refs.chart.chart_instance,
-        currentLegend: this.refs.chart.chart_instance.generateLegend().toString()
-      })
+  chartOptions(){
+    let tooltips = Object.assign({ callbacks: { title: chartUtil.callbacks.makeTitleIntoDate } }, chartUtil.tooltips);
+    let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));
+    yAxes[0].ticks.suggestedMin = 50;
+    yAxes[0].ticks.suggestedMax = 115;
+
+    return {
+      scales: {
+        xAxes: chartUtil.axes.timeXAxes,
+        yAxes: yAxes
+      },
+      tooltips: tooltips,
+      legend: chartUtil.legends.defaultLegend,
+      responsive: true,
+      maintainAspectRatio: false
     }
+  }
+
+  exercisesChanged(exerciseState){
+    let chartData = chartUtil.makeExerciseChartData(exerciseState.exercises);
+    let dropdownOptions = chartData.datasets.map(ds => { return ds.exposedName });
+
+    this.setState({
+      exercises: exerciseState.exercises,
+      chartData: chartData,
+      dropdownOptions: dropdownOptions
+    });
+
+    this.pickExerciseIfNoneSelected();
+  }
+
+  onExerciseTypeSelected(selected) {
+    let selectedExercise = selected.value;
+    let chartData = this.state.chartData;
+
+    this.setState({
+      exercise: selectedExercise
+    });
+
+    if (this.refs && this.refs.chart && this.refs.chart.chart_instance){
+      let ci = this.refs.chart.chart_instance;
+      chartData.datasets.forEach((ds, i) => {
+        if (ds.exposedName == selectedExercise) {
+          ci.getDatasetMeta(i).hidden = false;
+        } else {
+          ci.getDatasetMeta(i).hidden = true;
+        }
+      })
+      ci.update();
+    }
+  }
+
+  pickExerciseIfNoneSelected() {
+    if (this.state.exercise)
+      return;
+
+    let chartData = this.state.chartData;
+    if (!chartData || !chartData.datasets || chartData.datasets.length < 1)
+      return;
+
+    this.onExerciseTypeSelected({ value: chartData.datasets[0].exposedName });
   }
 
   render() {
     return (
       <div className="ExercisesChartPanel graph-panel panel">
         <h1 className="title">Range of Motion: Last 2 Weeks</h1>
-        <ChartLegend legendId="ExercisesChartLegend" chartId={this.state.chartId} chart={this.state.chart} />
-        <div className="chart-container">
-          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
+        <VisavDropdown options={this.state.dropdownOptions} onChange={this.onExerciseTypeSelected} value={this.state.exercise} placeholder="Select an exercise type..." />
+        <div className="chart-container account-for-dropdown">
+          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>
       </div>
     );

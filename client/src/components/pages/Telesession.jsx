@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
 import connectToStores from 'alt-utils/lib/connectToStores';
+
+import React, { Component } from 'react';
 import RepsChartPanel from '../panels/RepsChartPanel';
-import PatientInfoPanel from '../panels/PatientInfoPanel';
-import AccountStore from '../../alt/stores/AccountStore'
-import ChatPanel from '../panels/ChatPanel';
-import TelesessionPanel from '../panels/TelesessionPanel';
+import PatientInfoPanels from '../panels/patient-info/PatientInfoPanels';
+import TelesessionPanels from '../panels/TelesessionPanels';
 
 import ExercisesChartPanel from '../panels/ExercisesChartPanel';
 import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
@@ -12,9 +11,12 @@ import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
 import FullscreenAlert from '../misc/FullscreenAlert';
 
+import AccountStore from '../../alt/stores/AccountStore';
+import OrganizationActions from '../../alt/actions/OrganizationActions';
+import ChatPanel from '../panels/ChatPanel';
+
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 
-@connectToStores
 class Telesession extends React.Component {
 
   static getStores() {
@@ -27,16 +29,29 @@ class Telesession extends React.Component {
   
   constructor(props) {
     super(props);
-
-    let accountState = AccountStore.getState();
+    let user = AccountStore.getUser();
 
     this.state = {
-      loggedInUser: accountState.user
+      user: user,
+      patient: undefined,
+      patientId: this.props.location.query.patient || 2
     };
+  }
 
+  componentDidMount() {
+    OrganizationActions.getPatient(this.state.patientId)
+    .then(function(response){
+      if (response.data && response.data.status === 'success') {
+        this.setState({
+          patient: response.data.patient
+        })
+      }
+    }.bind(this))
   }
 
   render() {
+
+    console.log("PROPS",this.props);
 
     var chatPanel;
     // Display chat panel if TelesessionStore=>activeSession exists
@@ -47,13 +62,13 @@ class Telesession extends React.Component {
     return (
       <div className="Telesession content-container row-gt-sm">
         <div className="left-column charts-container">
-          <RepsChartPanel />
-          <ExercisesChartPanel />
-          <HealthEventsChartPanel />
+          <RepsChartPanel patientId={this.state.patientId} />
+          <ExercisesChartPanel patientId={this.state.patientId} />
+          <HealthEventsChartPanel patientId={this.state.patientId} />
         </div>
         <div className="right-column">
-          <TelesessionPanel />
-          <PatientInfoPanel user={this.state.loggedInUser} />
+          <TelesessionPanels patient={this.state.patient} />
+          <PatientInfoPanels patient={this.state.patient} />
           { chatPanel }
         </div>
       </div>
@@ -61,4 +76,4 @@ class Telesession extends React.Component {
   }
 }
 
-export default AuthenticatedPage(Telesession);
+export default AuthenticatedPage(connectToStores(Telesession));
