@@ -67,20 +67,18 @@
 }
 
 $icon-size: 30px;
-$icon-line-size: 32px;
 
 .VisavIcon {
   display: flex;
-  flex-direction: row;
-  flex: 1 0 1px;
   cursor: pointer;
   background-color: $nav-item-bg;
-  align-items: center;
-  justify-content: center;
   font-size: $icon-size;
-  padding: 14px 0;
+  padding: 15px 0;
   background-color: $nav-item-bg;
-  line-height: $icon-line-size;
+
+  > span {
+    margin: 0 auto;
+  }
 
   &.selected {
     background-color: $nav-item-bg-selected;
