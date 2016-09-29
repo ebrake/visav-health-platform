@@ -6,12 +6,13 @@ import OrganizationStore from '../../alt/stores/OrganizationStore'
 class AddNewRelatedPersonListItem extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       foundPerson: null
     };
+
     this.autocompleteDidSelect = this.autocompleteDidSelect.bind(this);
     this.addNewRelation = this.addNewRelation.bind(this);
-
   }  
 
   autocompleteDidSelect(item){

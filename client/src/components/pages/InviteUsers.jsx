@@ -66,7 +66,7 @@ class InviteUsers extends React.Component {
           <VisavInput label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
           <VisavInput label="First Name" value={this.state.firstName} valueDidChange={this.handleChange('firstName')} />
           <VisavInput label="Last Name" value={this.state.lastName} valueDidChange={this.handleChange('lastName')} />
-          <VisavDropdown options={this.state.roles} onChange={this.onRoleSelected} placeholder="Select a role..." />
+          <VisavDropdown options={this.state.roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
           <ImageButton className="invite-button" text="Invite new user" onClick={this.inviteUser} />
         </div>
       </div>
