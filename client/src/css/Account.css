@@ -38,6 +38,8 @@
 }
 
 .Account {
+  align-items: center;
+  justify-content: center;
   .VisavInput {
     margin-bottom: 10px;
   }
