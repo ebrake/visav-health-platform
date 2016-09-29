@@ -13,32 +13,26 @@ class PatientInfoPanels extends React.Component {
   
   constructor(props) {
     super(props);
-    let healthEventState = HealthEventStore.getState();
-    let exerciseState = ExerciseStore.getState();
 
     this.state = {
       displayedContent: <PatientInfoPersonalPanel patient={ this.props.patient } />
     };
-
-    this.healthEventsChanged = this.healthEventsChanged.bind(this);
-    this.exercisesChanged = this.exercisesChanged.bind(this);
-
-  }
-  healthEventsChanged(healthEventState){
-
-  }
-  exercisesChanged(exerciseState){
-
   }
 
   componentDidMount(){
-    ExerciseStore.listen(this.exercisesChanged);
-    HealthEventStore.listen(this.healthEventsChanged);
+
   }
 
   componentWillUnmount(){
-    ExerciseStore.unlisten(this.exercisesChanged);
-    HealthEventStore.unlisten(this.healthEventsChanged);
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.patient && JSON.stringify(nextProps.patient) != JSON.stringify(this.props.patient)) {
+      this.setState({
+        displayedContent: <PatientInfoPersonalPanel patient={ nextProps.patient } />
+      });
+    }
   }
 
   didSelectSubsection(subsection){

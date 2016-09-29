@@ -3,7 +3,7 @@ import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
 import AuthenticatedPage from './AuthenticatedPage';
 import ImageButton from '../buttons/ImageButton';
-import Dropdown from 'react-dropdown';
+import VisavDropdown from '../inputs/VisavDropdown';
 import Roles from '../utils/Roles';
 import VisavInput from '../inputs/VisavInput';
 
@@ -66,9 +66,7 @@ class InviteUsers extends React.Component {
           <VisavInput label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
           <VisavInput label="First Name" value={this.state.firstName} valueDidChange={this.handleChange('firstName')} />
           <VisavInput label="Last Name" value={this.state.lastName} valueDidChange={this.handleChange('lastName')} />
-          <div className="dropdown-container">
-            <Dropdown options={this.state.roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
-          </div>
+          <VisavDropdown options={this.state.roles} onChange={this.onRoleSelected} placeholder="Select a role..." />
           <ImageButton className="invite-button" text="Invite new user" onClick={this.inviteUser} />
         </div>
       </div>

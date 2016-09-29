@@ -55,7 +55,7 @@ class RepsChartPanel extends React.Component {
           Range of Motion: Last Exercise
         </h1>
         <div className="chart-container">
-          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} height={chartUtil.chartHeight} />
+          <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>
       </div>
     );
