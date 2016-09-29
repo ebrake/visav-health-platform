@@ -15,16 +15,16 @@ class LeftNav extends React.Component {
     
     let InviteNavIcon = null;
     if (["owner", "admin"].indexOf(this.state.user.role.name) >= 0) {
-      InviteNavIcon = (<NavIcon type="invite" path="/invite" className={path=="/invite" ? "selected" : ""} />);
+      InviteNavIcon = (<NavIcon type="invite" path="/invite" selected={ path === "/invite" } />);
     }
 
     return (
       <div className="LeftNav nav flex-column">
         <div className="vertical-nav" id="left-nav">
-          <NavIcon type="telesession" path="/telesession" className={path=="/telesession" ? "selected" : ""} />
-          <NavIcon type="organization" path="/people" className={path=="/people" ? "selected" : ""} />
+          <NavIcon type="telesession" path="/telesession" selected={ path === "/telesession" } />
+          <NavIcon type="organization" path="/people" selected={ path === "/people" } />
           {InviteNavIcon}
-          <NavIcon type="logout" path="/logout" className={path=="/logout" ? "selected" : ""} />
+          <NavIcon type="logout" path="/logout" selected={ path === "/logout" } />
         </div>
       </div>
     );

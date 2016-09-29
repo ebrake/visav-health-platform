@@ -69,7 +69,7 @@
 $icon-size: 30px;
 $icon-line-size: 32px;
 
-.NavIcon {
+.VisavIcon {
   display: flex;
   flex-direction: row;
   flex: 1 0 1px;
@@ -79,11 +79,8 @@ $icon-line-size: 32px;
   justify-content: center;
   font-size: $icon-size;
   padding: 14px 0;
-
-  .VisavIcon {
-    background-color: $nav-item-bg;
-    line-height: $icon-line-size;
-  }
+  background-color: $nav-item-bg;
+  line-height: $icon-line-size;
 
   &.selected {
     background-color: $nav-item-bg-selected;
@@ -110,4 +107,8 @@ $icon-line-size: 32px;
   border: 1px solid $color-panel-border;
   background-color: $color-panel-bg;
   width: 60px;
+
+  .NavIcon:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }

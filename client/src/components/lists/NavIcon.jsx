@@ -27,7 +27,7 @@ class NavIcon extends React.Component {
 
     return (
       <div className={className}>
-        <VisavIcon onClick={this.handleClick} type={this.props.type} />
+        <VisavIcon onClick={this.handleClick} type={this.props.type} selected={this.props.selected} />
       </div>
     );
   }
@@ -35,6 +35,7 @@ class NavIcon extends React.Component {
 
 NavIcon.propTypes = {
   path: React.PropTypes.string,
+  selected: React.PropTypes.bool,
   type: React.PropTypes.string,
   router: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired

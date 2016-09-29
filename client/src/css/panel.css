@@ -79,11 +79,10 @@ $panel-border-radius: 10px;
   display: flex;
   flex-direction: column;
   flex: 0 0 auto;
-  padding: 10px;
+  padding: 10px 0;
 
-  .ImageButton {
-    width: 50px;
-    background: transparent;
+  .VisavIcon {
+    width: 60px;
 
     &:not(:last-child) {
       margin-bottom: 10px;

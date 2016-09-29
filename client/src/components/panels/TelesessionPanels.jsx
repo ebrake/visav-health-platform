@@ -7,6 +7,8 @@ import NotificationActions from '../../alt/actions/NotificationActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import AccountStore from '../../alt/stores/AccountStore';
 import ImageButton from '../buttons/ImageButton';
+import VisavIcon from '../misc/VisavIcon';
+
 @scriptLoader(
   //'https://static.opentok.com/v2/js/opentok.min.js'
 )
@@ -182,14 +184,14 @@ class TelesessionPanels extends React.Component {
 
       var controlPanel = isActiveSession ?
         <div className="vertical-control-panel panel">
-          <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hangup.png" className="btn-cancel btn-overlay"/>
-          <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call btn-overlay"/>
-          <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic btn-overlay" />
-          <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber btn-overlay" />
+          <VisavIcon type="hang-up" onClick={this.disconnectFromSession.bind(this)} className="btn-cancel btn-overlay"/>
+          <VisavIcon type="call-patient" onClick={this.callSelf.bind(this)} className="btn-call btn-overlay"/>
+          <VisavIcon type={this.state.muteMic ? 'muted-self' : 'unmuted-self'} onClick={this.toggleMuteMic} className="btn-mute-mic btn-overlay" />
+          <VisavIcon type={this.state.muteSubscriber ? 'muted-subscriber' : 'unmuted-subscriber'} onClick={this.toggleMuteSubscriber} className="btn-mute-subscriber btn-overlay" />
         </div>
         :
         <div className="vertical-control-panel panel">
-          <ImageButton onClick={this.createSession.bind(this)} imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
+          <VisavIcon type="start-telesession" onClick={this.createSession.bind(this)} className="btn-create"/>
         </div>;
 
       return (

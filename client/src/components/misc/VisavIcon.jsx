@@ -20,7 +20,7 @@ class VisavIcon extends React.Component {
       content = <FontAwesome name='phone' />
     }
     else if (this.props.type === 'hang-up') {
-      content = <FontAwesome name='cancel' />
+      content = <FontAwesome name='remove' />
     }
     else if (this.props.type === 'muted-self') {
       content = <FontAwesome name='microphone-slash' />
@@ -31,7 +31,7 @@ class VisavIcon extends React.Component {
     else if (this.props.type === 'muted-subscriber') {
       content = <FontAwesome name='volume-off' />
     }
-    else if (this.props.type === 'unmuted-subscriver') {
+    else if (this.props.type === 'unmuted-subscriber') {
       content = <FontAwesome name='volume-up' />
     }
     else if (this.props.type === 'general-patient-info') {
@@ -73,6 +73,9 @@ class VisavIcon extends React.Component {
 
   render () {
     var classNames = this.props.type + ' VisavIcon';
+    if (this.props.selected)
+      classNames += ' selected';
+
     return (
       <div className={ classNames } onClick={this.props.onClick} >
         { this.icon() }
@@ -83,7 +86,8 @@ class VisavIcon extends React.Component {
 
 VisavIcon.propTypes = {
   type: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func
+  selected: React.PropTypes.bool,
+  onClick: React.PropTypes.func,
 };
 
 export default VisavIcon;

@@ -15,10 +15,6 @@
   .vertical-control-panel {
     flex: 0 0 auto;
     margin-left: 10px;
-
-    .ImageButton {
-      width: 50px;
-    }
   }
 }
 

@@ -7,7 +7,7 @@ import PatientInfoAppointmentPanel from './PatientInfoAppointmentPanel';
 import PatientInfoMedicationPanel from './PatientInfoMedicationPanel';
 import PatientInfoReportPanel from './PatientInfoReportPanel';
 import PatientInfoChatPanel from './PatientInfoChatPanel';
-import ImageButton from '../../buttons/ImageButton';
+import VisavIcon from '../../misc/VisavIcon';
 
 class PatientInfoPanels extends React.Component {
   
@@ -15,7 +15,8 @@ class PatientInfoPanels extends React.Component {
     super(props);
 
     this.state = {
-      displayedContent: <PatientInfoPersonalPanel patient={ this.props.patient } />
+      displayedContent: <PatientInfoPersonalPanel patient={ this.props.patient } />,
+      selectedSubsection: 'main'
     };
   }
 
@@ -36,8 +37,6 @@ class PatientInfoPanels extends React.Component {
   }
 
   didSelectSubsection(subsection){
-    var self = this;
-    var patient = this.props.patient;
     return function(event){
       var content;
       if( subsection === 'main'){
@@ -45,27 +44,25 @@ class PatientInfoPanels extends React.Component {
       }
       else if( subsection === 'appointment'){
         content = <PatientInfoAppointmentPanel patient={ this.props.patient } />
-
       }
       else if( subsection === 'medication'){
         content = <PatientInfoMedicationPanel patient={ this.props.patient } />
-
       }
       else if( subsection === 'exercise'){
         content = <PatientInfoExercisePanel patient={ this.props.patient } />
       }
       else if( subsection === 'report'){
         content = <PatientInfoReportPanel patient={ this.props.patient } />
-
       }
       else if( subsection === 'chat'){
         content = <PatientInfoChatPanel patient={ this.props.patient } />
-
       }
-      self.setState({ displayedContent: content });
 
-    }
-
+      this.setState({ 
+        displayedContent: content,
+        selectedSubsection: subsection
+      });
+    }.bind(this)
   }
 
   render() {
@@ -73,13 +70,12 @@ class PatientInfoPanels extends React.Component {
       <div className="PatientInfoPanels">
         { this.state.displayedContent }
         <div className='vertical-control-panel panel'>
-          <ImageButton text='M' onClick={ this.didSelectSubsection('main').bind(this) }/>
-          <ImageButton text='A' onClick={ this.didSelectSubsection('appointment').bind(this) }/>
-          <ImageButton text='M' onClick={ this.didSelectSubsection('medication').bind(this) }/>
-          <ImageButton text='X' onClick={ this.didSelectSubsection('exercise').bind(this) }/>
-          <ImageButton text='R' onClick={ this.didSelectSubsection('report').bind(this) }/>
-          <ImageButton text='C' onClick={ this.didSelectSubsection('chat').bind(this) }/>
-
+          <VisavIcon type='general-patient-info' onClick={ this.didSelectSubsection('main') } selected={this.state.selectedSubsection === 'main'} />
+          <VisavIcon type='next-appointment' onClick={ this.didSelectSubsection('appointment') } selected={this.state.selectedSubsection === 'appointment'} />
+          <VisavIcon type='medications' onClick={ this.didSelectSubsection('medication') } selected={this.state.selectedSubsection === 'medication'} />
+          <VisavIcon type='exercises' onClick={ this.didSelectSubsection('exercise') } selected={this.state.selectedSubsection === 'exercise'} />
+          <VisavIcon type='reports' onClick={ this.didSelectSubsection('report') } selected={this.state.selectedSubsection === 'report'} />
+          <VisavIcon type='chat' onClick={ this.didSelectSubsection('chat') } selected={this.state.selectedSubsection === 'chat'} />
         </div>
       </div>
     );
