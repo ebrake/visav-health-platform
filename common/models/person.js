@@ -701,8 +701,10 @@ module.exports = function(Person) {
     var DoctorPatient = Person.app.models.DoctorPatient;
 
     DoctorPatient.findOne({
-      doctorId: req.body.doctor.id,
-      patientId: req.body.patient.id
+      where: {
+        doctorId: req.body.doctor.id,
+        patientId: req.body.patient.id
+      }
     })
     .then(function(relation){
       if (destroy) {
@@ -813,8 +815,10 @@ module.exports = function(Person) {
     var CaregiverPatient = Person.app.models.CaregiverPatient;
 
     CaregiverPatient.findOne({
-      caregiverId: req.body.caregiver.id,
-      patientId: req.body.patient.id
+      where: {
+        caregiverId: req.body.caregiver.id,
+        patientId: req.body.patient.id
+      }
     })
     .then(function(relation){
       if (destroy) {
