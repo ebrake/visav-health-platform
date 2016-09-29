@@ -36,25 +36,16 @@
   flex: 1 0 1px;
   cursor: pointer;
   background-color: $nav-item-bg;
-  padding: 10px;
   align-items: center;
   justify-content: center;
 
-  span {
-    color: $nav-item-text;
-  }
+  .ImageButton {
+    background-color: $nav-item-bg;
 
-  .img-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30px;
-    width: 30px;
-    margin-right: 10px;
-
-    img {
-      height: 100%;
-      width: 100%;
+    .btn-text-content {
+      font-weight: 500;
+      color: $nav-item-text;
+      white-space: nowrap;
     }
   }
 
@@ -72,5 +63,50 @@
     span {
       color: $nav-item-text-hover;
     }
+  }
+}
+
+$icon-size: 30px;
+
+.VisavIcon {
+  display: flex;
+  cursor: pointer;
+  background-color: $nav-item-bg;
+  font-size: $icon-size;
+  padding: 15px 0;
+  background-color: $nav-item-bg;
+
+  > span {
+    margin: 0 auto;
+  }
+
+  &.selected {
+    background-color: $nav-item-bg-selected;
+
+    span {
+      color: $nav-item-text-selected;
+    }
+  }
+
+  &:hover {
+    background-color: $nav-item-bg-hover;
+
+    span {
+      color: $nav-item-text-hover;
+    }
+  }
+}
+
+.LeftNav {
+  margin-bottom: 10px;
+  padding: 0;
+  padding: 10px 0 0;
+  border-radius: 0 10px 10px 0;
+  border: 1px solid $color-panel-border;
+  background-color: $color-panel-bg;
+  width: 60px;
+
+  .NavIcon:not(:last-child) {
+    margin-bottom: 10px;
   }
 }

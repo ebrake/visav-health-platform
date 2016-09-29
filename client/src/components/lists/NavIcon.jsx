@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import ImageButton from '../buttons/ImageButton';
+import VisavIcon from '../misc/VisavIcon';
 
-class NavItem extends React.Component {
+class NavIcon extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {};
+
     this.handleClick = this.handleClick.bind(this);
   }  
 
@@ -17,26 +19,33 @@ class NavItem extends React.Component {
       this.props.router.push('/'+this.props.title);
     }
   }
+
   render() {
+    let className="NavIcon";
+    if (this.props.className)
+      className += ' '+this.props.className;
+
     return (
-      <ImageButton className="NavItem" onClick={this.handleClick} imgUrl={this.props.imgSrc} text={this.props.title} />
+      <div className={className}>
+        <VisavIcon onClick={this.handleClick} type={this.props.type} selected={this.props.selected} />
+      </div>
     );
   }
 };
 
-NavItem.propTypes = {
-  imgSrc: React.PropTypes.string,
+NavIcon.propTypes = {
   path: React.PropTypes.string,
-  title: React.PropTypes.string.isRequired,
+  selected: React.PropTypes.bool,
+  type: React.PropTypes.string,
   router: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired
   }).isRequired
 };
 
-NavItem.defaultProps = {
+NavIcon.defaultProps = {
 
 };
 
-NavItem = withRouter(NavItem);
+NavIcon = withRouter(NavIcon);
 
-export default NavItem;
+export default NavIcon;

@@ -1,4 +1,5 @@
 import alt from '../alt'
+import responseUtil from '../../components/utils/responseUtil';
 
 class AccountActions {
   loginUser(data){
@@ -17,7 +18,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
+        let craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
@@ -46,7 +47,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
+        let craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
@@ -105,7 +106,9 @@ class AccountActions {
         body: JSON.stringify({ 
           organizationName: data.organizationName, 
           email: data.email, 
-          password: data.password 
+          password: data.password,
+          firstName: data.firstName,
+          lastName: data.lastName
         })
       })
       .then(response => response.json())
@@ -114,7 +117,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
+        let craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })
@@ -126,7 +129,12 @@ class AccountActions {
       return fetch(process.env.API_ROOT + 'api/people/invite', {
         method: 'POST', 
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ email: data.email, role: data.role.value })
+        body: JSON.stringify({ 
+          email: data.email, 
+          firstName: data.firstName,
+          lastName: data.lastName,
+          role: data.role.value 
+        })
       })
       .then(response => response.json())
       .then(response => {
@@ -134,7 +142,7 @@ class AccountActions {
         return response;
       })
       .catch(err => {
-        var craftedResponse = { data: { error: err, status: 'failure', message: err.message } };
+        let craftedResponse = responseUtil.craftErrorResponse(err);
         dispatch(craftedResponse);
         return craftedResponse;
       })

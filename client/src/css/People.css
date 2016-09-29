@@ -1,0 +1,98 @@
+@import 'colors.css';
+
+.People {
+  padding: 0 5px 10px;
+
+  .PeopleListPanel {
+    flex: 1 0 1px;
+    margin: 0 5px;
+
+    .title {
+      text-transform: capitalize;
+      border-bottom: 1px solid $divider-color;
+      padding-bottom: 20px;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.people-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.AddNewRelatedPersonListItem,
+.RelatedPersonListItem,
+.PeopleListItem {
+  width: 100%;
+  padding: 0;
+  border-bottom: 1px solid $divider-color;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.PeopleListItem {
+  cursor: pointer;
+}
+
+.RelatedPersonListItem {
+  .remove-button {
+    margin-left: 10px;
+  }
+}
+
+.AddNewRelatedPersonListItem {
+  .VisavInput {
+    flex: 1 0 auto;
+    margin-right: 20px;
+  }
+
+  border: none;
+}
+
+.PersonPanel {
+  min-width: 40%;
+
+  h1.title {
+    text-transform: capitalize;
+    margin: 0;
+  }
+
+  .role-label {
+    text-transform: capitalize;
+    border-bottom: 1px solid $divider-color;
+    padding-bottom: 20px;
+    margin-bottom: 50px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .goto-telesession-button {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+
+  .relation-lists {
+    display: flex;
+    flex-direction: row;
+
+    .relation-list {
+      flex: 1 0 1px;
+
+      h3 {
+        text-transform: capitalize;
+        margin: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid $divider-color;
+      }
+
+      &:not(:first-child) {
+        margin-left: 50px;
+      }
+    }
+  }
+}

@@ -7,13 +7,14 @@
 .Dropdown-root {
   position: relative;
   font-size: 13px;
+  height: 100%;
+  width: 100%;
 }
 
 .Dropdown-control {
   position: relative;
   overflow: hidden;
-  background-color: $lightest-grey;
-  border: 1px solid black;
+  border: 1px solid $input-border-color;
   box-sizing: border-box;
   color: $dark-text-color;
   cursor: default;
@@ -27,7 +28,7 @@
 }
 
 .Dropdown-arrow {
-  border-color: #999 transparent transparent;
+  border-color: $input-border-color transparent transparent;
   border-style: solid;
   border-width: 5px 5px 0;
   content: ' ';
@@ -41,13 +42,13 @@
 }
 
 .is-open .Dropdown-arrow {
-  border-color: transparent transparent #999;
+  border-color: transparent transparent $input-border-color;
   border-width: 0 5px 5px;
 }
 
 .Dropdown-menu {
-  background-color: $lightest-grey;
-  border: 1px solid black;
+  background-color: $foreground-blue;
+  border: 1px solid $input-border-color;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
   margin-top: -1px;

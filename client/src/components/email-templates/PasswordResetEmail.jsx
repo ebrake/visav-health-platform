@@ -27,7 +27,7 @@ export default function PasswordResetEmail(props) {
 
   const { accessToken } = props;
   
-  var takeActionURL = process.env.API_ROOT + 'resetPassword';
+  var takeActionURL = ( process.env.NODE_ENV == 'development' ) ? 'http://localhost:3000/resetPassword' : process.env.API_ROOT + 'resetPassword';
 
   return (
     <Layout>

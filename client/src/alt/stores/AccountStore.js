@@ -4,7 +4,6 @@ import AccountActions from '../actions/AccountActions';
 class AccountStore {
   constructor() {
     this.user = undefined;
-    this.role = undefined;
 
     this.bindListeners({
       handleLogin: AccountActions.LOGIN_USER,
@@ -12,16 +11,19 @@ class AccountStore {
       handleCreateUser: AccountActions.CREATE_USER,
       handleUpdateUser: AccountActions.UPDATE_USER
     });
+
+    this.exportPublicMethods({
+      getUser: this.getUser
+    })
   }
 
+  /* ACTION HANDLERS */
   handleLogin(response) {
     if (response && response.data && response.data.status === 'success') {
       this.user = response.data.user;
-      this.role = (this.user.roles && this.user.roles[0]) ? this.user.roles[0].name : undefined;
       localStorage.setItem('accessToken', response.data.token.id);
     } else {
       this.user = undefined;
-      this.role = undefined;
     }
   }
 
@@ -29,14 +31,19 @@ class AccountStore {
 
   }
 
-  handleUpdateUser(user) {
-    this.user = user;
-    this.role = (user.roles && user.roles[0]) ? user.roles[0].name : undefined;
+  handleUpdateUser(response) {
+    if (response && response.data && response.data.status === 'success') {
+      this.user = response.data.user;
+    }
   }
 
   handleLogout() {
     this.user = undefined;
-    this.role = undefined;
+  }
+
+  /* PUBLIC METHODS */
+  getUser() {
+    return this.state.user;
   }
 }
 

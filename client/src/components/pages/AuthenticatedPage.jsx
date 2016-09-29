@@ -1,15 +1,42 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import AccountStore from '../../alt/stores/AccountStore';
 import MainHeader from '../headers/MainHeader';
+import LeftNav from '../headers/LeftNav';
+import Roles from '../utils/Roles';
+
+function userIsAuthenticatedForComponent(user, ComposedComponent) {
+  if (!ComposedComponent) {
+    return true;
+  }
+
+  if (!user || !user.role || !user.role.name) {
+    return false;
+  }
+
+  let roles = Roles.getRoles();
+  if (ComposedComponent.isAllowed)
+    roles = ComposedComponent.isAllowed;
+
+  return roles.indexOf(user.role.name) >= 0;
+}
 
 export default (ComposedComponent) => {
-  return class AuthenticatedPage extends React.Component {
+  class AuthenticatedPage extends React.Component {
     constructor(props) {
       super(props);
 
-      this.state = {
-        user: AccountStore.getState() ? AccountStore.getState().user : undefined
+      let user = AccountStore.getUser();
+
+      if (!userIsAuthenticatedForComponent(user, ComposedComponent)) {
+        console.log("User is unauthenticated");
+        console.dir(user);
+        this.props.router.goBack();
       }
+
+      this.state = {
+        user: user
+      };
 
       this.accountChanged = this.accountChanged.bind(this);
     }
@@ -31,12 +58,23 @@ export default (ComposedComponent) => {
     render() {
       return (
       <div className="page">
-        <MainHeader />
-        <ComposedComponent
-          {...this.props}
-          user={this.state.user} />
+        <MainHeader {...this.props} />
+        <div className="flex-row body-container">
+          <LeftNav {...this.props} />
+          <ComposedComponent
+            {...this.props}
+            user={this.state.user} />
+        </div>
       </div>
       );
     }
   }
+
+  AuthenticatedPage.propTypes = {
+    router: React.PropTypes.shape({
+      push: React.PropTypes.func.isRequired
+    }).isRequired
+  }
+
+  return withRouter(AuthenticatedPage);
 };

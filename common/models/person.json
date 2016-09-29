@@ -7,18 +7,18 @@
   },
   "scope": {
     "include": [
-      "roles",
+      "role",
       "organization"
     ]
   },
   "properties": {
     "firstName": {
       "type": "String",
-      "default": "Kristopher"
+      "default": "''"
     },
     "lastName": {
       "type": "String",
-      "default": "Goudie"
+      "default": "''"
     },
     "phone": {
       "type": "String"
@@ -43,7 +43,7 @@
     "caregivers": {
       "type": "hasMany",
       "model": "Person",
-      "foreignKey": "caregiveeId",
+      "foreignKey": "patientId",
       "keyThrough": "caregiverId",
       "through": "CaregiverPatient"
     },
@@ -51,7 +51,7 @@
       "type": "hasMany",
       "model": "Person",
       "foreignKey": "caregiverId",
-      "keyThrough": "caregiveeId",
+      "keyThrough": "patientId",
       "through": "CaregiverPatient"
     },
     "organization": {
@@ -59,12 +59,10 @@
       "model": "Organization",
       "foreignKey": "organization"
     },
-    "roles": {
-      "type": "hasMany",
+    "role": {
+      "type": "belongsTo",
       "model": "Role",
-      "foreignKey": "principalId",
-      "through": "RoleMapping",
-      "keyThrough": "roleId"
+      "foreignKey": "role"
     }
   },
   "acls": [
@@ -101,6 +99,20 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
+      "property": "updateUser"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "owner",
+      "permission": "ALLOW",
+      "property": "invite"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
       "property": "invite"
     },
     {
@@ -108,9 +120,50 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
-      "property": "updateUser"
+      "property": "getViewablePeople"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getRelatedPeople"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "makeDoctorPatientRelation"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "destroyDoctorPatientRelation"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "makeCaregiverPatientRelation"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "destroyCaregiverPatientRelation"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getPatient"
     }
-    
   ],
   "methods": {}
 }

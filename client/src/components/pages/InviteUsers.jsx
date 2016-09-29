@@ -1,21 +1,28 @@
 import React, { Component } from 'react';
 import AccountActions from '../../alt/actions/AccountActions';
+import AccountStore from '../../alt/stores/AccountStore';
 import AuthenticatedPage from './AuthenticatedPage';
 import ImageButton from '../buttons/ImageButton';
-import Dropdown from 'react-dropdown';
+import VisavDropdown from '../inputs/VisavDropdown';
 import Roles from '../utils/Roles';
 import VisavInput from '../inputs/VisavInput';
-
-const roles = Roles.getRoles();
 
 class InviteUsers extends React.Component {
   
   constructor(props) {
     super(props);
 
+    let user = AccountStore.getUser();
+
     this.state = {
       email: '',
-      role: undefined
+      firstName: '',
+      lastName: '',
+      role: undefined,
+      //format assignable roles for Dropdown
+      roles: Roles.getAssignableRoles(user).map(function(role){
+        return { value: role, label: role.charAt(0).toUpperCase()+role.slice(1) }
+      })
     };
 
     this.inviteUser = this.inviteUser.bind(this);
@@ -34,7 +41,9 @@ class InviteUsers extends React.Component {
   inviteUser() {
     AccountActions.inviteUser({
       email: this.state.email,
-      role: this.state.role
+      role: this.state.role,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName
     })
     .then(function(response){
       console.log("Potentially invited user:");
@@ -55,14 +64,16 @@ class InviteUsers extends React.Component {
           <h1 className="title">Invite a new User</h1>
           <span className="description">Use the menu below to invite a new user to your organization.</span>
           <VisavInput label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
-          <div className="dropdown-container">
-            <Dropdown options={roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
-          </div>
+          <VisavInput label="First Name" value={this.state.firstName} valueDidChange={this.handleChange('firstName')} />
+          <VisavInput label="Last Name" value={this.state.lastName} valueDidChange={this.handleChange('lastName')} />
+          <VisavDropdown options={this.state.roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
           <ImageButton className="invite-button" text="Invite new user" onClick={this.inviteUser} />
         </div>
       </div>
     );
   }
 }
+
+InviteUsers.isAllowed = ['owner', 'admin'];
 
 export default AuthenticatedPage(InviteUsers);

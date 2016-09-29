@@ -1,12 +1,12 @@
 import alt from '../alt'
 
 class ExerciseActions {
-  getExercises(){
+  getExercises(id){
     return function (dispatch) {
-      return fetch(process.env.API_ROOT+'api/exercises/get', {
+      return fetch(process.env.API_ROOT+'api/exercises/get?person='+id+'', {
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' })
       })
-      .then(responseObject => responseObject.json())
+      .then(response => response.json())
       .then(response => {
         if (response.data.status === 'success') {
           return dispatch(response.data.exercises);

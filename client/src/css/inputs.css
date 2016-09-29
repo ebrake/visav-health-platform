@@ -5,11 +5,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 10px;
-  border: 1px solid black;
-  background: $lightest-grey;
+  border: 1px solid $input-border-color;
   box-sizing: border-box;
   padding: 0 10px;
+  height: 50px;
 
   label {
     display: block;
@@ -31,8 +30,12 @@
     width: 100%;
     outline: none;
     background: transparent;
-    color: $dark-text-color;
+    color: $light-text-color;
     margin: 12px 0;
+
+    &::placeholder {
+      color: $dark-text-color;
+    }
   }
 
   &.is-active {
@@ -47,5 +50,11 @@
       margin: 0 0 10px;
       transform: translateY(20%);
     }
+  }
+
+  .autocomplete-item {
+    color: $faded-text-color;
+    padding: 10px;
+    border-radius: 0;
   }
 }
