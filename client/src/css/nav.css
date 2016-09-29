@@ -66,6 +66,42 @@
   }
 }
 
+$icon-size: 30px;
+$icon-line-size: 32px;
+
+.NavIcon {
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 1px;
+  cursor: pointer;
+  background-color: $nav-item-bg;
+  align-items: center;
+  justify-content: center;
+  font-size: $icon-size;
+  padding: 14px 0;
+
+  .VisavIcon {
+    background-color: $nav-item-bg;
+    line-height: $icon-line-size;
+  }
+
+  &.selected {
+    background-color: $nav-item-bg-selected;
+
+    span {
+      color: $nav-item-text-selected;
+    }
+  }
+
+  &:hover {
+    background-color: $nav-item-bg-hover;
+
+    span {
+      color: $nav-item-text-hover;
+    }
+  }
+}
+
 .LeftNav {
   margin-bottom: 10px;
   padding: 0;
@@ -73,5 +109,5 @@
   border-radius: 0 10px 10px 0;
   border: 1px solid $color-panel-border;
   background-color: $color-panel-bg;
-  width: 50px;
+  width: 60px;
 }

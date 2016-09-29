@@ -39,7 +39,6 @@ class VisavIcon extends React.Component {
     }
     else if (this.props.type === 'next-appointment') {
       content = <FontAwesome name='calendar' />
-
     }
     else if (this.props.type === 'medications') {
       content = <FontAwesome name='medkit' />
@@ -53,6 +52,9 @@ class VisavIcon extends React.Component {
     else if (this.props.type === 'chat') {
       content = <FontAwesome name='comments' />
     }
+    else if (this.props.type === 'telesession') {
+      content = <FontAwesome name="user-md" />
+    }
     else if (this.props.type === 'organization') {
       content = <FontAwesome name='sitemap' />
     }
@@ -64,7 +66,6 @@ class VisavIcon extends React.Component {
     }
     else if (this.props.type === 'logout' ) {
       content = <FontAwesome name='sign-out' />
-
     }
     return content;
   }
@@ -73,8 +74,8 @@ class VisavIcon extends React.Component {
   render () {
     var classNames = this.props.type + ' VisavIcon';
     return (
-      <div className={ classNames } >
-        { this.icon }
+      <div className={ classNames } onClick={this.props.onClick} >
+        { this.icon() }
       </div>
     );
   }
@@ -82,6 +83,7 @@ class VisavIcon extends React.Component {
 
 VisavIcon.propTypes = {
   type: React.PropTypes.string.isRequired,
+  onClick: React.PropTypes.func
 };
 
 export default VisavIcon;

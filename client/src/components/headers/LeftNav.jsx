@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavItem from '../lists/NavItem'
+import NavIcon from '../lists/NavIcon';
 import AccountStore from '../../alt/stores/AccountStore';
 
 class LeftNav extends React.Component {
@@ -13,18 +13,18 @@ class LeftNav extends React.Component {
   render () {
     let path = this.props.location.pathname;
     
-    let InviteNavItem = null;
+    let InviteNavIcon = null;
     if (["owner", "admin"].indexOf(this.state.user.role.name) >= 0) {
-      InviteNavItem = (<NavItem imgSrc="circle.png" path="/invite" className={path=="/invite" ? "selected" : ""} />);
+      InviteNavIcon = (<NavIcon type="invite" path="/invite" className={path=="/invite" ? "selected" : ""} />);
     }
 
     return (
       <div className="LeftNav nav flex-column">
         <div className="vertical-nav" id="left-nav">
-          <NavItem imgSrc="circle.png" path="/telesession" className={path=="/telesession" ? "selected" : ""} />
-          <NavItem imgSrc="circle.png" path="/people" className={path=="/people" ? "selected" : ""} />
-          {InviteNavItem}
-          <NavItem imgSrc="logout.png" path="/logout" className={path=="/logout" ? "selected" : ""} />
+          <NavIcon type="telesession" path="/telesession" className={path=="/telesession" ? "selected" : ""} />
+          <NavIcon type="organization" path="/people" className={path=="/people" ? "selected" : ""} />
+          {InviteNavIcon}
+          <NavIcon type="logout" path="/logout" className={path=="/logout" ? "selected" : ""} />
         </div>
       </div>
     );

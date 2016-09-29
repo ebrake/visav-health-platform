@@ -1,21 +1,22 @@
 @import 'colors.css';
 
 .InfoList {
-  
   > ul {
     padding: 0;
+
     li {
       list-style: none;
       display: flex;
       align-items: center;
 
-      &:not(:last-of-type){
+      &:not(:last-of-type) {
         margin-bottom: 20px;
       }
 
-      span{
+      span {
         display: inline-block;
-        &:first-of-type{
+
+        &:first-of-type {
           text-transform: uppercase;
           margin-right: 20px;
           font-size: 12px;
@@ -24,7 +25,7 @@
           white-space: nowrap;
         }
 
-        &:nth-of-type(2){
+        &:nth-of-type(2) {
           font-size: 16px;
           font-weight: 200;
         }
