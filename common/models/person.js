@@ -137,6 +137,14 @@ module.exports = function(Person) {
 
   });
 
+  /**
+   * Logs in a user when given their credentials.
+   * @function signin
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { string } email User's email
+   * @param { string } password User's password
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.signin = function(req, email, password, cb){
     var err;
     if (!req.body.email) {
@@ -186,6 +194,16 @@ module.exports = function(Person) {
     }
   );
 
+  /**
+   * If the request is made by an authenticated user (owner/admin) within an organization, it will create a new user, assign them to the organization of the requesting user, assign them to the requested role, and email them their information (including a randomly generated password).
+   * @function invite
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { string } email User's email
+   * @param { string } firstName User's name
+   * @param { string } lastName User's name
+   * @param { string } role Name of the role to assign user to.
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.invite = function(req, email, firstName, lastName, role, cb) {
     var err;
     var readableUser = req.user.toJSON();
@@ -307,6 +325,12 @@ module.exports = function(Person) {
     }
   );
 
+  /**
+   * Takes in a dictionary of user properties, and updates the requesting user through loopback's instance method "updateAttributes".
+   * @function udpateUser
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.updateUser = function(req, cb) {
     if (!req.user) {
       err = new Error('Anonymous request (no user signed in)');
@@ -335,6 +359,13 @@ module.exports = function(Person) {
     }
   );
 
+  /**
+   * Omits a "resetPasswordRequest" event. Listener sends the email provided in req.body a "reset password" email.
+   * @function requestPasswordReset
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { string } email User's email
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.requestPasswordReset = function(req, email, cb) {
     var err;
     if (!req.body.email){
@@ -430,6 +461,12 @@ module.exports = function(Person) {
     }
   );
 
+  /**
+   * Sends a list of all the people the requesting user are allowed to have knowledge of within their organization. See https://krisandbrake.atlassian.net/wiki/display/VISAV/Roles
+   * @function getViewablePeople
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.getViewablePeople = function (req, cb) {
     var err;
     var readableUser = req.user.toJSON();
@@ -524,6 +561,12 @@ module.exports = function(Person) {
     }
   );
 
+  /**
+   * Sends a list of all the people related to req.body.person who the requesting user is allowed to see. See https://krisandbrake.atlassian.net/wiki/display/VISAV/Roles
+   * @function getRelatedPeople
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.getRelatedPeople = function (req, cb) {
     var err;
     var readableUser = req.user.toJSON();
@@ -607,6 +650,12 @@ module.exports = function(Person) {
     }
   );
 
+  /**
+   * Provides the person model for the patient provided in the query, useful for Patient Info on the telesession screen.
+   * @function getPatient
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.getPatient = function(req, cb) {
     var err;
     var readableUser = req.user.toJSON();
@@ -648,6 +697,12 @@ module.exports = function(Person) {
     }
   );
 
+  /**
+   * Accepts a doctor model and a patient model, removes the relationship between them so long as they were correctly a doctor and a patient, and related.
+   * @function destroyDoctorPatientRelation
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.destroyDoctorPatientRelation = function(req, cb) {
     modifyDoctorPatientRelation(req, true, cb);
   }
@@ -664,6 +719,12 @@ module.exports = function(Person) {
     }
   )
 
+  /**
+   * Accepts a doctor model and a patient model, creates a relationship between them so long as they were correctly a doctor and a patient within the same organization as the requesting user.
+   * @function makeDoctorPatientRelation
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.makeDoctorPatientRelation = function(req, cb) {
     modifyDoctorPatientRelation(req, false, cb);
   }
@@ -762,6 +823,12 @@ module.exports = function(Person) {
     })
   }
 
+  /**
+   * Accepts a caregiver model and a patient model, removes the relationship between them so long as they were correctly a caregiver and a patient, and related.
+   * @function destroyCaregiverPatientRelation
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.destroyCaregiverPatientRelation = function(req, cb) {
     modifyCaregiverPatientRelation(req, true, cb);
   }
@@ -778,6 +845,12 @@ module.exports = function(Person) {
     }
   );
 
+  /**
+   * Accepts a caregiver model and a patient model, creates a relationship between them so long as they were correctly a caregiver and a patient within the same organization as the requesting user.
+   * @function makeCaregiverPatientRelation
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.makeCaregiverPatientRelation = function(req, cb) {
     modifyCaregiverPatientRelation(req, false, cb);
   }
