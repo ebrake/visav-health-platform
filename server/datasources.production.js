@@ -1,6 +1,6 @@
 /**
  * In PRODUCTION environment this overrides datasources.json
- * @module modules/datasources-production
+ * @module server/datasources-production
  */
 module.exports = {
   "psql": {

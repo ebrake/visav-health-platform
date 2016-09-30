@@ -1,6 +1,6 @@
 /**
  * This always overrides datasources.json
- * @module modules/datasources-local
+ * @module server/datasources-local
  */
  module.exports = {
   "emails": {

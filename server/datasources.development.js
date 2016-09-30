@@ -1,6 +1,6 @@
 /**
  * In DEVELOPMENT environment this overrides datasources.json
- * @module modules/datasources-development
+ * @module server/datasources-development
  */
 module.exports = {
   "psql": {

@@ -1,6 +1,6 @@
 /**
- * A middleware function that sets req.user when req.accessToken is passed through
- * @module middleware/setCurrentUser
+ * A middleware function that sets req.user by reading req.accessToken, which can be provided on a request via access_token query parameter or 'Authorization' header
+ * @module server/middleware/setCurrentUser
  */
 module.exports = function() {
   return function setCurrentUser(req, res, next) {

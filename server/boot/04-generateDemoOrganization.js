@@ -34,8 +34,8 @@ var testOrganizationQueries = {
 };
 
 /**
- * A boot script function that generates the demo user.
- * @module boot/generateDemoUser
+ * A boot script function that generates a demo organization with a user in each role, for easy testing purposes.
+ * @module server/boot/04-generateDemoUser
  */
 module.exports = function(app, cb) {
 

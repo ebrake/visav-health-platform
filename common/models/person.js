@@ -1,3 +1,8 @@
+/**
+ *  A model with CRUD functionality for users and organizations.
+ *  @module common/models/person
+ */
+
 import React from 'react';
 import Oy from 'oy-vey';
 import GettingStartedEmail from '../../client/src/components/email-templates/GettingStartedEmail';
@@ -8,6 +13,17 @@ var path = require('path');
 
 module.exports = function(Person) {
 
+  /**
+   * Creates a new user and a new organization (if neither exist) and sets the user as the organization's owner.
+   * @function signup
+   * @param { object } req Request object provided by Express/Loopback
+   * @param { string } email User's email
+   * @param { string } password User's password
+   * @param { string } firstName User's name
+   * @param { string } lastName User's name
+   * @param { string } organizationName Name of the organization to create and set user to owner of
+   * @param { function } cb Callback which is sent an object to be placed on the "data" property of the response
+   */
   Person.signup = function(req, email, password, firstName, lastName, organizationName, cb) {
     var err;
 

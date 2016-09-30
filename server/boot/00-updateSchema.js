@@ -2,7 +2,7 @@ import fs from 'fs';
 
 /**
  * A boot script function that automatically updates the PostgreSQL schema.
- * @module boot/updateSchema
+ * @module server/boot/00-updateSchema
  */
 module.exports = function enableAuthentication(app, cb) {
   //Determine which app models require postgres

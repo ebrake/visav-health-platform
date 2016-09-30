@@ -1,6 +1,21 @@
 'use strict';
-
 var Promise = require('bluebird');
+
+/**
+ * A boot script function that ensures the roles ['doctor', 'patient', 'caregiver', 'owner', 'admin'] exist.
+ * @module server/boot/02-generateRoles
+ */
+module.exports = function(app, cb) {
+  /*
+   * The `app` object provides access to a variety of LoopBack resources such as
+   * models (e.g. `app.models.YourModelName`) or data sources (e.g.
+   * `app.datasources.YourDataSource`). See
+   * http://docs.strongloop.com/display/public/LB/Working+with+LoopBack+objects
+   * for more info.
+   */
+
+  return createRoles(app.models.Role, cb);
+};
 
 function createRole(Role, roleName) {
   return Role.find({
@@ -33,15 +48,3 @@ function createRoles(Role, cb){
     return cb(err);
   })
 }
-
-module.exports = function(app, cb) {
-  /*
-   * The `app` object provides access to a variety of LoopBack resources such as
-   * models (e.g. `app.models.YourModelName`) or data sources (e.g.
-   * `app.datasources.YourDataSource`). See
-   * http://docs.strongloop.com/display/public/LB/Working+with+LoopBack+objects
-   * for more info.
-   */
-
-  return createRoles(app.models.Role, cb);
-};

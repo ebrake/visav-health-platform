@@ -1,6 +1,6 @@
 /**
  * In STAGING environment this overrides datasources.json
- * @module modules/datasources-staging
+ * @module server/datasources-staging
  */
 module.exports = {
   "psql": {
