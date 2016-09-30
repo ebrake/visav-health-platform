@@ -44,37 +44,27 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    alias: {
-      'react': path.join(__dirname,'..', 'node_modules', 'react'),
-    },
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx'],
   },
   resolveLoader: {
-    root: nodeModulesPath,
-    moduleTemplates: ['*-loader']
+    modules: [nodeModulesPath],
+    moduleExtensions: ["-loader"],
+    enforceModuleExtension: false
   },
   module: {
-    preLoaders: [
-      { 
-        test: /\.js$/,
-        loader: 'eslint',
-        include: srcPath,
-      }
-    ],
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
+        enforce: 'pre',
+        loader: 'eslint',
         include: srcPath,
-        loader: 'babel',
-        query: require('./babel.dev')
       },
       {
         test: /\.jsx?$/,
-        loader: 'babel',
+        loader: 'babel-loader',
+        include: srcPath,
         exclude: /node_modules/,
-        query: {
-          presets: ['airbnb']
-        }
+        query: require('./babel.dev')
       },
       {
         test: /\.css$/,
@@ -83,7 +73,8 @@ module.exports = {
       {
         test:   /\.style.js$/,
         include: srcPath,
-        loader: "style!css!postcss?parser=postcss-js!babel"
+        loader: 'style!css!postcss',
+        query: 'parser=postcss-js!babel'
       },
       {
         test: /\.json$/,
@@ -95,50 +86,59 @@ module.exports = {
       },
       {
         test: /\.(mp4|webm)$/,
-        loader: 'url?limit=10000'
+        loader: 'url',
+        query: 'limit=10000'
       },
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
+        loader: 'url',
+        query: 'limit=10000&mimetype=application/font-woff'
       }, 
       {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
+        loader: 'url',
+        query: 'limit=10000&mimetype=application/font-woff'
       }, 
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/octet-stream"
+        loader: 'url',
+        query: 'limit=10000&mimetype=application/octet-stream'
       }, 
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file"
+        loader: 'file'
       }, 
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=image/svg+xml"
+        loader: 'url',
+        query: 'limit=10000&mimetype=image/svg+xml'
       }
     ]
   },
-  eslint: {
-    configFile: path.join(__dirname, 'eslint.js'),
-    useEslintrc: false
-  },
-  postcss: function(webpack) {
-    return [
-            postcssEasyImport,
-            postcssStripInlineComment,
-            postcssSelectorNot,
-            autoprefixer, 
-            precss,
-            customMedia,
-            postCssColorFunction
-            ];
-  },
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        postcss: function(webpack) {
+          return [
+                  postcssEasyImport,
+                  postcssStripInlineComment,
+				  postcssSelectorNot,
+                  autoprefixer, 
+                  precss,
+                  customMedia,
+            	  postCssColorFunction
+                  ];
+        },
+        eslint: {
+          configFile: path.join(__dirname, 'eslint.js'),
+          useEslintrc: false
+        }
+      }
+    }),
     new HtmlWebpackPlugin({
       inject: true,
-      template: indexHtmlPath,
       favicon: faviconPath,
+      template: indexHtmlPath
     }),
     new StyleLintPlugin({
       configFile: '.stylelintrc',
