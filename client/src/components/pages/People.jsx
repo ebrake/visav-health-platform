@@ -30,6 +30,9 @@ class People extends React.Component {
       showPersonPopup: false,
       displayedPerson: null,
     };
+
+    this.closePersonPopup = this.closePersonPopup.bind(this);
+    this.didSelectPerson = this.didSelectPerson.bind(this);
   }
 
   didSelectPerson(event, person){
@@ -44,11 +47,11 @@ class People extends React.Component {
   render() {
     return (
       <div className="People content-container row-gt-sm">
-        <FullscreenAlert active={ this.state.showPersonPopup } onClickOutside={ this.closePersonPopup.bind(this) }  content={<PersonPanel person={ this.state.displayedPerson } />} />
+        <FullscreenAlert active={ this.state.showPersonPopup } onClickOutside={ this.closePersonPopup }  content={<PersonPanel person={ this.state.displayedPerson } />} />
 
         {
           this.allowedPeopleLists.map(function(role, i){
-            return <PeopleListPanel displayedRole={role}  key={i} onSelectPerson={ this.didSelectPerson.bind(this) } />
+            return <PeopleListPanel displayedRole={role}  key={i} onSelectPerson={ this.didSelectPerson } />
           }.bind(this))
         }
       </div>

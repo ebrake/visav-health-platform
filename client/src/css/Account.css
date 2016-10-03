@@ -51,3 +51,19 @@
     width: 250px;
   } 
 }
+
+.SignoutPanel {
+  .description {
+    text-align: center;
+    width: 250px;
+    margin-bottom: 10px;
+  }
+
+  .ImageButton {
+    width: 250px;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+}
