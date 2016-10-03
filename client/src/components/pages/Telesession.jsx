@@ -35,11 +35,12 @@ class Telesession extends React.Component {
         })
       }
       else {
-        console.log('flag');
         let orgState = OrganizationStore.getState();
         if (orgState.patients && (orgState.patients.length > 0)) {
+          let newPatient = orgState.patients[0];
           this.setState({
-            patient: orgState.patients[0]
+            patient: newPatient,
+            patientId: newPatient.id
           });
         }
       }

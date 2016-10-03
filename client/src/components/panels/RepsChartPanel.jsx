@@ -48,6 +48,12 @@ class RepsChartPanel extends React.Component {
     ExerciseStore.unlisten(this.exercisesChanged);
   }
 
+  componentWillReceiveProps(nextProps){
+    if (nextProps.patientId !== this.props.patientId) {
+      ExerciseActions.getExercises(nextProps.patientId);
+    }
+  }
+
   render() {
     return (
       <div className="RepsChartPanel graph-panel panel">
