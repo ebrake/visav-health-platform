@@ -28,8 +28,8 @@ var buildPath = path.join(__dirname, isInNodeModules ? '../../..' : '..', 'build
 
 module.exports = {
   bail: true,
-  devtool: 'source-map',
   entry: path.join(srcPath, 'index'),
+  devtool: 'cheap-module-source-map',
   output: {
     path: buildPath,
     filename: '[name].[chunkhash].js',
@@ -56,15 +56,8 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        enforce: 'pre',
-        loader: 'eslint',
-        include: srcPath,
-      },
-      {
-        test: /\.jsx?$/,
         loader: 'babel-loader',
         include: srcPath,
-        exclude: /node_modules/,
         query: require('./babel.prod')
       },
       {
@@ -94,22 +87,33 @@ module.exports = {
       {
         test: /\.(mp4|webm)$/,
         loader: 'url',
-        query: 'limit=10000'
+        query: {
+          limit: 10000
+        }
       },
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url',
-        query: 'limit=10000&mimetype=application/font-woff'
+        query: {
+          limit:10000,
+          mimetype:'application/font-woff'
+        }
       }, 
       {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url',
-        query: 'limit=10000&mimetype=application/font-woff'
+        query: {
+          limit:10000,
+          mimetype:'application/font-woff'
+        }
       }, 
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url',
-        query: 'limit=10000&mimetype=application/octet-stream'
+        query: {
+          limit:10000,
+          mimetype:'application/octet-stream'
+        }
       }, 
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
@@ -118,7 +122,10 @@ module.exports = {
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url',
-        query: 'limit=10000&mimetype=image/svg+xml'
+        query: {
+          limit: 10000,
+          mimetype: 'image/svg+xml'
+        }
       }
     ]
   },
@@ -129,14 +136,14 @@ module.exports = {
       options: {
         postcss: function(webpack) {
           return [
-                  postcssEasyImport,
-                  postcssStripInlineComment,
-				  postcssSelectorNot,
-                  autoprefixer, 
-                  precss,
-                  customMedia,
-			 	  postCssColorFunction
-                  ];
+            postcssEasyImport,
+            postcssStripInlineComment,
+  				  postcssSelectorNot,
+            autoprefixer, 
+            precss,
+            customMedia,
+  			 	  postCssColorFunction
+          ];
         },
         eslint: {
           // TODO: consider separate config for production,
@@ -161,7 +168,7 @@ module.exports = {
         removeEmptyAttributes: true,
         removeStyleLinkTypeAttributes: true,
         keepClosingSlash: true,
-        minifyJS: true,
+        minifyJS: false,
         minifyCSS: true,
         minifyURLs: true
       }
@@ -175,17 +182,7 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        screw_ie8: true,
-        warnings: false
-      },
-      mangle: {
-        screw_ie8: true
-      },
-      output: {
-        comments: false,
-        screw_ie8: true
-      }
+      compress: { warnings: false }
     }),
     new ExtractTextPlugin('[name].[contenthash].css')
   ]

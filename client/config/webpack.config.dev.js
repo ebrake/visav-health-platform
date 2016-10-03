@@ -63,7 +63,6 @@ module.exports = {
         test: /\.jsx?$/,
         loader: 'babel-loader',
         include: srcPath,
-        exclude: /node_modules/,
         query: require('./babel.dev')
       },
       {
@@ -87,22 +86,33 @@ module.exports = {
       {
         test: /\.(mp4|webm)$/,
         loader: 'url',
-        query: 'limit=10000'
+        query: {
+          limit: 10000
+        }
       },
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url',
-        query: 'limit=10000&mimetype=application/font-woff'
+        query: {
+          limit:10000,
+          mimetype:'application/font-woff'
+        }
       }, 
       {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url',
-        query: 'limit=10000&mimetype=application/font-woff'
+        query: {
+          limit:10000,
+          mimetype:'application/font-woff'
+        }
       }, 
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url',
-        query: 'limit=10000&mimetype=application/octet-stream'
+        query: {
+          limit:10000,
+          mimetype:'application/octet-stream'
+        }
       }, 
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
@@ -111,7 +121,10 @@ module.exports = {
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url',
-        query: 'limit=10000&mimetype=image/svg+xml'
+        query: {
+          limit: 10000,
+          mimetype: 'image/svg+xml'
+        }
       }
     ]
   },
@@ -120,14 +133,14 @@ module.exports = {
       options: {
         postcss: function(webpack) {
           return [
-                  postcssEasyImport,
-                  postcssStripInlineComment,
-				  postcssSelectorNot,
-                  autoprefixer, 
-                  precss,
-                  customMedia,
-            	  postCssColorFunction
-                  ];
+            postcssEasyImport,
+            postcssStripInlineComment,
+            postcssSelectorNot,
+            autoprefixer, 
+            precss,
+            customMedia,
+            postCssColorFunction
+          ];
         },
         eslint: {
           configFile: path.join(__dirname, 'eslint.js'),
