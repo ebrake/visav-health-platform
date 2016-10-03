@@ -59,8 +59,8 @@ class Invite extends React.Component {
 
   render() {
     return (
-      <div className="InviteUsers content-container">
-        <div className="InviteUsersPanel panel">
+      <div className="Invite content-container">
+        <div className="InvitePanel panel">
           <h1 className="title">Invite a new User</h1>
           <VisavInput label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
           <VisavInput label="First Name" value={this.state.firstName} valueDidChange={this.handleChange('firstName')} />

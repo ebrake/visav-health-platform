@@ -134,6 +134,7 @@ function formatDatasets(datasets, addToLabel) {
     d.pointBackgroundColor = colors.getGraphColor(i);
     d.pointBorderColor = colors.getColor('blue');
     d.pointBorderWidth = 4;
+    d.lineTension = 0;
 
     return d;
   })

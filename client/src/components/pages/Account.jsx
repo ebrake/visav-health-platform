@@ -58,7 +58,7 @@ class Account extends React.Component {
   render() {
     return (
       <div className="Account content-container">
-        <div className="account-settings-panel panel">
+        <div className="AccountPanel panel">
           <h1 className="title">Account Settings</h1>
           <VisavInput label="First Name" value={ this.state.firstName } valueDidChange={ this.handleChange('firstName') } onKeyUp={ this.keyPressed } />
           <VisavInput label="Last Name" value={ this.state.lastName } valueDidChange={ this.handleChange('lastName') } onKeyUp={ this.keyPressed } />
