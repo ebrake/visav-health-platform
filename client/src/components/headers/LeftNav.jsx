@@ -21,7 +21,7 @@ class LeftNav extends React.Component {
     return (
       <div className="LeftNav nav flex-column">
         <div className="vertical-nav" id="left-nav">
-          <NavIcon type="telesession" path="/telesession" selected={ path === "/telesession" } />
+          <NavIcon type="telesession" path="/telesession" selected={ path === "/telesession" || path === "/" } />
           <NavIcon type="organization" path="/people" selected={ path === "/people" } />
           {InviteNavIcon}
           <NavIcon type="account-settings" path="/account" selected={ path === "/account" } />
