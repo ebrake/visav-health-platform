@@ -34,7 +34,7 @@ module.exports = {
      path.join(srcPath, 'index')
    ],
    vendor: [
-     'react', 'react-dom', 'react-chartjs-2', 'react-router'
+     'react', 'react-dom', 'react-chartjs-2', 'react-router/es'
    ]
   },
   output: {

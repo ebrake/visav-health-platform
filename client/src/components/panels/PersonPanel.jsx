@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router/es';
 
 import RelatedPersonListItem from '../lists/RelatedPersonListItem';
 import AddNewRelatedPersonListItem from '../lists/AddNewRelatedPersonListItem';

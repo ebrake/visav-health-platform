@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router/es';
 import AccountStore from '../../alt/stores/AccountStore';
 import MainHeader from '../headers/MainHeader';
 import LeftNav from '../headers/LeftNav';

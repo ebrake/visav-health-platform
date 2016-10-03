@@ -47,7 +47,7 @@
     "react-fontawesome": "^1.2.0",
     "react-localization": "0.0.5",
     "react-loopback": "0.4.0",
-    "react-router": "^2.8.1",
+    "react-router": "^3.0.0-beta.1",
     "react-segmented-control": "^0.2.2",
     "rimraf": "2.5.4",
     "style-loader": "0.13.1",
