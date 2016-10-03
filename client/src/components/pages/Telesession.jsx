@@ -22,7 +22,7 @@ class Telesession extends React.Component {
     this.state = {
       user: user,
       patient: undefined,
-      patientId: this.props.location.query.patient || undefined
+      patientId: this.props.location.query.patient || 9
     };
   }
 
