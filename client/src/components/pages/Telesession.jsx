@@ -1,5 +1,3 @@
-import connectToStores from 'alt-utils/lib/connectToStores';
-
 import React, { Component } from 'react';
 import RepsChartPanel from '../panels/RepsChartPanel';
 import PatientInfoPanels from '../panels/patient-info/PatientInfoPanels';
@@ -7,27 +5,14 @@ import TelesessionPanels from '../panels/TelesessionPanels';
 
 import ExercisesChartPanel from '../panels/ExercisesChartPanel';
 import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
-import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
-import FullscreenAlert from '../misc/FullscreenAlert';
 
 import AccountStore from '../../alt/stores/AccountStore';
 import OrganizationStore from '../../alt/stores/OrganizationStore';
 import OrganizationActions from '../../alt/actions/OrganizationActions';
-import ChatPanel from '../panels/ChatPanel';
-
-import TelesessionStore from '../../alt/stores/TelesessionStore';
 
 class Telesession extends React.Component {
 
-  static getStores() {
-    return [TelesessionStore];
-  }
-
-  static getPropsFromStores() {
-    return TelesessionStore.getState();
-  }
-  
   constructor(props) {
     super(props);
     let user = AccountStore.getUser();
@@ -64,12 +49,6 @@ class Telesession extends React.Component {
 
     console.log("PROPS",this.props);
 
-    var chatPanel;
-    // Display chat panel if TelesessionStore=>activeSession exists
-    if (this.props.activeSession) {
-      chatPanel = <ChatPanel />
-    }
-
     return (
       <div className="Telesession content-container row-gt-sm">
         <div className="left-column charts-container">
@@ -80,11 +59,10 @@ class Telesession extends React.Component {
         <div className="right-column">
           <TelesessionPanels patient={this.state.patient} />
           <PatientInfoPanels patient={this.state.patient} />
-          { chatPanel }
         </div>
       </div>
     );
   }
 }
 
-export default AuthenticatedPage(connectToStores(Telesession));
+export default AuthenticatedPage(Telesession);
