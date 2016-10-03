@@ -13,7 +13,8 @@ class AccountStore {
     });
 
     this.exportPublicMethods({
-      getUser: this.getUser
+      getUser: this.getUser,
+      getRole: this.getRole
     })
   }
 
@@ -44,6 +45,10 @@ class AccountStore {
   /* PUBLIC METHODS */
   getUser() {
     return this.state.user;
+  }
+
+  getRole() {
+    return this.state.user.role.name;
   }
 }
 

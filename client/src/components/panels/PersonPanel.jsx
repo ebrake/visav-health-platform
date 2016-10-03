@@ -6,7 +6,8 @@ import AddNewRelatedPersonListItem from '../lists/AddNewRelatedPersonListItem';
 import ImageButton from '../buttons/ImageButton';
 
 import OrganizationActions from '../../alt/actions/OrganizationActions';
-import OrganizationStore from '../../alt/stores/OrganizationStore'
+import OrganizationStore from '../../alt/stores/OrganizationStore';
+import AccountStore from '../../alt/stores/AccountStore';
 
 class PersonPanel extends React.Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class PersonPanel extends React.Component {
     this.state = {
       patients: [],
       doctors: [],
-      caregivers: []
+      caregivers: [],
+      role: AccountStore.getRole()
     };
 
     this.listForRelation = this.listForRelation.bind(this);
@@ -45,6 +47,7 @@ class PersonPanel extends React.Component {
   listForRelation(relation){
     var list;
     var people;
+    var addNewPersonRow = null;
 
     if (relation === 'patient') {
       people = this.state.patients;
@@ -56,6 +59,11 @@ class PersonPanel extends React.Component {
       people = this.state.caregivers;
     }
 
+    if (this.state.role === 'admin') {
+      addNewPersonRow = 
+      <AddNewRelatedPersonListItem relation={relation} valueDidChange={ this.addNewRelationInputValueChanged } onAddNewRelation={ this.didClickAddNewRelation } />
+    }
+
     list =
       <div className='relation-list'>
         <h3>{ this.props.person.firstName + '\'s ' +  relation + 's'}</h3>
@@ -65,7 +73,7 @@ class PersonPanel extends React.Component {
               return <RelatedPersonListItem person={person} relation={relation} key={i} onClickValue={ this.didSelectRelatedPerson.bind(this) } onClickRemove={ this.didClickRemoveRelation }/>
             }.bind(this))
           }
-          <AddNewRelatedPersonListItem relation={relation} valueDidChange={ this.addNewRelationInputValueChanged } onAddNewRelation={ this.didClickAddNewRelation } />
+          { addNewPersonRow }
         </ul>
       </div>;
       
@@ -180,8 +188,10 @@ class PersonPanel extends React.Component {
         { caregiverList }
       </div>;
 
-      telesessionButton = 
-      <ImageButton className="goto-telesession-button" text={"Open Telesession Lobby With "+person.firstName+' '+person.lastName} onClick={ this.gotoTelesession } />
+      if (this.state.role === 'doctor') {
+        telesessionButton = 
+        <ImageButton className="goto-telesession-button" text={"Open Telesession Lobby With "+person.firstName+' '+person.lastName} onClick={ this.gotoTelesession } />
+      }
     }
 
     return (
