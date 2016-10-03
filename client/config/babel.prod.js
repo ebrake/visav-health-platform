@@ -1,11 +1,19 @@
 module.exports = {
+  /* Shaking-tree-friendly ES2015/2016/2017 */
   presets: [
-    'babel-preset-airbnb'
-  ].map(require.resolve),
+    ["latest", {
+      "es2015": {
+        "loose": true,
+        "modules": false
+      }
+    }],
+    'react',
+  ],
+  /* These are installed by airbnb preset */
   plugins: [
-    'babel-plugin-syntax-trailing-function-commas',
-    'babel-plugin-transform-class-properties',
-    'babel-plugin-transform-decorators-legacy',
-    'babel-plugin-transform-remove-strict-mode'
-  ].map(require.resolve)
+    'transform-es3-member-expression-literals',
+    'transform-es3-property-literals',
+    'transform-jscript',
+    ['transform-object-rest-spread', { useBuiltIns: true }]
+  ]
 };
