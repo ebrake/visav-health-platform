@@ -20,7 +20,7 @@ class VisavIcon extends React.Component {
       content = <FontAwesome name='phone' />
     }
     else if (this.props.type === 'hang-up') {
-      content = <FontAwesome name='cancel' />
+      content = <FontAwesome name='remove' />
     }
     else if (this.props.type === 'muted-self') {
       content = <FontAwesome name='microphone-slash' />
@@ -31,7 +31,7 @@ class VisavIcon extends React.Component {
     else if (this.props.type === 'muted-subscriber') {
       content = <FontAwesome name='volume-off' />
     }
-    else if (this.props.type === 'unmuted-subscriver') {
+    else if (this.props.type === 'unmuted-subscriber') {
       content = <FontAwesome name='volume-up' />
     }
     else if (this.props.type === 'general-patient-info') {
@@ -39,7 +39,6 @@ class VisavIcon extends React.Component {
     }
     else if (this.props.type === 'next-appointment') {
       content = <FontAwesome name='calendar' />
-
     }
     else if (this.props.type === 'medications') {
       content = <FontAwesome name='medkit' />
@@ -53,6 +52,9 @@ class VisavIcon extends React.Component {
     else if (this.props.type === 'chat') {
       content = <FontAwesome name='comments' />
     }
+    else if (this.props.type === 'telesession') {
+      content = <FontAwesome name="user-md" />
+    }
     else if (this.props.type === 'organization') {
       content = <FontAwesome name='sitemap' />
     }
@@ -64,17 +66,24 @@ class VisavIcon extends React.Component {
     }
     else if (this.props.type === 'logout' ) {
       content = <FontAwesome name='sign-out' />
-
     }
+    else {
+      content = <FontAwesome name={this.props.type} />
+    }
+
     return content;
   }
 
-
   render () {
     var classNames = this.props.type + ' VisavIcon';
+    if (this.props.selected)
+      classNames += ' selected';
+    if (this.props.className) 
+      classNames += ' '+this.props.className;
+
     return (
-      <div className={ classNames } >
-        { this.icon }
+      <div {...this.props} className={ classNames } onClick={this.props.onClick} >
+        { this.icon() }
       </div>
     );
   }
@@ -82,6 +91,8 @@ class VisavIcon extends React.Component {
 
 VisavIcon.propTypes = {
   type: React.PropTypes.string.isRequired,
+  selected: React.PropTypes.bool,
+  onClick: React.PropTypes.func,
 };
 
 export default VisavIcon;

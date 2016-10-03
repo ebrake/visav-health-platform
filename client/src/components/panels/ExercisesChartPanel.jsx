@@ -32,6 +32,12 @@ class ExercisesChartPanel extends React.Component {
     ExerciseStore.unlisten(this.exercisesChanged);
   }
 
+  componentWillReceiveProps(nextProps){
+    if (nextProps.patientId !== this.props.patientId) {
+      ExerciseActions.getExercises(nextProps.patientId);
+    }
+  }
+
   chartOptions(){
     let tooltips = Object.assign({ callbacks: { title: chartUtil.callbacks.makeTitleIntoDate } }, chartUtil.tooltips);
     let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));

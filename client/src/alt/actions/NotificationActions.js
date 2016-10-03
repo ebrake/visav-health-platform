@@ -26,9 +26,9 @@ class NotificationActions {
     };
   }
 
-  callDemoUser(sessionId){
+  callUser(sessionId, userId){
+    console.log('calling patient with userId: ' + userId);
     return function (dispatch) {
-      let userId = 7;
       return fetch(process.env.API_ROOT+'api/Telesessions/callUser', {
         method: 'POST', 
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
@@ -40,6 +40,9 @@ class NotificationActions {
       .then(response => response.json())
       .then(response => {
         // do something with response if we want
+        console.log('response from calling patient with userId: ' + userId);
+        console.dir(response);
+
       })
       .catch((err) => {
         console.log('error:');

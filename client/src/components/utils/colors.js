@@ -5,6 +5,7 @@
 var brightBlue = '114, 153, 204'
   , lightBlue = '150, 156, 180'
   , backgroundBlue = '53, 72, 94'
+  , foregroundBlue = '45, 62, 82'
   , purple = '167, 146, 224'
   , orange = '237, 165, 57'
   , red = '241, 114, 146'
@@ -26,9 +27,11 @@ var brightBlue = '114, 153, 204'
       'secondary': lightBlue,
       'highlight': brightBlue,
       'faded': darkGrey,
+      'white': white
     }
   , colors = {
-      purple: purple
+      purple: purple,
+      blue: foregroundBlue
     }
 
 var toRGB = (color) => {
@@ -42,7 +45,7 @@ var toRGBA = (color, opacity) => {
 
 export default {
   getGraphColor: (i, faded) => {
-    return toRGBA(white, (faded ? 0.1 : 0.9));
+    return toRGBA(lightGrey, (faded ? 0.1 : 1));
   },
 
   getFontColor: (name) => {

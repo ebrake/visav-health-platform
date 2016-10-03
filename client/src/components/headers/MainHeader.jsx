@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NavItem from '../lists/NavItem'
 import AccountStore from '../../alt/stores/AccountStore';
 import VISAV from '../misc/VISAV';
+import VisavIcon from '../misc/VisavIcon';
 
 class MainHeader extends React.Component {
   constructor(props) {
@@ -23,9 +24,10 @@ class MainHeader extends React.Component {
       <div className="MainHeader header">
         <div className="header-row">
           <VISAV />
-          <ul className="horizontal-nav nav">
-            <NavItem title={this.state.user ? this.state.user.firstName+' '+this.state.user.lastName : 'Account' } path="/account" className={path=="/account" ? "selected" : ""} />
-          </ul>
+          <div id="header-person-container">
+            <span id="header-person-text">{this.state.user ? this.state.user.firstName+' '+this.state.user.lastName : 'Account'}</span>
+            <VisavIcon id="header-person-visav-icon" type="user" />
+          </div>
         </div>
       </div>
     );

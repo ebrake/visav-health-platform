@@ -12,6 +12,7 @@ import AuthenticatedPage from './AuthenticatedPage';
 import FullscreenAlert from '../misc/FullscreenAlert';
 
 import AccountStore from '../../alt/stores/AccountStore';
+import OrganizationStore from '../../alt/stores/OrganizationStore';
 import OrganizationActions from '../../alt/actions/OrganizationActions';
 import ChatPanel from '../panels/ChatPanel';
 
@@ -34,7 +35,7 @@ class Telesession extends React.Component {
     this.state = {
       user: user,
       patient: undefined,
-      patientId: this.props.location.query.patient || 2
+      patientId: this.props.location.query.patient || 9
     };
   }
 
@@ -45,6 +46,16 @@ class Telesession extends React.Component {
         this.setState({
           patient: response.data.patient
         })
+      }
+      else {
+        let orgState = OrganizationStore.getState();
+        if (orgState.patients && (orgState.patients.length > 0)) {
+          let newPatient = orgState.patients[0];
+          this.setState({
+            patient: newPatient,
+            patientId: newPatient.id
+          });
+        }
       }
     }.bind(this))
   }

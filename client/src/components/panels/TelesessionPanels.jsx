@@ -4,6 +4,8 @@ import NotificationActions from '../../alt/actions/NotificationActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import ImageButton from '../buttons/ImageButton';
 
+import VisavIcon from '../misc/VisavIcon';
+
 class TelesessionPanels extends React.Component {
   
 
@@ -19,7 +21,7 @@ class TelesessionPanels extends React.Component {
       isMousedOver: false,
     };
 
-    this.callSelf = this.callSelf.bind(this);
+    this.callPatient = this.callPatient.bind(this);
     this.telesessionChanged = this.telesessionChanged.bind(this);
     this.toggleMuteMic = this.toggleMuteMic.bind(this);
     this.toggleMuteSubscriber = this.toggleMuteSubscriber.bind(this);
@@ -32,8 +34,8 @@ class TelesessionPanels extends React.Component {
     TelesessionActions.createSession();
   }
 
-  callSelf() {
-    NotificationActions.callDemoUser(TelesessionStore.getState().sessionId);
+  callPatient() {
+    NotificationActions.callUser(TelesessionStore.getState().sessionId, this.props.patient.id);
   }
 
   connectToSession() {
@@ -157,14 +159,14 @@ class TelesessionPanels extends React.Component {
 
       var controlPanel = isActiveSession ?
         <div className="vertical-control-panel panel">
-          <ImageButton onClick={this.disconnectFromSession.bind(this)} imgUrl="hangup.png" className="btn-cancel btn-overlay"/>
-          <ImageButton onClick={this.callSelf.bind(this)} imgUrl="call.png" className="btn-call btn-overlay"/>
-          <ImageButton onClick={this.toggleMuteMic} imgUrl="mute-mic.png" selected={this.state.muteMic} className="btn-mute-mic btn-overlay" />
-          <ImageButton onClick={this.toggleMuteSubscriber} imgUrl="mute.png" selected={this.state.muteSubscriber} className="btn-mute-subscriber btn-overlay" />
+          <VisavIcon type="hang-up" onClick={this.disconnectFromSession.bind(this)} className="btn-cancel btn-overlay"/>
+          <VisavIcon type="call-patient" onClick={this.callPatient.bind(this)} className="btn-call btn-overlay"/>
+          <VisavIcon type={this.state.muteMic ? 'muted-self' : 'unmuted-self'} onClick={this.toggleMuteMic} className="btn-mute-mic btn-overlay" />
+          <VisavIcon type={this.state.muteSubscriber ? 'muted-subscriber' : 'unmuted-subscriber'} onClick={this.toggleMuteSubscriber} className="btn-mute-subscriber btn-overlay" />
         </div>
         :
         <div className="vertical-control-panel panel">
-          <ImageButton onClick={this.createSession.bind(this)} imgUrl="face-to-face.png" disableHoverImage={true} className="btn-create"/>
+          <VisavIcon type="start-telesession" onClick={this.createSession.bind(this)} className="btn-create"/>
         </div>;
 
       return (

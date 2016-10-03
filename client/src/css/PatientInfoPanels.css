@@ -11,24 +11,21 @@
     flex: 1 1 auto;
     overflow: scroll;
   }
+
   .vertical-control-panel {
     flex: 0 0 auto;
     margin-left: 10px;
-
-    .ImageButton {
-      width: 50px;
-
-    }
   }
 }
 
 .PatientInfoPanel {
   overflow: hidden;
   flex: 1 0 50%;
-  
+
   @media (--lt-md) {
     flex: 1 0 auto;
   }
+
   .columns {
     display: flex;
     flex-direction: row;

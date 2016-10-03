@@ -121,14 +121,16 @@ class VisavInput extends React.Component {
       return 'NO KEY FOR ITEM'
     }
   }
+
   autocompleteRenderItem(item, isHighlighted){
     var value = item[ this.props.autocompleteKeys[0]];
     return(
-      <div key={item.abbr}>
+      <div className="autocomplete-item" key={item.abbr}>
         { value }
       </div>
     );
   }
+
   autocompleteElement(){
     return(
       <Autocomplete
@@ -140,6 +142,7 @@ class VisavInput extends React.Component {
         onChange={ this.autocompleteValueDidChange }
         onSelect={ this.autocompleteOnSelect }
         renderItem={ this.autocompleteRenderItem }
+        menuStyle={ { borderRadius: 0, position: 'fixed', background: 'white' } }
       ></Autocomplete>
     );
   }

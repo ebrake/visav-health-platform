@@ -1,6 +1,5 @@
 @import 'media.css';
 @import 'colors.css';
-@import 'panel.css';
 
 .Telesession {
   > .left-column {
@@ -111,11 +110,14 @@
   flex-direction: column;
 
   .graph-panel {
+    position: relative;
     flex: 1 1 1px;
 
     .VisavDropdown {
-      margin: 0 auto 20px;
-      width: 250px;
+      position: absolute;
+      top: 21px;
+      right: 3%;
+      width: 200px;
     }
 
     &:not(:last-child) {
@@ -128,10 +130,6 @@
   position: relative;
   flex: 1 1 1px;
   height: calc(100% - 40px);
-
-  &.account-for-dropdown {
-    height: calc(100% - 93px);
-  }
 }
 
 .ChatPanel {

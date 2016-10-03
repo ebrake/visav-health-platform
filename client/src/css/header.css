@@ -6,9 +6,10 @@
   background-color: $color-header-bg;
   padding: 10px;
   margin-bottom: 10px;
+  height: 50px;
 
   .header-row {
-    flex: 1 0 auto;
+    flex: 1 1 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,5 +27,38 @@
     align-items: center;
     display: flex;
     color: $header-text;
+  }
+
+  #header-person-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+  }
+
+  #header-person-text {
+    margin-right: 15px;
+    padding-top: 2px;
+    color: $header-text-color;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  #header-person-visav-icon {
+    font-size: 22px;
+    cursor: inherit;
+
+    span {
+      color: $header-text-color;
+    }
+
+    &.selected,
+    &:hover {
+      background-color: $nav-item-bg;
+
+      span {
+        color: $header-text-color;
+      }
+    }
   }
 }

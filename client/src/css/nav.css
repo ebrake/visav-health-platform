@@ -66,12 +66,47 @@
   }
 }
 
+$icon-size: 26px;
+
+.VisavIcon {
+  display: flex;
+  cursor: pointer;
+  background-color: $nav-item-bg;
+  font-size: $icon-size;
+  padding: 17px 0;
+  background-color: $nav-item-bg;
+
+  > span {
+    margin: 0 auto;
+  }
+
+  &.selected {
+    background-color: $nav-item-bg-selected;
+
+    span {
+      color: $nav-item-text-selected;
+    }
+  }
+
+  &:hover {
+    background-color: $nav-item-bg-hover;
+
+    span {
+      color: $nav-item-text-hover;
+    }
+  }
+}
+
 .LeftNav {
   margin-bottom: 10px;
   padding: 0;
-  padding: 10px 0 0;
   border-radius: 0 10px 10px 0;
   border: 1px solid $color-panel-border;
   background-color: $color-panel-bg;
-  width: 50px;
+  width: 60px;
+  overflow: hidden;
+
+  .NavIcon:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }

@@ -32,6 +32,12 @@ class HealthEventsChartPanel extends React.Component {
     HealthEventStore.unlisten(this.healthEventsChanged);
   }
 
+  componentWillReceiveProps(nextProps){
+    if (nextProps.patientId !== this.props.patientId) {
+      HealthEventActions.getHealthEvents(nextProps.patientId);
+    }
+  }
+
   chartOptions(){
     let tooltips = Object.assign({ callbacks: { title: chartUtil.callbacks.makeTitleIntoDate } }, chartUtil.tooltips);
     let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));
