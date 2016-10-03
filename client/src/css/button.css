@@ -56,3 +56,12 @@
     font-size: 16px;
   }
 }
+
+.VisavIcon {
+  &.destructive {
+    &:hover {
+      background: $button-destructive-hover-color;
+      color: $button-destructive-hover-text-color;
+    }
+  }
+}

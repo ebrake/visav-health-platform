@@ -37,6 +37,10 @@
 
 .PeopleListItem {
   cursor: pointer;
+
+  .VisavIcon {
+    width: 60px;
+  }
 }
 
 .RelatedPersonListItem {

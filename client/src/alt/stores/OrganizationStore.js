@@ -13,7 +13,8 @@ class OrganizationStore {
       handleGetViewablePeople: OrganizationActions.GET_VIEWABLE_PEOPLE,
       handleGetRelatedPeople: OrganizationActions.GET_RELATED_PEOPLE,
       handleMakeDoctorPatientRelationship: OrganizationActions.MAKE_DOCTOR_PATIENT_RELATIONSHIP,
-      handleMakeCaregiverPatientRelationship: OrganizationActions.MAKE_CAREGIVER_PATIENT_RELATIONSHIP
+      handleMakeCaregiverPatientRelationship: OrganizationActions.MAKE_CAREGIVER_PATIENT_RELATIONSHIP,
+      handleRemoveUser: OrganizationActions.REMOVE_USER
     });
   }
 
@@ -59,6 +60,15 @@ class OrganizationStore {
   handleMakeCaregiverPatientRelationship(response) {
     console.log('Made doctor patient relationship:');
     console.dir(response);
+  }
+
+  handleRemoveUser(response) {
+    let deletedUser = response.data.deletedUser;
+
+    let roleArray = deletedUser.role.name+'s';
+
+    this[roleArray] = this[roleArray].filter(person => { return person.id !== deletedUser.id });
+    this.people = this.people.filter(person => { return person.id !== deletedUser.id });
   }
 }
 

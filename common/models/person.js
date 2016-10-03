@@ -859,6 +859,64 @@ module.exports = function(Person) {
       return cb(null, { status: 'failure', message: err.message, error: err });
     })
   }
+
+  Person.removeUser = function(req, cb) {
+    var err;
+    var readableUser = req.user.toJSON();
+    if (!readableUser.role || readableUser.role.name !== 'admin') {
+      err = new Error('Non-admin staff may not remove users.');
+      err.statusCode = 422;
+      err.code = 'REMOVE_USER_FAILED_INVALID_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+    if (!req.body.id) {
+      err = new Error('No ID provided for user to remove.');
+      err.statusCode = 417;
+      err.code = 'REMOVE_USER_FAILED_MISSING_REQUIREMENT_ID';
+      return cb(null, { status: 'failure', message: err.message, error : err });
+    }
+
+    Person.findById(req.body.id)
+    .then(function(foundUser){
+      if (!foundUser) {
+        err = new Error('No user found with provided ID!');
+        err.statusCode = 404;
+        err.code = 'REMOVE_USER_FAILED_INVALID_REQUIREMENT_ID';
+        throw err;
+      }
+
+      foundUser = foundUser.toJSON();
+      if (foundUser.organization.id !== readableUser.organization.id) {
+        err = new Error('User is not in the same organization as requesting user!');
+        err.statusCode = 422;
+        err.code = 'REMOVE_USER_FAILED_INVALID_REQUIREMENT_ORGANIZATION_MISMATCH';
+        throw err;
+      }
+
+      return Person.destroyById(req.body.id)
+      .then(function(){
+        //so we can access this person in the cb
+        return foundUser;
+      })
+    })
+    .then(function(deletedUser){
+      return cb(null, { status: 'success', message: 'Deleted user '+deletedUser.firstName+' '+deletedUser.lastName+'', deletedUser: deletedUser });
+    }, function(err){
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    })
+  }
+
+  Person.remoteMethod(
+    'removeUser',
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/removeUser', verb: 'delete' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Accepts a user ID and removes that user as long as requesting user is an admin within the same organization."
+    }
+  )
 }
 
 function findPerson(req, email) {

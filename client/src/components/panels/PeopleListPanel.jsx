@@ -6,9 +6,14 @@ class PeopleListPanel extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
 
+    this.setDisplayedPeople = this.setDisplayedPeople.bind(this);
+
+    this.setDisplayedPeople();
+  }
+
+  setDisplayedPeople(){
     let relationState = OrganizationStore.getState();
 
     console.log(this.props.displayedRole);

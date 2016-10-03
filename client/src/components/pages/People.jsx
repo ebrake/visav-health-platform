@@ -51,7 +51,7 @@ class People extends React.Component {
 
         {
           this.allowedPeopleLists.map(function(role, i){
-            return <PeopleListPanel displayedRole={role}  key={i} onSelectPerson={ this.didSelectPerson } />
+            return <PeopleListPanel displayedRole={role} key={i} onSelectPerson={ this.didSelectPerson } />
           }.bind(this))
         }
       </div>
