@@ -1,4 +1,4 @@
 {
   "presets": ["airbnb"],
-  "plugins": ["add-module-exports","babel-plugin-transform-decorators-legacy"]
+  "plugins": ["add-module-exports"]
 }

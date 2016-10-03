@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router/es';
 import ImageButton from '../buttons/ImageButton';
 
 class NavItem extends React.Component {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router/es';
 import AccountActions from '../../alt/actions/AccountActions';
 import FullscreenAlert from '../misc/FullscreenAlert';
 import PasswordResetPanel from '../panels/PasswordResetPanel';

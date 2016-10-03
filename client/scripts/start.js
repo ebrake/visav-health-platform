@@ -134,6 +134,7 @@ function openBrowser() {
 }
 
 new WebpackDevServer(compiler, {
+  contentBase: '/',
   historyApiFallback: true,
   hot: true, // Note: only CSS is currently hot reloaded
   publicPath: config.output.publicPath,

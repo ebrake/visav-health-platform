@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router/es';
 import VisavIcon from '../misc/VisavIcon';
 
 class NavIcon extends React.Component {
