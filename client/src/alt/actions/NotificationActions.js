@@ -27,6 +27,7 @@ class NotificationActions {
   }
 
   callUser(sessionId, userId){
+    console.log('calling patient with userId: ' + userId);
     return function (dispatch) {
       return fetch(process.env.API_ROOT+'api/Telesessions/callUser', {
         method: 'POST', 
@@ -39,6 +40,9 @@ class NotificationActions {
       .then(response => response.json())
       .then(response => {
         // do something with response if we want
+        console.log('response from calling patient with userId: ' + userId);
+        console.dir(response);
+
       })
       .catch((err) => {
         console.log('error:');
