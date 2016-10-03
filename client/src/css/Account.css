@@ -45,3 +45,9 @@
     margin-bottom: 10px;
   }
 }
+
+.account-settings-panel {
+  .VisavInput {
+    width: 250px;
+  } 
+}

@@ -7,7 +7,7 @@ import VisavDropdown from '../inputs/VisavDropdown';
 import Roles from '../utils/Roles';
 import VisavInput from '../inputs/VisavInput';
 
-class InviteUsers extends React.Component {
+class Invite extends React.Component {
   
   constructor(props) {
     super(props);
@@ -62,7 +62,6 @@ class InviteUsers extends React.Component {
       <div className="InviteUsers content-container">
         <div className="InviteUsersPanel panel">
           <h1 className="title">Invite a new User</h1>
-          <span className="description">Use the menu below to invite a new user to your organization.</span>
           <VisavInput label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
           <VisavInput label="First Name" value={this.state.firstName} valueDidChange={this.handleChange('firstName')} />
           <VisavInput label="Last Name" value={this.state.lastName} valueDidChange={this.handleChange('lastName')} />
@@ -74,6 +73,6 @@ class InviteUsers extends React.Component {
   }
 }
 
-InviteUsers.isAllowed = ['owner', 'admin'];
+Invite.isAllowed = ['owner', 'admin'];
 
-export default AuthenticatedPage(InviteUsers);
+export default AuthenticatedPage(Invite);

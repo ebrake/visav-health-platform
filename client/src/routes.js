@@ -12,7 +12,7 @@ import SetPassword from './components/pages/SetPassword.jsx'
 import People from './components/pages/People.jsx'
 
 import Account from './components/pages/Account.jsx'
-import InviteUsers from './components/pages/InviteUsers.jsx'
+import Invite from './components/pages/Invite.jsx'
 import LiveSocket from './components/pages/LiveSocket.jsx'
 import EmailGettingStarted from './components/email-templates/GettingStartedEmail'
 import HealthEventNotificationEmail from './components/email-templates/HealthEventNotificationEmail'
@@ -60,7 +60,7 @@ var routes = (
     <Route path="/me" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/telesession" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/account" component={Account} onEnter={authCheck} onLeave={cacheStores} />
-    <Route path="/invite" component={InviteUsers} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/invite" component={Invite} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/people" component={People} onEnter={authCheck} onLeave={cacheStores} />
 
     <Route path="/liveSocket" component={LiveSocket} onEnter={authCheck} onLeave={cacheStores} />
