@@ -46,7 +46,7 @@ class TelesessionPanels extends React.Component {
   }
 
   callPatient() {
-    NotificationActions.callDemoUser(this.state.sessionId, this.props.patient.id);
+    NotificationActions.callUser(this.state.sessionId, this.props.patient.id);
   }
 
   connectToSession() {
