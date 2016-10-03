@@ -44,37 +44,26 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    alias: {
-      'react': path.join(__dirname,'..', 'node_modules', 'react'),
-    },
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx'],
   },
   resolveLoader: {
-    root: nodeModulesPath,
-    moduleTemplates: ['*-loader']
+    modules: [nodeModulesPath],
+    moduleExtensions: ["-loader"],
+    enforceModuleExtension: false
   },
   module: {
-    preLoaders: [
-      { 
-        test: /\.js$/,
-        loader: 'eslint',
-        include: srcPath,
-      }
-    ],
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
+        enforce: 'pre',
+        loader: 'eslint',
         include: srcPath,
-        loader: 'babel',
-        query: require('./babel.dev')
       },
       {
         test: /\.jsx?$/,
-        loader: 'babel',
-        exclude: /node_modules/,
-        query: {
-          presets: ['airbnb']
-        }
+        loader: 'babel-loader',
+        include: srcPath,
+        query: require('./babel.dev')
       },
       {
         test: /\.css$/,
@@ -83,48 +72,43 @@ module.exports = {
       {
         test:   /\.style.js$/,
         include: srcPath,
-        loader: "style!css!postcss?parser=postcss-js!babel"
+        loader: 'style!css!postcss',
+        query: 'parser=postcss-js!babel'
       },
       {
         test: /\.json$/,
         loader: 'json'
       },
       {
-        test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
+        test: /\.(jpg|png|gif|svg)$/,
         loader: 'file',
       },
       {
         test: /\.(mp4|webm)$/,
-        loader: 'url?limit=10000'
+        loader: 'url',
+        query: {
+          limit: 10000
+        }
       },
       {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, 
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader",
+        query: {
+          limit:10000,
+          mimetype: 'application/font-woff'
+        }
+      },
       {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, 
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/octet-stream"
-      }, 
-      {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file"
-      }, 
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=image/svg+xml"
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader'
       }
     ]
   },
-  eslint: {
-    configFile: path.join(__dirname, 'eslint.js'),
-    useEslintrc: false
-  },
-  postcss: function(webpack) {
-    return [
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        postcss: function(webpack) {
+          return [
             postcssEasyImport,
             postcssStripInlineComment,
             postcssSelectorNot,
@@ -132,13 +116,18 @@ module.exports = {
             precss,
             customMedia,
             postCssColorFunction
-            ];
-  },
-  plugins: [
+          ];
+        },
+        eslint: {
+          configFile: path.join(__dirname, 'eslint.js'),
+          useEslintrc: false
+        }
+      }
+    }),
     new HtmlWebpackPlugin({
       inject: true,
-      template: indexHtmlPath,
       favicon: faviconPath,
+      template: indexHtmlPath
     }),
     new StyleLintPlugin({
       configFile: '.stylelintrc',

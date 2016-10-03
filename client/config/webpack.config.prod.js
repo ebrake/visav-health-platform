@@ -28,8 +28,15 @@ var buildPath = path.join(__dirname, isInNodeModules ? '../../..' : '..', 'build
 
 module.exports = {
   bail: true,
-  devtool: 'source-map',
-  entry: path.join(srcPath, 'index'),
+  devtool: 'cheap-module-source-map',
+  entry: {
+   js: [
+     path.join(srcPath, 'index')
+   ],
+   vendor: [
+     'react', 'react-dom', 'react-chartjs-2', 'react-router/es'
+   ]
+  },
   output: {
     path: buildPath,
     filename: '[name].[chunkhash].js',
@@ -39,102 +46,99 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    alias: {
-      'react': path.join(__dirname,'..', 'node_modules', 'react'),
-    },
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx']
   },
   resolveLoader: {
-    root: nodeModulesPath,
-    moduleTemplates: ['*-loader']
+    modules: [nodeModulesPath],
+    moduleExtensions: ["-loader"],
+    enforceModuleExtension: false
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/,
-        loader: 'eslint',
-        include: srcPath
-      }
-    ],
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/, //test: /\.js$/,
+        enforce: 'pre',
+        loader: 'eslint',
         include: srcPath,
-        loader: 'babel',
-        query: require('./babel.prod')
       },
       {
         test: /\.jsx?$/,
-        loader: 'babel',
-        exclude: /node_modules/,
-        query: {
-          presets: ['airbnb']
-        }
+        loader: 'babel-loader',
+        include: srcPath,
+        query: require('./babel.prod')
       },
       {
         test: /\.css$/,
         // Disable autoprefixer in css-loader itself:
         // https://github.com/webpack/css-loader/issues/281
         // We already have it thanks to postcss.
-        loader: ExtractTextPlugin.extract('style', 'css?-autoprefixer!postcss')
+        loader: ExtractTextPlugin.extract({
+          fallbackLoader: "style",
+          loader: 'css?-autoprefixer!postcss'
+        })
       },
       {
         test:   /\.style.js$/,
         include: srcPath,
-        loader: "style!css!postcss?parser=postcss-js!babel"
+        loader: 'style!css!postcss',
+        query: 'parser=postcss-js!babel'
       },
       {
         test: /\.json$/,
         loader: 'json'
       },
       {
-        test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
+        test: /\.(jpg|png|gif|svg)$/,
         loader: 'file',
       },
       {
         test: /\.(mp4|webm)$/,
-        loader: 'url?limit=10000'
+        loader: 'url',
+        query: {
+          limit: 10000
+        }
       },
       {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, 
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader",
+        query: {
+          limit:10000,
+          mimetype: 'application/font-woff'
+        },
+      },
       {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, 
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/octet-stream"
-      }, 
-      {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file"
-      }, 
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=image/svg+xml"
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader'
       }
     ]
   },
-  eslint: {
-    // TODO: consider separate config for production,
-    // e.g. to enable no-console and no-debugger only in prod.
-    configFile: path.join(__dirname, 'eslint.js'),
-    useEslintrc: false
-  },
-  postcss: function(webpack) {
-    return [
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+      options: {
+        postcss: function(webpack) {
+          return [
             postcssEasyImport,
             postcssStripInlineComment,
-            postcssSelectorNot,
+  				  postcssSelectorNot,
             autoprefixer, 
             precss,
             customMedia,
-            postCssColorFunction
-            ];
-  },
-  plugins: [
+  			 	  postCssColorFunction
+          ];
+        },
+        eslint: {
+          // TODO: consider separate config for production,
+          // e.g. to enable no-console and no-debugger only in prod.
+          configFile: path.join(__dirname, 'eslint.js'),
+          useEslintrc: false
+        }
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor'
+    }),
     new CopyWebpackPlugin([
       { from: './src/img', to: './src/img' },//copy images
     ]),
@@ -150,7 +154,7 @@ module.exports = {
         removeEmptyAttributes: true,
         removeStyleLinkTypeAttributes: true,
         keepClosingSlash: true,
-        minifyJS: true,
+        minifyJS: false,
         minifyCSS: true,
         minifyURLs: true
       }
@@ -164,17 +168,7 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        screw_ie8: true,
-        warnings: false
-      },
-      mangle: {
-        screw_ie8: true
-      },
-      output: {
-        comments: false,
-        screw_ie8: true
-      }
+      compress: { warnings: false }
     }),
     new ExtractTextPlugin('[name].[contenthash].css')
   ]
