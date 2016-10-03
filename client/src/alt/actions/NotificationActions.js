@@ -26,9 +26,8 @@ class NotificationActions {
     };
   }
 
-  callDemoUser(sessionId){
+  callUser(sessionId, userId){
     return function (dispatch) {
-      let userId = 7;
       return fetch(process.env.API_ROOT+'api/Telesessions/callUser', {
         method: 'POST', 
         headers: new Header({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),

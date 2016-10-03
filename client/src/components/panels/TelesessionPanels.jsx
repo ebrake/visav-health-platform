@@ -32,7 +32,7 @@ class TelesessionPanels extends React.Component {
       isMousedOver: false,
     };
 
-    this.callSelf = this.callSelf.bind(this);
+    this.callPatient = this.callPatient.bind(this);
     this.telesessionChanged = this.telesessionChanged.bind(this);
     this.toggleMuteMic = this.toggleMuteMic.bind(this);
     this.toggleMuteSubscriber = this.toggleMuteSubscriber.bind(this);
@@ -45,8 +45,8 @@ class TelesessionPanels extends React.Component {
     TelesessionActions.createSession();
   }
 
-  callSelf() {
-    NotificationActions.callDemoUser(this.state.sessionId);
+  callPatient() {
+    NotificationActions.callDemoUser(this.state.sessionId, this.props.patient.id);
   }
 
   connectToSession() {
@@ -185,7 +185,7 @@ class TelesessionPanels extends React.Component {
       var controlPanel = isActiveSession ?
         <div className="vertical-control-panel panel">
           <VisavIcon type="hang-up" onClick={this.disconnectFromSession.bind(this)} className="btn-cancel btn-overlay"/>
-          <VisavIcon type="call-patient" onClick={this.callSelf.bind(this)} className="btn-call btn-overlay"/>
+          <VisavIcon type="call-patient" onClick={this.callPatient.bind(this)} className="btn-call btn-overlay"/>
           <VisavIcon type={this.state.muteMic ? 'muted-self' : 'unmuted-self'} onClick={this.toggleMuteMic} className="btn-mute-mic btn-overlay" />
           <VisavIcon type={this.state.muteSubscriber ? 'muted-subscriber' : 'unmuted-subscriber'} onClick={this.toggleMuteSubscriber} className="btn-mute-subscriber btn-overlay" />
         </div>
