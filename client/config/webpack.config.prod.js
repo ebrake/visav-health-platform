@@ -28,8 +28,15 @@ var buildPath = path.join(__dirname, isInNodeModules ? '../../..' : '..', 'build
 
 module.exports = {
   bail: true,
-  entry: path.join(srcPath, 'index'),
   devtool: 'cheap-module-source-map',
+  entry: {
+   js: [
+     path.join(srcPath, 'index')
+   ],
+   vendor: [
+     'react', 'react-dom', 'react-chartjs-2', 'react-router'
+   ]
+  },
   output: {
     path: buildPath,
     filename: '[name].[chunkhash].js',
@@ -152,6 +159,9 @@ module.exports = {
           useEslintrc: false
         }
       }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor'
     }),
     new CopyWebpackPlugin([
       { from: './src/img', to: './src/img' },//copy images
