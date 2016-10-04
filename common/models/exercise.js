@@ -206,11 +206,11 @@ module.exports = function(Exercise) {
     if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
       return next();
     }
-    
+
     // Use "users/{USER_ID}/{actionType}" as topic name to sub/pub messages to client
     var topic = 'users'.concat('/').concat(context.req.person.id).concat('/').concat("dataUpdate");
     var message = JSON.stringify({
-      type: 'HealthEvent'
+      type: 'Exercise'
     });
 
     Exercise.app.mqttClient.publish(topic, message, {

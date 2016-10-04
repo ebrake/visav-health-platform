@@ -38,7 +38,7 @@ import AWSMqtt from 'aws-mqtt-client';
         //   // Use users/{USER_ID} as topic name to sub/pub messages to client
         //   var MQTT_TOPIC = 'users/1/dataUpdate';
         //   var exampleMessage = JSON.stringify({
-        //     "type": "HealthEvent"
+        //     type: 'HealthEvent'
         //   });
         //   app.mqttClient.publish(MQTT_TOPIC, exampleMessage, { qos: 0, retained: false }, function(err) {
         //     if (err) return logOutput(err);

@@ -1,7 +1,8 @@
 import { config } from 'react-loopback';
 import AccountStore from './alt/stores/AccountStore';
 import AWSMqtt from 'aws-mqtt-client';
-import LiveMessagingActions from './alt/actions/LiveMessagingActions';
+import ExerciseActions from './alt/actions/ExerciseActions';
+import HealthEventActions from './alt/actions/HealthEventActions';
 
 class LiveMessaging {
 
@@ -36,14 +37,13 @@ class LiveMessaging {
 
         logOutput('MQTT Subscribed to Topic: '+MQTT_TOPIC);
 
-        // Example of sending a message
-        // var exampleMessage = {"state":{"calling":true}};
+        /* Example of sending a message back */
         // client.publish(MQTT_TOPIC, JSON.stringify({
-          // state:{
-          //   calling:true
-          // }
-        //), { qos: 0, retained: false }, function(err) {
-          //   if (err) return logOutput(err);
+        //   state:{
+        //     calling:true
+        //   }
+        // ), { qos: 0, retained: false }, function(err) {
+        //   if (err) return logOutput(err);
         // });
 
       });
@@ -62,7 +62,7 @@ class LiveMessaging {
         }
       }
       else {
-        return console.log("MQTT LiveMessaging Topic %s Empty");
+        return console.log("MQTT LiveMessaging Topic %s Empty",topic);
       }
 
       var topicInfo = topic.split("/");
@@ -70,7 +70,14 @@ class LiveMessaging {
 
       switch (actionType) {
         case "dataUpdate":
-          LiveMessagingActions.receivedDataUpdate(messageObj);
+          switch(messageObj.type) {
+            case "Exercise":
+              ExerciseActions.dataUpdated();
+              break;
+            case "HealthEvent":
+              HealthEventActions.dataUpdated();
+              break;
+          }
           break;
       }
 
