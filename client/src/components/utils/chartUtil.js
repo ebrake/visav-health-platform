@@ -17,9 +17,9 @@ function makeHealthEventChartData(healthEvents) {
   if(healthEvents && healthEvents.length > 0) {
     for (var i = 0; i < healthEvents.length; i++){
       let he = healthEvents[i];
-      if (new Date(he.date) < twoWeeksAgo) {
+      /*if (new Date(he.date) < twoWeeksAgo) {
         continue;
-      }
+      }*/
 
       key = he.type;
       currentDataSet = -1;
