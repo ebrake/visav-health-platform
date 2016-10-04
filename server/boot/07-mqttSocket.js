@@ -1,70 +1,67 @@
 import AWSMqtt from 'aws-mqtt-client';
 
-var path = require('path');
-
-/* 
-  Uncomment for MQTT testing,
-  or to establish a persistent connection to send MQTT messages
-  to all clients, or dedicated devices
-*/
-
-function mqttConnection(app) {
+/**
+ * Establish a persistent connection to send MQTT messages
+ * @module boot/enableAuthentication
+ */
+ export default function mqttConnection(app) {
 
   app.on('started', () => {
 
-    /*
-    function logOutput(message) {
+    var logOutput = (message) => {
       console.log(message);
     }
 
     const awsOptions = app.globalConfig.AWS_IOT_CONFIG;
-    Object.assign(awsOptions, {}); // Ths is how we can assign more config options
-    
-    const client = new AWSMqtt(awsOptions);
-    
-    const MQTT_TOPIC = 'dev+owner@krisandbrake.com';
-    const exampleMessage = {
-      "BACKEND":
-        {"example":
-          { "calling":true,
-            "from":"/server/boot/awsIoTSocket.js"
-          }
-        }
-    };
+    // Ths is how we can assign more config options
+    // Object.assign(awsOptions, {});
+    app.client = new AWSMqtt(awsOptions);
 
-    client.on('error', function (err) {
+    app.client.on('error', function (err) {
         logOutput('AWS IoT error: '+err);
-        client.end();
+        app.client.end();
     });
 
-    client.on('connect', function () {
+    app.client.on('connect', function () {
+      
       logOutput('AWS IoT connected');    
 
-      client.subscribe(MQTT_TOPIC, { qos: 0 }, function(err) {
-        if (err) return logOutput(err);
+      /* Uncomment for MQTT testing,
+       or to establish a persistent connection to send MQTT messages
+       to all clients, or dedicated devices.
+      */
 
-        setInterval(function() {
-          client.publish(MQTT_TOPIC, JSON.stringify(exampleMessage), { qos: 0, retained: false }, function(err) {
-            if (err) return logOutput(err);
-          });
-        }, 5000);
+      // app.client.subscribe(MQTT_TOPIC, { qos: 0 }, function(err) {
+      //   if (err) return logOutput(err);
 
-      });
+      //   setInterval(function() {
+      //     var MQTT_TOPIC = 'dev+owner@krisandbrake.com';
+      //     var exampleMessage = {
+      //       "BACKEND":
+      //         {"example":
+      //           { "calling":true,
+      //             "from":"/server/boot/awsIoTSocket.js"
+      //           }
+      //         }
+      //     };
+      //     app.client.publish(MQTT_TOPIC, JSON.stringify(exampleMessage), { qos: 0, retained: false }, function(err) {
+      //       if (err) return logOutput(err);
+      //     });
+      //   }, 5000);
+
+      // });
 
     });
 
-    client.on('message', function (topic, message, pakcet) {
+    app.client.on('message', function (topic, message, pakcet) {
         logOutput("Received '"+topic+"'' Message: " + message.toString());
     });
 
-    client.on('close', function () {
+    app.client.on('close', function () {
         logOutput(" AWS IoT disconnected");
     });
-
-    */
 
   });
 
 };
 
-export default mqttConnection;
