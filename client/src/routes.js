@@ -13,12 +13,12 @@ import People from './components/pages/People.jsx'
 
 import Account from './components/pages/Account.jsx'
 import InviteUsers from './components/pages/InviteUsers.jsx'
-import LiveSocket from './components/pages/LiveSocket.jsx'
 import EmailGettingStarted from './components/email-templates/GettingStartedEmail'
 import HealthEventNotificationEmail from './components/email-templates/HealthEventNotificationEmail'
 import PasswordResetEmail from './components/email-templates/PasswordResetEmail'
 import InvitedUserEmail from './components/email-templates/InvitedUserEmail';
 
+import LiveMessaging from './liveMessaging.js';
 
 var cacheStores = () => {
   let snapshot = alt.takeSnapshot();
@@ -39,6 +39,7 @@ var authCheck = (nextState, replace) => {
   }
   else {
     OrganizationActions.getViewablePeople();
+    let liveMessaging = new LiveMessaging().connect();
   }
 }
 
@@ -63,7 +64,6 @@ var routes = (
     <Route path="/invite" component={InviteUsers} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/people" component={People} onEnter={authCheck} onLeave={cacheStores} />
 
-    <Route path="/liveSocket" component={LiveSocket} onEnter={authCheck} onLeave={cacheStores} />
     { /* EMAIL TEMPLATES */ }
     <Route path="/email-templates/GettingStarted" component={EmailGettingStarted} />
     <Route path="/email-templates/HealthEventNotification" component={HealthEventNotificationEmail} />
