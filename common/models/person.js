@@ -900,6 +900,7 @@ module.exports = function(Person) {
       })
     })
     .then(function(deletedUser){
+      console.log("User deleted: "+deletedUser.email);
       return cb(null, { status: 'success', message: 'Deleted user '+deletedUser.firstName+' '+deletedUser.lastName+'', deletedUser: deletedUser });
     }, function(err){
       return cb(null, { status: 'failure', message: err.message, error: err });

@@ -20,6 +20,9 @@ class PeopleListItem extends React.Component {
   }
 
   removeUser(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
     OrganizationActions.removeUser(this.props.person)
     .then(function(response){
       console.log('Removed user?');
