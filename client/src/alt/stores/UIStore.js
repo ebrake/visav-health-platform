@@ -5,21 +5,29 @@ class UIStore {
   constructor() {
     this.alertElements = [];
     this.alertDisplayed = false;
-    
+
     this.bindListeners({
-      handleDisplayAlert: UIActions.DISPLAY_ALERT
+      handleDisplayAlert: UIActions.DISPLAY_ALERT,
+      handleRemoveAlert: UIActions.REMOVE_ALERT,
+
     });
   }
 
   handleDisplayAlert(element) {
     this.alertElements.push(element);
+  }
 
-    this.createSessionResponse = response.data;
-
-    if (response.data.session) {
-      this.sessionId = response.data.session.sessionId;
-      this.token = response.data.token;
+  handleRemoveAlert(element) {
+    console.log('removing');
+    for(var index in this.alertElements){
+      if (this.alertElements[index] == element) {
+        console.log('element found');
+        this.alertElements.splice(index, 1);
+        console.dir(this.alertElements);
+      }
     }
+    
+    //this.alertElements.push(element);
   }
 
 }

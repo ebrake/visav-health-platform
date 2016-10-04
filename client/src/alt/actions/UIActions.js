@@ -6,6 +6,12 @@ class UIActions {
       dispatch(element);  
     }
   }
+
+  removeAlert(element){
+    return function (dispatch) {
+      dispatch(element);  
+    }
+  }
 }
 
 export default alt.createActions(UIActions);

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router/es';
 import AccountActions from '../../alt/actions/AccountActions';
+import UIActions from '../../alt/actions/UIActions';
+import FullscreenAlertListener from '../misc/FullscreenAlertListener';
+
 import FullscreenAlert from '../misc/FullscreenAlert';
 import PasswordResetPanel from '../panels/PasswordResetPanel';
 import VisavInput from '../inputs/VisavInput';
@@ -66,18 +69,23 @@ class Login extends React.Component {
   }
 
   launchForgotPassword(){
-    this.setState({showForgotPasswordPopup: true});
+    var popup = <FullscreenAlert active={ true } onClickOutside={this.closeForgotPassword}  content={<PasswordResetPanel />} />
+    this.setState({
+      forgotPasswordPopup: popup
+    });
+    UIActions.displayAlert(popup);
+
   }
 
   closeForgotPassword(){
-    this.setState({showForgotPasswordPopup: false});
+    UIActions.removeAlert(this.state.forgotPasswordPopup);
   }
 
   render() {
 
     return (
       <div className="page">
-        <FullscreenAlert active={this.state.showForgotPasswordPopup} onClickOutside={this.closeForgotPassword}  content={<PasswordResetPanel />} />
+        <FullscreenAlertListener />
         <div className="login-panel panel">
           <h1 className="title">Login</h1>
           <VisavInput label="Email" valueDidChange={ this.handleChange('email') } onKeyUp={ this.keyPressed } />

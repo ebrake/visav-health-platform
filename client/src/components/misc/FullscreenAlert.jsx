@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UIActions from '../../alt/actions/UIActions';
 
 
 class FullscreenAlert extends React.Component {
@@ -12,12 +13,9 @@ class FullscreenAlert extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.active != this.props.active) {
-      this.setState({active: newProps.active});
-    }
+
   }
   handleBackgroundClick(event){
-    console.log(event);
     this.props.onClickOutside();
   }
 
@@ -56,8 +54,7 @@ class FullscreenAlert extends React.Component {
 
 FullscreenAlert.propTypes = {
   content: React.PropTypes.element.isRequired,
-  onClickOutside: React.PropTypes.func.isRequired,
-  active: React.PropTypes.bool.isRequired,
+  onClickOutside: React.PropTypes.func.isRequired
 };
 
 export default FullscreenAlert;

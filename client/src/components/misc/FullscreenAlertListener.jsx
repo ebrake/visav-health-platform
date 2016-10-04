@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import UIStore from '../../alt/stores/UIStore';
 
 
-class FullscreenAlert extends React.Component {
+class FullscreenAlertListener extends React.Component {
   constructor(props) {
+    var activeAlert;
+    let alertElements = UIStore.alertElements;
+    if (alertElements && (alertElements.length > 0)) {
+      activeAlert = alertElements[0];
+    }
     super(props);
     this.state = {
-      active: false
+      activeAlert: activeAlert
     }
     this.handleBackgroundClick = this.handleBackgroundClick.bind(this);
     this.uiStoreChanged = this.uiStoreChanged.bind(this);
@@ -14,9 +19,7 @@ class FullscreenAlert extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.active != this.props.active) {
-      this.setState({active: newProps.active});
-    }
+
   }
   handleBackgroundClick(event){
     console.log(event);
@@ -25,12 +28,21 @@ class FullscreenAlert extends React.Component {
 
   uiStoreChanged(uiStore) {
     let alertElements = uiStore.alertElements;
+    console.log('uiStore changed');
+    console.dir(alertElements);
     if (alertElements && (alertElements.length > 0)) {
-
+      this.setState({
+        activeAlert: alertElements[0]
+      });
+      
     }
-    this.setState({
-      user: accountStore.user
-    })
+    else{
+      console.log('no active alert.. removing alert')
+      this.setState({
+        activeAlert: undefined
+      });
+    }
+    
   }
 
   componentDidMount(){
@@ -42,42 +54,18 @@ class FullscreenAlert extends React.Component {
   }
 
   render() {
-    var alertStyle;
-    var content;
-    var containerStyle;
-    if(this.state.active){
-      content = this.props.content;
-      bgStyle = {
-        'opacity' : 0.8,
-        'pointerEvents' : 'auto'
-      };
-      alertStyle= {
-        'pointerEvents' : 'auto'
-      };
+    if (!this.state.activeAlert) {
+      return null;
     }
-    else{
-      bgStyle = {
-        'opacity' : 0.0,
-        'pointerEvents' : 'none'
-      };
-      alertStyle= {
-        'pointerEvents' : 'none'
-      };
-    }
-
     return (
-      <div className="FullscreenAlert alert" style={alertStyle}>
-        <div className="alert-background" onClick={this.handleBackgroundClick} style={bgStyle} />
-        { content }
+      <div className="FullscreenAlertListener">
+        { this.state.activeAlert }
       </div>
     );
   }
 };
 
-FullscreenAlert.propTypes = {
-  content: React.PropTypes.element.isRequired,
-  onClickOutside: React.PropTypes.func.isRequired,
-  active: React.PropTypes.bool.isRequired,
+FullscreenAlertListener.propTypes = {
 };
 
-export default FullscreenAlert;
+export default FullscreenAlertListener;
