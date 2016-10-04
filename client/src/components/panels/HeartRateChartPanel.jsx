@@ -3,7 +3,7 @@ import { Line } from 'react-chartjs-2';
 import ChartLegend from './ChartLegend';
 import chartUtil from '../utils/chartUtil';
 
-class HeartRateChartPanel extends React.Component {
+class HeartRateChartPanel extends Component {
   constructor(props) {
     super(props);
 

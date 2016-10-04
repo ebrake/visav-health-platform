@@ -13,7 +13,7 @@ import AccountStore from '../../alt/stores/AccountStore';
 import OrganizationStore from '../../alt/stores/OrganizationStore';
 import OrganizationActions from '../../alt/actions/OrganizationActions';
 
-class Telesession extends React.Component {
+class Telesession extends Component {
   
   constructor(props) {
     super(props);

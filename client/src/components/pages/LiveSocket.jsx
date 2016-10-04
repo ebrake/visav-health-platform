@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AuthenticatedPage from './AuthenticatedPage';
 import AWSMqtt from 'aws-mqtt-client';
 
-class LiveSocket extends React.Component {
+class LiveSocket extends Component {
   
   constructor(props) {
     super(props);

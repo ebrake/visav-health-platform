@@ -4,7 +4,7 @@ import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
 import SetPasswordPanel from '../panels/SetPasswordPanel';
 
-class SetPassword extends React.Component {
+class SetPassword extends Component {
   constructor(props) {
     super(props);
     this.goToLogout = this.goToLogout.bind(this);

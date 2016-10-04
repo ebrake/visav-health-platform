@@ -3,7 +3,7 @@ import HealthEventStore from '../../../alt/stores/HealthEventStore';
 import ExerciseStore from '../../../alt/stores/ExerciseStore';
 import InfoList from '../../lists/InfoList'
 
-class PatientInfoExercisePanel extends React.Component {
+class PatientInfoExercisePanel extends Component {
   
   constructor(props) {
     super(props);

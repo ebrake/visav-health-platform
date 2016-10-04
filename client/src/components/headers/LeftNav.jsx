@@ -5,7 +5,7 @@ import VisavIcon from '../misc/VisavIcon';
 import FullscreenAlert from '../misc/FullscreenAlert';
 import SignoutPanel from '../panels/SignoutPanel';
 
-class LeftNav extends React.Component {
+class LeftNav extends Component {
   constructor(props) {
     super(props);
 

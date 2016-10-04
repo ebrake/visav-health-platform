@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import VisavInput from '../inputs/VisavInput';
 import ImageButton from '../buttons/ImageButton';
 import AccountActions from '../../alt/actions/AccountActions';
-class SetPasswordPanel extends React.Component {
+class SetPasswordPanel extends Component {
   constructor(props) {
     super(props);
 

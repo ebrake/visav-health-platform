@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 
 import ImageButton from '../buttons/ImageButton';
 
-class SignoutPanel extends React.Component {
+class SignoutPanel extends Component {
   constructor(props) {
     super(props);
 

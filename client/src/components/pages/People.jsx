@@ -6,7 +6,7 @@ import AccountStore from '../../alt/stores/AccountStore'
 import FullscreenAlert from '../misc/FullscreenAlert';
 import AuthenticatedPage from './AuthenticatedPage';
 
-class People extends React.Component {
+class People extends Component {
   
   constructor(props) {
     super(props);

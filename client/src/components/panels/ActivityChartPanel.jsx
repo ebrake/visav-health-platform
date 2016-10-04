@@ -3,7 +3,7 @@ import { Line } from 'react-chartjs-2';
 import ChartLegend from './ChartLegend';
 import chartUtil from '../utils/chartUtil';
 
-class ActivityChartPanel extends React.Component {
+class ActivityChartPanel extends Component {
   constructor(props) {
     super(props);
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 import chartUtil from '../utils/chartUtil';
 
-class ChartLegend extends React.Component {
+class ChartLegend extends Component {
   constructor(props) {
     super(props);
 
