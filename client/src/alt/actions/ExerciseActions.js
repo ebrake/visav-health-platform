@@ -22,7 +22,7 @@ class ExerciseActions {
 
   dataUpdated() {
     console.log("Exercise data live-updated..")
-    return true;
+    return new Date();
   }
 
 }

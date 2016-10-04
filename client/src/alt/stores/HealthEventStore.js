@@ -6,13 +6,19 @@ class HealthEventStore {
     this.healthEvents = [];
 
     this.bindListeners({
-      handleGetHealthEvents: HealthEventActions.GET_HEALTH_EVENTS
+      handleGetHealthEvents: HealthEventActions.GET_HEALTH_EVENTS,
+      handleDataUpdated: HealthEventActions.DATA_UPDATED
     });
   }
 
   handleGetHealthEvents(healthEvents) {
     this.healthEvents = healthEvents;
   }
+
+  handleDataUpdated(date) {
+    this.dataUpdated = date;
+  }
+  
 }
 
 export default alt.createStore(HealthEventStore, 'HealthEventStore');

@@ -31,19 +31,25 @@ import AWSMqtt from 'aws-mqtt-client';
        to all clients, or dedicated devices.
       */
 
+      // const MQTT_TOPIC = 'users/1/dataUpdate';
       // app.mqttClient.subscribe(MQTT_TOPIC, { qos: 0 }, function(err) {
       //   if (err) return logOutput(err);
 
-        // setInterval(function() {
-        //   // Use users/{USER_ID} as topic name to sub/pub messages to client
-        //   var MQTT_TOPIC = 'users/1/dataUpdate';
-        //   var exampleMessage = JSON.stringify({
-        //     type: 'HealthEvent'
-        //   });
-        //   app.mqttClient.publish(MQTT_TOPIC, exampleMessage, { qos: 0, retained: false }, function(err) {
-        //     if (err) return logOutput(err);
-        //   });
-        // }, 5000);
+      //   setInterval(function() {
+      //     // Use users/{USER_ID} as topic name to sub/pub messages to client
+      //     var exampleMessage = JSON.stringify({
+      //       type: 'Exercise'
+      //     });
+      //     app.mqttClient.publish(MQTT_TOPIC, exampleMessage, { qos: 0, retained: false }, function(err) {
+      //       if (err) return logOutput(err);
+      //     });
+      //     exampleMessage = JSON.stringify({
+      //       type: 'HealthEvent'
+      //     });
+      //     app.mqttClient.publish(MQTT_TOPIC, exampleMessage, { qos: 0, retained: false }, function(err) {
+      //       if (err) return logOutput(err);
+      //     });
+      //   }, 5000);
 
       // });
 

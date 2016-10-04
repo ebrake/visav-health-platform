@@ -10,6 +10,7 @@ class RepsChartPanel extends React.Component {
     super(props);
 
     this.state = {
+      dataUpdated: null,
       exercise: undefined,
       chartData: { labels: [], datasets: [] },
       dropdownOptions: []
@@ -34,6 +35,16 @@ class RepsChartPanel extends React.Component {
   }
 
   exercisesChanged(exerciseState){
+
+    if (this.state.dataUpdated != exerciseState.dataUpdated) {
+      // This must be data live updating.
+      this.setState({
+        dataUpdated: exerciseState.dataUpdated
+      })
+      console.log("Re-Fetching Exercise Events...");
+      return ExerciseActions.getExercises(this.props.patientId);
+    }
+
     this.setState({
       exercise: exerciseState.displayedExercise,
       chartData: chartUtil.makeRepChartData(exerciseState.displayedExercise)

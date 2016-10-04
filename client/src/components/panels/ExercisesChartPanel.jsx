@@ -11,6 +11,7 @@ class ExercisesChartPanel extends React.Component {
     super(props);
 
     this.state = {
+      dataUpdated: null,
       exercises: [],
       exercise: undefined,
       chartData: { datasets: [] },
@@ -57,6 +58,16 @@ class ExercisesChartPanel extends React.Component {
   }
 
   exercisesChanged(exerciseState){
+
+    if (this.state.dataUpdated != exerciseState.dataUpdated) {
+      // This must be data live updating.
+      this.setState({
+        dataUpdated: exerciseState.dataUpdated
+      })
+      console.log("Re-Fetching Exercise Events...");
+      return ExerciseActions.getExercises(this.props.patientId);
+    }
+
     let chartData = chartUtil.makeExerciseChartData(exerciseState.exercises);
     let dropdownOptions = chartData.datasets.map(ds => { return ds.exposedName });
 
