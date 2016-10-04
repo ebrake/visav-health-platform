@@ -139,7 +139,7 @@ function makeHeartRateChartData(HeartRateData) {
   for (var i = 0; i < 30; i++) {
     d = new Date(d - oneDay)
 
-    hours = 8 + Math.round(Math.random()*12);
+    hours = 8 + Math.round(Math.random()*11);
     minutes = Math.round(Math.random()*60);
     seconds = Math.round(Math.random()*60);
 
@@ -148,7 +148,7 @@ function makeHeartRateChartData(HeartRateData) {
 
     datasets[0].data.push({
       x: day.getTime(),
-      y: 55+Math.round(Math.random()*75)
+      y: 60+Math.round(Math.random()*25) + (Math.random() > 0.7 ? Math.round(Math.random()*40) : 0)
     })
   }
 
@@ -194,7 +194,7 @@ function formatDatasets(datasets, addToLabel) {
     d.pointBackgroundColor = colors.getGraphColor(i);
     d.pointBorderColor = colors.getColor('blue');
     d.pointBorderWidth = 4;
-    d.lineTension = 0;
+    d.lineTension = 0.5;
 
     return d;
   })
