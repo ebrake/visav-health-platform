@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import RepsChartPanel from '../panels/RepsChartPanel';
+import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
 import PatientInfoPanels from '../panels/patient-info/PatientInfoPanels';
 import TelesessionPanels from '../panels/TelesessionPanels';
 
@@ -52,7 +52,7 @@ class Telesession extends React.Component {
     return (
       <div className="Telesession content-container row-gt-sm">
         <div className="left-column charts-container">
-          <RepsChartPanel patientId={this.state.patientId} />
+          <HealthEventsChartPanel patientId={this.state.patientId} />
           <ActivityChartPanel patientId={this.state.patientId} />
           <HeartRateChartPanel patientId={this.state.patientId} />
         </div>

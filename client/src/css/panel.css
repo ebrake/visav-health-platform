@@ -16,6 +16,7 @@ $panel-border-radius: 10px;
     margin: 0 0 10px;
     flex: 0 0 auto;
     font-size: 20px;
+    font-weight: 600;
     color: $light-text-color;
     width: 100%;
   }
@@ -71,6 +72,22 @@ $panel-border-radius: 10px;
 
   h1.title {
     margin-bottom: 20px;
+  }
+}
+
+.UnderConstructionPanel {
+  padding: 25px 40px;
+  align-items: center;
+  text-align: center;
+  max-width: 250px;
+
+  .ImageButton {
+    margin-top: 20px;
+  }
+
+  p {
+    padding: 0;
+    margin: 20px auto;
   }
 }
 
