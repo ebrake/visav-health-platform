@@ -78,11 +78,11 @@ class LiveMessaging {
               HealthEventActions.dataUpdated();
               break;
             default:
-              // do nothing
+              break;
           }
           break;
         default:
-          // do nothing
+          break;
       }
 
     });
