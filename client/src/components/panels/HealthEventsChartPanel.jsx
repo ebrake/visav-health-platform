@@ -38,16 +38,36 @@ class HealthEventsChartPanel extends React.Component {
     }
   }
 
-  chartOptions(){
-    let tooltips = Object.assign({ callbacks: { title: chartUtil.callbacks.makeTitleIntoDate } }, chartUtil.tooltips);
+  getYAxesFormat() {
     let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));
     yAxes[0].ticks.suggestedMin = 0;
     yAxes[0].ticks.suggestedMax = 10;
 
+    return yAxes;
+  }
+
+  chartOptions(){
+    let tooltips = Object.assign({ 
+      callbacks: { 
+        title: chartUtil.callbacks.makeTitleIntoDate,
+        label: function(helper, chartData) {
+          let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
+          return 'The patient reported '+dataPoint.type.toLowerCase()+' with an intensity of '+dataPoint.y+'.';
+        }
+      } 
+    }, chartUtil.tooltips);
+
     return {
       scales: {
         xAxes: chartUtil.axes.timeXAxes,
-        yAxes: yAxes
+        yAxes: this.getYAxesFormat()
+      },
+      pan: {
+        enabled: true,
+        mode: 'x'
+      },
+      zoom: {
+        enabled: false
       },
       tooltips: tooltips,
       legend: chartUtil.legends.defaultLegend,
@@ -105,7 +125,6 @@ class HealthEventsChartPanel extends React.Component {
     return (
       <div className="HealthEventsChartPanel graph-panel panel">
         <h1 className="title">Pain</h1>
-        <VisavDropdown options={this.state.dropdownOptions} onChange={this.onHealthEventTypeSelected} value={this.state.healthEvent} placeholder="Select type..." />
         <div className="chart-container account-for-dropdown">
           <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>

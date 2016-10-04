@@ -26,25 +26,6 @@ class ActivityChartPanel extends React.Component {
     }
   }
 
-  getXAxesFormat() {
-    let xAxes = JSON.parse(JSON.stringify(chartUtil.axes.timeXAxes));
-    var time = new Date();
-    time.setHours(0, 0, 0, 0);
-    time = time.getTime();
-    xAxes[0].time.min = time - 1000*60*60*24*15;
-    xAxes[0].time.max = time;
-    xAxes[0].ticks.maxRotation = 0;
-    xAxes[0].ticks.minRotation = 0;
-
-    xAxes[0].afterBuildTicks = function(scale) {
-      scale.ticks = scale.ticks.slice(1);
-
-      return scale;
-    }
-
-    return xAxes;
-  }
-
   getYAxesFormat() {
     let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));
     yAxes[0].ticks.suggestedMin = 0;
@@ -54,19 +35,24 @@ class ActivityChartPanel extends React.Component {
   }
 
   chartOptions(){
-    let tooltips = Object.assign({ callbacks: { title: chartUtil.callbacks.makeTitleIntoDay } }, chartUtil.tooltips);
+    let tooltips = Object.assign({ 
+      callbacks: { 
+        title: chartUtil.callbacks.makeTitleIntoDay,
+        label: function(helper, chartData) {
+          let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
+          return 'The patient took '+dataPoint.y+' steps.';
+        }
+      } 
+    }, chartUtil.tooltips);
 
     return {
       scales: {
-        xAxes: this.getXAxesFormat(),
+        xAxes: chartUtil.axes.timeXAxes,
         yAxes: this.getYAxesFormat()
       },
       pan: {
         enabled: true,
-        mode: 'x',
-        limits: {
-          test: 'test' 
-        }
+        mode: 'x'
       },
       zoom: {
         enabled: false

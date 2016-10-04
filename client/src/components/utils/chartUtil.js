@@ -27,7 +27,9 @@ function makeHealthEventChartData(healthEvents) {
         continue;
       }*/
 
-      key = he.type;
+      //key = he.type;
+      key = 'Sharp Pain';
+
       currentDataSet = -1;
 
       for (var j = 0; j < datasets.length; j++) {
@@ -45,10 +47,19 @@ function makeHealthEventChartData(healthEvents) {
 
       datasets[currentDataSet].data.push({
         x: adjustedDateMillis,
-        y: Math.round(he.intensity*10)
+        y: Math.round(he.intensity*10),
+        type: he.type
       });
     }
-  }  
+  }
+
+  datasets[0].data.sort(function(a, b){
+    if (a.x < b.x) 
+      return 1;
+    if (a.x > b.x)
+      return -1;
+    return 0;
+  })
 
   return {
     datasets: formatDatasets(datasets, 'Intensity')
@@ -200,7 +211,7 @@ function formatDatasets(datasets, addToLabel) {
     d.pointBackgroundColor = colors.getGraphColor(i);
     d.pointBorderColor = colors.getColor('blue');
     d.pointBorderWidth = 4;
-    d.lineTension = 0.5;
+    d.lineTension = d.exposedName == 'Sharp Pain' ? 0 : 0.5;
 
     return d;
   })
@@ -211,12 +222,14 @@ function formatDatasets(datasets, addToLabel) {
 var callbacks = {
   makeTitleIntoDate: (arr, data) => {
     let d = new Date(arr[0].xLabel);
-    return d.toLocaleDateString()+' '+d.toLocaleTimeString();
+    var month = d.toLocaleDateString('en-us', {month: 'long'});
+    return month+' '+d.getDate()+', '+d.getFullYear()+' '+d.toLocaleTimeString();
   },
 
   makeTitleIntoDay: (arr, data) => {
     let d = new Date(arr[0].xLabel);
-    return d.toLocaleDateString();
+    var month = d.toLocaleDateString('en-us', {month: 'long'});
+    return month+' '+d.getDate()+', '+d.getFullYear();
   }
 }
 
@@ -226,6 +239,18 @@ var legends = {
   }
 }
 
+function getMaxTime() {
+  var time = new Date();
+  time.setHours(0, 0, 0, 0);
+  return time.getTime();
+}
+
+function getMinTime() {
+  var time = new Date();
+  time.setHours(0, 0, 0, 0);
+  return time.getTime() - 8 * oneDay;
+}
+
 var axes = {
   timeXAxes: [{
     type: 'time',
@@ -233,14 +258,23 @@ var axes = {
       displayFormats: {
         day: 'MMM D'
       },
-      unit: 'day'
+      unit: 'day',
+      min: getMinTime(),
+      max: getMaxTime()
     },
     position: 'bottom',
     ticks: {
-      fontColor: colors.getFontColor('light')
+      fontColor: colors.getFontColor('light'),
+      maxRotation: 0,
+      minRotation: 0
     },
     gridLines: {
       display: false
+    },
+    afterBuildTicks: function(scale) {
+      scale.ticks = scale.ticks.slice(1);
+
+      return scale;
     }
   }],
 
@@ -274,7 +308,8 @@ var tooltips = {
   yPadding: 15,
   titleMarginBottom: 10,
   titleFontSize: 16,
-  bodyFontSize: 14
+  bodyFontSize: 14,
+  cornerRadius: 10
 }
 
 /* UTILITY FUNCTIONS */

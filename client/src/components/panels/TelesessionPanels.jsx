@@ -26,6 +26,7 @@ class TelesessionPanels extends React.Component {
       muteMic: false,
       muteSubscriber: false,
       isMousedOver: false,
+      sessionRequested: false
     };
 
     this.callPatient = this.callPatient.bind(this);
@@ -38,7 +39,10 @@ class TelesessionPanels extends React.Component {
   }
 
   createSession() {
-    TelesessionActions.createSession();
+    if (!this.state.sessionRequested) {
+      this.setState({ sessionRequested: true });
+      TelesessionActions.createSession();
+    }
   }
 
   callPatient() {
@@ -48,11 +52,10 @@ class TelesessionPanels extends React.Component {
   connectToSession() {
     var self = this;
     if (!this.state.sessionId) {
-      console.log('No Sesison ID to connect to');
+      console.log('No Session ID to connect to');
       return;
     }
     const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.sessionId);
-    this.setState({activeSession: session});
     const publisher = OT.initPublisher(this.refs.publisherSection, {
       insertMode:'append',
       style: {buttonDisplayMode: 'off'},
@@ -60,13 +63,16 @@ class TelesessionPanels extends React.Component {
       height: '100%'
     })
     publisher.publishAudio(!this.state.muteMic);
-    this.setState({activePublisher: publisher});
 
     session.connect(TelesessionStore.getState().token, function (error) {
       if (!error) {
         session.publish(publisher);
+        this.setState({
+          activeSession: session,
+          activePublisher: publisher
+        });
       }
-    });
+    }.bind(this));
 
     session.on({
       connectionCreated: function (event) {
@@ -100,12 +106,14 @@ class TelesessionPanels extends React.Component {
     if (session) {
       session.unpublish(this.state.activePublisher);
       session.disconnect();
+
+      this.setState({
+        activeSession: null,
+        activePublisher: null,
+        activeSubscriber: null,
+        sessionRequested: false
+      });
     }
-    this.setState({
-      activeSession: null,
-      activePublisher: null,
-      activeSubscriber: null
-    });
   }
 
   telesessionChanged(telesessionState){
