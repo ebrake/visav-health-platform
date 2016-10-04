@@ -53,13 +53,15 @@ function makeHealthEventChartData(healthEvents) {
     }
   }
 
-  datasets[0].data.sort(function(a, b){
-    if (a.x < b.x) 
-      return 1;
-    if (a.x > b.x)
-      return -1;
-    return 0;
-  })
+  if (datasets && datasets[0]) {
+    datasets[0].data.sort(function(a, b){
+      if (a.x < b.x) 
+        return 1;
+      if (a.x > b.x)
+        return -1;
+      return 0;
+    })
+  }
 
   return {
     datasets: formatDatasets(datasets, 'Intensity')
