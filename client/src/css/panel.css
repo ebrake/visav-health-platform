@@ -82,7 +82,12 @@ $panel-border-radius: 10px;
   max-width: 250px;
 
   .ImageButton {
-    margin-top: 10px;
+    margin-top: 20px;
+  }
+
+  p {
+    padding: 0;
+    margin: 20px auto;
   }
 }
 
