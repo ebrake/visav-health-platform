@@ -9,6 +9,10 @@ function makeHealthEventChartData(healthEvents) {
     , datasets = []
     , currentDataSet = -1
     , key = '';
+    
+  let demoHealthEvents = healthEvents.filter(healthEv => healthEv.isDemo);
+  let newestDemoDate = new Date(findNewestDate(demoHealthEvents));
+  let demoDateOffset = ((new Date()).getTime() - newestDemoDate.getTime()) - 1000*3600*2; //newest demo is 2 hours ago
 
   if(healthEvents && healthEvents.length > 0) {
     for (var i = 0; i < healthEvents.length; i++){
@@ -31,8 +35,10 @@ function makeHealthEventChartData(healthEvents) {
         datasets.push({ label: key, data: [] });
       }
 
+      let adjustedDateMillis = he.isDemo ? (new Date(he.date)).getTime() + demoDateOffset : (new Date(he.date)).getTime();
+
       datasets[currentDataSet].data.push({
-        x: toMilliseconds(he.date),
+        x: adjustedDateMillis,
         y: Math.round(he.intensity*10)
       });
     }
