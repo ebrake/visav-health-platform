@@ -15,7 +15,7 @@ $panel-border-radius: 10px;
     text-align: center;
     margin: 0 0 10px;
     flex: 0 0 auto;
-    font-size: 24px;
+    font-size: 20px;
     color: $light-text-color;
     width: 100%;
   }

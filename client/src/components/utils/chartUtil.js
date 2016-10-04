@@ -1,6 +1,12 @@
 import colors from './colors.js';
 
-/* DATASET FORMATTERS */
+/* HANDY DATE NUMBERS */
+
+var oneSecond = 1000;
+var oneMinute = oneSecond * 60;
+var oneHour = oneMinute * 60;
+var oneDay = oneHour * 24;
+var oneWeek = oneDay * 7;
 
 /* HEALTHEVENT */
 function makeHealthEventChartData(healthEvents) {
@@ -122,6 +128,60 @@ function makeRepChartData(exercise) {
   };
 }
 
+function makeHeartRateChartData(HeartRateData) {
+  let datasets = [{ data: [], label: 'Heart Rate' }];
+
+  var d = new Date();
+  d.setHours(0, 0, 0, 0);
+
+  var day, hours, minutes, seconds;
+
+  for (var i = 0; i < 30; i++) {
+    d = new Date(d - oneDay)
+
+    hours = 8 + Math.round(Math.random()*12);
+    minutes = Math.round(Math.random()*60);
+    seconds = Math.round(Math.random()*60);
+
+    day = new Date(d);
+    day.setHours(hours, minutes, seconds);
+
+    datasets[0].data.push({
+      x: day.getTime(),
+      y: 55+Math.round(Math.random()*75)
+    })
+  }
+
+  return {
+    datasets: formatDatasets(datasets)
+  }
+}
+
+function makeActivityChartData(activityData) {
+  let datasets = [{ data: [], label: 'Steps' }];
+
+  var d = new Date();
+  d.setHours(0, 0, 0, 0);
+
+  datasets[0].data.push({
+    x: d.getTime(),
+    y: 1000 + Math.round(Math.random()*3000)
+  })
+
+  for (var i = 0; i < 30; i++) {
+    d = new Date(d - oneDay);
+
+    datasets[0].data.push({
+      x: d.getTime(),
+      y: 3000 + Math.round(Math.random()*5000)
+    })
+  }
+
+  return {
+    datasets: formatDatasets(datasets)
+  }
+}
+
 /* DATASET FORMATTER */
 function formatDatasets(datasets, addToLabel) {
   return datasets.map((d, i) => {
@@ -146,6 +206,11 @@ var callbacks = {
   makeTitleIntoDate: (arr, data) => {
     let d = new Date(arr[0].xLabel);
     return d.toLocaleDateString()+' '+d.toLocaleTimeString();
+  },
+
+  makeTitleIntoDay: (arr, data) => {
+    let d = new Date(arr[0].xLabel);
+    return d.toLocaleDateString();
   }
 }
 
@@ -227,17 +292,11 @@ function findNewestDate(array) {
 /* CHART UTIL */
 
 export default {
-  makeHealthEventChartData: (healthEvents) => {
-    return makeHealthEventChartData(healthEvents);
-  },
-
-  makeExerciseChartData: (exercises) => {
-    return makeExerciseChartData(exercises);
-  },
-
-  makeRepChartData: (exercise) => {
-    return makeRepChartData(exercise);
-  },
+  makeHealthEventChartData: makeHealthEventChartData,
+  makeExerciseChartData: makeExerciseChartData,
+  makeRepChartData: makeRepChartData,
+  makeHeartRateChartData: makeHeartRateChartData,
+  makeActivityChartData: makeActivityChartData,
 
   callbacks: callbacks,
   legends: legends,

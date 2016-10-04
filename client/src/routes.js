@@ -19,6 +19,8 @@ import HealthEventNotificationEmail from './components/email-templates/HealthEve
 import PasswordResetEmail from './components/email-templates/PasswordResetEmail'
 import InvitedUserEmail from './components/email-templates/InvitedUserEmail';
 
+//extends Chart.js with pan and zoom
+import './components/misc/ChartZoom.js';
 
 var cacheStores = () => {
   let snapshot = alt.takeSnapshot();

@@ -26,6 +26,7 @@
     "file-loader": "^0.9.0",
     "font-awesome": "^4.6.3",
     "fs-extra": "^0.30.0",
+    "hammerjs": "^2.0.8",
     "html-webpack-plugin": "git://github.com/ampedandwired/html-webpack-plugin.git#03758f46ccadcc9e0b90aac9898ffce46a8821f2",
     "json-loader": "0.5.4",
     "opn": "4.0.2",

@@ -3,8 +3,8 @@ import RepsChartPanel from '../panels/RepsChartPanel';
 import PatientInfoPanels from '../panels/patient-info/PatientInfoPanels';
 import TelesessionPanels from '../panels/TelesessionPanels';
 
-import ExercisesChartPanel from '../panels/ExercisesChartPanel';
-import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
+import ActivityChartPanel from '../panels/ActivityChartPanel';
+import HeartRateChartPanel from '../panels/HeartRateChartPanel';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
 import FullscreenAlert from '../misc/FullscreenAlert';
@@ -53,8 +53,8 @@ class Telesession extends React.Component {
       <div className="Telesession content-container row-gt-sm">
         <div className="left-column charts-container">
           <RepsChartPanel patientId={this.state.patientId} />
-          <ExercisesChartPanel patientId={this.state.patientId} />
-          <HealthEventsChartPanel patientId={this.state.patientId} />
+          <ActivityChartPanel patientId={this.state.patientId} />
+          <HeartRateChartPanel patientId={this.state.patientId} />
         </div>
         <div className="right-column">
           <TelesessionPanels patient={this.state.patient} />
