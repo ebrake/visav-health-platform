@@ -1,8 +1,8 @@
 import AWSMqtt from 'aws-mqtt-client';
 
 /**
- * Establish a persistent connection to send MQTT messages
- * @module boot/enableAuthentication
+ * A boot script that establishes a persistent MQTT connection to send server<->client messages
+ * @module boot/07-mqttSocket
  */
  export default function mqttConnection(app) {
 

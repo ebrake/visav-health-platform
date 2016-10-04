@@ -2,7 +2,7 @@ var globalConfig = require('../../global.config');
 
 /**
  * A boot script function that generates the Loopack Application object.
- * @module boot/generateApplication
+ * @module boot/02-generateApplication
  */
 module.exports = function generateApplication(app) {
 
