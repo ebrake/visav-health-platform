@@ -77,8 +77,12 @@ class LiveMessaging {
             case "HealthEvent":
               HealthEventActions.dataUpdated();
               break;
+            default:
+              // do nothing
           }
           break;
+        default:
+          // do nothing
       }
 
     });
