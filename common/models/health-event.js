@@ -197,6 +197,26 @@ module.exports = function(HealthEvent) {
     })
   }
 
+  /*
+    Send live message to client (HealthEvent has updated)
+  */
+  HealthEvent.afterRemote('receiveData', function(context, createdObject, next) {
+    if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
+      return next();
+    }
+    var topic = context.req.person.email;
+    var message = JSON.stringify({
+      "DATA_UPDATE": "HealthEvent"
+    });
+    HealthEvent.app.mqttClient.publish(topic, message, {
+      qos: 0,
+      retained: false
+    }, function(err) {
+      if (err) console.log("MQTT Publish error, topic: %s: "+err);
+      next();
+    });
+  });
+
   HealthEvent.remoteMethod(
     "receiveData",
     {

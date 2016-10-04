@@ -199,6 +199,26 @@ module.exports = function(Exercise) {
     })
   }
 
+  /*
+    Send live message to client (Exercise has updated)
+  */
+  Exercise.afterRemote('receiveData', function(context, createdObject, next) {
+    if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
+      return next();
+    }
+    var topic = context.req.person.email;
+    var message = JSON.stringify({
+      "DATA_UPDATE": "Exercise"
+    });
+    Exercise.app.mqttClient.publish(topic, message, {
+      qos: 0,
+      retained: false
+    }, function(err) {
+      if (err) console.log("MQTT Publish error, topic: %s: "+err);
+      next();
+    });
+  });
+
   Exercise.remoteMethod(
     "receiveData",
     {

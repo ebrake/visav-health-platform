@@ -15,16 +15,16 @@ import AWSMqtt from 'aws-mqtt-client';
     const awsOptions = app.globalConfig.AWS_IOT_CONFIG;
     // Ths is how we can assign more config options
     // Object.assign(awsOptions, {});
-    app.client = new AWSMqtt(awsOptions);
+    app.mqttClient = new AWSMqtt(awsOptions);
 
-    app.client.on('error', function (err) {
-        logOutput('AWS IoT error: '+err);
-        app.client.end();
+    app.mqttClient.on('error', function (err) {
+        logOutput('MQTT Error: '+err);
+        //app.mqttClient.end();
     });
 
-    app.client.on('connect', function () {
+    app.mqttClient.on('connect', function () {
       
-      logOutput('AWS IoT connected');    
+      logOutput('MQTT Connection Established.');    
 
       /* Uncomment for MQTT testing,
        or to establish a persistent connection to send MQTT messages
@@ -53,12 +53,12 @@ import AWSMqtt from 'aws-mqtt-client';
 
     });
 
-    app.client.on('message', function (topic, message, pakcet) {
-        logOutput("Received '"+topic+"'' Message: " + message.toString());
+    app.mqttClient.on('message', function (topic, message, pakcet) {
+      logOutput("MQTT Received '"+topic+"'' Message: " + message.toString());
     });
 
-    app.client.on('close', function () {
-        logOutput(" AWS IoT disconnected");
+    app.mqttClient.on('close', function () {
+        logOutput("MQTT Disconnected");
     });
 
   });
