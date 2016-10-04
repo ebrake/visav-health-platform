@@ -2,10 +2,17 @@ import AWSMqtt from 'aws-mqtt-client';
 
 var path = require('path');
 
-function awsIoTSocket(app) {
+/* 
+  Uncomment for MQTT testing,
+  or to establish a persistent connection to send MQTT messages
+  to all clients, or dedicated devices
+*/
+
+function mqttConnection(app) {
 
   app.on('started', () => {
 
+    /*
     function logOutput(message) {
       console.log(message);
     }
@@ -15,7 +22,7 @@ function awsIoTSocket(app) {
     
     const client = new AWSMqtt(awsOptions);
     
-    const MQTT_TOPIC = 'calling/person';
+    const MQTT_TOPIC = 'dev+owner@krisandbrake.com';
     const exampleMessage = {
       "BACKEND":
         {"example":
@@ -36,11 +43,11 @@ function awsIoTSocket(app) {
       client.subscribe(MQTT_TOPIC, { qos: 0 }, function(err) {
         if (err) return logOutput(err);
 
-        //setInterval(function() {
+        setInterval(function() {
           client.publish(MQTT_TOPIC, JSON.stringify(exampleMessage), { qos: 0, retained: false }, function(err) {
             if (err) return logOutput(err);
           });
-        //}, 5000);
+        }, 5000);
 
       });
 
@@ -54,8 +61,10 @@ function awsIoTSocket(app) {
         logOutput(" AWS IoT disconnected");
     });
 
+    */
+
   });
 
 };
 
-export default awsIoTSocket;
+export default mqttConnection;
