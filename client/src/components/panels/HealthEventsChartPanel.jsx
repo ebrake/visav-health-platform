@@ -104,7 +104,7 @@ class HealthEventsChartPanel extends React.Component {
   render() {
     return (
       <div className="HealthEventsChartPanel graph-panel panel">
-        <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
+        <h1 className="title">Pain</h1>
         <VisavDropdown options={this.state.dropdownOptions} onChange={this.onHealthEventTypeSelected} value={this.state.healthEvent} placeholder="Select type..." />
         <div className="chart-container account-for-dropdown">
           <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
