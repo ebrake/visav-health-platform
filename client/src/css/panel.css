@@ -75,6 +75,17 @@ $panel-border-radius: 10px;
   }
 }
 
+.UnderConstructionPanel {
+  padding: 25px 40px;
+  align-items: center;
+  text-align: center;
+  max-width: 250px;
+
+  .ImageButton {
+    margin-top: 10px;
+  }
+}
+
 .vertical-control-panel {
   display: flex;
   flex-direction: column;

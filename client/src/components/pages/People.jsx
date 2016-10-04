@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PersonPanel from '../panels/PersonPanel';
 import PeopleListPanel from '../panels/PeopleListPanel';
-
+import UnderConstructionPanel from '../panels/UnderConstructionPanel';
 import AccountStore from '../../alt/stores/AccountStore'
 import FullscreenAlert from '../misc/FullscreenAlert';
 import AuthenticatedPage from './AuthenticatedPage';
@@ -29,6 +29,7 @@ class People extends React.Component {
     this.state = {
       showPersonPopup: false,
       displayedPerson: null,
+      showUnderConstructionPopup: false
     };
   }
 
@@ -41,10 +42,30 @@ class People extends React.Component {
     this.setState({ showPersonPopup: false,  displayedPerson: null });
   }
 
+  closeUnderConstructionPopup(){
+    this.setState({ showUnderConstructionPopup: false });
+  }
+
+  componentDidMount(){
+    this.setState({ showUnderConstructionPopup: true });
+  }
+
+
   render() {
+
     return (
       <div className="People content-container row-gt-sm">
-        <FullscreenAlert active={ this.state.showPersonPopup } onClickOutside={ this.closePersonPopup.bind(this) }  content={<PersonPanel person={ this.state.displayedPerson } />} />
+        <FullscreenAlert 
+          active={ this.state.showPersonPopup } 
+          onClickOutside={ this.closePersonPopup.bind(this) }  
+          content={<PersonPanel person={ this.state.displayedPerson } />} 
+        ></FullscreenAlert>
+
+        <FullscreenAlert 
+          active={ this.state.showUnderConstructionPopup } 
+          onClickOutside={ this.closeUnderConstructionPopup.bind(this) }  
+          content={ <UnderConstructionPanel onClose={ this.closeUnderConstructionPopup.bind(this) } /> } 
+        ></FullscreenAlert>
 
         {
           this.allowedPeopleLists.map(function(role, i){
