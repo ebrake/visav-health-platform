@@ -204,10 +204,13 @@ module.exports = function(HealthEvent) {
     if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
       return next();
     }
-    var topic = context.req.person.email;
+
+    // Use "users/{USER_ID}/{actionType}" as topic name to sub/pub messages to client
+    var topic = 'users'.concat('/').concat(context.req.person.id).concat('/').concat("dataUpdate");
     var message = JSON.stringify({
-      "DATA_UPDATE": "HealthEvent"
+      type: 'HealthEvent'
     });
+
     HealthEvent.app.mqttClient.publish(topic, message, {
       qos: 0,
       retained: false

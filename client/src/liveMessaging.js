@@ -8,9 +8,9 @@ class LiveMessaging {
   connect(){
 
     let user = AccountStore.getUser();
-    
-    // Use email as channel name to subscribe/publish messages to client
-    const MQTT_TOPIC = user.email;
+
+    // Use "users/{USER_ID}/{actionType}" as topic name to sub/pub messages to client
+    const MQTT_TOPIC = 'users'.concat('/').concat(user.id).concat('/').concat("#");
 
     function logOutput(message) {
       console.log(message);
@@ -24,31 +24,60 @@ class LiveMessaging {
     });
 
     client.on('error', function (err) {
-        logOutput('AWS IoT error: '+err);
-        client.end();
+        logOutput('MQTT Error: '+err);
+        //client.end();
     });
 
     client.on('connect', function () {
-      logOutput('AWS IoT connected');    
+      logOutput('MQTT Connected.');
 
       client.subscribe(MQTT_TOPIC, { qos: 0 }, function(err) {
         if (err) return logOutput(err);
 
-        var exampleMessage = {"state":{"calling":true}};
-        client.publish(MQTT_TOPIC, JSON.stringify(exampleMessage), { qos: 0, retained: false }, function(err) {
-          if (err) return logOutput(err);
-        });
+        logOutput('MQTT Subscribed to Topic: '+MQTT_TOPIC);
+
+        // Example of sending a message
+        // var exampleMessage = {"state":{"calling":true}};
+        // client.publish(MQTT_TOPIC, JSON.stringify({
+          // state:{
+          //   calling:true
+          // }
+        //), { qos: 0, retained: false }, function(err) {
+          //   if (err) return logOutput(err);
+        // });
 
       });
 
     });
 
-    client.on('message', function (topic, message, packet) {
-        LiveMessagingActions.receivedMessage(topic,message);
+    client.on('message', function (topic, data, packet) {
+
+      var messageObj;
+      if (data && topic){
+        try{
+          messageObj = JSON.parse(data.toString());
+        }
+        catch(err){
+          return console.log("MQTT LiveMessaging Error: %s",err);
+        }
+      }
+      else {
+        return console.log("MQTT LiveMessaging Topic %s Empty");
+      }
+
+      var topicInfo = topic.split("/");
+      var actionType = topicInfo[2]; // users/{USER_ID}/{actionType}
+
+      switch (actionType) {
+        case "dataUpdate":
+          LiveMessagingActions.receivedDataUpdate(messageObj);
+          break;
+      }
+
     });
 
     client.on('close', function () {
-        logOutput(" AWS IoT disconnected");
+        logOutput("MQTT Disconnected.");
     });
 
   }

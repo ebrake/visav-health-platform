@@ -2,15 +2,10 @@ import alt from '../alt'
 
 class LiveMessagingActions {
 
-  receivedMessage(topic,message,packet){
+  receivedDataUpdate(messageObj){
     
-    console.log("Received message... %s from channel ... %s",message.toString(),topic.toString());
-    
-    return {
-      topic:topic,
-      message:message,
-      packet:packet
-    }
+    console.log("LiveMessagingActions: Received dataUpdate");
+    return messageObj;
 
   }
 
