@@ -225,7 +225,7 @@ var callbacks = {
   makeTitleIntoDate: (arr, data) => {
     let d = new Date(arr[0].xLabel);
     var month = d.toLocaleDateString([], {month: 'long'});
-    return month+' '+d.getDate()+', '+d.getFullYear()+'                    '+d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return month+' '+d.getDate()+', '+d.getFullYear()+'                             '+d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   },
 
   makeTitleIntoDay: (arr, data) => {
@@ -303,18 +303,19 @@ var axes = {
 }
 
 var tooltips = {
-  titleFontColor: colors.getFontColor('white'),
-  bodyFontColor: colors.getFontColor('white'),
-  backgroundColor: colors.getColor('purple'),
-  xPadding: 15,
-  yPadding: 15,
-  titleMarginBottom: 8,
+  titleFontColor: colors.getFontColor('blue'),
+  bodyFontColor: colors.getFontColor('blue'),
+  footerFontColor: colors.getFontColor('blue'),
+  backgroundColor: colors.getColor('white'),
+  xPadding: 20,
+  yPadding: 25,
+  titleMarginBottom: 15,
   titleFontSize: 14,
   titleFontStyle: 'normal',
   bodyFontSize: 16,
   bodyFontStyle: 'bold',
-  footerMarginTop: 10,
-  footerFontSize: 14,
+  footerMarginTop: 18,
+  footerFontSize: 16,
   footerFontStyle: 'normal',
   footerSpacing: 4,
   cornerRadius: 10,

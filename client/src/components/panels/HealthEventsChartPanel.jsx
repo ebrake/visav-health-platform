@@ -19,6 +19,7 @@ class HealthEventsChartPanel extends React.Component {
 
     HealthEventActions.getHealthEvents(this.props.patientId);
 
+    this.formatFooter = this.formatFooter.bind(this);
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
     this.onHealthEventTypeSelected = this.onHealthEventTypeSelected.bind(this);
     this.pickHealthEventIfNoneSelected = this.pickHealthEventIfNoneSelected.bind(this);
@@ -51,13 +52,26 @@ class HealthEventsChartPanel extends React.Component {
     return dataPoint.type;
   }
 
+  modifier(num) {
+    if (num < 3)
+      return 'intermittent';
+    if (num < 5)
+      return 'minor';
+    if (num < 7)
+      return 'signifificant';
+    if (num < 9)
+      return 'severe';
+
+    return 'intense';
+  }
+
   formatFooter(helper, chartData) {
     helper = helper[0];
     let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
     
     return [
-      'The patient reported '+dataPoint.type.toLowerCase()+' with',
-      'an intensity of '+dataPoint.y+'.'
+      'The patient reported '+this.modifier(dataPoint.y)+' '+dataPoint.type.toLowerCase(),
+      'with an intensity of '+dataPoint.y+'.'
     ];
   }
 
