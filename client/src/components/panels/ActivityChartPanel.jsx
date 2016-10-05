@@ -34,14 +34,26 @@ class ActivityChartPanel extends React.Component {
     return yAxes;
   }
 
+  formatLabel(helper, chartData) {
+    return 'Activity';
+  }
+
+  formatFooter(helper, chartData) {
+    helper = helper[0];
+    let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
+    
+    return [
+      'The patient took a total of '+dataPoint.y+' steps,',
+      'travelling approximately '+((dataPoint.y*0.8)/1000).toFixed(1)+'km.'
+    ];
+  }
+
   chartOptions(){
     let tooltips = Object.assign({ 
       callbacks: { 
         title: chartUtil.callbacks.makeTitleIntoDay,
-        label: function(helper, chartData) {
-          let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
-          return 'The patient took '+dataPoint.y+' steps.';
-        }
+        label: this.formatLabel,
+        footer: this.formatFooter
       } 
     }, chartUtil.tooltips);
 

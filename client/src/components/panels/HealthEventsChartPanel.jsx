@@ -46,14 +46,27 @@ class HealthEventsChartPanel extends React.Component {
     return yAxes;
   }
 
+  formatLabel(helper, chartData) {
+    let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
+    return dataPoint.type;
+  }
+
+  formatFooter(helper, chartData) {
+    helper = helper[0];
+    let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
+    
+    return [
+      'The patient reported '+dataPoint.type.toLowerCase()+' with',
+      'an intensity of '+dataPoint.y+'.'
+    ];
+  }
+
   chartOptions(){
     let tooltips = Object.assign({ 
       callbacks: { 
         title: chartUtil.callbacks.makeTitleIntoDate,
-        label: function(helper, chartData) {
-          let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
-          return 'The patient reported '+dataPoint.type.toLowerCase()+' with an intensity of '+dataPoint.y+'.';
-        }
+        label: this.formatLabel,
+        footer: this.formatFooter
       } 
     }, chartUtil.tooltips);
 
