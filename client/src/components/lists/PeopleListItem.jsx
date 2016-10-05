@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import ImageButton from '../buttons/ImageButton';
+import React from 'react';
 
-class PeopleListItem extends Component {
+class PeopleListItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};

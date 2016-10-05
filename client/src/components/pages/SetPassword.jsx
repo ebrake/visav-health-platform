@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router/es'
-import AccountActions from '../../alt/actions/AccountActions';
-import AccountStore from '../../alt/stores/AccountStore';
 import SetPasswordPanel from '../panels/SetPasswordPanel';
 
-class SetPassword extends Component {
+class SetPassword extends React.Component {
   constructor(props) {
     super(props);
-    this.goToLogout = this.goToLogout.bind(this);
+
     this.state = {
       authToken: this.props.location.query.access_token
     };
+
     if (this.props.location.query.access_token) {
       localStorage.setItem('accessToken', this.props.location.query.access_token);
     }
+
+    this.goToLogout = this.goToLogout.bind(this);
   } 
 
   goToLogout() {

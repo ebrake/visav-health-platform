@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ImageButton from '../buttons/ImageButton';
 import VisavInput from '../inputs/VisavInput';
 import OrganizationStore from '../../alt/stores/OrganizationStore'
 
-class AddNewRelatedPersonListItem extends Component {
+class AddNewRelatedPersonListItem extends React.Component {
   constructor(props) {
     super(props);
     
@@ -12,7 +12,7 @@ class AddNewRelatedPersonListItem extends Component {
     };
 
     this.autocompleteDidSelect = this.autocompleteDidSelect.bind(this);
-    this.addNewRelation = this.addNewRelation.bind(this);
+    this.handleAddNewRelation = this.handleAddNewRelation.bind(this);
   }  
 
   autocompleteDidSelect(item){
@@ -37,13 +37,13 @@ class AddNewRelatedPersonListItem extends Component {
     return people;
   }
 
-  addNewRelation(event){
+  handleAddNewRelation(event){
     this.props.onAddNewRelation(event, this.props.relation, this.state.foundPerson);
   }
 
   render() {
     var addButton = this.state.foundPerson ?
-    <ImageButton text='Add' onClick={ this.addNewRelation } />:
+    <ImageButton text='Add' onClick={ this.handleAddNewRelation } />:
     <ImageButton className='disabled' text='Not Found' />
     return (
       <li className="AddNewRelatedPersonListItem" >
@@ -52,7 +52,7 @@ class AddNewRelatedPersonListItem extends Component {
           autocompleteKeys={['fullName', 'firstName', 'lastName', 'email']}
           label={'Add new ' + this.props.relation + ' relation'} 
           autocompleteDidSelect={ this.autocompleteDidSelect }
-          valueDidChange = { this.props.valueDidChange }  
+          valueDidChange={ this.props.valueDidChange }  
         />
         {addButton}
       </li>

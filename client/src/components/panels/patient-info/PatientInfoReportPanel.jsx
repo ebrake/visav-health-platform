@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
-import HealthEventStore from '../../../alt/stores/HealthEventStore';
-import ExerciseStore from '../../../alt/stores/ExerciseStore';
-import InfoList from '../../lists/InfoList'
+import React from 'react';
 
-class PatientInfoReportPanel extends Component {
-  
+class PatientInfoReportPanel extends React.Component {
+  //eslint-disable-next-line
   constructor(props) {
     super(props);
-
   }
 
   componentDidMount(){
@@ -19,13 +15,9 @@ class PatientInfoReportPanel extends Component {
   }
 
   render() {
-
     return (
       <div className="PatientInfoReportPanel panel">
-        
         <h2 className="title">Reports</h2>
-
-
       </div>
     );
   }

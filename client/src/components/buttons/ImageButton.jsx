@@ -1,37 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class ImageButton extends Component {
-  
+class ImageButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       imageUrl: null
     };
     this.imageUrl = this.imageUrl.bind(this);
-    this.mouseDidEnter = this.mouseDidEnter.bind(this);
-    this.mouseDidLeave = this.mouseDidLeave.bind(this);
+    this.handleMouseDidEnter = this.handleMouseDidEnter.bind(this);
+    this.handleMouseDidLeave = this.handleMouseDidLeave.bind(this);
   }
 
   imageUrl( isMousedOver, isSelected ){
-    var finalUrl;
-    self = this;
-    if( this.props.imgUrl )
-    {
+    if (this.props.imgUrl) {
       var imageName = this.props.imgUrl.split('.')[0];
       var imageExtension = this.props.imgUrl.split('.')[1];
 
-      if( isSelected && !this.props.disableSelectedImage) {
+      if (isSelected && !this.props.disableSelectedImage) {
         var selectedAssembledUrl = 'src/img/' + imageName + '-selected.' + imageExtension;
-        if(this.doesImageExistsAtUrl(selectedAssembledUrl)){
+        if (this.doesImageExistsAtUrl(selectedAssembledUrl)) {
           //if it's selected and there exists a selected image, 
           //override everything below and return selected image
           return selectedAssembledUrl;
         }
       }
       
-      if( isMousedOver && !this.props.disableHoverImage){
+      if (isMousedOver && !this.props.disableHoverImage) {
         var hoverAssembledUrl = 'src/img/' + imageName + '-hover.' + imageExtension;
-        if(this.doesImageExistsAtUrl(hoverAssembledUrl)){
+        if (this.doesImageExistsAtUrl(hoverAssembledUrl)) {
           //if it's moused over and there exists a hover image, 
           //override everything below and return hover image
           return hoverAssembledUrl;
@@ -48,6 +44,8 @@ class ImageButton extends Component {
     var http = new XMLHttpRequest();
     http.open('HEAD', imgUrl, true);
     http.send();
+    //is http.status a number or a string? left this for that reason
+    //eslint-disable-next-line
     return http.status != 404;
   }
 
@@ -61,13 +59,13 @@ class ImageButton extends Component {
 
   }
 
-  mouseDidEnter(){
+  handleMouseDidEnter(){
     this.setState({ imageUrl: this.imageUrl(true, this.props.selected) });
 
 
   }
 
-  mouseDidLeave(){
+  handleMouseDidLeave(){
     this.setState({ imageUrl: this.imageUrl(false, this.props.selected) });
 
   }
@@ -112,7 +110,7 @@ class ImageButton extends Component {
     'ImageButton';
     
     return (
-      <div onClick={this.props.onClick} className={classNames} onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+      <div onClick={this.props.onClick} className={classNames} onMouseEnter={this.handleMouseDidEnter} onMouseLeave={this.handleMouseDidLeave}>
         <div className="btn-image-content" style={imageContentStyle}></div>
         <div className="btn-text-content" style={textContentStyle}>
           {this.props.text}

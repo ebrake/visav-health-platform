@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AccountActions from '../../alt/actions/AccountActions';
 import AccountStore from '../../alt/stores/AccountStore';
 import AuthenticatedPage from './AuthenticatedPage';
@@ -7,7 +7,7 @@ import VisavDropdown from '../inputs/VisavDropdown';
 import Roles from '../utils/Roles';
 import VisavInput from '../inputs/VisavInput';
 
-class Invite extends Component {
+class Invite extends React.Component {
   
   constructor(props) {
     super(props);
@@ -25,9 +25,9 @@ class Invite extends Component {
       })
     };
 
-    this.inviteUser = this.inviteUser.bind(this);
+    this.handleInviteUser = this.handleInviteUser.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.onRoleSelected = this.onRoleSelected.bind(this);
+    this.handleRoleSelected = this.handleRoleSelected.bind(this);
   }
 
   handleChange(field) {
@@ -38,7 +38,7 @@ class Invite extends Component {
     }.bind(this);
   }
 
-  inviteUser() {
+  handleInviteUser() {
     AccountActions.inviteUser({
       email: this.state.email,
       role: this.state.role,
@@ -51,7 +51,7 @@ class Invite extends Component {
     })
   }
 
-  onRoleSelected(selectedRole) {
+  handleRoleSelected(selectedRole) {
     this.setState({
       role: selectedRole
     })
@@ -65,8 +65,8 @@ class Invite extends Component {
           <VisavInput label="Email" value={this.state.email} valueDidChange={this.handleChange('email')} />
           <VisavInput label="First Name" value={this.state.firstName} valueDidChange={this.handleChange('firstName')} />
           <VisavInput label="Last Name" value={this.state.lastName} valueDidChange={this.handleChange('lastName')} />
-          <VisavDropdown options={this.state.roles} onChange={this.onRoleSelected} value={this.state.role} placeholder="Select a role..." />
-          <ImageButton className="invite-button" text="Invite new user" onClick={this.inviteUser} />
+          <VisavDropdown options={this.state.roles} onChange={this.handleRoleSelected} value={this.state.role} placeholder="Select a role..." />
+          <ImageButton className="invite-button" text="Invite new user" onClick={this.handleInviteUser} />
         </div>
       </div>
     );
@@ -75,4 +75,5 @@ class Invite extends Component {
 
 Invite.isAllowed = ['owner', 'admin'];
 
+//eslint-disable-next-line
 export default AuthenticatedPage(Invite);

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import NavIcon from '../lists/NavIcon';
 import AccountStore from '../../alt/stores/AccountStore';
 import VisavIcon from '../misc/VisavIcon';
 import FullscreenAlert from '../misc/FullscreenAlert';
 import SignoutPanel from '../panels/SignoutPanel';
 
-class LeftNav extends Component {
+class LeftNav extends React.Component {
   constructor(props) {
     super(props);
 
@@ -14,15 +14,15 @@ class LeftNav extends Component {
       showSignoutPopup: false
     };
 
-    this.showSignoutPopup = this.showSignoutPopup.bind(this);
-    this.closeSignoutPopup = this.closeSignoutPopup.bind(this);
+    this.handleShowSignoutPopup = this.handleShowSignoutPopup.bind(this);
+    this.handleCloseSignoutPopup = this.handleCloseSignoutPopup.bind(this);
   }
 
-  closeSignoutPopup(){
+  handleCloseSignoutPopup(){
     this.setState({ showSignoutPopup: false });
   }
 
-  showSignoutPopup(){
+  handleShowSignoutPopup(){
     this.setState({ showSignoutPopup: true });
   }
 
@@ -36,13 +36,13 @@ class LeftNav extends Component {
 
     return (
       <div className="LeftNav nav flex-column">
-        <FullscreenAlert active={ this.state.showSignoutPopup } onClickOutside={ this.closeSignoutPopup }  content={<SignoutPanel onCancel={ this.closeSignoutPopup } />} />
+        <FullscreenAlert active={ this.state.showSignoutPopup } onClickOutside={ this.handleCloseSignoutPopup }  content={<SignoutPanel onCancel={ this.handleCloseSignoutPopup } />} />
         <div className="vertical-nav" id="left-nav">
           <NavIcon type="telesession" path="/telesession" selected={ path === "/telesession" || path === "/" } />
           <NavIcon type="organization" path="/people" selected={ path === "/people" } />
           {InviteNavIcon}
           <NavIcon type="account-settings" path="/account" selected={ path === "/account" } />
-          <VisavIcon type="logout" onClick={ this.showSignoutPopup } selected={ path === "/logout" } />
+          <VisavIcon type="logout" onClick={ this.handleShowSignoutPopup } selected={ path === "/logout" } />
         </div>
       </div>
     );

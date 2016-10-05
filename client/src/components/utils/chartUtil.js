@@ -6,26 +6,21 @@ var oneSecond = 1000;
 var oneMinute = oneSecond * 60;
 var oneHour = oneMinute * 60;
 var oneDay = oneHour * 24;
-var oneWeek = oneDay * 7;
 
 /* HEALTHEVENT */
 function makeHealthEventChartData(healthEvents) {
   //compute data
-  let twoWeeksAgo = new Date(findNewestDate(healthEvents) - (1000*60*60*24*15))
-    , datasets = []
+  let datasets = []
     , currentDataSet = -1
     , key = '';
     
   let demoHealthEvents = healthEvents.filter(healthEv => healthEv.isDemo);
   let newestDemoDate = new Date(findNewestDate(demoHealthEvents));
-  let demoDateOffset = ((new Date()).getTime() - newestDemoDate.getTime()) - 1000*3600*2; //newest demo is 2 hours ago
+  let demoDateOffset = ((new Date()).getTime() - newestDemoDate.getTime()) - (oneHour*2); //newest demo is 2 hours ago
 
   if(healthEvents && healthEvents.length > 0) {
     for (var i = 0; i < healthEvents.length; i++){
       let he = healthEvents[i];
-      /*if (new Date(he.date) < twoWeeksAgo) {
-        continue;
-      }*/
 
       //key = he.type;
       key = 'Sharp Pain';
@@ -213,7 +208,7 @@ function formatDatasets(datasets, addToLabel) {
     d.pointBackgroundColor = colors.getGraphColor(i);
     d.pointBorderColor = colors.getColor('blue');
     d.pointBorderWidth = 4;
-    d.lineTension = d.exposedName == 'Sharp Pain' ? 0 : 0.5;
+    d.lineTension = d.exposedName === 'Sharp Pain' ? 0 : 0.5;
 
     return d;
   })
@@ -250,7 +245,7 @@ function getMaxTime() {
 function getMinTime() {
   var time = new Date();
   time.setHours(0, 0, 0, 0);
-  return time.getTime() - 8 * oneDay;
+  return time.getTime() - (8 * oneDay);
 }
 
 var axes = {

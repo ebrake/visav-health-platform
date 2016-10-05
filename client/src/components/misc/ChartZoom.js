@@ -215,19 +215,16 @@ function doPan(chartInstance, deltaX, deltaY) {
   }
 }
 
-function positionInChartArea(chartInstance, position) {
-  return  (position.x >= chartInstance.chartArea.left && position.x <= chartInstance.chartArea.right) &&
-      (position.y >= chartInstance.chartArea.top && position.y <= chartInstance.chartArea.bottom);
-}
-
 function getYAxis(chartInstance) {
   var scales = chartInstance.scales;
   
   for (var scaleId in scales) {
-    var scale = scales[scaleId];
-    
-    if (!scale.isHorizontal()) {
-      return scale;
+    if (scales.hasOwnProperty(scaleId)){
+      var scale = scales[scaleId];
+      
+      if (!scale.isHorizontal()) {
+        return scale;
+      }
     }
   }
 }
@@ -352,7 +349,7 @@ var zoomPlugin = {
       // Hammer reports the total scaling. We need the incremental amount
       var currentPinchScaling;
       var handlePinch = function handlePinch(e) {
-        var diff = 1 / (currentPinchScaling) * e.scale;
+        var diff = (1 / currentPinchScaling) * e.scale;
         doZoom(chartInstance, diff, e.center);
 
         // Keep track of overall scale

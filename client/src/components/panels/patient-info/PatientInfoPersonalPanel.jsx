@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import HealthEventStore from '../../../alt/stores/HealthEventStore';
-import ExerciseStore from '../../../alt/stores/ExerciseStore';
+import React from 'react';
 import InfoList from '../../lists/InfoList'
 
-class PatientInfoPersonalPanel extends Component {
-  
+class PatientInfoPersonalPanel extends React.Component {
+  //eslint-disable-next-line
   constructor(props) {
     super(props);
   }

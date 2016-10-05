@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AuthenticatedPage from './AuthenticatedPage';
 import AWSMqtt from 'aws-mqtt-client';
 
-class LiveSocket extends Component {
+class LiveSocket extends React.Component {
   
   constructor(props) {
     super(props);
@@ -79,4 +79,6 @@ class LiveSocket extends Component {
   }
 }
 
+//why is it complaining about this
+//eslint-disable-next-line
 export default AuthenticatedPage(LiveSocket);

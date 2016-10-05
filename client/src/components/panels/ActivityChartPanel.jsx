@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
-import ChartLegend from './ChartLegend';
 import chartUtil from '../utils/chartUtil';
 
 class ActivityChartPanel extends Component {

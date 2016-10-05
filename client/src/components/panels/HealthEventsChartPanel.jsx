@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Line } from 'react-chartjs-2';
-import ChartLegend from './ChartLegend';
 import HealthEventStore from '../../alt/stores/HealthEventStore';
 import HealthEventActions from '../../alt/actions/HealthEventActions';
 import chartUtil from '../utils/chartUtil';
-import VisavDropdown from '../inputs/VisavDropdown';
 
-class HealthEventsChartPanel extends Component {
+class HealthEventsChartPanel extends React.Component {
   constructor(props) {
     super(props);
 
@@ -127,7 +125,7 @@ class HealthEventsChartPanel extends Component {
     if (this.refs && this.refs.chart && this.refs.chart.chart_instance){
       let ci = this.refs.chart.chart_instance;
       chartData.datasets.forEach((ds, i) => {
-        if (ds.exposedName == selectedHealthEvent) {
+        if (ds.exposedName === selectedHealthEvent) {
           ci.getDatasetMeta(i).hidden = false;
         } else {
           ci.getDatasetMeta(i).hidden = true;

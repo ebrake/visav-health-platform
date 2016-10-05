@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { config } from 'react-loopback';
 
 import TelesessionActions from '../../alt/actions/TelesessionActions';
 import NotificationActions from '../../alt/actions/NotificationActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import AccountStore from '../../alt/stores/AccountStore';
-import ImageButton from '../buttons/ImageButton';
 import VisavIcon from '../misc/VisavIcon';
 
-class TelesessionPanels extends Component {
+class TelesessionPanels extends React.Component {
   
   constructor(props) {
     super(props);
@@ -31,10 +30,10 @@ class TelesessionPanels extends Component {
 
     this.callPatient = this.callPatient.bind(this);
     this.telesessionChanged = this.telesessionChanged.bind(this);
-    this.toggleMuteMic = this.toggleMuteMic.bind(this);
-    this.toggleMuteSubscriber = this.toggleMuteSubscriber.bind(this);
-    this.mouseDidEnter = this.mouseDidEnter.bind(this);
-    this.mouseDidLeave = this.mouseDidLeave.bind(this);
+    this.handleToggleMuteMic = this.handleToggleMuteMic.bind(this);
+    this.handleToggleMuteSubscriber = this.handleToggleMuteSubscriber.bind(this);
+    this.handleMouseDidEnter = this.handleMouseDidEnter.bind(this);
+    this.handleMouseDidLeave = this.handleMouseDidLeave.bind(this);
 
   }
 
@@ -55,7 +54,9 @@ class TelesessionPanels extends Component {
       console.log('No Session ID to connect to');
       return;
     }
+    //eslint-disable-next-line
     const session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.sessionId);
+    //eslint-disable-next-line
     const publisher = OT.initPublisher(this.refs.publisherSection, {
       insertMode:'append',
       style: {buttonDisplayMode: 'off'},
@@ -76,7 +77,7 @@ class TelesessionPanels extends Component {
 
     session.on({
       connectionCreated: function (event) {
-        if (event.connection.connectionId != session.connection.connectionId) {
+        if (event.connection.connectionId !== session.connection.connectionId) {
           console.log('Another client connected.');
         }
       },
@@ -141,7 +142,7 @@ class TelesessionPanels extends Component {
     }
   }
 
-  toggleMuteMic(){
+  handleToggleMuteMic(){
     var newVal = !this.state.muteMic;
     this.setState({muteMic: newVal});
 
@@ -151,7 +152,7 @@ class TelesessionPanels extends Component {
     }
   }
 
-  toggleMuteSubscriber(){
+  handleToggleMuteSubscriber(){
     var newVal = !this.state.muteSubscriber;
     this.setState({muteSubscriber: newVal});
 
@@ -161,23 +162,22 @@ class TelesessionPanels extends Component {
     }
   }
 
-  mouseDidEnter(){
-    this.setState({'isMousedOver': true});
+  handleMouseDidEnter(){
+    this.setState({ 'isMousedOver': true });
   }
 
-  mouseDidLeave(){
-    this.setState({'isMousedOver': false});
+  handleMouseDidLeave(){
+    this.setState({ 'isMousedOver': false });
   }
 
   render() {
-    let isMousedOver = this.state.isMousedOver;
-    let isActiveSub = (this.state.activeSubscriber != null);
-    let isActiveSession = (this.state.activeSession != null);
+    let isActiveSub = (this.state.activeSubscriber !== null);
+    let isActiveSession = (this.state.activeSession !== null);
 
-    if (this.state.opentokScriptLoaded!=true){
+    if (this.state.opentokScriptLoaded !== true) {
       return (
         <div className="TelesessionPanels">
-          <div className="telesession-panel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+          <div className="telesession-panel panel" onMouseEnter={this.handleMouseDidEnter} onMouseLeave={this.handleMouseDidLeave}>
             <p>Loading Opentok...</p>
           </div>
           <div className="telesession-control-panel panel" />
@@ -190,8 +190,8 @@ class TelesessionPanels extends Component {
         <div className="vertical-control-panel panel">
           <VisavIcon type="hang-up" onClick={this.disconnectFromSession.bind(this)} className="btn-cancel btn-overlay"/>
           <VisavIcon type="call-patient" onClick={this.callPatient.bind(this)} className="btn-call btn-overlay"/>
-          <VisavIcon type={this.state.muteMic ? 'muted-self' : 'unmuted-self'} onClick={this.toggleMuteMic} className="btn-mute-mic btn-overlay" />
-          <VisavIcon type={this.state.muteSubscriber ? 'muted-subscriber' : 'unmuted-subscriber'} onClick={this.toggleMuteSubscriber} className="btn-mute-subscriber btn-overlay" />
+          <VisavIcon type={this.state.muteMic ? 'muted-self' : 'unmuted-self'} onClick={this.handleToggleMuteMic} className="btn-mute-mic btn-overlay" />
+          <VisavIcon type={this.state.muteSubscriber ? 'muted-subscriber' : 'unmuted-subscriber'} onClick={this.handleToggleMuteSubscriber} className="btn-mute-subscriber btn-overlay" />
         </div>
         :
         <div className="vertical-control-panel panel">
@@ -200,7 +200,7 @@ class TelesessionPanels extends Component {
 
       return (
         <div className="TelesessionPanels">
-          <div className="telesession-panel panel" onMouseEnter={this.mouseDidEnter} onMouseLeave={this.mouseDidLeave}>
+          <div className="telesession-panel panel" onMouseEnter={this.handleMouseDidEnter} onMouseLeave={this.handleMouseDidLeave}>
             <div className="video-container">
               <div className={isActiveSub ? 'publisher-container thumb':'publisher-container full'} >
                 <section ref="publisherSection"  />

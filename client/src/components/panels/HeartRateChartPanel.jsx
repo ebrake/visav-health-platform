@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Line } from 'react-chartjs-2';
-import ChartLegend from './ChartLegend';
 import chartUtil from '../utils/chartUtil';
 
-class HeartRateChartPanel extends Component {
+class HeartRateChartPanel extends React.Component {
   constructor(props) {
     super(props);
 
@@ -35,7 +34,6 @@ class HeartRateChartPanel extends Component {
   }
 
   formatLabel(helper, chartData) {
-    let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
     return 'Heart Rate';
   }
 

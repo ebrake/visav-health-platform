@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router/es';
 
 import RelatedPersonListItem from '../lists/RelatedPersonListItem';
@@ -6,9 +6,8 @@ import AddNewRelatedPersonListItem from '../lists/AddNewRelatedPersonListItem';
 import ImageButton from '../buttons/ImageButton';
 
 import OrganizationActions from '../../alt/actions/OrganizationActions';
-import OrganizationStore from '../../alt/stores/OrganizationStore'
 
-class PersonPanel extends Component {
+class PersonPanel extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,9 +18,9 @@ class PersonPanel extends Component {
     };
 
     this.listForRelation = this.listForRelation.bind(this);
-    this.gotoTelesession = this.gotoTelesession.bind(this);
-    this.didClickAddNewRelation = this.didClickAddNewRelation.bind(this);
-    this.didClickRemoveRelation = this.didClickRemoveRelation.bind(this);
+    this.handleGotoTelesession = this.handleGotoTelesession.bind(this);
+    this.handleClickAddNewRelation = this.handleClickAddNewRelation.bind(this);
+    this.handleClickRemoveRelation = this.handleClickRemoveRelation.bind(this);
   }
 
   componentDidMount() {
@@ -62,10 +61,10 @@ class PersonPanel extends Component {
         <ul className='people-list'>
           {
             people.map(function(person, i){
-              return <RelatedPersonListItem person={person} relation={relation} key={i} onClickValue={ this.didSelectRelatedPerson.bind(this) } onClickRemove={ this.didClickRemoveRelation }/>
+              return <RelatedPersonListItem person={person} relation={relation} key={i} onClickValue={ this.handleSelectRelatedPerson.bind(this) } onClickRemove={ this.handleClickRemoveRelation }/>
             }.bind(this))
           }
-          <AddNewRelatedPersonListItem relation={relation} valueDidChange={ this.addNewRelationInputValueChanged } onAddNewRelation={ this.didClickAddNewRelation } />
+          <AddNewRelatedPersonListItem relation={relation} valueDidChange={ this.addNewRelationInputValueChanged } onAddNewRelation={ this.handleClickAddNewRelation } />
         </ul>
       </div>;
       
@@ -88,7 +87,7 @@ class PersonPanel extends Component {
     }
   }
 
-  didClickRemoveRelation(event, relation, person) {
+  handleClickRemoveRelation(event, relation, person) {
     if (relation === 'doctor') {
       OrganizationActions.destroyDoctorPatientRelationship(person, this.props.person)
       .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
@@ -98,11 +97,11 @@ class PersonPanel extends Component {
       .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
     } 
     else if (relation === 'patient') {
-      if (this.props.person.role && this.props.person.role.name == 'doctor') {
+      if (this.props.person.role && this.props.person.role.name === 'doctor') {
         OrganizationActions.destroyDoctorPatientRelationship(this.props.person, person)
         .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
       }
-      else if (this.props.person.role && this.props.person.role.name == 'caregiver') {
+      else if (this.props.person.role && this.props.person.role.name === 'caregiver') {
         OrganizationActions.destroyCaregiverPatientRelationship(this.props.person, person)
         .then(this.updateStateWithRemovedRelation(relation, person).bind(this));
       }
@@ -123,7 +122,7 @@ class PersonPanel extends Component {
     }
   }
 
-  didClickAddNewRelation(event, relation, person) {
+  handleClickAddNewRelation(event, relation, person) {
     if (relation === 'doctor') {
       OrganizationActions.makeDoctorPatientRelationship(person, this.props.person)
       .then(this.updateStateWithNewRelation(relation, person).bind(this));
@@ -133,11 +132,11 @@ class PersonPanel extends Component {
       .then(this.updateStateWithNewRelation(relation, person).bind(this));
     } 
     else if (relation === 'patient') {
-      if (this.props.person.role && this.props.person.role.name == 'doctor') {
+      if (this.props.person.role && this.props.person.role.name === 'doctor') {
         OrganizationActions.makeDoctorPatientRelationship(this.props.person, person)
         .then(this.updateStateWithNewRelation(relation, person).bind(this));
       }
-      else if (this.props.person.role && this.props.person.role.name == 'caregiver') {
+      else if (this.props.person.role && this.props.person.role.name === 'caregiver') {
         OrganizationActions.makeCaregiverPatientRelationship(this.props.person, person)
         .then(this.updateStateWithNewRelation(relation, person).bind(this));
       }
@@ -149,12 +148,12 @@ class PersonPanel extends Component {
     //console.log(value);
   }
 
-  didSelectRelatedPerson(event, person){
+  handleSelectRelatedPerson(event, person){
     console.log('did select related person:');
     console.dir(person);
   }
 
-  gotoTelesession() {
+  handleGotoTelesession() {
     this.props.router.push('/telesession?patient='+this.props.person.id+'');
   }
 
@@ -181,7 +180,7 @@ class PersonPanel extends Component {
       </div>;
 
       telesessionButton = 
-      <ImageButton className="goto-telesession-button" text={"Open Telesession Lobby With "+person.firstName+' '+person.lastName} onClick={ this.gotoTelesession } />
+      <ImageButton className="goto-telesession-button" text={"Open Telesession Lobby With "+person.firstName+' '+person.lastName} onClick={ this.handleGotoTelesession } />
     }
 
     return (

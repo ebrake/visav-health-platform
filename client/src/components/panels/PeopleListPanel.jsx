@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PeopleListItem from '../lists/PeopleListItem';
 import OrganizationStore from '../../alt/stores/OrganizationStore'
 
-class PeopleListPanel extends Component {
+class PeopleListPanel extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,16 +13,16 @@ class PeopleListPanel extends Component {
 
     console.log(this.props.displayedRole);
 
-    if (this.props.displayedRole == 'doctors') {
+    if (this.props.displayedRole === 'doctors') {
       this.displayedPeople = relationState.doctors;
     }
-    else if (this.props.displayedRole == 'patients') {
+    else if (this.props.displayedRole === 'patients') {
       this.displayedPeople = relationState.patients;
     }
-    else if (this.props.displayedRole == 'caregivers') {
+    else if (this.props.displayedRole === 'caregivers') {
       this.displayedPeople = relationState.caregivers;
     }
-    else if (this.props.displayedRole == 'admins') {
+    else if (this.props.displayedRole === 'admins') {
       this.displayedPeople = relationState.admins;
     }
     if (!this.displayedPeople) {

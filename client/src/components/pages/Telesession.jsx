@@ -5,9 +5,7 @@ import TelesessionPanels from '../panels/TelesessionPanels';
 
 import ActivityChartPanel from '../panels/ActivityChartPanel';
 import HeartRateChartPanel from '../panels/HeartRateChartPanel';
-import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
-import FullscreenAlert from '../misc/FullscreenAlert';
 
 import AccountStore from '../../alt/stores/AccountStore';
 import OrganizationStore from '../../alt/stores/OrganizationStore';
@@ -65,4 +63,5 @@ class Telesession extends Component {
   }
 }
 
+//eslint-disable-next-line
 export default AuthenticatedPage(Telesession);

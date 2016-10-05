@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Autocomplete from 'react-autocomplete';
 
-class VisavInput extends Component {
+class VisavInput extends React.Component {
   constructor(props){
     super(props);
 
@@ -11,16 +11,14 @@ class VisavInput extends Component {
       selectedAutocompleteItem: null
     };
 
-    this.onKeyUp = this.onKeyUp.bind(this);
-    this.valueDidChange = this.valueDidChange.bind(this);
-    this.autocompleteValueDidChange = this.autocompleteValueDidChange.bind(this);
+    this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
+    this.handleValueDidChange = this.handleValueDidChange.bind(this);
+    this.handleAutocompleteValueDidChange = this.handleAutocompleteValueDidChange.bind(this);
     this.autocompleteElement = this.autocompleteElement.bind(this);
     this.autocompleteMainKeyForItem = this.autocompleteMainKeyForItem.bind(this);
     this.shouldItemRender = this.shouldItemRender.bind(this);
-    this.autocompleteOnSelect = this.autocompleteOnSelect.bind(this);
+    this.handleAutocompleteOnSelect = this.handleAutocompleteOnSelect.bind(this);
     this.autocompleteRenderItem = this.autocompleteRenderItem.bind(this);
-
-
   } 
 
   getInitialClasses() {
@@ -38,13 +36,13 @@ class VisavInput extends Component {
     return classes;
   }
 
-  onKeyUp(event){
+  handleOnKeyUp(event){
     if (this.props.onKeyUp) {
       this.props.onKeyUp(event);
     }
   }
 
-  valueDidChange(event){
+  handleValueDidChange(event){
     let val = event.target.value;
 
     this.setState({
@@ -55,7 +53,7 @@ class VisavInput extends Component {
     this.props.valueDidChange(event, this.props.label, val);
   }
 
-  autocompleteValueDidChange(event, value){
+  handleAutocompleteValueDidChange(event, value){
     var key;
     //check to see if main key has been fully typed out, select if it has
     var completeMainKeyObject = null;
@@ -68,7 +66,7 @@ class VisavInput extends Component {
     });
     //if an object was found with main key matching value
     if (completeMainKeyObject) {
-      this.autocompleteOnSelect(value, completeMainKeyObject);
+      this.handleAutocompleteOnSelect(value, completeMainKeyObject);
       return;
     }
 
@@ -76,7 +74,7 @@ class VisavInput extends Component {
     console.log(value);
     //value did not match any items main key
     if (this.state.selectedAutocompleteItem) {
-      this.autocompleteOnSelect(value, null);
+      this.handleAutocompleteOnSelect(value, null);
     }
     this.setState({
       isActive: (value.length > 0),
@@ -87,21 +85,19 @@ class VisavInput extends Component {
     this.props.valueDidChange(event, this.props.label, value);
   }
 
-
   shouldItemRender(item, value){
-    var key;
-    for( keyIndex in this.props.autocompleteKeys ){
-      key = this.props.autocompleteKeys[keyIndex];
+    var ret = false;
+    this.props.autocompleteKeys.forEach(function(key){
       if(item[key]) {
         if (item[key].includes(value)) {
-          return true;
+          ret = true;
         }
       }
-    }
-    return false;
+    })
+    return ret;
   }
 
-  autocompleteOnSelect(value, item){
+  handleAutocompleteOnSelect(value, item){
     var key = this.props.autocompleteKeys[0];
     this.setState({
       selectedAutocompleteItem: item,
@@ -116,10 +112,10 @@ class VisavInput extends Component {
 
   autocompleteMainKeyForItem(item){
     var key = this.props.autocompleteKeys[0];
-    if (item[key]) item[key];
-    else{
+    if (item[key]) 
+      return item[key];
+    else
       return 'NO KEY FOR ITEM'
-    }
   }
 
   autocompleteRenderItem(item, isHighlighted){
@@ -139,8 +135,8 @@ class VisavInput extends Component {
         items={ this.props.autocompleteObjects }
         getItemValue={(item) => item.firstName}
         shouldItemRender={ this.shouldItemRender }
-        onChange={ this.autocompleteValueDidChange }
-        onSelect={ this.autocompleteOnSelect }
+        onChange={ this.handleAutocompleteValueDidChange }
+        onSelect={ this.handleAutocompleteOnSelect }
         renderItem={ this.autocompleteRenderItem }
         menuStyle={ { borderRadius: 0, position: 'fixed', background: 'white' } }
       ></Autocomplete>
@@ -164,8 +160,7 @@ class VisavInput extends Component {
     }
     else{
       input =
-      <input type={ type } placeholder={ this.props.label } value={ this.state.value } onChange={ this.valueDidChange } onKeyUp={ this.onKeyUp } />
-
+      <input type={ type } placeholder={ this.props.label } value={ this.state.value } onChange={ this.handleValueDidChange } onKeyUp={ this.handleOnKeyUp } />
     }
 
     return (

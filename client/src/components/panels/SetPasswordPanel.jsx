@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import VisavInput from '../inputs/VisavInput';
 import ImageButton from '../buttons/ImageButton';
 import AccountActions from '../../alt/actions/AccountActions';
-class SetPasswordPanel extends Component {
+
+class SetPasswordPanel extends React.Component {
   constructor(props) {
     super(props);
 
@@ -18,9 +19,11 @@ class SetPasswordPanel extends Component {
   }
 
   componentDidMount(){
+
   }
 
   componentWillUnmount(){
+
   }
 
   componentDidUpdate(){
@@ -37,7 +40,7 @@ class SetPasswordPanel extends Component {
   setPassword(){
     AccountActions.setPassword({ password: this.state.password, confirmation: this.state.confirmation })
     .then(function( response ){
-      if (response && response.data && response.data.status == 'success') {
+      if (response && response.data && response.data.status === 'success') {
         console.log('Password set successful!');
         this.props.didSetPassword(response);
       } else {

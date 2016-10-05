@@ -21,14 +21,10 @@
   input {
     width: 100%;
     border: 0;
-    background: transparent;
     outline: none;
     font-size: 14px;
-    width: 100%;
     border-width: 0;
     padding: 0;
-    width: 100%;
-    outline: none;
     background: transparent;
     color: $light-text-color;
     margin: 12px 0;

@@ -1,6 +1,7 @@
 @import 'media.css';
 @import 'colors.css';
 @import 'panel.css';
+
 .Telesession {
   > .left-column {
     display: flex;

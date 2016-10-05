@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
-import HealthEventStore from '../../../alt/stores/HealthEventStore';
-import ExerciseStore from '../../../alt/stores/ExerciseStore';
-import InfoList from '../../lists/InfoList'
+import React from 'react';
 
-class PatientInfoChatPanel extends Component {
-  
+class PatientInfoChatPanel extends React.Component {
+  //eslint-disable-next-line
   constructor(props) {
     super(props);
-
   }
 
   componentDidMount(){
@@ -19,13 +15,9 @@ class PatientInfoChatPanel extends Component {
   }
 
   render() {
-
     return (
       <div className="PatientInfoChatPanel panel">
-        
         <h2 className="title">Chat</h2>
-
-
       </div>
     );
   }
