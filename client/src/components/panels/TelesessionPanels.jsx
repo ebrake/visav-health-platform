@@ -28,7 +28,7 @@ class TelesessionPanels extends React.Component {
       sessionRequested: false
     };
 
-    this.callPatient = this.callPatient.bind(this);
+    this.handleCallPatient = this.handleCallPatient.bind(this);
     this.telesessionChanged = this.telesessionChanged.bind(this);
     this.handleToggleMuteMic = this.handleToggleMuteMic.bind(this);
     this.handleToggleMuteSubscriber = this.handleToggleMuteSubscriber.bind(this);
@@ -44,7 +44,7 @@ class TelesessionPanels extends React.Component {
     }
   }
 
-  callPatient() {
+  handleCallPatient() {
     NotificationActions.callUser(this.state.sessionId, this.props.patient.id);
   }
 
@@ -83,6 +83,7 @@ class TelesessionPanels extends React.Component {
       },
       connectionDestroyed: function connectionDestroyedHandler(event) {
         console.log('A client disconnected.');
+        console.dir(event);
         self.disconnectFromSession();
       },
       streamCreated: function (event) {
@@ -122,7 +123,7 @@ class TelesessionPanels extends React.Component {
     if (!sessionId) {
       this.createSession();
     }
-    else{
+    else {
       this.setState({sessionId: sessionId});
       this.connectToSession();
     }
@@ -189,7 +190,7 @@ class TelesessionPanels extends React.Component {
       var controlPanel = isActiveSession ?
         <div className="vertical-control-panel panel">
           <VisavIcon type="hang-up" onClick={this.disconnectFromSession.bind(this)} className="btn-cancel btn-overlay"/>
-          <VisavIcon type="call-patient" onClick={this.callPatient.bind(this)} className="btn-call btn-overlay"/>
+          <VisavIcon type="call-patient" onClick={this.handleCallPatient} className="btn-call btn-overlay"/>
           <VisavIcon type={this.state.muteMic ? 'muted-self' : 'unmuted-self'} onClick={this.handleToggleMuteMic} className="btn-mute-mic btn-overlay" />
           <VisavIcon type={this.state.muteSubscriber ? 'muted-subscriber' : 'unmuted-subscriber'} onClick={this.handleToggleMuteSubscriber} className="btn-mute-subscriber btn-overlay" />
         </div>
