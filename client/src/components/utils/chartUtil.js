@@ -63,85 +63,6 @@ function makeHealthEventChartData(healthEvents) {
   };
 }
 
-/* EXERCISE */
-function avgValueForExercise(exercise) {
-  if (exercise.reps.length > 0) {
-    let avg = 0;
-    for(var i = 0; i < exercise.reps.length; i++){
-      avg += exercise.reps[i].value / exercise.reps.length;
-    }
-    return Math.round(avg);
-  }
-  else{
-    return 0;
-  }
-}
-
-function makeExerciseChartData(exercises) {
-  //compute just what Chart.js needs in terms of data
-  let twoWeeksAgo = new Date(findNewestDate(exercises) - (1000*60*60*24*15))
-    , datasets = []
-    , currentDataSet = -1
-    , key = '';
-
-  if(exercises && exercises.length > 0) {
-    for (var i = 0; i < exercises.length; i++){
-      let ex = exercises[i];
-      if (new Date(ex.date) < twoWeeksAgo) {
-        continue;
-      }
-
-      key = ex.type;
-      currentDataSet = -1;
-
-      for (var j = 0; j < datasets.length; j++) {
-        if (datasets[j].label === key) {
-          currentDataSet = j;
-        }
-      } 
-
-      if (currentDataSet < 0) {
-        currentDataSet = datasets.length;
-        datasets.push({ label: key, data: [] });
-      }
-
-      if (ex.reps.length > 0) {
-        datasets[currentDataSet].data.push({
-          x: toMilliseconds(ex.date),
-          y: avgValueForExercise(ex)
-        });
-      } 
-    }
-  }
-
-  return {
-    datasets: formatDatasets(datasets, 'Degrees')
-  };
-}
-
-/* REPS */
-function makeRepChartData(exercise) {
-  //compute data
-  let datasets = [{ data: [], label: '' }]
-    , labels = [];
-
-  if (exercise) {
-    datasets[0].label = exercise.type;
-
-    if (exercise.reps.length > 0){
-      exercise.reps.forEach((rep, i) => {
-        labels.push( 'Rep '+(i+1)+'' );
-        datasets[0].data.push( Math.round(rep.value) );
-      })
-    }
-  }
-
-  return {
-    labels: labels,
-    datasets: formatDatasets(datasets, 'Degrees')
-  };
-}
-
 function makeHeartRateChartData(HeartRateData) {
   let datasets = [{ data: [], label: 'Heart Rate' }];
 
@@ -214,19 +135,7 @@ function formatDatasets(datasets, addToLabel) {
 
 /* CHART OPTIONS */
 
-var callbacks = {
-  makeTitleIntoDate: (arr, data) => {
-    let d = new Date(arr[0].xLabel);
-    var month = d.toLocaleDateString([], {month: 'long'});
-    return month+' '+d.getDate()+', '+d.getFullYear()+'                             '+d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  },
-
-  makeTitleIntoDay: (arr, data) => {
-    let d = new Date(arr[0].xLabel);
-    var month = d.toLocaleDateString([], {month: 'long'});
-    return month+' '+d.getDate()+', '+d.getFullYear();
-  },
-
+var formatters = {
   getDateString: (date) => {
     var month = date.toLocaleDateString([], {month: 'long'});
     return month+' '+date.getDate()+', '+date.getFullYear();
@@ -304,31 +213,7 @@ var axes = {
   }]
 }
 
-var tooltips = {
-  titleFontColor: colors.getFontColor('blue'),
-  bodyFontColor: colors.getFontColor('blue'),
-  footerFontColor: colors.getFontColor('blue'),
-  backgroundColor: colors.getColor('white'),
-  xPadding: 20,
-  yPadding: 25,
-  titleMarginBottom: 15,
-  titleFontSize: 14,
-  titleFontStyle: 'normal',
-  bodyFontSize: 16,
-  bodyFontStyle: 'bold',
-  footerMarginTop: 18,
-  footerFontSize: 16,
-  footerFontStyle: 'normal',
-  footerSpacing: 4,
-  cornerRadius: 10,
-}
-
 /* UTILITY FUNCTIONS */
-
-function toMilliseconds(date) {
-  date = new Date(date);
-  return date.getTime();
-}
 
 function findNewestDate(array) {
   var retDate = new Date(0);
@@ -345,15 +230,9 @@ function findNewestDate(array) {
 
 export default {
   makeHealthEventChartData: makeHealthEventChartData,
-  makeExerciseChartData: makeExerciseChartData,
-  makeRepChartData: makeRepChartData,
   makeHeartRateChartData: makeHeartRateChartData,
   makeActivityChartData: makeActivityChartData,
-
-  callbacks: callbacks,
-  formatters: callbacks,
+  formatters: formatters,
   legends: legends,
   axes: axes,
-  tooltips: tooltips,
-  chartHeight: 270
 }
