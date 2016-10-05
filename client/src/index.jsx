@@ -20,6 +20,7 @@ config.set('OPENTOK_API_KEY', '45631802');
 
 //CSS imports
 import './css/alert.css';
+import './css/banner.css';
 import './css/base.css';
 import './css/button.css';
 import './css/colors.css';

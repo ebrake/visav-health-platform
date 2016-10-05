@@ -1,11 +1,28 @@
 @import 'colors.css';
+@import 'media.css';
 
 .People {
   padding: 0 5px 10px;
 
+  .PeopleBannerContainer {
+    margin: 10px 5px;
+  }
+
+  .PeopleListContainer {
+
+    display: flex;
+    flex: 1 0 1px;
+
+  }
+
   .PeopleListPanel {
     flex: 1 0 1px;
     margin: 0 5px;
+
+    @media (--lt-md) {
+      display:inline-block;
+      margin-bottom:5px;
+    }
 
     .title {
       text-transform: capitalize;

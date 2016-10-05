@@ -1,0 +1,42 @@
+@import 'media.css';
+@import 'colors.css';
+
+$banner-border-radius: 10px;
+
+.banner {
+
+  background: $bright-blue;
+  border-radius: $banner-border-radius;
+  border: 1px solid $color-panel-border;
+  margin: 0;
+  overflow: hidden;
+  justify-content: space-between;
+  flex: 0 0 auto;
+
+  .banner-text {
+
+    padding: 10px;
+
+    p {
+      margin:0px;
+      color: #ffffff;
+      font-weight:600;
+      font-size:0.8em;
+    }
+
+  }
+
+  .banner-close {
+
+    font-size:0.5em;
+    background:$bright-blue;
+    border-top-radius: $banner-border-radius;
+    border-top-right-radius: $banner-border-radius;
+    .VisavIcon {
+      padding:4px;
+    }
+
+  }
+
+
+}
