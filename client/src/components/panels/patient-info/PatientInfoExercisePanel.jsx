@@ -25,6 +25,8 @@ class PatientInfoExercisePanel extends React.Component {
   }
 
   exercisesChanged(exerciseState){
+    console.log('Did we get new exercises?');
+    console.dir(exerciseState);
     this.setState({
       lastExercise: exerciseState.exercises[exerciseState.exercises.length - 1] || {}
     });
@@ -41,9 +43,12 @@ class PatientInfoExercisePanel extends React.Component {
   }
 
   render() {
+    console.log('Whats in state?');
+    console.dir(this.state);
+
     var healthEventInfoDict = {
       'Type': this.state.lastHealthEvent.type,
-      'Date': (new Date(this.state.lastExercise.date)).toLocaleString(),
+      'Date': (new Date(this.state.lastHealthEvent.date)).toLocaleString(),
       'Perceived Trend': this.state.lastHealthEvent.perceivedTrend
     }
 
@@ -56,6 +61,7 @@ class PatientInfoExercisePanel extends React.Component {
       'Date': (new Date(this.state.lastExercise.date)).toLocaleString(),
       'Exercise Length': (Number(this.state.lastExercise.duration)/1000).toFixed(1) + ' seconds'
     }
+
     if (this.state.lastExercise && this.state.lastExercise.isDemo) {
       exerciseInfoDict['Demo'] = 'This exercise was generated pseudo-randomly. It is not real.';
     }
