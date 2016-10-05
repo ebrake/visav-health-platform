@@ -12,8 +12,6 @@ class HealthEventsChartPanel extends React.Component {
       healthEvents: [],
       healthEvent: undefined,
       chartData: { datasets: [] },
-      dropdownOptions: [],
-      tooltipId: 'HealthEventsChartPanelTooltip',
       tooltipData: {
         date: '',
         time: '',
@@ -43,12 +41,10 @@ class HealthEventsChartPanel extends React.Component {
 
   healthEventsChanged(healthEventState){
     let chartData = chartUtil.makeHealthEventChartData(healthEventState.healthEvents);
-    let dropdownOptions = chartData.datasets.map(ds => { return ds.exposedName });
 
     this.setState({
       healthEvents: healthEventState.healthEvents,
       chartData: chartData,
-      dropdownOptions: dropdownOptions
     });
 
     this.pickHealthEventIfNoneSelected();
@@ -154,8 +150,12 @@ class HealthEventsChartPanel extends React.Component {
     }
 
     newStyle.top = tooltip.y;
-    newStyle.left = tooltip.x+5;
-    if (tooltip.xAlign == 'right') {
+    if (tooltip.y > 80) {
+      newStyle.top -= 70;
+    }
+    
+    newStyle.left = tooltip.x + 5;
+    if (tooltip.xAlign === 'right') {
       newStyle.left -= 210;
     }
 
@@ -195,7 +195,7 @@ class HealthEventsChartPanel extends React.Component {
         <h1 className="title">Pain</h1>
         <div className="chart-container account-for-dropdown">
           <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
-          <div className="chartjs-tooltip" id={this.state.tooltipId} style={this.state.tooltipStyle}>
+          <div className="chartjs-tooltip" style={this.state.tooltipStyle}>
             <span className="tooltip-date">{ this.state.tooltipData.date }</span>
             <span className="tooltip-time">{ this.state.tooltipData.time }</span>
             <span className="tooltip-title">{ this.state.tooltipData.title }</span>
