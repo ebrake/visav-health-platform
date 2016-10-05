@@ -13,11 +13,21 @@ class HealthEventsChartPanel extends React.Component {
       healthEvent: undefined,
       chartData: { datasets: [] },
       dropdownOptions: [],
+      tooltipId: 'HealthEventsChartPanelTooltip',
+      tooltipData: {
+        date: '',
+        time: '',
+        title: '',
+        body: '',
+      },
+      tooltipStyle: {
+        display: 'none'
+      },
     };
 
     HealthEventActions.getHealthEvents(this.props.patientId);
 
-    this.formatFooter = this.formatFooter.bind(this);
+    this.customTooltip = this.customTooltip.bind(this);
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
     this.onHealthEventTypeSelected = this.onHealthEventTypeSelected.bind(this);
     this.pickHealthEventIfNoneSelected = this.pickHealthEventIfNoneSelected.bind(this);
@@ -29,76 +39,6 @@ class HealthEventsChartPanel extends React.Component {
 
   componentWillUnmount(){
     HealthEventStore.unlisten(this.healthEventsChanged);
-  }
-
-  componentWillReceiveProps(nextProps){
-    if (nextProps.patientId !== this.props.patientId) {
-      HealthEventActions.getHealthEvents(nextProps.patientId);
-    }
-  }
-
-  getYAxesFormat() {
-    let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));
-    yAxes[0].ticks.suggestedMin = 0;
-    yAxes[0].ticks.suggestedMax = 10;
-
-    return yAxes;
-  }
-
-  formatLabel(helper, chartData) {
-    let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
-    return dataPoint.type;
-  }
-
-  modifier(num) {
-    if (num < 3)
-      return 'some';
-    if (num < 5)
-      return 'minor';
-    if (num < 7)
-      return 'signifificant';
-    if (num < 9)
-      return 'severe';
-
-    return 'intense';
-  }
-
-  formatFooter(helper, chartData) {
-    helper = helper[0];
-    let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
-    
-    return [
-      'The patient reported '+this.modifier(dataPoint.y)+' '+dataPoint.type.toLowerCase(),
-      'with an intensity of '+dataPoint.y+'.'
-    ];
-  }
-
-  chartOptions(){
-    let tooltips = Object.assign({ 
-      callbacks: { 
-        title: chartUtil.callbacks.makeTitleIntoDate,
-        label: this.formatLabel,
-        footer: this.formatFooter
-      } 
-    }, chartUtil.tooltips);
-
-    return {
-      scales: {
-        xAxes: chartUtil.axes.timeXAxes,
-        yAxes: this.getYAxesFormat()
-      },
-      pan: {
-        enabled: true,
-        mode: 'x'
-      },
-      zoom: {
-        enabled: false
-      },
-      tooltips: tooltips,
-      legend: chartUtil.legends.defaultLegend,
-      responsive: true,
-      maintainAspectRatio: false
-    }
   }
 
   healthEventsChanged(healthEventState){
@@ -146,12 +86,121 @@ class HealthEventsChartPanel extends React.Component {
     this.onHealthEventTypeSelected({ value: chartData.datasets[0].exposedName });
   }
 
+  componentWillReceiveProps(nextProps){
+    if (nextProps.patientId !== this.props.patientId) {
+      HealthEventActions.getHealthEvents(nextProps.patientId);
+    }
+  }
+
+  getYAxesFormat() {
+    let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));
+    yAxes[0].ticks.suggestedMin = 0;
+    yAxes[0].ticks.suggestedMax = 10;
+
+    return yAxes;
+  }
+
+  modifier(num) {
+    if (num < 3)
+      return 'some';
+    if (num < 5)
+      return 'minor';
+    if (num < 7)
+      return 'signifificant';
+    if (num < 9)
+      return 'severe';
+
+    return 'intense';
+  }
+
+  formatTooltipBody(type, intensity) {
+    return 'The patient reported '+this.modifier(intensity)+' '+type.toLowerCase()+' with an intensity of '+intensity+'.';
+  }
+
+  customTooltip(tooltip) {
+    let newData = {
+      date: '',
+      time: '',
+      title: '',
+      body: '',
+    }
+
+    if (!tooltip || !tooltip.body || !tooltip.body[0] || !tooltip.title || tooltip.title.length < 1) {
+      this.setState({
+        tooltipStyle: {
+          display: 'none'
+        },
+        tooltipData: newData
+      });
+      return;
+    }
+
+    //figure out what to display
+    let rawInfo = tooltip.body[0].lines[0].split(':');
+    let rawData = {
+      type: rawInfo[0],
+      value: Number(rawInfo[1]),
+      date: new Date(tooltip.title[0]),
+    }
+
+    newData.date = chartUtil.formatters.getDateString(rawData.date);
+    newData.time = chartUtil.formatters.getTimeString(rawData.date);
+    newData.title = rawData.type;
+    newData.body = this.formatTooltipBody(rawData.type, rawData.value);
+
+    //figure out where to display it
+    let newStyle = {
+      display: 'block'
+    }
+
+    newStyle.top = tooltip.y;
+    newStyle.left = tooltip.x+5;
+    if (tooltip.xAlign == 'right') {
+      newStyle.left -= 210;
+    }
+
+    //rerender component
+    this.setState({ 
+      tooltipStyle: newStyle,
+      tooltipData: newData
+    })
+  }
+
+  chartOptions(){
+    return {
+      scales: {
+        xAxes: chartUtil.axes.timeXAxes,
+        yAxes: this.getYAxesFormat()
+      },
+      pan: {
+        enabled: true,
+        mode: 'x'
+      },
+      zoom: {
+        enabled: false
+      },
+      tooltips: {
+        enabled: false,
+        custom: this.customTooltip
+      },
+      legend: chartUtil.legends.defaultLegend,
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  }
+
   render() {
     return (
       <div className="HealthEventsChartPanel graph-panel panel">
         <h1 className="title">Pain</h1>
         <div className="chart-container account-for-dropdown">
           <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
+          <div className="chartjs-tooltip" id={this.state.tooltipId} style={this.state.tooltipStyle}>
+            <span className="tooltip-date">{ this.state.tooltipData.date }</span>
+            <span className="tooltip-time">{ this.state.tooltipData.time }</span>
+            <span className="tooltip-title">{ this.state.tooltipData.title }</span>
+            <span className="tooltip-body">{ this.state.tooltipData.body }</span>
+          </div>
         </div>
       </div>
     );

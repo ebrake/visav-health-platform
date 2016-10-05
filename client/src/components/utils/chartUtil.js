@@ -199,8 +199,6 @@ function makeActivityChartData(activityData) {
 /* DATASET FORMATTER */
 function formatDatasets(datasets, addToLabel) {
   return datasets.map((d, i) => {
-    d.exposedName = d.label;
-    d.label = addToLabel ? addToLabel+' ('+d.label+')' : d.label;
     d.borderColor = colors.getGraphColor(i);
     d.backgroundColor = colors.getGraphColor(i, 'faded');
     d.pointRadius = 6;
@@ -208,7 +206,7 @@ function formatDatasets(datasets, addToLabel) {
     d.pointBackgroundColor = colors.getGraphColor(i);
     d.pointBorderColor = colors.getColor('blue');
     d.pointBorderWidth = 4;
-    d.lineTension = d.exposedName === 'Sharp Pain' ? 0 : 0.5;
+    d.lineTension = d.label === 'Sharp Pain' ? 0 : 0.5;
 
     return d;
   })
@@ -227,6 +225,15 @@ var callbacks = {
     let d = new Date(arr[0].xLabel);
     var month = d.toLocaleDateString([], {month: 'long'});
     return month+' '+d.getDate()+', '+d.getFullYear();
+  },
+
+  getDateString: (date) => {
+    var month = date.toLocaleDateString([], {month: 'long'});
+    return month+' '+date.getDate()+', '+date.getFullYear();
+  },
+
+  getTimeString: (date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 }
 
@@ -344,6 +351,7 @@ export default {
   makeActivityChartData: makeActivityChartData,
 
   callbacks: callbacks,
+  formatters: callbacks,
   legends: legends,
   axes: axes,
   tooltips: tooltips,

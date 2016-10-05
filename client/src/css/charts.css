@@ -1,2 +1,41 @@
 @import 'media.css';
 @import 'colors.css';
+
+.chartjs-tooltip {
+  box-sizing: border-box;
+  position: absolute;
+  background: white;
+  border-radius: 10px;
+  width: 300px;
+  padding: 25px;
+  z-index: 100;
+
+  > span {
+    display: block;
+    color: $header-text-color;
+    float: left;
+  }
+
+  > .tooltip-date {
+    font-size: 14px;
+    float: left;
+  }
+
+  > .tooltip-time {
+    font-size: 14px;
+    float: right;
+  }
+
+  > .tooltip-title {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    clear: both;
+    margin: 10px 0;
+  }
+
+  > .tooltip-body {
+    display: block;
+    font-size: 16px;
+  }
+}
