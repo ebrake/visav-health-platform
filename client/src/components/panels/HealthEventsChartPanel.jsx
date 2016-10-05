@@ -54,7 +54,7 @@ class HealthEventsChartPanel extends Component {
 
   modifier(num) {
     if (num < 3)
-      return 'intermittent';
+      return 'some';
     if (num < 5)
       return 'minor';
     if (num < 7)
