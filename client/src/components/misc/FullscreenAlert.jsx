@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-class FullscreenAlert extends React.Component {
+class FullscreenAlert extends Component {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Dropdown from 'react-dropdown';
 
-class VisavDropdown extends React.Component {
+class VisavDropdown extends Component {
   constructor(props){
     super(props);
 

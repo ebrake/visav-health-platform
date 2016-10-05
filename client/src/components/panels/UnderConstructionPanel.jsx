@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ImageButton from '../buttons/ImageButton';
 
-class UnderConstructionPanel extends React.Component {
+class UnderConstructionPanel extends Component {
   constructor(props) {
     super(props);
 

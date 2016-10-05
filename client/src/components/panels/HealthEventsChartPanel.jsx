@@ -6,7 +6,7 @@ import HealthEventActions from '../../alt/actions/HealthEventActions';
 import chartUtil from '../utils/chartUtil';
 import VisavDropdown from '../inputs/VisavDropdown';
 
-class HealthEventsChartPanel extends React.Component {
+class HealthEventsChartPanel extends Component {
   constructor(props) {
     super(props);
 

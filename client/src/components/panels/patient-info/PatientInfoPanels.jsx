@@ -9,7 +9,7 @@ import PatientInfoReportPanel from './PatientInfoReportPanel';
 import PatientInfoChatPanel from './PatientInfoChatPanel';
 import VisavIcon from '../../misc/VisavIcon';
 
-class PatientInfoPanels extends React.Component {
+class PatientInfoPanels extends Component {
   
   constructor(props) {
     super(props);

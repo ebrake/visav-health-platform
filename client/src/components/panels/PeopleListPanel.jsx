@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PeopleListItem from '../lists/PeopleListItem';
 import OrganizationStore from '../../alt/stores/OrganizationStore'
 
-class PeopleListPanel extends React.Component {
+class PeopleListPanel extends Component {
   constructor(props) {
     super(props);
 

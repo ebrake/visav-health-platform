@@ -8,7 +8,7 @@ import AccountStore from '../../alt/stores/AccountStore';
 import ImageButton from '../buttons/ImageButton';
 import VisavIcon from '../misc/VisavIcon';
 
-class TelesessionPanels extends React.Component {
+class TelesessionPanels extends Component {
   
   constructor(props) {
     super(props);

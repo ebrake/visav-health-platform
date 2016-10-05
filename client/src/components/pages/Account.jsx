@@ -6,7 +6,7 @@ import ImageButton from '../buttons/ImageButton';
 import Dropdown from 'react-dropdown';
 import VisavInput from '../inputs/VisavInput';
 
-class Account extends React.Component {
+class Account extends Component {
   
   constructor(props) {
     super(props);

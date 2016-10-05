@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class VISAV extends React.Component {
+class VISAV extends Component {
   constructor(props) {
     super(props);
     this.state = {};

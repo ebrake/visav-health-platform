@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router/es';
 import VisavIcon from '../misc/VisavIcon';
 
-class NavIcon extends React.Component {
+class NavIcon extends Component {
   constructor(props) {
     super(props);
     

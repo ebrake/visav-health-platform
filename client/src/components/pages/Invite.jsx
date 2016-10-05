@@ -7,7 +7,7 @@ import VisavDropdown from '../inputs/VisavDropdown';
 import Roles from '../utils/Roles';
 import VisavInput from '../inputs/VisavInput';
 
-class Invite extends React.Component {
+class Invite extends Component {
   
   constructor(props) {
     super(props);

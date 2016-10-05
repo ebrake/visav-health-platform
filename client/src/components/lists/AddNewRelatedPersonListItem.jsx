@@ -3,7 +3,7 @@ import ImageButton from '../buttons/ImageButton';
 import VisavInput from '../inputs/VisavInput';
 import OrganizationStore from '../../alt/stores/OrganizationStore'
 
-class AddNewRelatedPersonListItem extends React.Component {
+class AddNewRelatedPersonListItem extends Component {
   constructor(props) {
     super(props);
     

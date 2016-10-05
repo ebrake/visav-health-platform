@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ImageButton from '../buttons/ImageButton';
 
-class PeopleListItem extends React.Component {
+class PeopleListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {};

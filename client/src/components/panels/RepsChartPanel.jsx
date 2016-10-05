@@ -5,7 +5,7 @@ import ExerciseStore from '../../alt/stores/ExerciseStore';
 import ExerciseActions from '../../alt/actions/ExerciseActions';
 import chartUtil from '../utils/chartUtil';
 
-class RepsChartPanel extends React.Component {
+class RepsChartPanel extends Component {
   constructor(props) {
     super(props);
 
