@@ -1,10 +1,11 @@
 import React from 'react';
 import { config } from 'react-loopback';
 
-import TelesessionActions from '../../alt/actions/TelesessionActions';
 import NotificationActions from '../../alt/actions/NotificationActions';
+import TelesessionActions from '../../alt/actions/TelesessionActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
 import AccountStore from '../../alt/stores/AccountStore';
+import VideoFeedback from '../misc/VideoFeedback';
 import VisavIcon from '../misc/VisavIcon';
 
 class TelesessionPanels extends React.Component {
@@ -25,7 +26,11 @@ class TelesessionPanels extends React.Component {
       muteMic: false,
       muteSubscriber: false,
       isMousedOver: false,
-      sessionRequested: false
+      sessionRequested: false,
+      feedback: {
+        type: 'hidden',
+        message: ''
+      }
     };
 
     this.handleCallPatient = this.handleCallPatient.bind(this);
@@ -210,6 +215,7 @@ class TelesessionPanels extends React.Component {
                 <section ref="subscriberSection"  />
               </div>
             </div>
+            <VideoFeedback data={this.state.feedback} />
           </div>
           { controlPanel }
         </div>

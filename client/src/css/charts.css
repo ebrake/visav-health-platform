@@ -12,7 +12,7 @@
 
   > span {
     display: block;
-    color: $header-text-color;
+    color: $on-white-text-color;
     float: left;
   }
 

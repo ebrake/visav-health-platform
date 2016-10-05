@@ -133,3 +133,17 @@
   flex: 1 1 1px;
   height: calc(100% - 40px);
 }
+
+.video-feedback {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 5;
+  max-width: 90%;
+  background: white;
+
+  > span {
+    color: $on-white-text-color;
+  }
+}
