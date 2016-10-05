@@ -224,13 +224,13 @@ function formatDatasets(datasets, addToLabel) {
 var callbacks = {
   makeTitleIntoDate: (arr, data) => {
     let d = new Date(arr[0].xLabel);
-    var month = d.toLocaleDateString('en-us', {month: 'long'});
-    return month+' '+d.getDate()+', '+d.getFullYear()+' '+d.toLocaleTimeString();
+    var month = d.toLocaleDateString([], {month: 'long'});
+    return month+' '+d.getDate()+', '+d.getFullYear()+'                    '+d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   },
 
   makeTitleIntoDay: (arr, data) => {
     let d = new Date(arr[0].xLabel);
-    var month = d.toLocaleDateString('en-us', {month: 'long'});
+    var month = d.toLocaleDateString([], {month: 'long'});
     return month+' '+d.getDate()+', '+d.getFullYear();
   }
 }
@@ -308,10 +308,16 @@ var tooltips = {
   backgroundColor: colors.getColor('purple'),
   xPadding: 15,
   yPadding: 15,
-  titleMarginBottom: 10,
-  titleFontSize: 16,
-  bodyFontSize: 14,
-  cornerRadius: 10
+  titleMarginBottom: 8,
+  titleFontSize: 14,
+  titleFontStyle: 'normal',
+  bodyFontSize: 16,
+  bodyFontStyle: 'bold',
+  footerMarginTop: 10,
+  footerFontSize: 14,
+  footerFontStyle: 'normal',
+  footerSpacing: 4,
+  cornerRadius: 10,
 }
 
 /* UTILITY FUNCTIONS */

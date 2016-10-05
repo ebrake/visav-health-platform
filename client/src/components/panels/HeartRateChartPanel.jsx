@@ -40,7 +40,12 @@ class HeartRateChartPanel extends React.Component {
         title: chartUtil.callbacks.makeTitleIntoDate,
         label: function(helper, chartData) {
           let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
-          return 'The patient measured their heartbeat at '+dataPoint.y+'bpm.';
+          return 'Heart Rate';
+        },
+        footer: function(helper, chartData) {
+          helper = helper.length > 0 ? helper[0] : helper;
+          let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
+          return ['The patient measured their heartbeat', 'at '+dataPoint.y+' beats per minute.'];
         }
       } 
     }, chartUtil.tooltips);
