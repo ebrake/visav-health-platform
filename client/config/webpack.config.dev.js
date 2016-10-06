@@ -5,7 +5,7 @@ var postcssEasyImport = require('postcss-easy-import');
 var postcssStripInlineComment = require('postcss-strip-inline-comments');
 var postcssSelectorNot = require('postcss-selector-not');
 var postCssColorFunction = require('postcss-color-function');
-
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 var StyleLintPlugin = require('stylelint-webpack-plugin');//css linter
 var customMedia = require("postcss-custom-media")
 
@@ -26,7 +26,7 @@ if (isInDebugMode) {
 var srcPath = path.resolve(__dirname, relativePath, 'src');
 var nodeModulesPath = path.join(__dirname, '..', 'node_modules');
 var indexHtmlPath = path.resolve(__dirname, relativePath, 'index.html');
-var faviconPath = path.resolve(__dirname, relativePath, 'favicon.ico');
+var faviconPath = path.resolve(__dirname, relativePath, 'icon.png');
 var buildPath = path.join(__dirname, isInNodeModules ? '../../..' : '..', 'build');
 
 module.exports = {
@@ -126,9 +126,9 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       inject: true,
-      favicon: faviconPath,
       template: indexHtmlPath
     }),
+    new FaviconsWebpackPlugin(faviconPath),
     new StyleLintPlugin({
       configFile: '.stylelintrc',
       context: 'src/css/',
