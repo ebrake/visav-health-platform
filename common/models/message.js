@@ -2,7 +2,7 @@ import plivo from 'plivo';
 
 module.exports = function(Message) {
   Message.send = function(req, cb) {
-    var HealthEventMessage = req.app.models.HealthEventMessage;
+    var HealthEventMessage = Message.app.models.HealthEventMessage;
     var { type, deliveryMethod, sender, recipient } = req.body;
     var err;
 
