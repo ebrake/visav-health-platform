@@ -11,9 +11,10 @@ class VisavInput extends React.Component {
       selectedAutocompleteItem: null
     };
 
-    this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
     this.handleValueDidChange = this.handleValueDidChange.bind(this);
     this.handleAutocompleteValueDidChange = this.handleAutocompleteValueDidChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.autocompleteElement = this.autocompleteElement.bind(this);
     this.autocompleteMainKeyForItem = this.autocompleteMainKeyForItem.bind(this);
     this.shouldItemRender = this.shouldItemRender.bind(this);
@@ -36,7 +37,19 @@ class VisavInput extends React.Component {
     return classes;
   }
 
-  handleOnKeyUp(event){
+  handleKeyPress(event){
+    // Handle enter key actions
+    if (this.props.enterPressed) {
+      if (event.key === 'Enter') {
+        this.props.enterPressed(event);
+        if (this.props.clearOnEnter) {
+          this.setState({value: ''});
+        }
+      }
+    }
+  }
+
+  handleKeyUp(event){
     if (this.props.onKeyUp) {
       this.props.onKeyUp(event);
     }
@@ -160,7 +173,7 @@ class VisavInput extends React.Component {
     }
     else{
       input =
-      <input type={ type } placeholder={ this.props.label } value={ this.state.value } onChange={ this.handleValueDidChange } onKeyUp={ this.handleOnKeyUp } />
+      <input type={ type } placeholder={ this.props.label } value={ this.state.value } onChange={ this.handleValueDidChange } onKeyUp={ this.handleKeyUp } onKeyPress={ this.handleKeyPress }/>
     }
 
     return (
@@ -173,6 +186,8 @@ class VisavInput extends React.Component {
 }
 
 VisavInput.propTypes = {
+  clearOnEnter: React.PropTypes.bool,
+  enterPressed: React.PropTypes.func,
   valueDidChange: React.PropTypes.func,
   label: React.PropTypes.string.isRequired,
   value: React.PropTypes.string,

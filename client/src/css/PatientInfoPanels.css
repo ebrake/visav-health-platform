@@ -86,3 +86,34 @@
     font-weight: 600;
   }
 }
+
+.PatientInfoChatPanel {
+  .ChatContainer {
+    flex: 1 1 1px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ChatInput {
+    width: 100%;
+    height: 50px;
+    flex: 1 1 50px;
+  }
+
+  .ChatMessages {
+    color: $light-text-color;
+    overflow: scroll;
+
+    .ChatMessageHeader {
+
+    }
+
+    .ChatRowFromMe {
+
+    }
+
+    .ChatRowToMe {
+
+    }
+  }
+}

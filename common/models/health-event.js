@@ -221,7 +221,7 @@ module.exports = function(HealthEvent) {
           retained: false
         }, function(err) {
           if (err) console.log("MQTT Publish error, topic: %s: "+err);
-          console.log('Sent '+message.type+' to topic '+topic);
+          console.log('Sent '+message+' to topic '+topic);
         });
       }))
     })
