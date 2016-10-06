@@ -74,7 +74,7 @@ module.exports = function(HealthEventMessage) {
 
   HealthEventMessage.send = function(req, cb) {
     var { patient, doctor, healthEvent, exercise, deliveryMethod } = req.body;
-    var Message = req.app.models.Message;
+    var Message = HealthEventMessage.app.models.Message;
     var err;
 
     if(!patient || !doctor || !healthEvent){

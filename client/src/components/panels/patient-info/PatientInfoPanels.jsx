@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import HealthEventStore from '../../../alt/stores/HealthEventStore';
-import ExerciseStore from '../../../alt/stores/ExerciseStore';
+import React from 'react';
+
 import PatientInfoPersonalPanel from './PatientInfoPersonalPanel';
 import PatientInfoExercisePanel from './PatientInfoExercisePanel';
 import PatientInfoAppointmentPanel from './PatientInfoAppointmentPanel';
@@ -9,8 +8,7 @@ import PatientInfoReportPanel from './PatientInfoReportPanel';
 import PatientInfoChatPanel from './PatientInfoChatPanel';
 import VisavIcon from '../../misc/VisavIcon';
 
-class PatientInfoPanels extends Component {
-  
+class PatientInfoPanels extends React.Component {
   constructor(props) {
     super(props);
 
@@ -29,7 +27,7 @@ class PatientInfoPanels extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.patient && JSON.stringify(nextProps.patient) != JSON.stringify(this.props.patient)) {
+    if (nextProps.patient && (JSON.stringify(nextProps.patient) !== JSON.stringify(this.props.patient))) {
       this.setState({
         displayedContent: <PatientInfoPersonalPanel patient={ nextProps.patient } />
       });

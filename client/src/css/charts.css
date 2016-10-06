@@ -1,66 +1,41 @@
 @import 'media.css';
 @import 'colors.css';
 
-.chart-tooltip {
-  margin: 0;
-  line-height: 24px;
-  border: 1px solid #ccc;
-  background-color: white;
-  padding: 10px;
-  background-color: $color-panel-bg;
-  border: 1px solid $color-panel-border;
-  color: $medium-text-color;
+.chartjs-tooltip {
+  box-sizing: border-box;
+  position: absolute;
+  background: white;
+  border-radius: 10px;
+  width: 300px;
+  padding: 25px;
+  z-index: 100;
 
-  .title {
-    font-weight: 700;
-    color: $light-text-color;
-  }
-
-  span {
+  > span {
     display: block;
-    margin: 0;
-  }
-}
-
-.graph-legend {
-  font-size: 13px;
-  color: $medium-light-grey;
-
-  .legend-point {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border-radius: 14px;
-    margin-right: 3px;
+    color: $on-white-text-color;
+    float: left;
   }
 
-  span {
-    margin-top: 3px;
-    display: inline-block;
-    vertical-align: middle;
+  > .tooltip-date {
+    font-size: 14px;
+    float: left;
   }
 
-  ul {
-    padding: 0;
-    margin: 5px 0 20px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+  > .tooltip-time {
+    font-size: 14px;
+    float: right;
   }
 
-  li {
-    list-style-type: none;
-    display: flex;
-    flex-direction: row;
-    align-items: middle;
-    margin: 0 10px;
-    cursor: pointer;
+  > .tooltip-title {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    clear: both;
+    margin: 10px 0;
+  }
 
-    &.toggled {
-      div {
-        border: 3px solid transparent !important;
-      }
-    }
+  > .tooltip-body {
+    display: block;
+    font-size: 16px;
   }
 }

@@ -52,16 +52,23 @@ module.exports = function(Telesession) {
         });
 
         PushModel.notifyById(installation.id, notification, function (err) {
-          if (err)
+          if (err) {
             return cb(null, { status: 'failure', message: err.message, error: err });
-
-          console.log('pushing notification to %j', installation.id);
-          return cb(null, { status: 'success', message: 'pushing notification to ' + installation.id });
+          } else {
+            console.log('pushing notification to %j', installation.id);
+            return cb(null, { status: 'success', message: 'pushing notification to ' + installation.id });
+          }
         });
 
         PushModel.on('error', function (err) {
           console.error('Push Notification error: ', err.stack);
         });
+      } else {
+        console.log('No installation for user '+req.body.userId);
+        err = new Error('The app has not been installed/registered by the user.');
+        err.statusCode = 404;
+        err.code = 'TELE_CALL_FAILED_MISSING_REQUIREMENT_APP_REGISTERED';
+        return cb(null, { status: 'failure', message: err.message, error: err });
       }
     })
   }
@@ -145,7 +152,7 @@ module.exports = function(Telesession) {
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/callUser', verb: 'post' },
-      returns: { arg: 'data', root: 'object' },
+      returns: { arg: 'data', type: 'object' },
       description: "Call a user, sends a push notification"
     }
   );

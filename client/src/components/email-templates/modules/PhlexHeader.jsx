@@ -1,5 +1,4 @@
 import React from 'react';
-import EmptySpace from './EmptySpace';
 import phlexColors from '../../utils/phlexColors';
 
 const Header = (props) => {
@@ -18,9 +17,7 @@ const Header = (props) => {
 
   return (
     <div style={style}>
-
       <h1 style={h1Style}>Phlex RS</h1>
-
     </div>
   );
 };

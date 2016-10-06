@@ -1,31 +1,29 @@
 import React from 'react';
-import EmptySpace from './EmptySpace';
 
 const Footer = (props) => {
-
   const footerContainerStyle = {
     color: props.color,
     backgroundColor: '#dddddd',
     padding: '20px'
   };
+
   const privacyTextStyle = {
     fontSize: '9px',
     color: 'black',
     margin: '0px 0px 10px 0px'
-
   };
+
   const privacyHeaderStyle = {
     fontSize: '12px',
     color: 'black',
     margin: '0px 0px 10px 0px'
-  }
+  };
+
   const visavTextStyle = {
     fontSize: '10px',
     color: '#555',
     margin: '0px 0px 0px 0px'
-
-  }
-
+  };
 
   return (
     <div

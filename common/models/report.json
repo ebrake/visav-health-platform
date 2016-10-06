@@ -1,0 +1,21 @@
+{
+  "name": "Report",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "doctor",
+      "permission": "ALLOW",
+      "property": "requestPGR"
+    }
+  ],
+  "methods": {}
+}

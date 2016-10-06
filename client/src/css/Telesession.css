@@ -1,6 +1,7 @@
 @import 'media.css';
 @import 'colors.css';
 @import 'panel.css';
+
 .Telesession {
   > .left-column {
     display: flex;
@@ -130,4 +131,25 @@
   position: relative;
   flex: 1 1 1px;
   height: calc(100% - 40px);
+}
+
+.video-feedback {
+  position: absolute;
+  top: 10px;
+  box-sizing: border-box;
+  opacity: 0.8;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 5;
+  width: 80%;
+  text-align: center;
+  left: 50%;
+  transform: translate(-50%);
+  background: white;
+
+  > span {
+    width: 100%;
+    color: $on-white-text-color;
+  }
 }

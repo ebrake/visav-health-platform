@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ImageButton from '../buttons/ImageButton';
 
-class UnderConstructionPanel extends Component {
+class UnderConstructionPanel extends React.Component {
   constructor(props) {
     super(props);
 

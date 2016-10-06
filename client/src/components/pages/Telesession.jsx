@@ -5,13 +5,13 @@ import TelesessionPanels from '../panels/TelesessionPanels';
 
 import ActivityChartPanel from '../panels/ActivityChartPanel';
 import HeartRateChartPanel from '../panels/HeartRateChartPanel';
-import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
-import FullscreenAlert from '../misc/FullscreenAlert';
 
 import AccountStore from '../../alt/stores/AccountStore';
 import OrganizationStore from '../../alt/stores/OrganizationStore';
 import OrganizationActions from '../../alt/actions/OrganizationActions';
+
+import ExerciseActions from '../../alt/actions/ExerciseActions';
 
 class Telesession extends Component {
   
@@ -24,6 +24,13 @@ class Telesession extends Component {
       patient: undefined,
       patientId: this.props.location.query.patient || 9
     };
+
+    this.getExercises = this.getExercises.bind(this);
+  }
+
+  //temporary
+  getExercises() {
+    ExerciseActions.getExercises(this.state.patientId)
   }
 
   componentDidMount() {
@@ -31,7 +38,8 @@ class Telesession extends Component {
     .then(function(response){
       if (response.data && response.data.status === 'success') {
         this.setState({
-          patient: response.data.patient
+          patient: response.data.patient,
+          patientId: response.data.patient.id
         })
       }
       else {
@@ -42,6 +50,7 @@ class Telesession extends Component {
             patient: newPatient,
             patientId: newPatient.id
           });
+          this.getExercises();
         }
       }
     }.bind(this))
@@ -65,4 +74,5 @@ class Telesession extends Component {
   }
 }
 
+//eslint-disable-next-line
 export default AuthenticatedPage(Telesession);

@@ -1,13 +1,10 @@
-import React, { Component } from 'react';
-import HealthEventStore from '../../../alt/stores/HealthEventStore';
-import ExerciseStore from '../../../alt/stores/ExerciseStore';
+import React from 'react';
 import InfoList from '../../lists/InfoList'
 
-class PatientInfoMedicationPanel extends Component {
-  
+class PatientInfoMedicationPanel extends React.Component {
+  //eslint-disable-next-line
   constructor(props) {
     super(props);
-
   }
 
   componentDidMount(){
@@ -52,7 +49,6 @@ class PatientInfoMedicationPanel extends Component {
     };
     return (
       <div className="PatientInfoMedicationPanel panel">
-        
         <h1 className="title">Medications</h1>
 
         <h2 className="subsection-title">Advair</h2>
@@ -66,7 +62,6 @@ class PatientInfoMedicationPanel extends Component {
 
         <h2 className="subsection-title">Xeljanz</h2>
         <InfoList infoDict={ xeljanzInfoDict } />
-
       </div>
     );
   }

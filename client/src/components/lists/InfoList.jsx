@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class InfoList extends Component {
+class InfoList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -10,13 +10,15 @@ class InfoList extends Component {
     var listItems = [];
 
     for(var key in this.props.infoDict){
-      let value = this.props.infoDict[key];
-      let element =
-        <li key={ key }>
-          <span>{ key }:</span><span>{value}</span>
-        </li>;
+      if (this.props.infoDict.hasOwnProperty(key)) {
+        let value = this.props.infoDict[key];
+        let element =
+          <li key={ key }>
+            <span>{ key }:</span><span>{value}</span>
+          </li>;
 
-      listItems.push(element);
+        listItems.push(element);
+      }
     }
     return (
       <div className="InfoList">
