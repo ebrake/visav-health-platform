@@ -11,6 +11,7 @@ class VisavInput extends Component {
       selectedAutocompleteItem: null
     };
 
+    this.onKeyPress = this.onKeyPress.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.valueDidChange = this.valueDidChange.bind(this);
     this.autocompleteValueDidChange = this.autocompleteValueDidChange.bind(this);
@@ -36,6 +37,18 @@ class VisavInput extends Component {
     });
 
     return classes;
+  }
+
+  onKeyPress(event){
+    // Handle enter key actions
+    if (this.props.enterPressed) {
+      if (event.key === 'Enter') {
+        this.props.enterPressed(event);
+        if (this.props.clearOnEnter) {
+          this.setState({value: ''});
+        }
+      }
+    }
   }
 
   onKeyUp(event){
@@ -164,7 +177,7 @@ class VisavInput extends Component {
     }
     else{
       input =
-      <input type={ type } placeholder={ this.props.label } value={ this.state.value } onChange={ this.valueDidChange } onKeyUp={ this.onKeyUp } />
+      <input type={ type } placeholder={ this.props.label } value={ this.state.value } onChange={ this.valueDidChange } onKeyUp={ this.onKeyUp } onKeyPress={ this.onKeyPress } />
 
     }
 
@@ -178,6 +191,8 @@ class VisavInput extends Component {
 }
 
 VisavInput.propTypes = {
+  clearOnEnter: React.PropTypes.bool,
+  enterPressed: React.PropTypes.func,
   valueDidChange: React.PropTypes.func,
   label: React.PropTypes.string.isRequired,
   value: React.PropTypes.string,

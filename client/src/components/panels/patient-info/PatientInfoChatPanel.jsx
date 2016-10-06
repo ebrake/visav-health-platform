@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import connectToStores from 'alt-utils/lib/connectToStores';
-import HealthEventStore from '../../../alt/stores/HealthEventStore';
-import ExerciseStore from '../../../alt/stores/ExerciseStore';
-import InfoList from '../../lists/InfoList'
 import moment from 'moment';
 import TelesessionStore from '../../../alt/stores/TelesessionStore';
 import TelesessionActions from '../../../alt/actions/TelesessionActions';
+import VisavInput from '../../inputs/VisavInput';
 
 class PatientInfoChatPanel extends Component {
  
@@ -20,29 +18,43 @@ class PatientInfoChatPanel extends Component {
 
   constructor(props) {
     super(props);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+
+    this.state = {
+      draftMessage:''
+    }
+
+    this.chatInputDidChange = this.chatInputDidChange.bind(this);
+    this.enterPressed = this.enterPressed.bind(this);
   }
 
   sendMessage(message) {
     TelesessionActions.sendChat(message);
   }
 
-  handleKeyPress(event) {
-    if (event.key === 'Enter') {
-      var message = event.target.value;
-      if (message === '') return;
-      this.sendMessage(message); // Send message
-      event.preventDefault(); // Prevent default action
-      ReactDOM.findDOMNode(this.refs.chatTextRef).value=null; // Clear the textarea
-    }
+  chatInputDidChange(event){
+    this.setState({draftMessage: event.target.value});
+  }
+
+  enterPressed(event) {
+    this.sendMessage(event.target.value);
+    this.setState({draftMessage:''});
   }
 
   componentDidMount(){
-
+    this.scrollMessagesToBottom();
   }
 
   componentWillUnmount(){
 
+  }
+
+  componentDidUpdate() {
+    this.scrollMessagesToBottom();
+  }
+
+  scrollMessagesToBottom() {
+    var node = ReactDOM.findDOMNode(this.refs.chatMessages);
+    this.refs.chatMessages.scrollTop = node.scrollHeight;
   }
 
   render() {
@@ -73,10 +85,12 @@ class PatientInfoChatPanel extends Component {
         
         <h2 className="title">Chat</h2>
 
-        <div className="ChatPanel panel">
-          <div className="ChatMessageBox">
-            <textarea className="ChatInputBox" ref="chatTextRef" onKeyPress={this.handleKeyPress} placeholder="Type your message. Press shift + Enter to send" />
+        <div className="ChatContainer">
+          <div ref="chatMessages" className="ChatMessages">
             {Rows}
+          </div>
+          <div className="ChatInput">
+            <VisavInput clearOnEnter={true} enterPressed={ this.enterPressed } label="Type your message. Press shift + Enter to send" value={this.state.draftMessage} valueDidChange={ this.chatInputDidChange } />
           </div>
         </div>
 
