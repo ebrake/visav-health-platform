@@ -207,7 +207,7 @@ module.exports = function(HealthEvent) {
       }
     })
     .then(function(found){
-      var doctors = found.map(row => { return row.doctorId; });
+      var doctors = found.map(row => { return row.doctorId; }).concat(patientId);
 
       Promise.all(doctors.map(doctorId => {
         var topic = 'users/'+doctorId+'/dataUpdate';

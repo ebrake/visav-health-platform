@@ -46,7 +46,7 @@ class HealthEventsChartPanel extends React.Component {
       this.setState({
         dataUpdated: healthEventState.dataUpdated
       })
-      console.log("Re-Fetching Health Events...");
+      //fetch new health events
       return HealthEventActions.getHealthEvents(this.props.patientId);
     }
 
