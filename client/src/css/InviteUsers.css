@@ -1,12 +1,12 @@
 @import 'media.css';
 @import 'colors.css';
 
-.InviteUsers {
+.Invite {
   align-items: center;
   justify-content: center;
 }
 
-.InviteUsersPanel {
+.InvitePanel {
   align-items: center;
   justify-content: center;
 

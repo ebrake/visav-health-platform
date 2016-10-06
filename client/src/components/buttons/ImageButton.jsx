@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ImageButton extends React.Component {
+class ImageButton extends Component {
   
   constructor(props) {
     super(props);

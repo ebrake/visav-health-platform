@@ -8,7 +8,7 @@ import ImageButton from '../buttons/ImageButton';
 import OrganizationActions from '../../alt/actions/OrganizationActions';
 import OrganizationStore from '../../alt/stores/OrganizationStore'
 
-class PersonPanel extends React.Component {
+class PersonPanel extends Component {
   constructor(props) {
     super(props);
 

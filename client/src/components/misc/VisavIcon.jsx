@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FontAwesome from 'react-fontawesome';
 
-class VisavIcon extends React.Component {
+class VisavIcon extends Component {
   constructor(props) {
     super(props);
     this.state = {};

@@ -27,11 +27,13 @@ var brightBlue = '114, 153, 204'
       'secondary': lightBlue,
       'highlight': brightBlue,
       'faded': darkGrey,
-      'white': white
+      'white': white,
+      'blue': foregroundBlue
     }
   , colors = {
       purple: purple,
-      blue: foregroundBlue
+      blue: foregroundBlue,
+      lightGrey: lightGrey
     }
 
 var toRGB = (color) => {

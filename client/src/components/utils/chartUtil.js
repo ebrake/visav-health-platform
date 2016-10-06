@@ -1,6 +1,12 @@
 import colors from './colors.js';
 
-/* DATASET FORMATTERS */
+/* HANDY DATE NUMBERS */
+
+var oneSecond = 1000;
+var oneMinute = oneSecond * 60;
+var oneHour = oneMinute * 60;
+var oneDay = oneHour * 24;
+var oneWeek = oneDay * 7;
 
 /* HEALTHEVENT */
 function makeHealthEventChartData(healthEvents) {
@@ -9,15 +15,21 @@ function makeHealthEventChartData(healthEvents) {
     , datasets = []
     , currentDataSet = -1
     , key = '';
+    
+  let demoHealthEvents = healthEvents.filter(healthEv => healthEv.isDemo);
+  let newestDemoDate = new Date(findNewestDate(demoHealthEvents));
+  let demoDateOffset = ((new Date()).getTime() - newestDemoDate.getTime()) - 1000*3600*2; //newest demo is 2 hours ago
 
   if(healthEvents && healthEvents.length > 0) {
     for (var i = 0; i < healthEvents.length; i++){
       let he = healthEvents[i];
-      if (new Date(he.date) < twoWeeksAgo) {
+      /*if (new Date(he.date) < twoWeeksAgo) {
         continue;
-      }
+      }*/
 
-      key = he.type;
+      //key = he.type;
+      key = 'Sharp Pain';
+
       currentDataSet = -1;
 
       for (var j = 0; j < datasets.length; j++) {
@@ -31,12 +43,25 @@ function makeHealthEventChartData(healthEvents) {
         datasets.push({ label: key, data: [] });
       }
 
+      let adjustedDateMillis = he.isDemo ? (new Date(he.date)).getTime() + demoDateOffset : (new Date(he.date)).getTime();
+
       datasets[currentDataSet].data.push({
-        x: toMilliseconds(he.date),
-        y: Math.round(he.intensity*10)
+        x: adjustedDateMillis,
+        y: Math.round(he.intensity*10),
+        type: he.type
       });
     }
-  }  
+  }
+
+  if (datasets && datasets[0]) {
+    datasets[0].data.sort(function(a, b){
+      if (a.x < b.x) 
+        return 1;
+      if (a.x > b.x)
+        return -1;
+      return 0;
+    })
+  }
 
   return {
     datasets: formatDatasets(datasets, 'Intensity')
@@ -122,6 +147,60 @@ function makeRepChartData(exercise) {
   };
 }
 
+function makeHeartRateChartData(HeartRateData) {
+  let datasets = [{ data: [], label: 'Heart Rate' }];
+
+  var d = new Date();
+  d.setHours(0, 0, 0, 0);
+
+  var day, hours, minutes, seconds;
+
+  for (var i = 0; i < 30; i++) {
+    d = new Date(d - oneDay)
+
+    hours = 8 + Math.round(Math.random()*11);
+    minutes = Math.round(Math.random()*60);
+    seconds = Math.round(Math.random()*60);
+
+    day = new Date(d);
+    day.setHours(hours, minutes, seconds);
+
+    datasets[0].data.push({
+      x: day.getTime(),
+      y: 60+Math.round(Math.random()*25) + (Math.random() > 0.7 ? Math.round(Math.random()*40) : 0)
+    })
+  }
+
+  return {
+    datasets: formatDatasets(datasets)
+  }
+}
+
+function makeActivityChartData(activityData) {
+  let datasets = [{ data: [], label: 'Steps' }];
+
+  var d = new Date();
+  d.setHours(0, 0, 0, 0);
+
+  datasets[0].data.push({
+    x: d.getTime(),
+    y: 1000 + Math.round(Math.random()*3000)
+  })
+
+  for (var i = 0; i < 30; i++) {
+    d = new Date(d - oneDay);
+
+    datasets[0].data.push({
+      x: d.getTime(),
+      y: 3000 + Math.round(Math.random()*5000)
+    })
+  }
+
+  return {
+    datasets: formatDatasets(datasets)
+  }
+}
+
 /* DATASET FORMATTER */
 function formatDatasets(datasets, addToLabel) {
   return datasets.map((d, i) => {
@@ -134,6 +213,7 @@ function formatDatasets(datasets, addToLabel) {
     d.pointBackgroundColor = colors.getGraphColor(i);
     d.pointBorderColor = colors.getColor('blue');
     d.pointBorderWidth = 4;
+    d.lineTension = d.exposedName == 'Sharp Pain' ? 0 : 0.5;
 
     return d;
   })
@@ -144,7 +224,14 @@ function formatDatasets(datasets, addToLabel) {
 var callbacks = {
   makeTitleIntoDate: (arr, data) => {
     let d = new Date(arr[0].xLabel);
-    return d.toLocaleDateString()+' '+d.toLocaleTimeString();
+    var month = d.toLocaleDateString([], {month: 'long'});
+    return month+' '+d.getDate()+', '+d.getFullYear()+'                             '+d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  },
+
+  makeTitleIntoDay: (arr, data) => {
+    let d = new Date(arr[0].xLabel);
+    var month = d.toLocaleDateString([], {month: 'long'});
+    return month+' '+d.getDate()+', '+d.getFullYear();
   }
 }
 
@@ -154,6 +241,18 @@ var legends = {
   }
 }
 
+function getMaxTime() {
+  var time = new Date();
+  time.setHours(0, 0, 0, 0);
+  return time.getTime();
+}
+
+function getMinTime() {
+  var time = new Date();
+  time.setHours(0, 0, 0, 0);
+  return time.getTime() - 8 * oneDay;
+}
+
 var axes = {
   timeXAxes: [{
     type: 'time',
@@ -161,14 +260,23 @@ var axes = {
       displayFormats: {
         day: 'MMM D'
       },
-      unit: 'day'
+      unit: 'day',
+      min: getMinTime(),
+      max: getMaxTime()
     },
     position: 'bottom',
     ticks: {
-      fontColor: colors.getFontColor('light')
+      fontColor: colors.getFontColor('light'),
+      maxRotation: 0,
+      minRotation: 0
     },
     gridLines: {
       display: false
+    },
+    afterBuildTicks: function(scale) {
+      scale.ticks = scale.ticks.slice(1);
+
+      return scale;
     }
   }],
 
@@ -195,14 +303,22 @@ var axes = {
 }
 
 var tooltips = {
-  titleFontColor: colors.getFontColor('white'),
-  bodyFontColor: colors.getFontColor('white'),
-  backgroundColor: colors.getColor('purple'),
-  xPadding: 15,
-  yPadding: 15,
-  titleMarginBottom: 10,
-  titleFontSize: 16,
-  bodyFontSize: 14
+  titleFontColor: colors.getFontColor('blue'),
+  bodyFontColor: colors.getFontColor('blue'),
+  footerFontColor: colors.getFontColor('blue'),
+  backgroundColor: colors.getColor('white'),
+  xPadding: 20,
+  yPadding: 25,
+  titleMarginBottom: 15,
+  titleFontSize: 14,
+  titleFontStyle: 'normal',
+  bodyFontSize: 16,
+  bodyFontStyle: 'bold',
+  footerMarginTop: 18,
+  footerFontSize: 16,
+  footerFontStyle: 'normal',
+  footerSpacing: 4,
+  cornerRadius: 10,
 }
 
 /* UTILITY FUNCTIONS */
@@ -226,17 +342,11 @@ function findNewestDate(array) {
 /* CHART UTIL */
 
 export default {
-  makeHealthEventChartData: (healthEvents) => {
-    return makeHealthEventChartData(healthEvents);
-  },
-
-  makeExerciseChartData: (exercises) => {
-    return makeExerciseChartData(exercises);
-  },
-
-  makeRepChartData: (exercise) => {
-    return makeRepChartData(exercise);
-  },
+  makeHealthEventChartData: makeHealthEventChartData,
+  makeExerciseChartData: makeExerciseChartData,
+  makeRepChartData: makeRepChartData,
+  makeHeartRateChartData: makeHeartRateChartData,
+  makeActivityChartData: makeActivityChartData,
 
   callbacks: callbacks,
   legends: legends,

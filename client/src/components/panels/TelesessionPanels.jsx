@@ -6,7 +6,7 @@ import ImageButton from '../buttons/ImageButton';
 
 import VisavIcon from '../misc/VisavIcon';
 
-class TelesessionPanels extends React.Component {
+class TelesessionPanels extends Component {
   
 
   constructor(props) {
@@ -19,6 +19,7 @@ class TelesessionPanels extends React.Component {
       muteMic: false,
       muteSubscriber: false,
       isMousedOver: false,
+      sessionRequested: false
     };
 
     this.callPatient = this.callPatient.bind(this);
@@ -31,7 +32,10 @@ class TelesessionPanels extends React.Component {
   }
 
   createSession() {
-    TelesessionActions.createSession();
+    if (!this.state.sessionRequested) {
+      this.setState({ sessionRequested: true });
+      TelesessionActions.createSession();
+    }
   }
 
   callPatient() {
@@ -72,10 +76,14 @@ class TelesessionPanels extends React.Component {
   }
 
   disconnectFromSession(){
-    this.setState({
-      activeSubscriber: null
-    });
-    TelesessionStore.disconnectFromSession();
+
+    if (TelesessionStore.getState().activeSession != null) {
+      TelesessionStore.disconnectFromSession();
+      this.setState({
+		activeSubscriber: null,
+        sessionRequested: false
+      });
+    }
   }
 
   telesessionChanged(telesessionState) {
@@ -133,7 +141,6 @@ class TelesessionPanels extends React.Component {
 
   mouseDidEnter(){
     this.setState({'isMousedOver': true});
-
   }
 
   mouseDidLeave(){

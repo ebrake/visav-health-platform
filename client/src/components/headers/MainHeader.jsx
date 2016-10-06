@@ -4,7 +4,7 @@ import AccountStore from '../../alt/stores/AccountStore';
 import VISAV from '../misc/VISAV';
 import VisavIcon from '../misc/VisavIcon';
 
-class MainHeader extends React.Component {
+class MainHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {

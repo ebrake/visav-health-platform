@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import RepsChartPanel from '../panels/RepsChartPanel';
+import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
 import PatientInfoPanels from '../panels/patient-info/PatientInfoPanels';
 import TelesessionPanels from '../panels/TelesessionPanels';
 
-import ExercisesChartPanel from '../panels/ExercisesChartPanel';
-import HealthEventsChartPanel from '../panels/HealthEventsChartPanel';
+import ActivityChartPanel from '../panels/ActivityChartPanel';
+import HeartRateChartPanel from '../panels/HeartRateChartPanel';
+import ExerciseActions from '../../alt/actions/ExerciseActions';
 import AuthenticatedPage from './AuthenticatedPage';
 
 import AccountStore from '../../alt/stores/AccountStore';
 import OrganizationStore from '../../alt/stores/OrganizationStore';
 import OrganizationActions from '../../alt/actions/OrganizationActions';
 
-class Telesession extends React.Component {
-
+class Telesession extends Component {
+  
   constructor(props) {
     super(props);
     let user = AccountStore.getUser();
@@ -47,14 +48,12 @@ class Telesession extends React.Component {
 
   render() {
 
-    console.log("PROPS",this.props);
-
     return (
       <div className="Telesession content-container row-gt-sm">
         <div className="left-column charts-container">
-          <RepsChartPanel patientId={this.state.patientId} />
-          <ExercisesChartPanel patientId={this.state.patientId} />
           <HealthEventsChartPanel patientId={this.state.patientId} />
+          <ActivityChartPanel patientId={this.state.patientId} />
+          <HeartRateChartPanel patientId={this.state.patientId} />
         </div>
         <div className="right-column">
           <TelesessionPanels patient={this.state.patient} />

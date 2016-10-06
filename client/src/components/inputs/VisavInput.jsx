@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Autocomplete from 'react-autocomplete';
 
-class VisavInput extends React.Component {
+class VisavInput extends Component {
   constructor(props){
     super(props);
 

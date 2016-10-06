@@ -6,7 +6,7 @@ import PasswordResetPanel from '../panels/PasswordResetPanel';
 import VisavInput from '../inputs/VisavInput';
 import ImageButton from '../buttons/ImageButton';
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 

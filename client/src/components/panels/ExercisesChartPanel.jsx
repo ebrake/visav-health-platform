@@ -6,7 +6,7 @@ import ExerciseActions from '../../alt/actions/ExerciseActions';
 import chartUtil from '../utils/chartUtil';
 import VisavDropdown from '../inputs/VisavDropdown';
 
-class ExercisesChartPanel extends React.Component {
+class ExercisesChartPanel extends Component {
   constructor(props) {
     super(props);
 

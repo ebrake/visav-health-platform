@@ -22,7 +22,7 @@ function userIsAuthenticatedForComponent(user, ComposedComponent) {
 }
 
 export default (ComposedComponent) => {
-  class AuthenticatedPage extends React.Component {
+  class AuthenticatedPage extends Component {
     constructor(props) {
       super(props);
 

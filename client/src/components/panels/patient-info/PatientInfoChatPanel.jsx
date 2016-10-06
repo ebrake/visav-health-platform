@@ -8,7 +8,7 @@ import moment from 'moment';
 import TelesessionStore from '../../../alt/stores/TelesessionStore';
 import TelesessionActions from '../../../alt/actions/TelesessionActions';
 
-class PatientInfoChatPanel extends React.Component {
+class PatientInfoChatPanel extends Component {
  
   static getStores() {
     return [TelesessionStore];

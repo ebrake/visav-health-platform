@@ -1,13 +1,29 @@
 import React, { Component } from 'react';
 import NavIcon from '../lists/NavIcon';
 import AccountStore from '../../alt/stores/AccountStore';
+import VisavIcon from '../misc/VisavIcon';
+import FullscreenAlert from '../misc/FullscreenAlert';
+import SignoutPanel from '../panels/SignoutPanel';
 
-class LeftNav extends React.Component {
+class LeftNav extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      user: AccountStore.getUser()
+      user: AccountStore.getUser(),
+      showSignoutPopup: false
     };
+
+    this.showSignoutPopup = this.showSignoutPopup.bind(this);
+    this.closeSignoutPopup = this.closeSignoutPopup.bind(this);
+  }
+
+  closeSignoutPopup(){
+    this.setState({ showSignoutPopup: false });
+  }
+
+  showSignoutPopup(){
+    this.setState({ showSignoutPopup: true });
   }
 
   render () {
@@ -20,12 +36,13 @@ class LeftNav extends React.Component {
 
     return (
       <div className="LeftNav nav flex-column">
+        <FullscreenAlert active={ this.state.showSignoutPopup } onClickOutside={ this.closeSignoutPopup }  content={<SignoutPanel onCancel={ this.closeSignoutPopup } />} />
         <div className="vertical-nav" id="left-nav">
           <NavIcon type="telesession" path="/telesession" selected={ path === "/telesession" || path === "/" } />
           <NavIcon type="organization" path="/people" selected={ path === "/people" } />
           {InviteNavIcon}
           <NavIcon type="account-settings" path="/account" selected={ path === "/account" } />
-          <NavIcon type="logout" path="/logout" selected={ path === "/logout" } />
+          <VisavIcon type="logout" onClick={ this.showSignoutPopup } selected={ path === "/logout" } />
         </div>
       </div>
     );

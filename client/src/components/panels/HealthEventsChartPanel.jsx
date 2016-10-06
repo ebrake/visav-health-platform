@@ -6,7 +6,7 @@ import HealthEventActions from '../../alt/actions/HealthEventActions';
 import chartUtil from '../utils/chartUtil';
 import VisavDropdown from '../inputs/VisavDropdown';
 
-class HealthEventsChartPanel extends React.Component {
+class HealthEventsChartPanel extends Component {
   constructor(props) {
     super(props);
 
@@ -19,6 +19,7 @@ class HealthEventsChartPanel extends React.Component {
 
     HealthEventActions.getHealthEvents(this.props.patientId);
 
+    this.formatFooter = this.formatFooter.bind(this);
     this.healthEventsChanged = this.healthEventsChanged.bind(this);
     this.onHealthEventTypeSelected = this.onHealthEventTypeSelected.bind(this);
     this.pickHealthEventIfNoneSelected = this.pickHealthEventIfNoneSelected.bind(this);
@@ -38,16 +39,62 @@ class HealthEventsChartPanel extends React.Component {
     }
   }
 
-  chartOptions(){
-    let tooltips = Object.assign({ callbacks: { title: chartUtil.callbacks.makeTitleIntoDate } }, chartUtil.tooltips);
+  getYAxesFormat() {
     let yAxes = JSON.parse(JSON.stringify(chartUtil.axes.defaultYAxes));
     yAxes[0].ticks.suggestedMin = 0;
     yAxes[0].ticks.suggestedMax = 10;
 
+    return yAxes;
+  }
+
+  formatLabel(helper, chartData) {
+    let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
+    return dataPoint.type;
+  }
+
+  modifier(num) {
+    if (num < 3)
+      return 'some';
+    if (num < 5)
+      return 'minor';
+    if (num < 7)
+      return 'signifificant';
+    if (num < 9)
+      return 'severe';
+
+    return 'intense';
+  }
+
+  formatFooter(helper, chartData) {
+    helper = helper[0];
+    let dataPoint = chartData.datasets[helper.datasetIndex].data[helper.index];
+    
+    return [
+      'The patient reported '+this.modifier(dataPoint.y)+' '+dataPoint.type.toLowerCase(),
+      'with an intensity of '+dataPoint.y+'.'
+    ];
+  }
+
+  chartOptions(){
+    let tooltips = Object.assign({ 
+      callbacks: { 
+        title: chartUtil.callbacks.makeTitleIntoDate,
+        label: this.formatLabel,
+        footer: this.formatFooter
+      } 
+    }, chartUtil.tooltips);
+
     return {
       scales: {
         xAxes: chartUtil.axes.timeXAxes,
-        yAxes: yAxes
+        yAxes: this.getYAxesFormat()
+      },
+      pan: {
+        enabled: true,
+        mode: 'x'
+      },
+      zoom: {
+        enabled: false
       },
       tooltips: tooltips,
       legend: chartUtil.legends.defaultLegend,
@@ -104,8 +151,7 @@ class HealthEventsChartPanel extends React.Component {
   render() {
     return (
       <div className="HealthEventsChartPanel graph-panel panel">
-        <h1 className="title">Pain & Swelling: Last 2 Weeks</h1>
-        <VisavDropdown options={this.state.dropdownOptions} onChange={this.onHealthEventTypeSelected} value={this.state.healthEvent} placeholder="Select type..." />
+        <h1 className="title">Pain</h1>
         <div className="chart-container account-for-dropdown">
           <Line ref='chart' data={this.state.chartData} options={this.chartOptions()} />
         </div>

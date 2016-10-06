@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router/es';
 import ImageButton from '../buttons/ImageButton';
 
-class NavItem extends React.Component {
+class NavItem extends Component {
   constructor(props) {
     super(props);
     this.state = {};
