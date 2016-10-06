@@ -98,6 +98,14 @@ class TelesessionPanels extends React.Component {
           activeSession: session,
           activePublisher: publisher
         });
+      } else {
+        this.setState({
+          feedback: {
+            mode: 'error',
+            message: err.message,
+            error: error
+          }
+        })
       }
     }.bind(this));
 
@@ -105,7 +113,7 @@ class TelesessionPanels extends React.Component {
       connectionCreated: function (event) {
         if (event.connection.connectionId !== session.connection.connectionId) {
           console.log('Another client connected.');
-          this.setState({
+          self.setState({
             feedback: {
               mode: 'hidden'
             }
@@ -113,8 +121,6 @@ class TelesessionPanels extends React.Component {
         }
       },
       connectionDestroyed: function connectionDestroyedHandler(event) {
-        console.log('A client disconnected.');
-        console.dir(event);
         self.disconnectFromSession();
       },
       streamCreated: function (event) {
@@ -146,7 +152,7 @@ class TelesessionPanels extends React.Component {
         activeSubscriber: null,
         sessionRequested: false,
         feedback: {
-          mode: 'initial'
+          mode: 'callEnded'
         }
       });
     }

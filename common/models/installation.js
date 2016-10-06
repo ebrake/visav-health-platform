@@ -25,25 +25,23 @@ module.exports = function(Installation) {
     .then(function(args){
       var install = args[0];
       var created = args[1];
-      if (created) {
-        err = new Error('Cannot register for push notifications again; User and device already registered');
-        err.statusCode = 422;
-        err.code = 'PUSH_NOTIFICATION_REGISTER_FAILED_INVALID_REQUIREMENTS_ALREADY_REGISTERED';
-        throw err;
-      }
-
-      //upsert doesn't actually work as we can't make a composite key involving a foreign key in loopback, so just remove it and insert the updated one
-      return Installation.findById(install.id)
-      .then(function(installation){
-        //update the properties of this installation by what's on req.body
-        for (var attr in installation) {
-          if (req.body[attr] && ['id', 'userid'].indexOf(attr.toLowerCase()) < 0) {
-            installation[attr] = req.body[attr];
+      //upsert if it already existed
+      if (!created) {
+        //upsert doesn't actually work as we can't make a composite key involving a foreign key in loopback, so just remove it and insert the updated one
+        return Installation.findById(install.id)
+        .then(function(installation){
+          //update the properties of this installation by what's on req.body
+          for (var attr in installation) {
+            if (req.body[attr] && ['id', 'userid'].indexOf(attr.toLowerCase()) < 0) {
+              installation[attr] = req.body[attr];
+            }
           }
-        }
-        //save the installation
-        return installation.save();
-      })
+          //save the installation
+          return installation.save();
+        })
+      } else {
+        return install;
+      }
     })
     .then(function(createdInstall){
       console.log('Successfully installed/registered for '+req.user.toJSON().id);

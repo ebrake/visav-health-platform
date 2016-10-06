@@ -3,21 +3,26 @@ import colors from '../utils/colors';
 
 var messages = {
   initial: 'Initiate the video with the button on the right.',
-  calling: 'Contacting the patient, please wait...',
+  calling: 'Contacting the patient, please wait.',
   noAnswer: 'The patient did not pick up the call. Please try again.',
-  noInstall: 'The patient has not installed the app. An email has been sent to them with instructions on how to install. Please try again once they have installed the app.'
-}
+  noInstall: 'The patient has not installed the app. An email has been sent to them with instructions on how to install. Please try again once they have installed the app.',
+  callEnded: 'The call has ended. Use the button on the right to initiate a new video call.'
+};
+
+var delayBeforeNoAnswerMessageDisplays = 60 * 1000;
 
 class VideoFeedback extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       display: 'block',
+      mode: 'initial',
       message: 'Initiate the video with the button on the right.',
       isError: false
     };
 
     this.update = this.update.bind(this);
+    this.animateCallingMessage = this.animateCallingMessage.bind(this);
     this.displayNoAnswerMessage = this.displayNoAnswerMessage.bind(this);
   }
 
@@ -28,7 +33,7 @@ class VideoFeedback extends React.Component {
   }
 
   displayNoAnswerMessage() {
-    if (this.state.message === messages['calling']) {
+    if (this.state.mode === 'calling') {
       this.setState({
         display: 'block',
         message: messages['noAnswer'],
@@ -37,30 +42,59 @@ class VideoFeedback extends React.Component {
     }
   }
 
+  animateCallingMessage(delay, numPeriods) {
+    console.log('Animating...');
+    numPeriods = numPeriods || 0;
+    delay -= 1000;
+
+    if (delay <= 0) {
+      return this.displayNoAnswerMessage();
+    }
+    else if (this.state.mode === 'calling') {
+      var i = 0;
+      numPeriods = (numPeriods + 1) % 4;
+      let newMessage = messages['calling'];
+
+      while (i < 3) {
+        newMessage += (i < numPeriods ? '.' : '\u00a0');
+        i++;
+      }
+
+      this.setState({
+        message: newMessage
+      })
+
+      console.log('dispatching new animate...');
+      setTimeout(this.animateCallingMessage, 1000, delay, numPeriods);
+    }
+  }
+
   update(data) {
     let newState = {
       display: false,
       message: '',
       isError: false,
+      mode: 'hidden'
     }
 
-    if (!data) {
-      //do nothing
+    if (!data || data.mode === 'hidden') {
+      this.setState(newState);
+      return;
     }
-    else if (data.mode === 'initial') {
-      newState.display = true;
-      newState.message = messages['initial'];
-    }
-    else if (data.mode === 'hidden') {
-      newState.display = false;
+
+    newState.mode = data.mode;
+    newState.display = true;
+
+    if (data.mode === 'initial' || data.mode === 'callEnded') {
+      newState.message = messages[data.mode];
     }
     else if (data.mode === 'calling') {
-      newState.display = true;
-      newState.message = messages['calling'];
-      setTimeout(this.displayNoAnswerMessage, 15000);
+      newState.message = messages['calling']+'\u00a0\u00a0\u00a0';
+      setTimeout(this.animateCallingMessage, 1000, delayBeforeNoAnswerMessageDisplays);
+      console.log('Hm');
+      console.dir(newState);
     }
     else if (data.mode === 'error') {
-      newState.display = true;
       newState.isError = true;
       newState.message = (data.error && data.error.statusCode === 404) ? messages['noInstall'] : data.message;
     }
