@@ -87,6 +87,11 @@ class HeartRateChartPanel extends React.Component {
     newStyle.left = tooltip.x + 5;
     if (tooltip.xAlign === 'right') {
       newStyle.left -= 210;
+    } else if (tooltip.xAlign === 'center') {
+      if (tooltip.x > 265)
+        newStyle.left -= 270;
+      else 
+        newStyle.left += 55;
     }
 
     //rerender component
