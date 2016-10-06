@@ -139,7 +139,7 @@
   padding: 20px;
   border-radius: 10px;
   z-index: 5;
-  max-width: 90%;
+  width: 80%;
   text-align: center;
   left: 50%;
   transform: translate(-50%);

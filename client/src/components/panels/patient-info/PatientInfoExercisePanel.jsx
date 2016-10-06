@@ -25,8 +25,6 @@ class PatientInfoExercisePanel extends React.Component {
   }
 
   exercisesChanged(exerciseState){
-    console.log('Did we get new exercises?');
-    console.dir(exerciseState);
     this.setState({
       lastExercise: exerciseState.exercises[exerciseState.exercises.length - 1] || {}
     });
@@ -43,9 +41,6 @@ class PatientInfoExercisePanel extends React.Component {
   }
 
   render() {
-    console.log('Whats in state?');
-    console.dir(this.state);
-
     var healthEventInfoDict = {
       'Type': this.state.lastHealthEvent.type,
       'Date': (new Date(this.state.lastHealthEvent.date)).toLocaleString(),

@@ -18,11 +18,22 @@ class VideoFeedback extends React.Component {
     };
 
     this.update = this.update.bind(this);
+    this.displayNoAnswerMessage = this.displayNoAnswerMessage.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.data || JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)) {
       this.update(nextProps.data);
+    }
+  }
+
+  displayNoAnswerMessage() {
+    if (this.state.message === messages['calling']) {
+      this.setState({
+        display: 'block',
+        message: messages['noAnswer'],
+        isError: false
+      })
     }
   }
 
@@ -46,6 +57,7 @@ class VideoFeedback extends React.Component {
     else if (data.mode === 'calling') {
       newState.display = true;
       newState.message = messages['calling'];
+      setTimeout(this.displayNoAnswerMessage, 15000);
     }
     else if (data.mode === 'error') {
       newState.display = true;
