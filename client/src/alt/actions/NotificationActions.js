@@ -1,4 +1,5 @@
 import alt from '../alt'
+import responseUtil from '../../components/utils/responseUtil';
 import AccountStore from '../stores/AccountStore'
 
 class NotificationActions {
@@ -16,12 +17,13 @@ class NotificationActions {
       })
       .then(response => response.json())
       .then(response => {
-        // do something with response if we want
+        dispatch(response);
+        return response;
       })
       .catch((err) => {
-        console.log('error:');
-        console.dir(err);
-        return dispatch([]);
+        let craftedResponse = responseUtil.craftErrorResponse(err);
+        dispatch(craftedResponse);
+        return craftedResponse;
       })
     };
   }
@@ -39,15 +41,13 @@ class NotificationActions {
       })
       .then(response => response.json())
       .then(response => {
-        // do something with response if we want
-        console.log('response from calling patient with userId: ' + userId);
-        console.dir(response);
-
+        dispatch(response);
+        return response;
       })
       .catch((err) => {
-        console.log('error:');
-        console.dir(err);
-        return dispatch([]);
+        let craftedResponse = responseUtil.craftErrorResponse(err);
+        dispatch(craftedResponse);
+        return craftedResponse;
       })
     };
   }

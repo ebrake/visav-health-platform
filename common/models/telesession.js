@@ -64,6 +64,7 @@ module.exports = function(Telesession) {
           console.error('Push Notification error: ', err.stack);
         });
       } else {
+        console.log('No installation for user '+req.body.userId);
         err = new Error('The app has not been installed/registered by the user.');
         err.statusCode = 404;
         err.code = 'TELE_CALL_FAILED_MISSING_REQUIREMENT_APP_REGISTERED';
@@ -151,7 +152,7 @@ module.exports = function(Telesession) {
         { arg: 'req', type: 'object', http: { source: 'req' } }
       ],
       http: { path: '/callUser', verb: 'post' },
-      returns: { arg: 'data', root: 'object' },
+      returns: { arg: 'data', type: 'object' },
       description: "Call a user, sends a push notification"
     }
   );

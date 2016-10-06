@@ -28,8 +28,7 @@ class TelesessionPanels extends React.Component {
       isMousedOver: false,
       sessionRequested: false,
       feedback: {
-        type: 'hidden',
-        message: ''
+        mode: 'initial'
       }
     };
 
@@ -44,13 +43,35 @@ class TelesessionPanels extends React.Component {
 
   createSession() {
     if (!this.state.sessionRequested) {
-      this.setState({ sessionRequested: true });
+      this.setState({ 
+        sessionRequested: true,
+        feedback: {
+          mode: 'hidden'
+        }
+      });
       TelesessionActions.createSession();
     }
   }
 
   handleCallPatient() {
-    NotificationActions.callUser(this.state.sessionId, this.props.patient.id);
+    this.setState({
+      feedback: {
+        mode: 'calling'
+      }
+    });
+
+    NotificationActions.callUser(this.state.sessionId, this.props.patient.id)
+    .then(function(response){
+      if (response.data.status === 'failure') {
+        this.setState({
+          feedback: {
+            mode: 'error',
+            message: response.data.message,
+            error: response.data.error
+          }
+        })
+      }
+    }.bind(this))
   }
 
   connectToSession() {
@@ -84,6 +105,11 @@ class TelesessionPanels extends React.Component {
       connectionCreated: function (event) {
         if (event.connection.connectionId !== session.connection.connectionId) {
           console.log('Another client connected.');
+          this.setState({
+            feedback: {
+              mode: 'hidden'
+            }
+          })
         }
       },
       connectionDestroyed: function connectionDestroyedHandler(event) {
@@ -100,7 +126,7 @@ class TelesessionPanels extends React.Component {
         })
         subscriber.subscribeToAudio(!self.state.muteSubscriber);
         self.setState({
-          activeSubscriber: subscriber
+          activeSubscriber: subscriber,
         });
         console.log('Subscribed to stream: ' + event.stream.id)
       }
@@ -118,7 +144,10 @@ class TelesessionPanels extends React.Component {
         activeSession: null,
         activePublisher: null,
         activeSubscriber: null,
-        sessionRequested: false
+        sessionRequested: false,
+        feedback: {
+          mode: 'initial'
+        }
       });
     }
   }
