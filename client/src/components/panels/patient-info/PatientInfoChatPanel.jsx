@@ -90,7 +90,7 @@ class PatientInfoChatPanel extends Component {
             {Rows}
           </div>
           <div className="ChatInput">
-            <VisavInput clearOnEnter={true} enterPressed={ this.enterPressed } label="Type your message. Press shift + Enter to send" value={this.state.draftMessage} valueDidChange={ this.chatInputDidChange } />
+            <VisavInput clearOnEnter={true} enterPressed={ this.enterPressed } label="Type your message. Press Enter to send" value={this.state.draftMessage} valueDidChange={ this.chatInputDidChange } />
           </div>
         </div>
 
