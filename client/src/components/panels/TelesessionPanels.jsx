@@ -92,10 +92,14 @@ class TelesessionPanels extends React.Component {
         subscriber.subscribeToAudio(!self.state.muteSubscriber);
         self.setState({
           activeSubscriber: subscriber,
+          feedback: {
+            mode: 'hidden'
+          }
         });
         console.log('Subscribed to stream: ' + event.stream.id)
       },
       streamDestroyed: function(event) {
+        self.disconnectFromSession();
         console.log("Stream " + event.stream.name + " ended. " + event.reason);
       }
     });
@@ -103,12 +107,14 @@ class TelesessionPanels extends React.Component {
   }
 
   disconnectFromSession(){
-
     if (TelesessionStore.getState().activeSession != null) {
       TelesessionStore.disconnectFromSession();
       this.setState({
 		    activeSubscriber: null,
-        sessionRequested: false
+        sessionRequested: false,
+        feedback: {
+          mode: 'callEnded'
+        }
       });
     }
   }
