@@ -102,7 +102,7 @@ class TelesessionPanels extends React.Component {
         this.setState({
           feedback: {
             mode: 'error',
-            message: err.message,
+            message: error.message,
             error: error
           }
         })

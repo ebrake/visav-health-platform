@@ -43,7 +43,6 @@ class VideoFeedback extends React.Component {
   }
 
   animateCallingMessage(delay, numPeriods) {
-    console.log('Animating...');
     numPeriods = numPeriods || 0;
     delay -= 1000;
 
@@ -64,7 +63,6 @@ class VideoFeedback extends React.Component {
         message: newMessage
       })
 
-      console.log('dispatching new animate...');
       setTimeout(this.animateCallingMessage, 1000, delay, numPeriods);
     }
   }
@@ -91,8 +89,6 @@ class VideoFeedback extends React.Component {
     else if (data.mode === 'calling') {
       newState.message = messages['calling']+'\u00a0\u00a0\u00a0';
       setTimeout(this.animateCallingMessage, 1000, delayBeforeNoAnswerMessageDisplays);
-      console.log('Hm');
-      console.dir(newState);
     }
     else if (data.mode === 'error') {
       newState.isError = true;
