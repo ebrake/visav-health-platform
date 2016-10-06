@@ -9,6 +9,7 @@ class HealthEventsChartPanel extends React.Component {
     super(props);
 
     this.state = {
+      dataUpdated: null,
       healthEvents: [],
       healthEvent: undefined,
       chartData: { datasets: [] },
@@ -40,6 +41,15 @@ class HealthEventsChartPanel extends React.Component {
   }
 
   healthEventsChanged(healthEventState){
+    if (this.state.dataUpdated !== healthEventState.dataUpdated) {
+      // This must be data live updating.
+      this.setState({
+        dataUpdated: healthEventState.dataUpdated
+      })
+      console.log("Re-Fetching Health Events...");
+      return HealthEventActions.getHealthEvents(this.props.patientId);
+    }
+
     let chartData = chartUtil.makeHealthEventChartData(healthEventState.healthEvents);
 
     this.setState({

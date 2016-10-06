@@ -10,6 +10,7 @@ var messages = {
 };
 
 var delayBeforeNoAnswerMessageDisplays = 60 * 1000;
+var animationDelay = 1000;
 
 class VideoFeedback extends React.Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class VideoFeedback extends React.Component {
 
   animateCallingMessage(delay, numPeriods) {
     numPeriods = numPeriods || 0;
-    delay -= 1000;
+    delay -= animationDelay;
 
     if (delay <= 0) {
       return this.displayNoAnswerMessage();
@@ -63,7 +64,7 @@ class VideoFeedback extends React.Component {
         message: newMessage
       })
 
-      setTimeout(this.animateCallingMessage, 1000, delay, numPeriods);
+      setTimeout(this.animateCallingMessage, animationDelay, delay, numPeriods);
     }
   }
 

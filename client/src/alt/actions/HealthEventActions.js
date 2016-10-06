@@ -19,5 +19,10 @@ class HealthEventActions {
       })
     };
   }
+
+  dataUpdated() {
+    console.log("HealthEvent data live-updated..")
+    return new Date();
+  }
 }
 export default alt.createActions(HealthEventActions);

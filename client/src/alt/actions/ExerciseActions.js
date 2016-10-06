@@ -19,5 +19,11 @@ class ExerciseActions {
       })
     };
   }
+
+  dataUpdated() {
+    console.log("Exercise data live-updated..")
+    return new Date();
+  }
+
 }
 export default alt.createActions(ExerciseActions);

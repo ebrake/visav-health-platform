@@ -8,7 +8,8 @@ class ExerciseStore {
 
     this.bindListeners({
       handleGetExercises: ExerciseActions.GET_EXERCISES,
-      handleDisplayedExercise: ExerciseActions.GET_EXERCISES
+      handleDisplayedExercise: ExerciseActions.GET_EXERCISES,
+      handleDataUpdated: ExerciseActions.DATA_UPDATED
     });
   }
 
@@ -27,6 +28,11 @@ class ExerciseStore {
     }
     this.displayedExercise = undefined;
   }
+
+  handleDataUpdated(date) {
+    this.dataUpdated = date;
+  }
+
 }
 
 export default alt.createStore(ExerciseStore, 'ExerciseStore');
