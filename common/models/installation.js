@@ -44,7 +44,7 @@ module.exports = function(Installation) {
       }
     })
     .then(function(createdInstall){
-      console.log('Successfully installed/registered for '+req.user.toJSON().id);
+      console.log('Successfully installed/registered/updated installation '+req.user.toJSON().id);
       return cb(null, { status: 'success', installation: createdInstall, message: 'Successfully registered device for push notifications' });
     }, function(err){
       console.log('Failed to install/register for '+req.user.toJSON().id);

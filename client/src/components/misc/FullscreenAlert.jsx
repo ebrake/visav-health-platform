@@ -18,7 +18,6 @@ class FullscreenAlert extends React.Component {
   }
 
   handleBackgroundClick(event){
-    console.log(event);
     this.props.onClickOutside();
   }
 

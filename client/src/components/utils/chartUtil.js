@@ -153,9 +153,7 @@ var legends = {
 }
 
 function getMaxTime() {
-  var time = new Date();
-  time.setHours(0, 0, 0, 0);
-  return time.getTime();
+  return new Date().getTime();
 }
 
 function getMinTime() {

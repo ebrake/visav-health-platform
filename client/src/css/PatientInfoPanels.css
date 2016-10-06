@@ -67,3 +67,22 @@
     }
   }
 }
+
+.PatientInfoReportPanel {
+  .ImageButton {
+    width: 100%;
+  }
+}
+
+.PGRResponsePanel {
+  > span {
+    text-align: center;
+    width: 250px;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
