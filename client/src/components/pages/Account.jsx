@@ -51,11 +51,11 @@ class Account extends Component {
     .then(function(response){
       if (response && response.data && response.data.status === 'success') {
         console.log('Successfully updated!');
+        self.setState({ formErrorMessage: '' });
       } else {
         //validation messages
         self.setState({ formErrorMessage: 'Error: '+response.data.message });
-      }
-      
+      }      
     })
   }
 
