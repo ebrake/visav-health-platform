@@ -65,9 +65,11 @@ class PatientInfoReportPanel extends React.Component {
   }
 
   render() {
-    var fromString;
+    var fromString = '';
     if (this.props.patient && this.props.patient.fullName)
       fromString = " from "+this.props.patient.fullName;
+    else if (this.props.patient.firstName && this.props.patient.lastName)
+      fromString = " from "+this.props.patient.firstName+" "+this.props.patient.lastName;
 
     return (
       <div className="PatientInfoReportPanel panel">
