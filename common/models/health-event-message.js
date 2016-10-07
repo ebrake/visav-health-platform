@@ -40,7 +40,7 @@ module.exports = function(HealthEventMessage) {
 
   HealthEventMessage.takeAction = function(req, res, cb) {
     var messageId = req.query.healthEventMessageId;
-    var patientId = req.query.patient;
+    var patientId;
 
     if (!messageId) {
       err = new Error('Expected query value healthEventMessageId is missing.');
@@ -51,7 +51,7 @@ module.exports = function(HealthEventMessage) {
 
     HealthEventMessage.findOne({
       where: { id: messageId },
-      include: [{ healthEvent: 'person' }]
+      include: 'healthEvent'
     })
     .then(function(healthEventMessage){
       if (!healthEventMessage) {
@@ -62,18 +62,24 @@ module.exports = function(HealthEventMessage) {
       }
       else {
         healthEventMessage.actionTaken = true;
-        return healthEventMessage.save();
+        patientId = healthEventMessage.toJSON().healthEvent.person;
+        return healthEventMessage.save()
+        .then(function(saved){
+          return patientId;
+        });
       }
     })
-    .then(function(healthEventMessage){
-      console.log("HealthEventMessage:");
-      console.log(healthEventMessage);
+    .then(function(patientId){
+      res.redirect(process.env.API_ROOT + 'telesession?patient='+patientId);
       return cb(null, { status: 'success', message: 'Successful action on HealthEventMessage: ' + messageId });
     }, function(err){
+      console.log('Error:');
+      console.log(err);
+      if (patientId)
+        res.redirect(process.env.API_ROOT + 'telesession?patient='+patientId);
+
       return cb(null, { status: 'failure', message: err.message, error: err });
     })
-
-    res.redirect(process.env.API_ROOT + 'telesession');
   };
 
   HealthEventMessage.send = function(req, cb) {
