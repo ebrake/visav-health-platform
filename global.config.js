@@ -6,7 +6,7 @@ var conf= {
   SYSTEM_EMAIL: 'info@visav.io',
   APP_ID: 'com.krisandbrake.visav',
   APP_DESCRIPTION: 'Visav iOS',
-  APP_NAME: 'Visav iOS',
+  APP_NAME: 'Visav',
   APP_OWNER: 'Ethan Vaughan',
   AWS_IOT_CONFIG: {
     accessKeyId: 'AKIAJMXV7C4RR4AVLVUQ',

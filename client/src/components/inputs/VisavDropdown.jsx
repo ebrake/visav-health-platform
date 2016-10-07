@@ -5,7 +5,9 @@ class VisavDropdown extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = {};
+    this.state = {
+      active: false
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.getClasses = this.getClasses.bind(this);
@@ -22,10 +24,17 @@ class VisavDropdown extends React.Component {
       classes.push(name);
     });
 
+    if (this.state.active === true) {
+      classes.push('active');
+    }
+
     return classes;
   }
 
   handleChange(selected) {
+    this.setState({
+      active: true
+    })
     this.props.onChange(selected);
   }
 
