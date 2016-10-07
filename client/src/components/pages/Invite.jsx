@@ -6,6 +6,7 @@ import ImageButton from '../buttons/ImageButton';
 import VisavDropdown from '../inputs/VisavDropdown';
 import Roles from '../utils/Roles';
 import VisavInput from '../inputs/VisavInput';
+import FormErrorLabel from '../misc/FormErrorLabel';
 
 class Invite extends React.Component {
   
@@ -22,7 +23,8 @@ class Invite extends React.Component {
       //format assignable roles for Dropdown
       roles: Roles.getAssignableRoles(user).map(function(role){
         return { value: role, label: role.charAt(0).toUpperCase()+role.slice(1) }
-      })
+      }),
+      formErrorMessage: ''
     };
 
     this.handleInviteUser = this.handleInviteUser.bind(this);
@@ -39,6 +41,7 @@ class Invite extends React.Component {
   }
 
   handleInviteUser() {
+    var self = this;
     AccountActions.inviteUser({
       email: this.state.email,
       role: this.state.role,
@@ -46,8 +49,14 @@ class Invite extends React.Component {
       lastName: this.state.lastName
     })
     .then(function(response){
-      console.log("Potentially invited user:");
-      console.dir(response);
+      if (response && response.data && response.data.status === 'success') {
+        console.log("Potentially invited user:");
+        console.log(response);
+        self.setState({ formErrorMessage:'' });
+      } else {
+        //validation messages
+        self.setState({ formErrorMessage: 'Error: '+response.data.message });
+      }
     })
   }
 
@@ -67,6 +76,7 @@ class Invite extends React.Component {
           <VisavInput label="Last Name" value={this.state.lastName} valueDidChange={this.handleChange('lastName')} />
           <VisavDropdown options={this.state.roles} onChange={this.handleRoleSelected} value={this.state.role} placeholder="Select a role..." />
           <ImageButton className="invite-button" text="Invite new user" onClick={this.handleInviteUser} />
+          <FormErrorLabel text={this.state.formErrorMessage} />
         </div>
       </div>
     );

@@ -4,6 +4,7 @@ import AccountActions from '../../alt/actions/AccountActions';
 import AuthenticatedPage from './AuthenticatedPage';
 import ImageButton from '../buttons/ImageButton';
 import VisavInput from '../inputs/VisavInput';
+import FormErrorLabel from '../misc/FormErrorLabel';
 
 class Account extends Component {
   
@@ -16,7 +17,8 @@ class Account extends Component {
     this.state = {
       firstName: user.firstName || '',
       lastName: user.lastName || '',
-      phone: user.phone || ''
+      phone: user.phone || '',
+      formErrorMessage: ''
     };
 
     this.handleUpdateUser = this.handleUpdateUser.bind(this);
@@ -40,6 +42,7 @@ class Account extends Component {
   }
 
   handleUpdateUser() {
+    var self = this;
     AccountActions.updateUser({
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -49,8 +52,10 @@ class Account extends Component {
       if (response && response.data && response.data.status === 'success') {
         console.log('Successfully updated!');
       } else {
-        console.log('Update failed!');
+        //validation messages
+        self.setState({ formErrorMessage: 'Error: '+response.data.message });
       }
+      
     })
   }
 
@@ -63,7 +68,8 @@ class Account extends Component {
           <VisavInput label="Last Name" value={ this.state.lastName } valueDidChange={ this.handleChange('lastName') } onKeyUp={ this.handleKeyPressed } />
           <VisavInput label="Phone Number" value={ this.state.phone } valueDidChange={ this.handleChange('phone') } onKeyUp={ this.handleKeyPressed } />
           <ImageButton className="accounts-button" text="Save" onClick={this.handleUpdateUser} />
-        </div>
+          <FormErrorLabel text={this.state.formErrorMessage} />
+      </div>
       </div>
     );
   }

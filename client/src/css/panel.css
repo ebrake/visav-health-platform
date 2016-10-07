@@ -32,8 +32,11 @@ $panel-border-radius: 10px;
   .VisavInput {
     min-width: 250px;
     width: 100%;
-    margin: 10px 0 20px;
   }
+  .password-reset-button {
+    width: 100%;
+  }
+
 }
 
 .SetPasswordPanel {

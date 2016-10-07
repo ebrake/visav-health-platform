@@ -226,13 +226,15 @@ module.exports = function(Person) {
         err = new Error('A Person with this email has already been created.');
         err.statusCode = 422;
         err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_DUPLICATE_EMAIL';
+        err.status = 'failure';
         throw err;
       } else if (!queryResult[1]){
         //shouldn't be possible but we'll handle it anyways
         err = new Error('This organization does not exist.');
         err.statusCode = 422;
         err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_NO_ORGANIZATION';
-        throw err;
+        err.status = 'failure';
+       throw err;
       } else {
         var foundOrganization = queryResult[1];
 

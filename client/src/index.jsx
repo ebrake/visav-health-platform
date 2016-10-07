@@ -31,6 +31,7 @@ import './css/colors.css';
 import './css/charts.css';
 import './css/dropdown.css';
 import './css/flex.css';
+import './css/forms.css';
 import './css/inputs.css';
 import './css/header.css';
 import './css/media.css';
