@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, browserHistory } from 'react-router/es'
 import AccountStore from './alt/stores/AccountStore';
 import AccountActions from './alt/actions/AccountActions';
+import RoutingActions from './alt/actions/RoutingActions';
 import OrganizationActions from './alt/actions/OrganizationActions';
 import alt from './alt/alt';
 
@@ -38,6 +39,7 @@ var authCheck = (nextState, replace) => {
   let user = AccountStore.getUser();
   if (!user) {
     console.log('Not logged in... redirecting...');
+    RoutingActions.setAfterLoginRoute(nextState);
     replace('/login');
   }
   else {

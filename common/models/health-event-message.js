@@ -40,6 +40,7 @@ module.exports = function(HealthEventMessage) {
 
   HealthEventMessage.takeAction = function(req, res, cb) {
     var messageId = req.query.healthEventMessageId;
+    var patientId = req.query.patient;
 
     if (!messageId) {
       err = new Error('Expected query value healthEventMessageId is missing.');
@@ -49,7 +50,8 @@ module.exports = function(HealthEventMessage) {
     }
 
     HealthEventMessage.findOne({
-      where: { id: messageId }
+      where: { id: messageId },
+      include: [{ healthEvent: 'person' }]
     })
     .then(function(healthEventMessage){
       if (!healthEventMessage) {
@@ -64,6 +66,8 @@ module.exports = function(HealthEventMessage) {
       }
     })
     .then(function(healthEventMessage){
+      console.log("HealthEventMessage:");
+      console.log(healthEventMessage);
       return cb(null, { status: 'success', message: 'Successful action on HealthEventMessage: ' + messageId });
     }, function(err){
       return cb(null, { status: 'failure', message: err.message, error: err });
@@ -110,8 +114,8 @@ module.exports = function(HealthEventMessage) {
         };
       }
       else {
-        //send email
         apiRoute = 'sendEmail'
+        //send email
         var subject = 'New notification from ' + patient.firstName + ' ' + patient.lastName;
         var html = Oy.renderTemplate(
           <HealthEventNotificationEmail healthEventMessage={createdMessage} doctor={doctor} patient={patient} 
