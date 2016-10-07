@@ -451,7 +451,7 @@ module.exports = function(Person) {
 
         self = self.toJSON();
 
-        var people = [];
+        var people = [req.user];
 
         self.doctors.forEach(function(doctor){
           people.push(doctor);
