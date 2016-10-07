@@ -15,31 +15,31 @@ module.exports = function(Person) {
       err = new Error('Valid email required');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
-      return cb(null, { status: 'failure', field:'req.body.email', message: err.message, error: err });
+      return cb(null, { status: 'failure', field:'email', message: err.message, error: err });
     }
     if (!req.body.password){
       err = new Error('Valid password required');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_PASSWORD';
-      return cb(null, { status: 'failure', field:'req.body.password', message: err.message, error: err });
+      return cb(null, { status: 'failure', field:'password', message: err.message, error: err });
     }
     if (!req.body.firstName){
       err = new Error('Valid first name required');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
-      return cb(null, { status: 'failure', field:'req.body.firstName', message: err.message, error: err });
+      return cb(null, { status: 'failure', field:'firstName', message: err.message, error: err });
     }
     if (!req.body.lastName){
       err = new Error('Valid last name required');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_LASTNAME';
-      return cb(null, { status: 'failure', field: 'req.body.lastName', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'lastName', message: err.message, error: err });
     }
     if (!req.body.organizationName){
       err = new Error('Valid organization required');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_ORGANIZATIONNAME';
-      return cb(null, { status: 'failure', field: 'req.body.organizationName', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'organizationName', message: err.message, error: err });
     }
 
 
@@ -127,13 +127,13 @@ module.exports = function(Person) {
       err = new Error('Valid email required');
       err.statusCode = 417;
       err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENT_EMAIL';
-      return cb(null, { status: 'failure', field: 'req.body.email', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'email', message: err.message, error: err });
     }
     if (!req.body.password) {
       err = new Error('Valid password required');
       err.statusCode = 417;
       err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENT_PASSWORD';
-      return cb(null, { status: 'failure', field: 'req.body.password', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'password', message: err.message, error: err });
     }
 
     Promise.all([
@@ -177,31 +177,31 @@ module.exports = function(Person) {
       err = new Error('Valid email required');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_EMAIL';
-      return cb(null, { status: 'failure', field: 'req.body.email', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'email', message: err.message, error: err });
     }
     if (!req.body.role) {
       err = new Error('Valid Role required');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_ROLE';
-      return cb(null, { status: 'failure', field: 'req.body.role', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'role', message: err.message, error: err });
     }
     if (!req.body.firstName) {
       err = new Error('Valid first name required');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
-      return cb(null, { status: 'failure', field: 'req.body.firstName', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'firstName', message: err.message, error: err });
     }
     if (!req.body.lastName) {
       err = new Error('Valid last name required');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_LASTNAME';
-      return cb(null, { status: 'failure', field: 'req.body.lastName', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'lastName', message: err.message, error: err });
     }
     if (!req.user.organization) {
       err = new Error('No organization associated with user');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_NO_ORGANIZATION';
-      return cb(null, { status: 'failure', field: 'req.user.organization', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'organization', message: err.message, error: err });
     }
     if (readableUser.role.name == 'owner' && role !== 'admin') {
       err = new Error('Owners are not allowed to invite non-admin staff.');
@@ -327,7 +327,7 @@ module.exports = function(Person) {
       err = new Error('Valid email required');
       err.statusCode = 417;
       err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_EMAIL';
-      return cb(null, { status: 'failure', field: 'req.body.email', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'email', message: err.message, error: err });
     }
 
     Person.resetPassword({
