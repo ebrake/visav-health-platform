@@ -44,7 +44,7 @@ class TelesessionStore {
     if (response.data.session) {
       this.sessionId = response.data.session.sessionId;
       this.token = response.data.token;
-      this.connectionState=TelesessionStore.connStates.GOT_SESSION_ID;
+      this.connectionState = TelesessionStore.connStates.GOT_SESSION_ID;
     }
   }
 
@@ -53,18 +53,21 @@ class TelesessionStore {
       console.log('No Session ID to connect to');
       return;
     }
-    if (this.state.connectionState==TelesessionStore.connStates.CONNECTING || this.state.connectionState==this.connStates.CONNECTED) return;
-    this.state.connectionState=TelesessionStore.connStates.CONNECTING;
+    if (this.state.connectionState === TelesessionStore.connStates.CONNECTING || this.state.connectionState === this.connStates.CONNECTED)
+      return;
+
+    this.state.connectionState = TelesessionStore.connStates.CONNECTING;
     
     // Initialize OpenTok
+    //eslint-disable-next-line
     var session = OT.initSession(config.get('OPENTOK_API_KEY'), this.state.sessionId);
     var self = this;
 
     // Connect to OpenTok
     session.connect(this.state.token, function (error) {
       if (error) return console.log('There was an error connecting to the session:', error.code, error.message);
-      self.state.activeSession=session;
-      self.state.connectionState=TelesessionStore.connStates.CONNECTED;
+      self.state.activeSession = session;
+      self.state.connectionState = TelesessionStore.connStates.CONNECTED;
       if (publisher) {
         // Attach publisher to connected session
         session.publish(publisher)
@@ -85,12 +88,12 @@ class TelesessionStore {
     })
     .on({
       connectionDestroyed: function(event) {
-        if (event.connection.connectionId != session.connection.connectionId) {
+        if (event.connection.connectionId !== session.connection.connectionId) {
           console.log('Another client disconnected.');
         }
       },
       connectionCreated: function(event) {
-        if (event.connection.connectionId != session.connection.connectionId) {
+        if (event.connection.connectionId !== session.connection.connectionId) {
           console.log('Another client connected.');
         }
       },
@@ -127,13 +130,19 @@ class TelesessionStore {
     */
     if (!event.id) {
       event.id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        //eslint-disable-next-line
         var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
         return v.toString(16);
       });
     }
     event.fromMe = event.from.connectionId === this.activeSession.connection.connectionId;
+
     console.log(event);
-    this.chatEvents ? this.chatEvents.push(event) : this.chatEvents = [event];
+
+    if (this.chatEvents)
+      this.chatEvents.push(event)
+    else
+      this.chatEvents = [event];
   }
 
   /**

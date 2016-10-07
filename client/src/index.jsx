@@ -24,6 +24,7 @@ config.set('AWS_MQTT_SECRET_KEY', 'TSH+vYw23VxKS4e3SA0xg6D3i/APycasjSokIbkn');
 
 //CSS imports
 import './css/alert.css';
+import './css/banner.css';
 import './css/base.css';
 import './css/button.css';
 import './css/colors.css';

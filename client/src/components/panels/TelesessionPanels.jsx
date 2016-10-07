@@ -1,12 +1,8 @@
 import React from 'react';
-import { config } from 'react-loopback';
-
 import NotificationActions from '../../alt/actions/NotificationActions';
 import TelesessionActions from '../../alt/actions/TelesessionActions';
 import TelesessionStore from '../../alt/stores/TelesessionStore';
-import AccountStore from '../../alt/stores/AccountStore';
 import VideoFeedback from '../misc/VideoFeedback';
-import ImageButton from '../buttons/ImageButton';
 import VisavIcon from '../misc/VisavIcon';
 
 class TelesessionPanels extends React.Component {
@@ -71,6 +67,7 @@ class TelesessionPanels extends React.Component {
   connectToSession() {
     var self = this;
 
+    //eslint-disable-next-line
     const publisher = OT.initPublisher(self.refs.publisherSection, {
       insertMode:'append',
       style: {buttonDisplayMode: 'off'},
@@ -107,7 +104,7 @@ class TelesessionPanels extends React.Component {
   }
 
   disconnectFromSession(){
-    if (TelesessionStore.getState().activeSession != null) {
+    if (TelesessionStore.getState().activeSession !== null) {
       TelesessionStore.disconnectFromSession();
       this.setState({
 		    activeSubscriber: null,
@@ -122,7 +119,7 @@ class TelesessionPanels extends React.Component {
   telesessionChanged(telesessionState) {
     let connStates = TelesessionStore.connStates;
 
-    if (this.state.connectionState!=telesessionState.connectionState) {
+    if (this.state.connectionState !== telesessionState.connectionState) {
       switch(telesessionState.connectionState) {
         case connStates.NO_SESSION_EXISTS:
           this.createSession();
@@ -180,7 +177,6 @@ class TelesessionPanels extends React.Component {
   }
 
   render() {
-    let isMousedOver = this.state.isMousedOver;
     let isActiveSub = (this.state.activeSubscriber != null);
     let isActiveSession = (TelesessionStore.getState().activeSession != null);
 
