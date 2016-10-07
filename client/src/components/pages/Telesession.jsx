@@ -22,7 +22,7 @@ class Telesession extends Component {
     this.state = {
       user: user,
       patient: undefined,
-      patientId: this.props.location.query.patient || 9
+      patientId: this.props.location.query.patient || undefined
     };
 
     this.getExercises = this.getExercises.bind(this);

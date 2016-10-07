@@ -591,6 +591,7 @@ module.exports = function(Person) {
     }
   );
 
+  //TODO: make this function check role of person it found
   Person.getPatient = function(req, cb) {
     var err;
     var readableUser = req.user.toJSON();
