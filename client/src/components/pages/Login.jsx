@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router/es';
 import AccountActions from '../../alt/actions/AccountActions';
+import RoutingStore from '../../alt/stores/RoutingStore';
 import FullscreenAlert from '../misc/FullscreenAlert';
 import PasswordResetPanel from '../panels/PasswordResetPanel';
 import VisavInput from '../inputs/VisavInput';
@@ -16,10 +17,13 @@ class Login extends Component {
       password: '',
       showForgotPasswordPopup: false,
       user: undefined,
+      afterLoginRoute: RoutingStore.getAfterLoginRoute(),
+      user: undefined,
       formErrorMessage: ''
     };
 
     this.handleLogin = this.handleLogin.bind(this);
+    this.getNextRoute = this.getNextRoute.bind(this);
     this.logout = this.logout.bind(this);
     this.handleGotoSignup = this.handleGotoSignup.bind(this);
     this.handleKeyPressed = this.handleKeyPressed.bind(this);
@@ -32,6 +36,17 @@ class Login extends Component {
     this.props.router.push('/signup');
   }
 
+  getNextRoute() {
+    var nextState = this.state.afterLoginRoute;
+    var nextRoute = '/me';
+
+    if (nextState.path) {
+      nextRoute = nextState.path + nextState.query;
+    }
+
+    return nextRoute;
+  }
+
   handleLogin() {
     var self = this;
     AccountActions.loginUser({
@@ -40,8 +55,7 @@ class Login extends Component {
     })
     .then(function(response){
       if (response && response.data && response.data.status === 'success') {
-        this.props.router.push ('/me');
-        self.setState({ formErrorMessage:'' });
+        this.props.router.push(this.getNextRoute());
       } else {
         //validation messages
         self.setState({ formErrorMessage: 'Error: '+response.data.message });

@@ -44,6 +44,11 @@ class OrganizationActions {
   }
 
   getPatient(id) {
+    if (!id) {
+      if (typeof id !== 'number')
+        id = '';
+    }
+    
     return function(dispatch) {
       return fetch(process.env.API_ROOT + 'api/people/getPatient?id='+id+'', {
         method: 'GET',

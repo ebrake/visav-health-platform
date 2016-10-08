@@ -27,6 +27,7 @@ class AccountActions {
 
   logoutUser(){
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('snapshot');
     return true;
   }
 
