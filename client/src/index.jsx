@@ -17,9 +17,14 @@ import { config } from 'react-loopback';
 config.set('baseUrl', process.env.API_ROOT + 'api/');
 config.set('access_token', 'I_AM_AN_ACCESS_TOKEN');
 config.set('OPENTOK_API_KEY', '45631802');
+config.set('AWS_MQTT_ACCESS_KEY', 'AKIAJMXV7C4RR4AVLVUQ');
+config.set('AWS_MQTT_ENDPOINT_ADDRESS', 'azf5xkj2sjl2t.iot.us-west-2.amazonaws.com');
+config.set('AWS_MQTT_REGION', 'us-west-2');
+config.set('AWS_MQTT_SECRET_KEY', 'TSH+vYw23VxKS4e3SA0xg6D3i/APycasjSokIbkn');
 
 //CSS imports
 import './css/alert.css';
+import './css/banner.css';
 import './css/base.css';
 import './css/button.css';
 import './css/colors.css';

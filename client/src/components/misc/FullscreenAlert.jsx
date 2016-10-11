@@ -1,31 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-
-class FullscreenAlert extends Component {
+class FullscreenAlert extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       active: false
     }
-    this.handleBackgroundClick = this.handleBackgroundClick.bind(this);
 
+    this.handleBackgroundClick = this.handleBackgroundClick.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.active != this.props.active) {
-      this.setState({active: newProps.active});
+    if (newProps.active !== this.props.active) {
+      this.setState({ active: newProps.active });
     }
   }
+
   handleBackgroundClick(event){
-    console.log(event);
     this.props.onClickOutside();
   }
 
   render() {
     var alertStyle;
+    var bgStyle;
     var content;
-    var containerStyle;
-    if(this.state.active){
+
+    if (this.state.active) {
       content = this.props.content;
       bgStyle = {
         'opacity' : 0.8,
@@ -35,7 +36,7 @@ class FullscreenAlert extends Component {
         'pointerEvents' : 'auto'
       };
     }
-    else{
+    else {
       bgStyle = {
         'opacity' : 0.0,
         'pointerEvents' : 'none'

@@ -6,7 +6,7 @@ import colors from '../utils/colors';
 import Footer from './modules/Footer';
 
 export default function HealthEventNotificationEmail(props) {
-  const { healthEventMessage, doctor, patient, healthEvent, exercise } = props;
+  const { healthEventMessage, doctor, patient, /*healthEvent, exercise*/ } = props;
 
   const buttonStyle = {
     outline: 'none',
@@ -21,22 +21,24 @@ export default function HealthEventNotificationEmail(props) {
     fontStyle: 'bold',
     float: 'middle',
     backgroundColor: colors.getColor('red'),
+    WebkitAppearance: 'none !important',
+    WebkitBorderRadius: 0
   };
   const actionsStyle = {
     margin: '20px 0 0 0',
   };
-  var whilePerformingExerciseString;
-  var noteString;
-  var pronoun;
-  var feelsString;
+  //var whilePerformingExerciseString;
+  //var pronoun;
+  //var feelsString;
   var takeActionURL = process.env.API_ROOT + 'api/healthEventMessages/takeAction/';
   var dismissURL = process.env.API_ROOT + 'api/healthEventMessages/dismiss/';
 
-  if (patient.gender == 'male') {
+  /*
+  if (patient.gender === 'male') {
     pronoun = <span>he</span>;
     feelsString = <span>He feels</span>;
   }
-  else if (patient.gender == 'female') {
+  else if (patient.gender === 'female') {
     pronoun = <span>she</span>;
     feelsString = <span>She feels</span>;
   }
@@ -45,11 +47,13 @@ export default function HealthEventNotificationEmail(props) {
     feelsString = <span>They feel</span>;
   }
 
+
   if (healthEvent.exercise) {
     whilePerformingExerciseString = <span> after performing {exercise.type.toLowerCase()}</span>;
   } else {
     whilePerformingExerciseString = null;
   }
+  */
 
   return (
     <Layout>

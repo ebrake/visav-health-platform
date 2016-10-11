@@ -4,6 +4,12 @@
   padding: 8px 0;
 }
 
+.active {
+  .Dropdown-control {
+    color: $light-text-color;
+  }
+}
+
 .Dropdown-root {
   position: relative;
   font-size: 13px;

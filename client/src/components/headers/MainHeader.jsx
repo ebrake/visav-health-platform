@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import NavItem from '../lists/NavItem'
+import React from 'react';
 import AccountStore from '../../alt/stores/AccountStore';
 import VISAV from '../misc/VISAV';
 import VisavIcon from '../misc/VisavIcon';
 
-class MainHeader extends Component {
+class MainHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,13 +12,6 @@ class MainHeader extends Component {
   }
 
   render () {
-    let InviteNavItem = null;
-    if (["owner", "admin"].indexOf(this.state.user.role.name) >= 0) {
-      InviteNavItem = (<NavItem title="Invite" />);
-    }
-
-    let path = this.props.location.pathname;
-
     return (
       <div className="MainHeader header">
         <div className="header-row">

@@ -3,7 +3,6 @@ import AccountStore from '../../alt/stores/AccountStore';
 import AccountActions from '../../alt/actions/AccountActions';
 import AuthenticatedPage from './AuthenticatedPage';
 import ImageButton from '../buttons/ImageButton';
-import Dropdown from 'react-dropdown';
 import VisavInput from '../inputs/VisavInput';
 
 class Account extends Component {
@@ -20,8 +19,8 @@ class Account extends Component {
       phone: user.phone || ''
     };
 
-    this.updateUser = this.updateUser.bind(this);
-    this.keyPressed = this.keyPressed.bind(this);
+    this.handleUpdateUser = this.handleUpdateUser.bind(this);
+    this.handleKeyPressed = this.handleKeyPressed.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -33,21 +32,21 @@ class Account extends Component {
     }.bind(this)
   }
 
-  keyPressed(ev) {
-    if (ev.keyCode == 13) {
+  handleKeyPressed(ev) {
+    if (ev.keyCode === 13) {
       ev.preventDefault();
-      this.updateUser();
+      this.handleUpdateUser();
     }
   }
 
-  updateUser() {
+  handleUpdateUser() {
     AccountActions.updateUser({
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       phone: this.state.phone
     })
     .then(function(response){
-      if (response && response.data && response.data.status == 'success') {
+      if (response && response.data && response.data.status === 'success') {
         console.log('Successfully updated!');
       } else {
         console.log('Update failed!');
@@ -60,14 +59,15 @@ class Account extends Component {
       <div className="Account content-container">
         <div className="AccountPanel panel">
           <h1 className="title">Account Settings</h1>
-          <VisavInput label="First Name" value={ this.state.firstName } valueDidChange={ this.handleChange('firstName') } onKeyUp={ this.keyPressed } />
-          <VisavInput label="Last Name" value={ this.state.lastName } valueDidChange={ this.handleChange('lastName') } onKeyUp={ this.keyPressed } />
-          <VisavInput label="Phone Number" value={ this.state.phone } valueDidChange={ this.handleChange('phone') } onKeyUp={ this.keyPressed } />
-          <ImageButton className="accounts-button" text="Save" onClick={this.updateUser} />
+          <VisavInput label="First Name" value={ this.state.firstName } valueDidChange={ this.handleChange('firstName') } onKeyUp={ this.handleKeyPressed } />
+          <VisavInput label="Last Name" value={ this.state.lastName } valueDidChange={ this.handleChange('lastName') } onKeyUp={ this.handleKeyPressed } />
+          <VisavInput label="Phone Number" value={ this.state.phone } valueDidChange={ this.handleChange('phone') } onKeyUp={ this.handleKeyPressed } />
+          <ImageButton className="accounts-button" text="Save" onClick={this.handleUpdateUser} />
         </div>
       </div>
     );
   }
 }
 
+//eslint-disable-next-line
 export default AuthenticatedPage(Account);

@@ -197,6 +197,48 @@ module.exports = function(HealthEvent) {
     })
   }
 
+  function sendMessageToAllDoctors(patientId) {
+    var DoctorPatient = HealthEvent.app.models.DoctorPatient;
+
+    // Use "users/{USER_ID}/{actionType}" as topic name to sub/pub messages to client
+    DoctorPatient.find({
+      where: {
+        patientId: patientId
+      }
+    })
+    .then(function(found){
+      var doctors = found.map(row => { return row.doctorId; }).concat(patientId);
+
+      Promise.all(doctors.map(doctorId => {
+        var topic = 'users/'+doctorId+'/dataUpdate';
+
+        var message = JSON.stringify({
+          type: 'HealthEvent'
+        });
+
+        HealthEvent.app.mqttClient.publish(topic, message, {
+          qos: 0,
+          retained: false
+        }, function(err) {
+          if (err) console.log("MQTT Publish error, topic: %s: "+err);
+          console.log('Sent '+message+' to topic '+topic);
+        });
+      }))
+    })
+  }
+
+  /*
+    Send live message to client (HealthEvent has updated)
+  */
+  HealthEvent.afterRemote('receiveData', function(context, createdObject, next) {
+    if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
+      return next();
+    }
+
+    sendMessageToAllDoctors(context.req.user.toJSON().id);
+    next();
+  });
+
   HealthEvent.remoteMethod(
     "receiveData",
     {

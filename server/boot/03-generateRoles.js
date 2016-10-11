@@ -34,6 +34,10 @@ function createRoles(Role, cb){
   })
 }
 
+/**
+ * A boot script function that generates default roles
+ * @module boot/03-roles
+ */
 module.exports = function(app, cb) {
   /*
    * The `app` object provides access to a variety of LoopBack resources such as

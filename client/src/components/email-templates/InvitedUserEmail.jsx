@@ -21,6 +21,8 @@ export default function InviteUserEmail(props) {
     fontStyle: 'bold',
     float: 'middle',
     backgroundColor: colors.getColor('brightBlue'),
+    WebkitAppearance: 'none !important',
+    WebkitBorderRadius: 0
   };
 
   const actionsStyle = {

@@ -1,39 +1,31 @@
 var fs = require('fs');
 var path = require('path');
 
-var conf;
-if (process.env.PHONE_APP_NAME == 'visav') {
-  conf = {
-    SYSTEM_EMAIL: 'info@visav.io',
-    APP_ID: 'com.krisandbrake.visav',
-    APP_DESCRIPTION: 'Visav iOS',
-    APP_NAME: 'Visav iOS',
-    APP_OWNER: 'Ethan Vaughan',
-    AWS_IOT_CONFIG: {
-      accessKeyId: 'AKIAJMXV7C4RR4AVLVUQ',
-      secretAccessKey: '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',
-      endpointAddress: 'azf5xkj2sjl2t.iot.us-west-2.amazonaws.com',
-      region: 'us-west-2'
-    }
-  }; 
-}
-else {
-  conf = {
-    SYSTEM_EMAIL: 'info@visav.io',
-    APP_ID: 'com.krisandbrake.Phlex',
-    APP_DESCRIPTION: 'Phlex RS',
-    APP_NAME: 'Phlex RS',
-    APP_OWNER: 'E Brake',
-    AWS_IOT_CONFIG: {
-      accessKeyId: 'AKIAJMXV7C4RR4AVLVUQ',
-      secretAccessKey: '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',
-      endpointAddress: 'azf5xkj2sjl2t.iot.us-west-2.amazonaws.com',
-      region: 'us-west-2'
-    }
-  }; 
+var conf= {
+  SYSTEM_NAME: 'visav',
+  SYSTEM_EMAIL: 'info@visav.io',
+  APP_ID: 'com.krisandbrake.visav',
+  APP_DESCRIPTION: 'Visav iOS',
+  APP_NAME: 'Visav',
+  APP_OWNER: 'Ethan Vaughan',
+  AWS_IOT_CONFIG: {
+    accessKeyId: 'AKIAJMXV7C4RR4AVLVUQ',
+    secretAccessKey: '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',
+    endpointAddress: 'azf5xkj2sjl2t.iot.us-west-2.amazonaws.com',
+    region: 'us-west-2'
+  }
 }
 
+if (process.env.NODE_ENV!=='production') {
+  conf.SYSTEM_NAME = 'visav-'.concat(process.env.NODE_ENV)
+}
 
+if (process.env.PHONE_APP_NAME != 'visav') {
+  conf.APP_ID = 'com.krisandbrake.Phlex';
+  conf.APP_DESCRIPTION = 'Phlex RS';
+  conf.APP_NAME = 'Phlex RS';
+  conf.APP_OWNER = 'Ethan Vaughan';
+}
 
 //--- Helper functions ---
 

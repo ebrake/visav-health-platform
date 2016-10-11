@@ -199,6 +199,29 @@ module.exports = function(Exercise) {
     })
   }
 
+  /*
+    Send live message to client (Exercise has updated)
+  */
+  Exercise.afterRemote('receiveData', function(context, createdObject, next) {
+    if (!createdObject || !createdObject.data || createdObject.data.status == 'failure') {
+      return next();
+    }
+
+    // Use "users/{USER_ID}/{actionType}" as topic name to sub/pub messages to client
+    var topic = 'users'.concat('/').concat(context.req.person.id).concat('/').concat("dataUpdate");
+    var message = JSON.stringify({
+      type: 'Exercise'
+    });
+
+    Exercise.app.mqttClient.publish(topic, message, {
+      qos: 0,
+      retained: false
+    }, function(err) {
+      if (err) console.log("MQTT Publish error, topic: %s: "+err);
+      next();
+    });
+  });
+
   Exercise.remoteMethod(
     "receiveData",
     {

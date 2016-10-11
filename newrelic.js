@@ -1,3 +1,5 @@
+var globalConfig = require("./global.config");
+
 'use strict'
 
 /**
@@ -10,7 +12,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['Dillinger'],
+  app_name: [globalConfig.SYSTEM_NAME],
   /**
    * Your New Relic license key.
    */

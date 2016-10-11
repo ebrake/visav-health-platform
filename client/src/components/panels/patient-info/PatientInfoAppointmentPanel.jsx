@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
-import HealthEventStore from '../../../alt/stores/HealthEventStore';
-import ExerciseStore from '../../../alt/stores/ExerciseStore';
-import InfoList from '../../lists/InfoList'
+import React from 'react';
 
-class PatientInfoAppointmentPanel extends Component {
-  
+class PatientInfoAppointmentPanel extends React.Component {
+  //eslint-disable-next-line
   constructor(props) {
     super(props);
-
   }
 
   componentDidMount(){
@@ -19,13 +15,9 @@ class PatientInfoAppointmentPanel extends Component {
   }
 
   render() {
-
     return (
       <div className="PatientInfoAppointmentPanel panel">
-        
         <h2 className="title">Next Appointment</h2>
-
-
       </div>
     );
   }

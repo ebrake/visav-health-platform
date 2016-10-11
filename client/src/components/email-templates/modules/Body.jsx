@@ -3,7 +3,6 @@ import EmptySpace from './EmptySpace';
 import colors from '../../utils/colors';
 
 export default (props) => {
-
   const bodyStyle = {
     color: props.textColor  || 'black',
     backgroundColor: props.backgroundColor,

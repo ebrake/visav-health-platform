@@ -35,7 +35,7 @@ var testOrganizationQueries = {
 
 /**
  * A boot script function that generates the demo user.
- * @module boot/generateDemoUser
+ * @module boot/04-generateDemoOrganization
  */
 module.exports = function(app, cb) {
 

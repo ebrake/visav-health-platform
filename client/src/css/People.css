@@ -1,11 +1,26 @@
 @import 'colors.css';
+@import 'media.css';
 
 .People {
   padding: 0 5px 10px;
 
+  .Banner {
+    margin: 0 5px 10px;
+  }
+
+  .PeopleListContainer {
+    display: flex;
+    flex: 1 0 1px;
+  }
+
   .PeopleListPanel {
     flex: 1 0 1px;
     margin: 0 5px;
+
+    @media (--lt-md) {
+      display: inline-block;
+      margin-bottom: 5px;
+    }
 
     .title {
       text-transform: capitalize;
@@ -26,7 +41,6 @@
 .RelatedPersonListItem,
 .PeopleListItem {
   width: 100%;
-  padding: 0;
   border-bottom: 1px solid $divider-color;
   padding: 20px 0;
   display: flex;

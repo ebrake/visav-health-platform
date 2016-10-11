@@ -30,6 +30,7 @@ $light-text-color: $light-grey;
 $secondary-text-color: $light-blue;
 $highlight-text-color: $bright-blue;
 $faded-text-color: $dark-grey;
+$on-white-text-color: $foreground-blue;
 
 /* INPUTS */
 

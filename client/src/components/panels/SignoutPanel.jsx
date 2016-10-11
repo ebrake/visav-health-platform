@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router';
 
 import ImageButton from '../buttons/ImageButton';
 
-class SignoutPanel extends Component {
+class SignoutPanel extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {};
 
-    this.gotoLogout = this.gotoLogout.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
 
@@ -17,7 +17,7 @@ class SignoutPanel extends Component {
     
   }
 
-  gotoLogout() {
+  handleLogout() {
     this.props.router.push('/logout');
   }
 
@@ -30,7 +30,7 @@ class SignoutPanel extends Component {
       <div className="SignoutPanel panel">
         <span className="description">Are you sure you would like to sign out?</span>
         <ImageButton text="Cancel" onClick={ this.handleCancel } />
-        <ImageButton className="destructive" text="Sign out" onClick={ this.gotoLogout } />
+        <ImageButton className="destructive" text="Sign out" onClick={ this.handleLogout } />
       </div>
     );
   }

@@ -19,6 +19,8 @@ export default function PasswordResetEmail(props) {
     fontStyle: 'bold',
     float: 'middle',
     backgroundColor: colors.getColor('red'),
+    WebkitAppearance: 'none !important',
+    WebkitBorderRadius: 0
   };
 
   const actionsStyle = {
@@ -27,7 +29,7 @@ export default function PasswordResetEmail(props) {
 
   const { accessToken } = props;
   
-  var takeActionURL = ( process.env.NODE_ENV == 'development' ) ? 'http://localhost:3000/resetPassword' : process.env.API_ROOT + 'resetPassword';
+  var takeActionURL = (process.env.NODE_ENV === 'development' ? 'http://localhost:3000/resetPassword' : process.env.API_ROOT + 'resetPassword');
 
   return (
     <Layout>

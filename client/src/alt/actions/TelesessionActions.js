@@ -1,6 +1,11 @@
 import alt from '../alt'
 
+/** Telesession Actions */
 class TelesessionActions {
+
+  /**
+   * Get a session ID to use to connect to OpenTok
+  */
   createSession(){
     return function (dispatch) {
       return  fetch(
@@ -23,6 +28,23 @@ class TelesessionActions {
       });
     }
   }
+
+  /**
+   * Receive a chat action (Fire when you receives a signal)
+   * @param {Object} event OpenTok Signal Event object
+  */
+  receivedChat(event){
+    return event;
+  }
+
+  /**
+   * Send a message action
+   * @param {string} message Message text
+  */
+  sendChat(message){
+    return message;
+  }
+
 }
 
 export default alt.createActions(TelesessionActions);

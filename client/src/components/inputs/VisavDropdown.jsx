@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Dropdown from 'react-dropdown';
 
-class VisavDropdown extends Component {
+class VisavDropdown extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = {};
+    this.state = {
+      active: false
+    };
 
-    this.onChange = this.onChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.getClasses = this.getClasses.bind(this);
   } 
 
@@ -22,10 +24,17 @@ class VisavDropdown extends Component {
       classes.push(name);
     });
 
+    if (this.state.active === true) {
+      classes.push('active');
+    }
+
     return classes;
   }
 
-  onChange(selected) {
+  handleChange(selected) {
+    this.setState({
+      active: true
+    })
     this.props.onChange(selected);
   }
 
@@ -35,7 +44,7 @@ class VisavDropdown extends Component {
 
     return (
       <div className={classes.join(' ')}>
-        <Dropdown options={this.props.options} value={value} onChange={this.onChange} placeholder={this.props.placeholder || 'Select an option...'} />
+        <Dropdown options={this.props.options} value={value} onChange={this.handleChange} placeholder={this.props.placeholder || 'Select an option...'} />
       </div>
     );
   }

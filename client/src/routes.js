@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, browserHistory } from 'react-router/es'
 import AccountStore from './alt/stores/AccountStore';
 import AccountActions from './alt/actions/AccountActions';
+import RoutingActions from './alt/actions/RoutingActions';
 import OrganizationActions from './alt/actions/OrganizationActions';
 import alt from './alt/alt';
 
@@ -18,6 +19,7 @@ import EmailGettingStarted from './components/email-templates/GettingStartedEmai
 import HealthEventNotificationEmail from './components/email-templates/HealthEventNotificationEmail'
 import PasswordResetEmail from './components/email-templates/PasswordResetEmail'
 import InvitedUserEmail from './components/email-templates/InvitedUserEmail';
+import LiveMessaging from './liveMessaging.js';
 
 //extends Chart.js with pan and zoom
 import './components/misc/ChartZoom.js';
@@ -37,10 +39,13 @@ var authCheck = (nextState, replace) => {
   let user = AccountStore.getUser();
   if (!user) {
     console.log('Not logged in... redirecting...');
+    RoutingActions.setAfterLoginRoute(nextState);
     replace('/login');
   }
   else {
     OrganizationActions.getViewablePeople();
+    //eslint-disable-next-line
+    var liveMessaging = new LiveMessaging().connect();
   }
 }
 
@@ -64,7 +69,6 @@ var routes = (
     <Route path="/account" component={Account} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/invite" component={Invite} onEnter={authCheck} onLeave={cacheStores} />
     <Route path="/people" component={People} onEnter={authCheck} onLeave={cacheStores} />
-
     <Route path="/liveSocket" component={LiveSocket} onEnter={authCheck} onLeave={cacheStores} />
     { /* EMAIL TEMPLATES */ }
     <Route path="/email-templates/GettingStarted" component={EmailGettingStarted} />
