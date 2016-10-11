@@ -1,29 +1,28 @@
 @import 'colors.css';
 
-.FormErrorLabel {
+$error-color: $red;
 
-  width:100%;
-  background-color: color($bright-blue l(-3%) a(40%));
+.FormErrorLabel {
+  width: 100%;
+  background-color: $error-color;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border:0;
+  border: 0;
   box-sizing: border-box;
-  padding: 10px 10px;
-  margin:4px 0;
+  padding: 10px;
+  margin: 4px 0;
   animation: fadeIn 0.5s 1;
-  color:white;
+  color: white;
 
   .FormErrorText {
-    font-size:0.8em;
-    font-weight:700;
-    text-align:center;
+    font-size: 0.8em;
+    font-weight: 700;
+    text-align: center;
     word-wrap: break-word;
-    width:100%;
-    max-width:250px;
+    width: 100%;
   }
-
 }
 
 @keyframes fadeIn {
@@ -31,8 +30,9 @@
     color: transparent;
     background-color: transparent;
   }
+
   100% {
-    background-color: color($bright-blue l(-3%) a(40%));
+    background-color: $error-color;
     color: white;
   }
 }
