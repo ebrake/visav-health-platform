@@ -1,8 +1,8 @@
 import React from 'react';
 import Layout from './layouts/Layout';
-import PhlexHeader from './modules/PhlexHeader';
+import VisavHeader from './modules/VisavHeader';
 import Body from './modules/Body';
-import phlexColors from '../utils/phlexColors';
+import colors from '../utils/colors';
 import Footer from './modules/Footer';
 
 export default function HealthEventNotificationEmail(props) {
@@ -16,11 +16,11 @@ export default function HealthEventNotificationEmail(props) {
     width: '40%',
     height: '50px',
     cursor: 'pointer',
-    color: phlexColors.getFontColor('light'),
+    color: 'white',
     fontSize: '15px',
     fontStyle: 'bold',
     float: 'middle',
-    backgroundColor: phlexColors.getColor('red'),
+    backgroundColor: colors.getColor('red'),
     WebkitAppearance: 'none !important',
     WebkitBorderRadius: 0
   };
@@ -57,9 +57,9 @@ export default function HealthEventNotificationEmail(props) {
 
   return (
     <Layout>
-      <PhlexHeader />
+      <VisavHeader />
 
-      <Body textColor={phlexColors.getFontColor('dark')}>
+      <Body>
         <h2 className="title">Dr. {doctor.lastName}, you have 1 new notification</h2>
         <div className="health-event-info">
           <p>from {patient.firstName} {patient.lastName} regarding their therapy.</p>

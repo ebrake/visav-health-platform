@@ -1,8 +1,6 @@
 import React from 'react';
 
-
 export default (props) => {
-
   const tableStyle = {
     WebkitTextSizeAdjust: '100%',
     msTextSizeAdjust: '100%',
