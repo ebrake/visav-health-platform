@@ -19,6 +19,8 @@ export default function PasswordResetEmail(props) {
     fontStyle: 'bold',
     float: 'middle',
     backgroundColor: phlexColors.getColor('red'),
+    WebkitAppearance: 'none !important',
+    WebkitBorderRadius: 0
   };
 
   const actionsStyle = {

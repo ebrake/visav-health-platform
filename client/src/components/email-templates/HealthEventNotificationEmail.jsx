@@ -21,6 +21,8 @@ export default function HealthEventNotificationEmail(props) {
     fontStyle: 'bold',
     float: 'middle',
     backgroundColor: phlexColors.getColor('red'),
+    WebkitAppearance: 'none !important',
+    WebkitBorderRadius: 0
   };
   const actionsStyle = {
     margin: '20px 0 0 0',
