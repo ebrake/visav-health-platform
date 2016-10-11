@@ -1,9 +1,9 @@
 import React from 'react';
 import Layout from './layouts/Layout';
-import PhlexHeader from './modules/PhlexHeader';
+import VisavHeader from './modules/VisavHeader';
 import Body from './modules/Body';
 import Footer from './modules/Footer';
-import phlexColors from '../utils/phlexColors';
+import colors from '../utils/colors';
 
 export default function PasswordResetEmail(props) {
   const buttonStyle = {
@@ -14,11 +14,11 @@ export default function PasswordResetEmail(props) {
     width: '40%',
     height: '50px',
     cursor: 'pointer',
-    color: phlexColors.getFontColor('light'),
+    color: 'white',
     fontSize: '15px',
     fontStyle: 'bold',
     float: 'middle',
-    backgroundColor: phlexColors.getColor('red'),
+    backgroundColor: colors.getColor('red'),
   };
 
   const actionsStyle = {
@@ -31,7 +31,7 @@ export default function PasswordResetEmail(props) {
 
   return (
     <Layout>
-      <PhlexHeader />
+      <VisavHeader />
       <Body>
         <h2>Password reset requested!</h2>
         <p>A password reset was requested for your account. If you did not request this password reset, disregard this message.</p>

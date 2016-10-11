@@ -1,9 +1,9 @@
 import React from 'react';
 import Layout from './layouts/Layout';
-import PhlexHeader from './modules/PhlexHeader';
+import VisavHeader from './modules/VisavHeader';
 import Body from './modules/Body';
 import Footer from './modules/Footer';
-import phlexColors from '../utils/phlexColors';
+import colors from '../utils/colors';
 
 export default function InviteUserEmail(props) {
   const { organizationName, invitedBy, user, password } = props;
@@ -16,11 +16,11 @@ export default function InviteUserEmail(props) {
     width: '40%',
     height: '50px',
     cursor: 'pointer',
-    color: phlexColors.getFontColor('light'),
+    color: 'white',
     fontSize: '15px',
     fontStyle: 'bold',
     float: 'middle',
-    backgroundColor: phlexColors.getColor('blue'),
+    backgroundColor: colors.getColor('brightBlue'),
   };
 
   const actionsStyle = {
@@ -31,7 +31,7 @@ export default function InviteUserEmail(props) {
 
   return (
     <Layout>
-      <PhlexHeader />
+      <VisavHeader />
       <Body>
         Welcome to VISAV! You have been invited to {organizationName} by {invitedBy.firstName+' '+invitedBy.lastName}.
         Your account information is:

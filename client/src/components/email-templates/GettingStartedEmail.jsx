@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from './layouts/Layout';
-import KBHeader from './modules/KBHeader';
+import VisavHeader from './modules/VisavHeader';
 import Body from './modules/Body';
 import Footer from './modules/Footer';
 
@@ -10,7 +10,7 @@ export default function GettingStartedEmail(props) {
 
   return (
     <Layout>
-      <KBHeader color="#134ac0" />
+      <VisavHeader />
 
       <Body>
         Welcome to VISAV!

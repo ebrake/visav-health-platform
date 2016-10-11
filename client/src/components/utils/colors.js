@@ -33,7 +33,11 @@ var brightBlue = '114, 153, 204'
   , colors = {
       purple: purple,
       blue: foregroundBlue,
-      lightGrey: lightGrey
+      lightGrey: lightGrey,
+      foregroundBlue: foregroundBlue,
+      brightBlue: brightBlue,
+      orange: orange,
+      red: red
     }
 
 var toRGB = (color) => {

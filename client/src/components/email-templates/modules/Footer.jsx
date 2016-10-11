@@ -5,8 +5,6 @@ const Footer = (props) => {
 
   const footerContainerStyle = {
     color: props.color,
-    backgroundColor: '#dddddd',
-    padding: '20px'
   };
   const privacyTextStyle = {
     fontSize: '9px',
@@ -22,7 +20,7 @@ const Footer = (props) => {
   const visavTextStyle = {
     fontSize: '10px',
     color: '#555',
-    margin: '0px 0px 0px 0px'
+    margin: '0px 0px 10px 0px'
 
   }
 
@@ -31,6 +29,7 @@ const Footer = (props) => {
     <div
       className='footer-container'
       style={footerContainerStyle}>
+      <p style={visavTextStyle}>Powered by <a href='https://visav.io'>Visav</a>. Copyright 2016.</p>
       <h2 style={privacyHeaderStyle}>Privacy Policy</h2>
       <p style={privacyTextStyle}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
       sed do eiusmod tempor incididunt ut labore et dolore magna 
@@ -40,7 +39,6 @@ const Footer = (props) => {
       esse cillum dolore eu fugiat nulla pariatur. Excepteur sint 
       occaecat cupidatat non proident, sunt in culpa qui officia 
       deserunt mollit anim id est laborum.</p>
-      <p style={visavTextStyle}>Powered by <a href='https://visav.io'>Visav</a>. Copyright 2016.</p>
     </div>
   );
 };
