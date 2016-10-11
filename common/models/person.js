@@ -11,6 +11,12 @@ module.exports = function(Person) {
   Person.signup = function(req, email, password, firstName, lastName, organizationName, cb) {
     var err;
 
+    if (!req.body.organizationName){
+      err = new Error('Valid organization required');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_ORGANIZATIONNAME';
+      return cb(null, { status: 'failure', field: 'organizationName', message: err.message, error: err });
+    }
     if (!req.body.email){
       err = new Error('Valid email required');
       err.statusCode = 417;
@@ -34,12 +40,6 @@ module.exports = function(Person) {
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_LASTNAME';
       return cb(null, { status: 'failure', field: 'lastName', message: err.message, error: err });
-    }
-    if (!req.body.organizationName){
-      err = new Error('Valid organization required');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_ORGANIZATIONNAME';
-      return cb(null, { status: 'failure', field: 'organizationName', message: err.message, error: err });
     }
 
 
@@ -179,12 +179,6 @@ module.exports = function(Person) {
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_EMAIL';
       return cb(null, { status: 'failure', field: 'email', message: err.message, error: err });
     }
-    if (!req.body.role) {
-      err = new Error('Valid Role required');
-      err.statusCode = 417;
-      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_ROLE';
-      return cb(null, { status: 'failure', field: 'role', message: err.message, error: err });
-    }
     if (!req.body.firstName) {
       err = new Error('Valid first name required');
       err.statusCode = 417;
@@ -197,8 +191,14 @@ module.exports = function(Person) {
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_LASTNAME';
       return cb(null, { status: 'failure', field: 'lastName', message: err.message, error: err });
     }
+    if (!req.body.role) {
+      err = new Error('Valid Role required');
+      err.statusCode = 417;
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', field: 'role', message: err.message, error: err });
+    }
     if (!req.user.organization) {
-      err = new Error('No organization associated with user');
+      err = new Error('Logged in user has no organization. Please sign in again.');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_NO_ORGANIZATION';
       return cb(null, { status: 'failure', field: 'organization', message: err.message, error: err });
