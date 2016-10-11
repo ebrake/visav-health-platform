@@ -3,6 +3,7 @@ import { withRouter } from 'react-router/es'
 import AccountActions from '../../alt/actions/AccountActions';
 import VisavInput from '../inputs/VisavInput';
 import ImageButton from '../buttons/ImageButton';
+import FormErrorLabel from '../misc/FormErrorLabel';
 
 class Signup extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Signup extends React.Component {
       password: '',
       firstName: '',
       lastName: '',
+      formErrorMessage: ''
     };
 
     this.login = this.login.bind(this);
@@ -28,6 +30,7 @@ class Signup extends React.Component {
   }
 
   handleCreateUser() {
+    var self = this;
     AccountActions.createUser({
       email: this.state.email,
       password: this.state.password,
@@ -39,9 +42,11 @@ class Signup extends React.Component {
       if (response && response.data && response.data.status === 'success') {
         console.log('User creation successful! Logging in...');
         console.dir(response);
+        self.setState({ formErrorMessage:'' });
         this.login();
       } else {
         //validation messages
+        self.setState({ formErrorMessage: 'Error: '+response.data.message });
       }
     }.bind(this))
   }
@@ -86,6 +91,7 @@ class Signup extends React.Component {
           <VisavInput label="First Name" valueDidChange={ this.handleChange('firstName') } onKeyUp={ this.handleKeyPressed } />
           <VisavInput label="Last Name" valueDidChange={ this.handleChange('lastName') } onKeyUp={ this.handleKeyPressed } />
           <ImageButton text="Sign Up" onClick={ this.handleCreateUser } />
+          <FormErrorLabel text={this.state.formErrorMessage} />
           <span className="text-link" onClick={ this.handleGotoLogin }>{"Have an account? Log in"}</span>
         </div>
       </div>

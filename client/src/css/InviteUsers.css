@@ -9,22 +9,23 @@
 .InvitePanel {
   align-items: center;
   justify-content: center;
+  width: 250px;
 
   .description {
     margin-bottom: 10px;
   }
 
   .VisavDropdown {
-    width: 250px;
+    width: 100%;
     margin-bottom: 10px;
   }
 
   .VisavInput {
-    width: 250px;
+    width: 100%;
     margin-bottom: 10px;
   }
 
   .invite-button {
-    width: 250px;
+    width: 100%;
   }
 }

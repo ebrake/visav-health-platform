@@ -11,35 +11,35 @@ module.exports = function(Person) {
   Person.signup = function(req, email, password, firstName, lastName, organizationName, cb) {
     var err;
 
-    if (!req.body.email){
-      err = new Error('Valid email required on req.body.email');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-    if (!req.body.password){
-      err = new Error('Valid password required on req.body.password');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_PASSWORD';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-    if (!req.body.firstName){
-      err = new Error('Valid first name required on req.body.firstName');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-    if (!req.body.lastName){
-      err = new Error('Valid last name required on req.body.lastName');
-      err.statusCode = 417;
-      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_LASTNAME';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
     if (!req.body.organizationName){
-      err = new Error('Valid organization required on req.body.organizationName');
+      err = new Error('Valid organization required');
       err.statusCode = 417;
       err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_ORGANIZATIONNAME';
-      return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'organizationName', message: err.message, error: err });
+    }
+    if (!req.body.email){
+      err = new Error('Valid email required');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_EMAIL';
+      return cb(null, { status: 'failure', field:'email', message: err.message, error: err });
+    }
+    if (!req.body.password){
+      err = new Error('Valid password required');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_PASSWORD';
+      return cb(null, { status: 'failure', field:'password', message: err.message, error: err });
+    }
+    if (!req.body.firstName){
+      err = new Error('Valid first name required');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
+      return cb(null, { status: 'failure', field:'firstName', message: err.message, error: err });
+    }
+    if (!req.body.lastName){
+      err = new Error('Valid last name required');
+      err.statusCode = 417;
+      err.code = 'PERSON_CREATE_FAILED_MISSING_REQUIREMENT_LASTNAME';
+      return cb(null, { status: 'failure', field: 'lastName', message: err.message, error: err });
     }
 
 
@@ -124,16 +124,16 @@ module.exports = function(Person) {
   Person.signin = function(req, email, password, cb){
     var err;
     if (!req.body.email) {
-      err = new Error('Valid email required on req.body.email');
+      err = new Error('Valid email required');
       err.statusCode = 417;
       err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENT_EMAIL';
-      return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'email', message: err.message, error: err });
     }
     if (!req.body.password) {
-      err = new Error('Valid password required on req.body.password');
+      err = new Error('Valid password required');
       err.statusCode = 417;
       err.code = 'PERSON_SIGNIN_FAILED_MISSING_REQUIREMENT_PASSWORD';
-      return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'password', message: err.message, error: err });
     }
 
     Promise.all([
@@ -174,34 +174,34 @@ module.exports = function(Person) {
     var err;
     var readableUser = req.user.toJSON();
     if (!req.body.email) {
-      err = new Error('Valid email required on req.body.email');
+      err = new Error('Valid email required');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_EMAIL';
-      return cb(null, { status: 'failure', message: err.message, error: err });
-    }
-    if (!req.body.role) {
-      err = new Error('Valid Role required on req.body.role');
-      err.statusCode = 417;
-      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_ROLE';
-      return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'email', message: err.message, error: err });
     }
     if (!req.body.firstName) {
-      err = new Error('Valid first name required on req.body.firstName');
+      err = new Error('Valid first name required');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_FIRSTNAME';
-      return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'firstName', message: err.message, error: err });
     }
     if (!req.body.lastName) {
-      err = new Error('Valid last name required on req.body.lastName');
+      err = new Error('Valid last name required');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_LASTNAME';
-      return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'lastName', message: err.message, error: err });
+    }
+    if (!req.body.role) {
+      err = new Error('Valid Role required');
+      err.statusCode = 417;
+      err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_ROLE';
+      return cb(null, { status: 'failure', field: 'role', message: err.message, error: err });
     }
     if (!req.user.organization) {
-      err = new Error('No organization associated with user. Valid organization required on req.user.organization.');
+      err = new Error('Logged in user has no organization. Please sign in again.');
       err.statusCode = 417;
       err.code = 'PERSON_INVITE_FAILED_MISSING_REQUIREMENT_NO_ORGANIZATION';
-      return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'organization', message: err.message, error: err });
     }
     if (readableUser.role.name == 'owner' && role !== 'admin') {
       err = new Error('Owners are not allowed to invite non-admin staff.');
@@ -226,13 +226,15 @@ module.exports = function(Person) {
         err = new Error('A Person with this email has already been created.');
         err.statusCode = 422;
         err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_DUPLICATE_EMAIL';
+        err.status = 'failure';
         throw err;
       } else if (!queryResult[1]){
         //shouldn't be possible but we'll handle it anyways
         err = new Error('This organization does not exist.');
         err.statusCode = 422;
         err.code = 'PERSON_INVITE_FAILED_INVALID_REQUIREMENT_NO_ORGANIZATION';
-        throw err;
+        err.status = 'failure';
+       throw err;
       } else {
         var foundOrganization = queryResult[1];
 
@@ -322,10 +324,10 @@ module.exports = function(Person) {
   Person.requestPasswordReset = function(req, email, cb) {
     var err;
     if (!req.body.email){
-      err = new Error('Valid email required on req.body.email');
+      err = new Error('Valid email required');
       err.statusCode = 417;
       err.code = 'PERSON_RESET_PASSWORD_FAILED_MISSING_REQUIREMENT_EMAIL';
-      return cb(null, { status: 'failure', message: err.message, error: err });
+      return cb(null, { status: 'failure', field: 'email', message: err.message, error: err });
     }
 
     Person.resetPassword({

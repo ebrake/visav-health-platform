@@ -134,7 +134,7 @@ class AccountActions {
           email: data.email, 
           firstName: data.firstName,
           lastName: data.lastName,
-          role: data.role.value 
+          role: (data.role ? data.role.value : '')
         })
       })
       .then(response => response.json())

@@ -16,7 +16,9 @@ class Banner extends Component {
 
   componentWillReceiveProps(newProps) {
     if (newProps.active !== this.props.active) {
-      this.setState({active: newProps.active});
+      if (this.state.active !== newProps.active) {
+        this.setState({active: newProps.active});
+      }
     }
   }
 
@@ -34,6 +36,9 @@ class Banner extends Component {
 
   handleClose(event){
     this.setState({active: false});
+    if (this.props.onBannerClosed) {
+      this.props.onBannerClosed();
+    }
   }
 
   render() {
@@ -58,7 +63,8 @@ class Banner extends Component {
 
 Banner.propTypes = {
   active: React.PropTypes.bool.isRequired,
-  text: React.PropTypes.string.isRequired
+  text: React.PropTypes.string.isRequired,
+  onBannerClosed: React.PropTypes.func,
 }
 
 export default Banner;

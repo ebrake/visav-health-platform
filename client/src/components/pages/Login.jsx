@@ -6,6 +6,7 @@ import FullscreenAlert from '../misc/FullscreenAlert';
 import PasswordResetPanel from '../panels/PasswordResetPanel';
 import VisavInput from '../inputs/VisavInput';
 import ImageButton from '../buttons/ImageButton';
+import FormErrorLabel from '../misc/FormErrorLabel';
 
 class Login extends Component {
   constructor(props) {
@@ -16,7 +17,9 @@ class Login extends Component {
       password: '',
       showForgotPasswordPopup: false,
       user: undefined,
-      afterLoginRoute: RoutingStore.getAfterLoginRoute()
+      afterLoginRoute: RoutingStore.getAfterLoginRoute(),
+      user: undefined,
+      formErrorMessage: ''
     };
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -45,6 +48,7 @@ class Login extends Component {
   }
 
   handleLogin() {
+    var self = this;
     AccountActions.loginUser({
       email: this.state.email,
       password: this.state.password
@@ -54,6 +58,7 @@ class Login extends Component {
         this.props.router.push(this.getNextRoute());
       } else {
         //validation messages
+        self.setState({ formErrorMessage: 'Error: '+response.data.message });
       }
     }.bind(this))
   }
@@ -89,12 +94,13 @@ class Login extends Component {
 
     return (
       <div className="page">
-        <FullscreenAlert active={this.state.showForgotPasswordPopup} onClickOutside={this.handleCloseForgotPassword}  content={<PasswordResetPanel />} />
-        <div className="login-panel panel">
+        <FullscreenAlert active={this.state.showForgotPasswordPopup} onClickOutside={this.handleCloseForgotPassword} content={<PasswordResetPanel />} />
+          <div className="login-panel panel">
           <h1 className="title">Login</h1>
           <VisavInput label="Email" valueDidChange={ this.handleChange('email') } onKeyUp={ this.handleKeyPressed } />
           <VisavInput label="Password" valueDidChange={ this.handleChange('password') } onKeyUp={ this.handleKeyPressed } />
           <ImageButton text="Login" onClick={this.handleLogin} />
+          <FormErrorLabel text={this.state.formErrorMessage} />
           <span className="text-link" onClick={this.handleGotoSignup}>{"Don't have an account? Sign up"}</span>
           <span className="text-link" onClick={this.handleForgotPassword}>{"Forgot your password?"}</span>
         </div>

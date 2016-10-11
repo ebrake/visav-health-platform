@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import VisavInput from '../inputs/VisavInput';
 import ImageButton from '../buttons/ImageButton';
 import AccountActions from '../../alt/actions/AccountActions';
+import FormErrorLabel from '../misc/FormErrorLabel';
 
 class PasswordResetPanel extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class PasswordResetPanel extends Component {
 
     this.state = {
       email : '',
+      formErrorMessage: ''
     };
 
     this.emailDidChange = this.emailDidChange.bind(this);
@@ -34,10 +36,16 @@ class PasswordResetPanel extends Component {
   }
 
   attemptPasswordReset(){
+    var self = this;
     AccountActions.requestPasswordReset({ email: this.state.email })
     .then(function(response){
-      if (response && response.data)
+      if (response && response.data && response.data.status === 'success') {
         console.log(response.data.message);
+        self.setState({ formErrorMessage:'' });
+      } else {
+        //validation messages
+        self.setState({ formErrorMessage: 'Error: '+response.data.message });
+      }
     });
   }
 
@@ -46,7 +54,8 @@ class PasswordResetPanel extends Component {
       <div className="PasswordResetPanel panel">
         <h1 className="title">{ 'Password Reset' }</h1>
         <VisavInput label="Email" valueDidChange={ this.emailDidChange } />
-        <ImageButton text='Send' onClick={ this.attemptPasswordReset.bind(this) } />
+        <ImageButton className="password-reset-button" text='Send' onClick={ this.attemptPasswordReset.bind(this) } />
+        <FormErrorLabel text={this.state.formErrorMessage} />
       </div>
     );
   }
