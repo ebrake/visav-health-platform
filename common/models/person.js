@@ -862,6 +862,61 @@ module.exports = function(Person) {
       return cb(null, { status: 'failure', message: err.message, error: err });
     })
   }
+
+  Person.clearHealthData = function(req, cb) {
+    var err;
+    if (!req.user) {
+      err = new Error("No user associated with request.");
+      err.statusCode = 417;
+      err.code = 'PERSON_CLEAR_HEALTH_DATA_FAILED_MISSING_REQUIREMENTS_USER';
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    }
+
+    var readableUser = req.user.toJSON();
+    var Exercise = person.app.models.Exercise;
+    var Rep = person.app.models.Rep;
+    var HealthEvent = person.app.models.HealthEvent;
+    var HealthEventMessage = person.app.models.HealthEventMessage;
+
+    var query = {
+      person: readableUser.id
+    };
+
+    if (!req.body.clearAll) {
+      query.isDemo = true;
+    }
+
+    Exercise.destroyAll({
+      where: query
+    })    
+    .then(function(){
+      return Rep.destroyAll({
+        where: query
+      })
+    })
+    .then(function(){
+      return HealthEvent.destroyAll({
+        where: query
+      })
+    })
+    .then(function(){
+      return cb(null, { status: 'success' })
+    }, function(err){
+      return cb(null, { status: 'failure', message: err.message, error: err });
+    })
+  }
+
+  Person.remoteMethod(
+    "clearHealthData",
+    {
+      accepts: [
+        { arg: 'req', type: 'object', http: { source: 'req' } },
+      ],
+      http: { path: '/clearHealthData', verb: 'post' },
+      returns: { arg: 'data', type: 'object' },
+      description: "Deletes all demo data associated with a user."
+    }
+  )
 }
 
 function findPerson(req, email) {
