@@ -895,9 +895,7 @@ module.exports = function(Person) {
       })
     })
     .then(function(){
-      return HealthEvent.destroyAll({
-        where: query
-      })
+      return findAndDestroyHealthEventsAndMessages(Person, readableUser, req.body.clearAll);
     })
     .then(function(){
       return cb(null, { status: 'success' })
@@ -1002,9 +1000,37 @@ function generatePassword(length){
   var symbols = "!?&"
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"+symbols;
 
-  for(var i=0; i < length; i++ ) {
+  for(var i = 0; i < length; i++ ) {
     text += (i < length - 3) ? possible.charAt(Math.floor(Math.random() * possible.length)) : symbols.charAt(Math.floor(Math.random() * symbols.length));
   }
 
   return text;
+}
+
+function findAndDestroyHealthEventsAndMessages(Person, user, clearAll) {
+  var HealthEvent = Person.app.models.HealthEvent;
+  var HealthEventMessage = Person.app.models.HealthEventMessage;
+  var query = {
+    person: user.id
+  };
+
+  if (!clearAll) {
+    query.isDemo = true;
+  }
+
+  return HealthEvent.find({
+    where: query
+  })
+  .then(function(foundHealthEvents){
+    var ids = foundHealthEvents.map(healthEvent => { return healthEvent.toJSON().id; })
+
+    return HealthEventMessage.destroyAll({
+      where: { id: { in: ids } }
+    })
+  })
+  .then(function(){
+    return HealthEvent.destroyAll({
+      where: query
+    })
+  })
 }
