@@ -1025,7 +1025,7 @@ function findAndDestroyHealthEventsAndMessages(Person, user, clearAll) {
     var ids = foundHealthEvents.map(healthEvent => { return healthEvent.toJSON().id; })
 
     return HealthEventMessage.destroyAll({
-      where: { id: { in: ids } }
+      where: { healthEvent: { in: ids } }
     })
   })
   .then(function(){
