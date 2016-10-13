@@ -1,5 +1,4 @@
 import React from 'react';
-import EmptySpace from './EmptySpace';
 import colors from '../../utils/colors';
 
 const VisavHeader = (props) => {
@@ -27,24 +26,13 @@ const VisavHeader = (props) => {
   var letterStyle4 = Object.assign({ backgroundColor: colors.getColor('orange') }, letterStyle);
   var letterStyle5 = Object.assign({ backgroundColor: colors.getColor('red') }, letterStyle);
 
-//  var letterStyle1 = { { backgroundColor: 'foregroundBlue'}, ...letterStyle};
-/*
-  var letterStyle2 = letterStyle.extend({ backgroundColor:colors.getColor('brightBlue') });
-  var letterStyle3 = letterStyle.extend({ backgroundColor:colors.getColor('purple') });
-  var letterStyle4 = letterStyle.extend({ backgroundColor:colors.getColor('orange') });
-  var letterStyle5 = letterStyle.extend({ backgroundColor:colors.getColor('red') });
-*/
-
   return (
     <div style={style}>
-
       <span style={ letterStyle1 } >V</span>
       <span style={ letterStyle2 } >I</span>
       <span style={ letterStyle3 } >S</span>
       <span style={ letterStyle4 } >A</span>
       <span style={ letterStyle5 } >V</span>
-
-
     </div>
   );
 };

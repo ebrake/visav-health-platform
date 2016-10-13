@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 class FormErrorLabel extends Component {
+  //eslint-disable-next-line
   constructor(props) {
     super(props);
   }

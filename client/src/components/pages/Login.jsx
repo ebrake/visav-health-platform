@@ -18,7 +18,6 @@ class Login extends Component {
       showForgotPasswordPopup: false,
       user: undefined,
       afterLoginRoute: RoutingStore.getAfterLoginRoute(),
-      user: undefined,
       formErrorMessage: ''
     };
 

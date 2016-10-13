@@ -1,6 +1,5 @@
 import React from 'react';
-import EmptySpace from './EmptySpace';
-import colors from '../../utils/colors';
+//import colors from '../../utils/colors';
 
 export default (props) => {
   const bodyStyle = {
