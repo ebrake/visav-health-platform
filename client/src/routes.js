@@ -6,6 +6,7 @@ import RoutingActions from './alt/actions/RoutingActions';
 import OrganizationActions from './alt/actions/OrganizationActions';
 import alt from './alt/alt';
 
+import Home from './components/pages/Home.jsx'
 import Telesession from './components/pages/Telesession.jsx'
 import Login from './components/pages/Login.jsx'
 import Signup from './components/pages/Signup.jsx'
@@ -57,7 +58,7 @@ var logout = (nextState, replace) => {
 
 var routes = (
   <Router history={browserHistory}>
-    <Route path="/" component={Telesession} onEnter={authCheck} onLeave={cacheStores} />
+    <Route path="/" component={Home} onEnter={authCheck} onLeave={cacheStores} />
     { /* UNAUTHENTICATED PAGES */ }
     <Route path="/login" component={Login} onLeave={cacheStores} />
     <Route path="/signup" component={Signup} onLeave={cacheStores} />

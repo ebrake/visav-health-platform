@@ -39,6 +39,7 @@ import './css/nav.css';
 import './css/panel.css';
 import './css/Account.css';
 import './css/Example.css';
+import './css/Home.css';
 import './css/InfoList.css';
 import './css/InviteUsers.css';
 import './css/Logo.css';

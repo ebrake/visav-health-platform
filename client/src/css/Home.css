@@ -1,0 +1,16 @@
+@import 'colors.css';
+
+.Home {
+  margin: 0 10px 10px;
+  background: $foreground-blue;
+  border-radius: 10px;
+
+  > .flex-row {
+    flex: 1 1 1px;
+  }
+
+  h1 {
+    text-align: center;
+    text-transform: capitalize;
+  }
+}
